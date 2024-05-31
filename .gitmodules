@@ -1,0 +1,3 @@
+[submodule "external/exs-cpp"]
+	path = external/exs-cpp
+	url = git@github.com:vrtulka23/exs-cpp.git
