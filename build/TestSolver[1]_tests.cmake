@@ -1,7 +1,0 @@
-add_test([=[Quantity.Initialization]=]  /Users/perseus/Projects/puq-cpp/build/TestSolver [==[--gtest_filter=Quantity.Initialization]==] --gtest_also_run_disabled_tests)
-set_tests_properties([=[Quantity.Initialization]=]  PROPERTIES WORKING_DIRECTORY /Users/perseus/Projects/puq-cpp/build SKIP_REGULAR_EXPRESSION [==[\[  SKIPPED \]]==])
-add_test([=[UnitSolver.AtomArithmetics]=]  /Users/perseus/Projects/puq-cpp/build/TestSolver [==[--gtest_filter=UnitSolver.AtomArithmetics]==] --gtest_also_run_disabled_tests)
-set_tests_properties([=[UnitSolver.AtomArithmetics]=]  PROPERTIES WORKING_DIRECTORY /Users/perseus/Projects/puq-cpp/build SKIP_REGULAR_EXPRESSION [==[\[  SKIPPED \]]==])
-add_test([=[UnitSolver.Initialization]=]  /Users/perseus/Projects/puq-cpp/build/TestSolver [==[--gtest_filter=UnitSolver.Initialization]==] --gtest_also_run_disabled_tests)
-set_tests_properties([=[UnitSolver.Initialization]=]  PROPERTIES WORKING_DIRECTORY /Users/perseus/Projects/puq-cpp/build SKIP_REGULAR_EXPRESSION [==[\[  SKIPPED \]]==])
-set(  TestSolver_TESTS Quantity.Initialization UnitSolver.AtomArithmetics UnitSolver.Initialization)
