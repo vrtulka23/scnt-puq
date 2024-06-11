@@ -1,0 +1,5 @@
+if(EXISTS "/Users/perseus/Projects/puq-cpp/build/TestSolver[1]_tests.cmake")
+  include("/Users/perseus/Projects/puq-cpp/build/TestSolver[1]_tests.cmake")
+else()
+  add_test(TestSolver_NOT_BUILT TestSolver_NOT_BUILT)
+endif()

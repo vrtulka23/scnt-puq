@@ -1,0 +1,5 @@
+/Users/perseus/Projects/puq-cpp/build/CMakeFiles/BasicQuantity.dir
+/Users/perseus/Projects/puq-cpp/build/CMakeFiles/TestSolver.dir
+/Users/perseus/Projects/puq-cpp/build/CMakeFiles/test.dir
+/Users/perseus/Projects/puq-cpp/build/CMakeFiles/edit_cache.dir
+/Users/perseus/Projects/puq-cpp/build/CMakeFiles/rebuild_cache.dir
