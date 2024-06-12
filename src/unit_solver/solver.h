@@ -2,6 +2,7 @@
 #include "../../external/exs-cpp/src/exs.h"
 
 #include <set>
+#include <format>
 
 struct UnitPrefixStruct {
   std::string symbol;
@@ -23,16 +24,35 @@ struct UnitStruct {
 };
 extern std::vector<UnitStruct> UnitList;
 
-struct BaseUnit {
+class BaseUnit {
+public:
   std::string prefix;
   std::string unit;
   int numerator;
   int denominator;
+  std::string to_string() {
+    std::stringstream ss;
+    ss << prefix << unit;
+    if (denominator!=1)
+      ss << std::to_string(numerator) << std::string(SYMBOL_FRACTION) << std::to_string(denominator);
+    else if (numerator!=1)
+      ss << std::to_string(numerator);
+    return ss.str();
+  }
 };
 
-struct UnitValue {
+class UnitValue {
+public:
   NUMBER_DTYPE magnitude;
   std::vector<BaseUnit> baseunits;
+  std::string to_string() {
+    std::stringstream ss;
+    ss << magnitude << std::scientific;
+    for (auto unit: baseunits) {
+      ss << "*" << unit.to_string();
+    }
+    return ss.str();
+  }
 };
 
 class UnitAtom: public exs::AtomBase<UnitValue> {
