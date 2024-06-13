@@ -24,35 +24,75 @@ struct UnitStruct {
 };
 extern std::vector<UnitStruct> UnitList;
 
+class Exponent {
+public:
+  int numerator;
+  int denominator;
+  Exponent(): numerator(1), denominator(1) {}
+  Exponent(int n): numerator(n), denominator(1) {};
+  Exponent(int n, int d): numerator(n), denominator(d) {};
+  void operator+=(Exponent const&e);
+  void operator-=(Exponent const&e);
+  std::string to_string();
+  void rebase();
+};
+
 class BaseUnit {
 public:
   std::string prefix;
   std::string unit;
-  int numerator;
-  int denominator;
+  Exponent exponent;
+  BaseUnit() {};
+  BaseUnit(int n, int d): exponent(n,d) {};
+  BaseUnit(std::string p, std::string u, Exponent e): prefix(p), unit(u), exponent(e) {};
+  BaseUnit(std::string p, std::string u, int n, int d): prefix(p), unit(u), exponent(n,d) {};
   std::string to_string() {
     std::stringstream ss;
-    ss << prefix << unit;
-    if (denominator!=1)
-      ss << std::to_string(numerator) << std::string(SYMBOL_FRACTION) << std::to_string(denominator);
-    else if (numerator!=1)
-      ss << std::to_string(numerator);
+    ss << prefix << unit << exponent.to_string();
     return ss.str();
   }
+};
+
+typedef std::vector<BaseUnit> BaseUnitsList;
+class BaseUnits {
+private:
+  BaseUnitsList baseunits;
+public:
+  BaseUnits() {}
+  BaseUnits(BaseUnitsList &bu): baseunits(bu) {}
+  void append(BaseUnit bu);
+  void append(std::string p, std::string u, Exponent e);
+  void append(std::string p, std::string u, int n, int d);
+  std::string to_string();
+  BaseUnit& operator[] (int index) { return baseunits[index]; }
+  void operator*=(BaseUnits &bu);
+  void operator/=(BaseUnits &bu);
+  BaseUnitsList::iterator begin() { return baseunits.begin(); }
+  BaseUnitsList::iterator end()   { return baseunits.end(); }
+  std::size_t size() { return baseunits.size(); }
 };
 
 class UnitValue {
 public:
   NUMBER_DTYPE magnitude;
-  std::vector<BaseUnit> baseunits;
+  BaseUnits baseunits;
+  UnitValue() {}
+  UnitValue(NUMBER_DTYPE m, BaseUnitsList bu): magnitude(m), baseunits(bu) {}
   std::string to_string() {
     std::stringstream ss;
     ss << magnitude << std::scientific;
-    for (auto unit: baseunits) {
-      ss << "*" << unit.to_string();
-    }
+    if (baseunits.size()>0)
+       ss << SYMBOL_MULTIPLY << baseunits.to_string();
     return ss.str();
   }
+  void operator*=(UnitValue &v) { // "UnitValue const& v" lead to an error, TODO implement const_iterator
+    magnitude *= v.magnitude;
+    baseunits *= v.baseunits;
+  } 
+  void operator/=(UnitValue &v) { // "UnitValue const& v" lead to an error, TODO implement const_iterator
+    magnitude /= v.magnitude;
+    baseunits /= v.baseunits;
+  } 
 };
 
 class UnitAtom: public exs::AtomBase<UnitValue> {

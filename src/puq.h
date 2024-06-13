@@ -20,13 +20,7 @@ public:
   Dimensions(std::string dimensions[NUM_BASEDIM]) {};
 };
 
-class BaseUnits {
-public:
-  BaseUnits(std::string units) {};
-  BaseUnits(std::string dimensions[NUM_BASEDIM]) {};
-  BaseUnits(Dimensions dimensions) {};
-};
-
+/*
 class Quantity {
 public:
   Quantity(NUMBER_DTYPE &m, std::string units) {};
@@ -34,5 +28,6 @@ public:
   Quantity(Magnitude &m, std::string units) {};
   Quantity(Magnitude &m, BaseUnits units) {};
 };
+*/
 
 #include "unit_solver/solver.h"
