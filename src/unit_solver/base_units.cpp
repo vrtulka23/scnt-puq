@@ -1,7 +1,17 @@
 #include "solver.h"
 
 void BaseUnits::append(BaseUnit bu) {
-  baseunits.push_back(bu);
+  bool exists = false;
+  for (auto &unit: baseunits) {
+    if (unit.prefix==bu.prefix && unit.unit==bu.unit) {
+      exists = true;
+      unit.exponent += bu.exponent;
+      // TODO: here we should remove an item if its numerator ends up to be zero
+      break;
+    }
+  }
+  if (!exists)
+    baseunits.push_back(bu);
 }
 
 void BaseUnits::append(std::string p, std::string u, Exponent e) {
@@ -21,13 +31,13 @@ std::string BaseUnits::to_string() {
   return s.substr(0,s.size()-1);
 }
 
-void BaseUnits::operator*=(BaseUnits &bu) {
+void BaseUnits::operator+=(BaseUnits &bu) {
   for (auto const &unit: bu) {
     append(unit);
   }
 }
 
-void BaseUnits::operator/=(BaseUnits &bu) {
+void BaseUnits::operator-=(BaseUnits &bu) {
   for (auto unit: bu) {
     unit.exponent.numerator = -unit.exponent.numerator;
     append(unit);

@@ -44,7 +44,7 @@ UnitValue UnitAtom::from_string(std::string expr_orig) {
 }
 
 std::string UnitAtom::to_string() {
-  return std::to_string(value.magnitude);
+  return value.to_string();
 }
 
 void UnitAtom::math_multiply(UnitAtom *other) {

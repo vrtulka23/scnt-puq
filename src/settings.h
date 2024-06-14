@@ -4,7 +4,7 @@
 #define SYMBOL_MULTIPLY "*"
 #define SYMBOL_DIVIDE   "/"
 #define SYMBOL_FRACTION ":"
-constexpr int NUM_BASEDIM = 8;
-typedef double NUMBER_DTYPE;
+#define NUM_BASEDIM     8
+#define NUMBER_DTYPE    double
 
 #endif

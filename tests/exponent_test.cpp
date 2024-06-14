@@ -25,7 +25,7 @@ TEST(Exponent, Initialization) {
   EXPECT_EQ(e.to_string(), "0");    // zero exponent
   
   e = Exponent(0,3);
-  EXPECT_EQ(e.to_string(), "0");
+  EXPECT_EQ(e.to_string(), "0");    // zero exponent
 
   e = Exponent(30,60);
   EXPECT_EQ(e.to_string(), "1:2");  // reduced form

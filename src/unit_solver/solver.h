@@ -65,8 +65,8 @@ public:
   void append(std::string p, std::string u, int n, int d);
   std::string to_string();
   BaseUnit& operator[] (int index) { return baseunits[index]; }
-  void operator*=(BaseUnits &bu);
-  void operator/=(BaseUnits &bu);
+  void operator+=(BaseUnits &bu);
+  void operator-=(BaseUnits &bu);
   BaseUnitsList::iterator begin() { return baseunits.begin(); }
   BaseUnitsList::iterator end()   { return baseunits.end(); }
   std::size_t size() { return baseunits.size(); }
@@ -77,7 +77,8 @@ public:
   NUMBER_DTYPE magnitude;
   BaseUnits baseunits;
   UnitValue() {}
-  UnitValue(NUMBER_DTYPE m, BaseUnitsList bu): magnitude(m), baseunits(bu) {}
+  UnitValue(NUMBER_DTYPE m, BaseUnits bu): magnitude(m), baseunits(bu) {}
+  UnitValue(NUMBER_DTYPE m, BaseUnitsList bul): magnitude(m), baseunits(bul) {}
   std::string to_string() {
     std::stringstream ss;
     ss << magnitude << std::scientific;
@@ -87,11 +88,11 @@ public:
   }
   void operator*=(UnitValue &v) { // "UnitValue const& v" lead to an error, TODO implement const_iterator
     magnitude *= v.magnitude;
-    baseunits *= v.baseunits;
+    baseunits += v.baseunits;
   } 
   void operator/=(UnitValue &v) { // "UnitValue const& v" lead to an error, TODO implement const_iterator
     magnitude /= v.magnitude;
-    baseunits /= v.baseunits;
+    baseunits -= v.baseunits;
   } 
 };
 
