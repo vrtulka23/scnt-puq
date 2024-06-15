@@ -43,3 +43,9 @@ void BaseUnits::operator-=(BaseUnits &bu) {
     append(unit);
   }
 }
+
+void BaseUnits::power(Exponent &e) {
+  for (auto &unit: baseunits) {
+    unit.exponent *= e;
+  }
+}

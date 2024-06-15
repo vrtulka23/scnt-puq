@@ -37,9 +37,8 @@ TEST(UnitSolver, Querying) {
   atom = solver.solve("kg/(m*s)");
   EXPECT_EQ(atom.value.to_string(), "1*kg*m-1*s-1");
 
-  // TODO: following test does not work. Parentheses operator needs to be modified to account for exponents
-  //atom = solver.solve("kg/(m*s)2");
-  //EXPECT_EQ(atom.value.to_string(), "1*kg*m-1*s-1");
+  atom = solver.solve("kg/(m*s)2*C");
+  EXPECT_EQ(atom.value.to_string(), "1*kg*m-2*s-2*C");
 
   // TODO: uncertainities, solving something like this:
   // 2.233(23)e4*kg*m2/s2

@@ -47,6 +47,10 @@ std::string UnitAtom::to_string() {
   return value.to_string();
 }
 
+void UnitAtom::math_power(Exponent &e) {
+  value.power(e);
+}
+
 void UnitAtom::math_multiply(UnitAtom *other) {
   value *= other->value;
 }

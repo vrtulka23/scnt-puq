@@ -12,6 +12,11 @@ void Exponent::operator-=(Exponent const&e) {
   denominator = denominator*e.denominator;
 }
 
+void Exponent::operator*=(Exponent const&e) {
+  numerator *= e.numerator;
+  denominator *= e.denominator;
+}
+
 std::string Exponent::to_string() {
   std::stringstream ss;
   rebase();

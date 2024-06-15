@@ -3,6 +3,7 @@
 
 #include <set>
 #include <format>
+#include <cmath>
 
 struct UnitPrefixStruct {
   std::string symbol;
@@ -33,6 +34,7 @@ public:
   Exponent(int n, int d): numerator(n), denominator(d) {};
   void operator+=(Exponent const&e);
   void operator-=(Exponent const&e);
+  void operator*=(Exponent const&e);
   std::string to_string();
   void rebase();
 };
@@ -67,6 +69,7 @@ public:
   BaseUnit& operator[] (int index) { return baseunits[index]; }
   void operator+=(BaseUnits &bu);
   void operator-=(BaseUnits &bu);
+  void power(Exponent &e);
   BaseUnitsList::iterator begin() { return baseunits.begin(); }
   BaseUnitsList::iterator end()   { return baseunits.end(); }
   std::size_t size() { return baseunits.size(); }
@@ -86,6 +89,10 @@ public:
        ss << SYMBOL_MULTIPLY << baseunits.to_string();
     return ss.str();
   }
+  void power(Exponent &e) {
+    magnitude = std::pow(magnitude, e.numerator/e.denominator);
+    baseunits.power(e);
+  }
   void operator*=(UnitValue &v) { // "UnitValue const& v" lead to an error, TODO implement const_iterator
     magnitude *= v.magnitude;
     baseunits += v.baseunits;
@@ -102,6 +109,7 @@ class UnitAtom: public exs::AtomBase<UnitValue> {
   UnitAtom(UnitValue v): AtomBase(v) {}; 
   static UnitValue from_string(std::string s);
   std::string to_string();
+  void math_power(Exponent &e);
   void math_multiply(UnitAtom *other);
   void math_divide(UnitAtom *other);
 };
