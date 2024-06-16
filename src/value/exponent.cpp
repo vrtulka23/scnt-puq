@@ -1,6 +1,9 @@
 #include <numeric>
+#include <sstream>
 
-#include "solver.h"
+#include "value.h"
+
+#ifdef FRACTIONAL_EXPONENTS
 
 void Exponent::operator+=(Exponent const&e) {
   if (denominator==e.denominator) {
@@ -51,3 +54,5 @@ void Exponent::rebase() {
     denominator = denominator/gcd;
   }
 }
+
+#endif // FRACTIONAL_EXPONENTS

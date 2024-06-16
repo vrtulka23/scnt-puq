@@ -8,13 +8,21 @@ UnitValue UnitAtom::from_string(std::string expr_orig) {
   struct UnitValue q;
   std::smatch m;
   std::regex rx_number("^((\\+|-)?[[:digit:]]+)(\\.(([[:digit:]]+)?))?((e|E)((\\+|-)?)[[:digit:]]+)?$");
+#ifdef FRACTIONAL_EXPONENTS
   std::regex rx_unit("^([a-zA-Z_%']+)([+-]?[0-9]*)("+std::string(SYMBOL_FRACTION)+"([0-9]+)|)$");
+#else
+  std::regex rx_unit("^([a-zA-Z_%']+)([+-]?[0-9]*)$");
+#endif
   if (std::regex_match(expr, rx_number)) {
     q.magnitude = std::stof(expr);
   } else if (std::regex_match(expr, m, rx_unit)) {
     BaseUnit bu;
+#ifdef FRACTIONAL_EXPONENTS
     bu.exponent.numerator   = m[2]=="" ? 1 : std::stoi(m[2]);
     bu.exponent.denominator = m[4]=="" ? 1 : std::stoi(m[4]);
+#else
+    bu.exponent = m[2]=="" ? 1 : std::stoi(m[2]);
+#endif
     expr = m[1];
     for (auto unit: UnitList) {
       if (unit.symbol.size()>expr.size() || unit.symbol.size()==bu.unit.size())
@@ -47,7 +55,7 @@ std::string UnitAtom::to_string() {
   return value.to_string();
 }
 
-void UnitAtom::math_power(Exponent &e) {
+void UnitAtom::math_power(EXPONENT_TYPE &e) {
   value.power(e);
 }
 

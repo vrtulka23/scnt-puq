@@ -7,11 +7,11 @@ enum class ErrorType {
 
 class Magnitude {
 public:
-  NUMBER_DTYPE value;
-  NUMBER_DTYPE error;
+  MAGNITUDE_TYPE value;
+  MAGNITUDE_TYPE error;
   ErrorType etype;
-  Magnitude(NUMBER_DTYPE v): value(v), error(0), etype(ErrorType::NONE) {};
-  Magnitude(NUMBER_DTYPE v, NUMBER_DTYPE e, ErrorType et): value(v), error(e), etype(et) {};
+  Magnitude(MAGNITUDE_TYPE v): value(v), error(0), etype(ErrorType::NONE) {};
+  Magnitude(MAGNITUDE_TYPE v, MAGNITUDE_TYPE e, ErrorType et): value(v), error(e), etype(et) {};
 };
 
 class Dimensions {
@@ -23,11 +23,11 @@ public:
 /*
 class Quantity {
 public:
-  Quantity(NUMBER_DTYPE &m, std::string units) {};
-  Quantity(NUMBER_DTYPE &m, BaseUnits units) {};
+  Quantity(MAGNITUDE_TYPE &m, std::string units) {};
+  Quantity(MAGNITUDE_TYPE &m, BaseUnits units) {};
   Quantity(Magnitude &m, std::string units) {};
   Quantity(Magnitude &m, BaseUnits units) {};
 };
 */
 
-#include "unit_solver/solver.h"
+#include "solver/solver.h"
