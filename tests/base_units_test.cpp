@@ -13,3 +13,21 @@ TEST(BaseUnits, Initialization) {
   EXPECT_EQ(bus.to_string(), "kg2*ms3:2*cm");
   
 }
+
+TEST(BaseUnits, RemoveZeroExponents) {
+  
+  BaseUnits bus;
+  bus.append("m","s",2);    // adding normal units
+  bus.append("c","m",1,2);
+  EXPECT_EQ(bus.size(), 2);
+  EXPECT_EQ(bus.to_string(), "ms2*cm1:2");
+  
+  bus.append("c","m",-1,2); // adding inverse unit
+  EXPECT_EQ(bus.size(), 1);
+  EXPECT_EQ(bus.to_string(), "ms2");
+
+  bus.append("k","g",0,2);
+  EXPECT_EQ(bus.size(), 1); // adding unit with a zero exponent
+  EXPECT_EQ(bus.to_string(), "ms2");
+  
+}

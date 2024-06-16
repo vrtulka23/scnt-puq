@@ -40,6 +40,9 @@ TEST(UnitSolver, Querying) {
   atom = solver.solve("kg/(m*s)2*C");
   EXPECT_EQ(atom.value.to_string(), "1*kg*m-2*s-2*C");
 
+  atom = solver.solve("kg/(m*s)-1:2*C");
+  EXPECT_EQ(atom.value.to_string(), "1*kg*m1:2*s1:2*C");
+  
   // TODO: uncertainities, solving something like this:
   // 2.233(23)e4*kg*m2/s2
   

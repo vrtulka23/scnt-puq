@@ -3,13 +3,21 @@
 #include "solver.h"
 
 void Exponent::operator+=(Exponent const&e) {
-  numerator = numerator*e.denominator+denominator*e.numerator;
-  denominator = denominator*e.denominator;
+  if (denominator==e.denominator) {
+    numerator += e.numerator;
+  } else {
+    numerator = numerator*e.denominator+denominator*e.numerator;
+    denominator = denominator*e.denominator;
+  }
 }
 
 void Exponent::operator-=(Exponent const&e) {
-  numerator = numerator*e.denominator-denominator*e.numerator;
-  denominator = denominator*e.denominator;
+  if (denominator==e.denominator) {
+    numerator -= e.numerator;
+  } else {
+    numerator = numerator*e.denominator-denominator*e.numerator;
+    denominator = denominator*e.denominator;
+  }
 }
 
 void Exponent::operator*=(Exponent const&e) {

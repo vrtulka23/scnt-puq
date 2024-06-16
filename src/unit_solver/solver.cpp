@@ -9,19 +9,19 @@ public:
   Exponent exponent;
   OperatorParentheses(): OperatorGroup<UnitAtom, N>("par","(",exs::PARENTHESES_OPERATOR) {}
   virtual void parse(exs::Expression &expr) {
-    OperatorGroup<UnitAtom, N>::parse(expr);
-    if (expr.right.length()>0) {
+    OperatorGroup<UnitAtom, N>::parse(expr); // perform ordinary parsing
+    if (expr.right.length()>0) { // check if there is an exponent after closing parentheses
       std::smatch m;
       std::regex rx_exponent("^([+-]?[0-9]*)("+std::string(SYMBOL_FRACTION)+"([0-9]+)|)");
-      if (std::regex_search(expr.right, m, rx_exponent)) {
+      if (std::regex_search(expr.right, m, rx_exponent)) { // store exponent
 	if (m[1]!="") exponent.numerator   = std::stoi(m[1]);
 	if (m[3]!="") exponent.denominator = std::stoi(m[3]);
-	expr.remove(m[0]);
+	expr.remove(m[0]); 
       }
     }
   };
   void operate_group(exs::TokenListBase<UnitAtom> *tokens) {
-    if (exponent.numerator!=1 || exponent.denominator!=1) {
+    if (exponent.numerator!=1 || exponent.denominator!=1) { // apply exponent to parentheses atom
       exs::Token<UnitAtom> group1 = tokens->get_left();
       group1.atom->math_power(exponent);
       tokens->put_left(group1);

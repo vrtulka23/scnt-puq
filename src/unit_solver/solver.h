@@ -66,13 +66,13 @@ public:
   void append(std::string p, std::string u, Exponent e);
   void append(std::string p, std::string u, int n, int d);
   std::string to_string();
-  BaseUnit& operator[] (int index) { return baseunits[index]; }
+  BaseUnit& operator[] (int index);
   void operator+=(BaseUnits &bu);
   void operator-=(BaseUnits &bu);
-  void power(Exponent &e);
-  BaseUnitsList::iterator begin() { return baseunits.begin(); }
-  BaseUnitsList::iterator end()   { return baseunits.end(); }
-  std::size_t size() { return baseunits.size(); }
+  void operator*=(Exponent const&e);
+  BaseUnitsList::iterator begin();
+  BaseUnitsList::iterator end();
+  std::size_t size();
 };
 
 class UnitValue {
@@ -82,25 +82,10 @@ public:
   UnitValue() {}
   UnitValue(NUMBER_DTYPE m, BaseUnits bu): magnitude(m), baseunits(bu) {}
   UnitValue(NUMBER_DTYPE m, BaseUnitsList bul): magnitude(m), baseunits(bul) {}
-  std::string to_string() {
-    std::stringstream ss;
-    ss << magnitude << std::scientific;
-    if (baseunits.size()>0)
-       ss << SYMBOL_MULTIPLY << baseunits.to_string();
-    return ss.str();
-  }
-  void power(Exponent &e) {
-    magnitude = std::pow(magnitude, e.numerator/e.denominator);
-    baseunits.power(e);
-  }
-  void operator*=(UnitValue &v) { // "UnitValue const& v" lead to an error, TODO implement const_iterator
-    magnitude *= v.magnitude;
-    baseunits += v.baseunits;
-  } 
-  void operator/=(UnitValue &v) { // "UnitValue const& v" lead to an error, TODO implement const_iterator
-    magnitude /= v.magnitude;
-    baseunits -= v.baseunits;
-  } 
+  std::string to_string();
+  void power(Exponent &e);
+  void operator*=(UnitValue &v);
+  void operator/=(UnitValue &v);
 };
 
 class UnitAtom: public exs::AtomBase<UnitValue> {

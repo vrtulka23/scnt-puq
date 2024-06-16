@@ -2,15 +2,17 @@
 
 void BaseUnits::append(BaseUnit bu) {
   bool exists = false;
-  for (auto &unit: baseunits) {
-    if (unit.prefix==bu.prefix && unit.unit==bu.unit) {
+  for (auto it = baseunits.begin(); it != baseunits.end(); ++it) {
+    if (it->prefix==bu.prefix && it->unit==bu.unit) {
       exists = true;
-      unit.exponent += bu.exponent;
-      // TODO: here we should remove an item if its numerator ends up to be zero
+      it->exponent += bu.exponent;
+      if (it->exponent.numerator==0) { // removing zero exponents
+	baseunits.erase(it);
+      }
       break;
     }
   }
-  if (!exists)
+  if (!exists && bu.exponent.numerator!=0)
     baseunits.push_back(bu);
 }
 
@@ -31,6 +33,10 @@ std::string BaseUnits::to_string() {
   return s.substr(0,s.size()-1);
 }
 
+BaseUnit& BaseUnits::operator[] (int index) {
+  return baseunits[index];
+}
+
 void BaseUnits::operator+=(BaseUnits &bu) {
   for (auto const &unit: bu) {
     append(unit);
@@ -44,8 +50,20 @@ void BaseUnits::operator-=(BaseUnits &bu) {
   }
 }
 
-void BaseUnits::power(Exponent &e) {
+void BaseUnits::operator*=(Exponent const&e) {
   for (auto &unit: baseunits) {
     unit.exponent *= e;
   }
+}
+
+BaseUnitsList::iterator BaseUnits::begin() {
+  return baseunits.begin();
+}
+
+BaseUnitsList::iterator BaseUnits::end()   {
+  return baseunits.end();
+}
+
+std::size_t BaseUnits::size() {
+  return baseunits.size();
 }
