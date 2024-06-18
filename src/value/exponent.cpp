@@ -28,6 +28,16 @@ void Exponent::operator*=(Exponent const&e) {
   denominator *= e.denominator;
 }
 
+/*
+ *  Convert rational exponents to real numbers
+ */
+EXPONENT_REAL_PRECISION Exponent::to_real() {
+  return (EXPONENT_REAL_PRECISION)numerator/(EXPONENT_REAL_PRECISION)denominator;
+}
+
+/*
+ *  Create a string representation of an exponent
+ */
 std::string Exponent::to_string() {
   std::stringstream ss;
   rebase();
@@ -38,6 +48,9 @@ std::string Exponent::to_string() {
   return ss.str();
 }
 
+/*
+ *  Reduce fraction to a standard minimal form
+ */
 void Exponent::rebase() {
   if (numerator==0) { // zero exponent
     numerator = 0;

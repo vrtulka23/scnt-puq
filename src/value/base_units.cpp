@@ -46,7 +46,7 @@ void BaseUnits::append(std::string p, std::string u, EXPONENT_TYPE e) {
 }
 
 #ifdef EXPONENT_FRACTIONS
-void BaseUnits::append(std::string p, std::string u, EXPONENT_PRECISION n, EXPONENT_PRECISION d) {
+void BaseUnits::append(std::string p, std::string u, EXPONENT_INT_PRECISION n, EXPONENT_INT_PRECISION d) {
   append(BaseUnit(p,u,n,d));
 }
 #endif

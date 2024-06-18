@@ -7,15 +7,31 @@ UnitValue UnitAtom::from_string(std::string expr_orig) {
   std::string expr = expr_orig;
   struct UnitValue uv;
   std::smatch m;
-  std::regex rx_number("^((\\+|-)?[[:digit:]]+)(\\.(([[:digit:]]+)?))?((e|E)((\\+|-)?)[[:digit:]]+)?$");
 #ifdef EXPONENT_FRACTIONS
   std::regex rx_unit("^([a-zA-Z_%']+)([+-]?[0-9]*)("+std::string(SYMBOL_FRACTION)+"([0-9]+)|)$");
 #else
   std::regex rx_unit("^([a-zA-Z_%']+)([+-]?[0-9]*)$");
 #endif
-  if (std::regex_match(expr, rx_number)) {          // atom expression is a number
+#ifdef MAGNITUDE_ERRORS
+  std::regex rx_number("^((\\+|-)?[[:digit:]]+)(\\.(([[:digit:]]+)?))?(\\(([[:digit:]]+)\\))?((e|E)((\\+|-)?[[:digit:]]+))?$");
+  if (std::regex_match(expr, m, rx_number)) {       // atom expression is a number with an uncertainty
+    //std::cout << m[0] << "|" << m[1] << "|" << m[2] << "|" << m[3] << "|" << m[4] << "|" << m[5] << std::endl;
+    //std::cout << m[6] << "|" << m[7] << "|" << m[8] << "|" << m[9] << "|" << m[10] << "|" << m[11] << std::endl;
+    //std::cout << m[12] << "|" << m[13] << "|" << m[14] << "|" << m[15] << "|" << m[16] << "|" << m[17] << std::endl;
+    if (m[6]=="") {
+      uv.magnitude.magnitude = std::stof(expr);
+    } else {
+      uv.magnitude.magnitude = std::stof(m[1].str()+m[3].str()+m[8].str());
+      uv.magnitude.error = std::stof(m[7]) * std::pow(10, 1-(int)m[3].str().size()+std::stoi(m[10])); 
+    }
+  }
+#else
+  std::regex rx_number("^((\\+|-)?[[:digit:]]+)(\\.(([[:digit:]]+)?))?((e|E)((\\+|-)?)[[:digit:]]+)?$");
+  if (std::regex_match(expr, rx_number)) {          // atom expression is a simple number
     uv.magnitude = std::stof(expr);
-  } else if (std::regex_match(expr, m, rx_unit)) {  // atom expression has dimensions
+  }
+#endif
+  else if (std::regex_match(expr, m, rx_unit)) {  // atom expression has dimensions
     BaseUnit bu;
     // register exponent values
 #ifdef EXPONENT_FRACTIONS
@@ -47,6 +63,7 @@ UnitValue UnitAtom::from_string(std::string expr_orig) {
       for (auto prefix: UnitPrefixList) {
 	if (prefix.symbol==expr) {
 	  bu.prefix = prefix.symbol;
+	  break;
 	}
       }
       if (munit.allowed_prefixes.size()>0) {

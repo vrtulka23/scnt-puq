@@ -42,10 +42,13 @@ TEST(UnitAtom, FromString) {
 #ifdef MAGNITUDE_ERRORS
 
 TEST(UnitAtom, FromStringErrors) {
-  // TODO: uncertainities, solving something like this:
-  // 2(1)
-  // 2.233(23)
-  // 2.233(23)e4
+
+  UnitValue value = UnitAtom::from_string("1.223(23)e+02");
+  EXPECT_EQ(value.to_string(), "1.223(23)e+02");
+
+  value = UnitAtom::from_string("1.223(233)e+02");
+  EXPECT_EQ(value.to_string(), "1.22(23)e+02");
+  
 }
   
 #endif

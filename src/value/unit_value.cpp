@@ -18,15 +18,11 @@ std::string UnitValue::to_string() {
 }
 
 void UnitValue::power(EXPONENT_TYPE &e) {
+#ifdef MAGNITUDE_ERRORS 
+  magnitude ^= e;
+#else
 #ifdef EXPONENT_FRACTIONS
-#ifdef MAGNITUDE_ERRORS  // TODO: implement power of errors
-  magnitude.magnitude = std::pow(magnitude.magnitude, e.numerator/e.denominator);
-#else
-  magnitude = std::pow(magnitude, e.numerator/e.denominator);
-#endif
-#else
-#ifdef MAGNITUDE_ERRORS  // TODO: implement power of errors
-  magnitude.magnitude = std::pow(magnitude.magnitude, e);
+  magnitude = std::pow(magnitude, e.to_real());
 #else
   magnitude = std::pow(magnitude, e);
 #endif

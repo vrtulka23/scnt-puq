@@ -9,7 +9,8 @@
 #define MAGNITUDE_ERRORS
 #define MAGNITUDE_PRECISION double
 #define EXPONENT_FRACTIONS
-#define EXPONENT_PRECISION int
+#define EXPONENT_INT_PRECISION int
+#define EXPONENT_REAL_PRECISION double
 
 #ifdef MAGNITUDE_ERRORS
   #define MAGNITUDE_TYPE Magnitude
@@ -21,7 +22,7 @@
   #define EXPONENT_TYPE Exponent
   #define SYMBOL_FRACTION ":"
 #else
-  #define EXPONENT_TYPE EXPONENT_PRECISION
+  #define EXPONENT_TYPE EXPONENT_INT_PRECISION
 #endif
 
 #endif // PUQ_SETTINGS_H
