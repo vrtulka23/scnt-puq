@@ -1,9 +1,9 @@
 #include <numeric>
 #include <sstream>
 
-#include "value.h"
+#include "unit_value.h"
 
-#ifdef FRACTIONAL_EXPONENTS
+#ifdef EXPONENT_FRACTIONS
 
 void Exponent::operator+=(Exponent const&e) {
   if (denominator==e.denominator) {
@@ -55,4 +55,4 @@ void Exponent::rebase() {
   }
 }
 
-#endif // FRACTIONAL_EXPONENTS
+#endif // EXPONENT_FRACTIONS

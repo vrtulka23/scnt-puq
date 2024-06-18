@@ -1,4 +1,4 @@
-#import "solver.h"
+#import "unit_solver.h"
 
 std::vector<UnitPrefixStruct> UnitPrefixList = {
   {"Y",  1.0e24,  {0,0,0,0,0,0,0,0}, "1e24",  "yotta" },
@@ -32,5 +32,7 @@ std::vector<UnitStruct> UnitList = {
   {"cd",  1.0, {0,0,0,0,0,1,0,0}, "", "candela", true, {}    },
   {"mol", 1.0, {0,0,0,0,0,0,1,0}, "", "mole",    true, {}    },
   {"rad", 1.0, {0,0,0,0,0,0,0,1}, "", "radian",  true, {"m"} },
+
+  {"au",  1.49597870e11, {1,0,0,0,0,0,0,0}, "149597.870691*Mm", "astr. unit", false, {} },
 };
 

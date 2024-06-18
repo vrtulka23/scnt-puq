@@ -2,11 +2,11 @@
 #include <sstream>
 
 #include "../settings.h"
-#include "value.h"
+#include "unit_value.h"
 
 std::string BaseUnit::to_string() {
   std::stringstream ss;
-#ifdef FRACTIONAL_EXPONENTS
+#ifdef EXPONENT_FRACTIONS
   ss << prefix << unit << exponent.to_string();
 #else
   ss << prefix << unit;
@@ -21,31 +21,32 @@ void BaseUnits::append(BaseUnit bu) {
     if (it->prefix==bu.prefix && it->unit==bu.unit) {
       exists = true;
       it->exponent += bu.exponent;
-#ifdef FRACTIONAL_EXPONENTS
-      if (it->exponent.numerator==0) { // removing zero exponents
+      // removing zero exponents
+#ifdef EXPONENT_FRACTIONS
+      if (it->exponent.numerator==0) { 
 #else
-      if (it->exponent==0) { // removing zero exponents
+      if (it->exponent==0) {
 #endif
 	baseunits.erase(it);
       }
       break;
     }
   }
-#ifdef FRACTIONAL_EXPONENTS
-  if (!exists && bu.exponent.numerator!=0)
-    baseunits.push_back(bu);
+#ifdef EXPONENT_FRACTIONS
+  if (!exists && bu.exponent.numerator!=0) {
 #else
-  if (!exists && bu.exponent!=0)
-    baseunits.push_back(bu);
+  if (!exists && bu.exponent!=0) {
 #endif
+    baseunits.push_back(bu);
+  }
 }
 
 void BaseUnits::append(std::string p, std::string u, EXPONENT_TYPE e) {
   append(BaseUnit(p,u,e));
 }
 
-#ifdef FRACTIONAL_EXPONENTS
-void BaseUnits::append(std::string p, std::string u, int n, int d) {
+#ifdef EXPONENT_FRACTIONS
+void BaseUnits::append(std::string p, std::string u, EXPONENT_PRECISION n, EXPONENT_PRECISION d) {
   append(BaseUnit(p,u,n,d));
 }
 #endif
@@ -71,7 +72,7 @@ void BaseUnits::operator+=(BaseUnits &bu) {
 
 void BaseUnits::operator-=(BaseUnits &bu) {
   for (auto unit: bu) {
-#ifdef FRACTIONAL_EXPONENTS
+#ifdef EXPONENT_FRACTIONS
     unit.exponent.numerator = -unit.exponent.numerator;
 #else
     unit.exponent = -unit.exponent;

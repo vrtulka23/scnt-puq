@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+
 #include "../src/puq.h"
 
 TEST(BaseUnits, Initialization) {
@@ -32,7 +33,7 @@ TEST(BaseUnits, RemoveZeroExponents) {
  
 }
 
-#ifdef FRACTIONAL_EXPONENTS
+#ifdef EXPONENT_FRACTIONS
 
 TEST(BaseUnits, InitializationFractions) {
   
@@ -65,4 +66,4 @@ TEST(BaseUnits, RemoveZeroExponentsFractions) {
  
 }
 
-#endif // FRACTIONAL_EXPONENTS
+#endif // EXPONENT_FRACTIONS

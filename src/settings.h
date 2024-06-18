@@ -6,20 +6,22 @@
 #define SYMBOL_POWER    "^"
 #define NUM_BASEDIM     8
 
-//#define UNCERTAINTIES
-#define FRACTIONAL_EXPONENTS
+#define MAGNITUDE_ERRORS
+#define MAGNITUDE_PRECISION double
+#define EXPONENT_FRACTIONS
+#define EXPONENT_PRECISION int
 
-#ifdef UNCERTAINTIES
+#ifdef MAGNITUDE_ERRORS
   #define MAGNITUDE_TYPE Magnitude
 #else
-  #define MAGNITUDE_TYPE double
+  #define MAGNITUDE_TYPE MAGNITUDE_PRECISION
 #endif
 
-#ifdef FRACTIONAL_EXPONENTS
-  #define SYMBOL_FRACTION ":"
+#ifdef EXPONENT_FRACTIONS
   #define EXPONENT_TYPE Exponent
+  #define SYMBOL_FRACTION ":"
 #else
-  #define EXPONENT_TYPE int
+  #define EXPONENT_TYPE EXPONENT_PRECISION
 #endif
 
 #endif // PUQ_SETTINGS_H

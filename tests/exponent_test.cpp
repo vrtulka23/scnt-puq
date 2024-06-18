@@ -1,7 +1,8 @@
 #include <gtest/gtest.h>
+
 #include "../src/puq.h"
 
-#ifdef FRACTIONAL_EXPONENTS
+#ifdef EXPONENT_FRACTIONS
 
 TEST(Exponent, Initialization) {
   
@@ -73,4 +74,4 @@ TEST(Exponent, ArithmeticsFractions) {
   
 }
 
-#endif // FRACTIONAL_EXPONENTS
+#endif // EXPONENT_FRACTIONS

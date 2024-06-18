@@ -1,54 +1,73 @@
 #include <regex>
+#include <algorithm>
 
-#include "solver.h"
+#include "unit_solver.h"
 
 UnitValue UnitAtom::from_string(std::string expr_orig) {
   std::string expr = expr_orig;
-  // parse a number
-  struct UnitValue q;
+  struct UnitValue uv;
   std::smatch m;
   std::regex rx_number("^((\\+|-)?[[:digit:]]+)(\\.(([[:digit:]]+)?))?((e|E)((\\+|-)?)[[:digit:]]+)?$");
-#ifdef FRACTIONAL_EXPONENTS
+#ifdef EXPONENT_FRACTIONS
   std::regex rx_unit("^([a-zA-Z_%']+)([+-]?[0-9]*)("+std::string(SYMBOL_FRACTION)+"([0-9]+)|)$");
 #else
   std::regex rx_unit("^([a-zA-Z_%']+)([+-]?[0-9]*)$");
 #endif
-  if (std::regex_match(expr, rx_number)) {
-    q.magnitude = std::stof(expr);
-  } else if (std::regex_match(expr, m, rx_unit)) {
+  if (std::regex_match(expr, rx_number)) {          // atom expression is a number
+    uv.magnitude = std::stof(expr);
+  } else if (std::regex_match(expr, m, rx_unit)) {  // atom expression has dimensions
     BaseUnit bu;
-#ifdef FRACTIONAL_EXPONENTS
+    // register exponent values
+#ifdef EXPONENT_FRACTIONS
     bu.exponent.numerator   = m[2]=="" ? 1 : std::stoi(m[2]);
     bu.exponent.denominator = m[4]=="" ? 1 : std::stoi(m[4]);
 #else
     bu.exponent = m[2]=="" ? 1 : std::stoi(m[2]);
 #endif
     expr = m[1];
+    // determine unit
+    UnitStruct munit;
     for (auto unit: UnitList) {
       if (unit.symbol.size()>expr.size() || unit.symbol.size()==bu.unit.size())
 	continue;
       if (expr.compare(expr.size()-unit.symbol.size(), unit.symbol.size(), unit.symbol)==0) {
-	bu.unit = unit.symbol;
+	munit = unit;
       }
     }
-    if (bu.unit.size()==0) {
+    if (munit.symbol=="") {
       throw std::invalid_argument("Unknown unit base: "+expr_orig);
+    } else {
+      bu.unit = munit.symbol;
     }
     expr = expr.substr(0,expr.size()-bu.unit.size());
+    // determine prefix
     if (expr.size()>0) {
+      if (!munit.use_prefixes)
+	throw std::invalid_argument("Prefixes are not allowed for this unit: "+expr_orig);
       for (auto prefix: UnitPrefixList) {
 	if (prefix.symbol==expr) {
 	  bu.prefix = prefix.symbol;
+	}
+      }
+      if (munit.allowed_prefixes.size()>0) {
+	if (std::find(munit.allowed_prefixes.begin(), munit.allowed_prefixes.end(), bu.prefix) == munit.allowed_prefixes.end()) {
+	  std::stringstream ss;
+	  ss << "Unit prefix is not allowed: "+expr_orig+". Allowed prefixes are:";
+	  for (auto prefix: munit.allowed_prefixes) {
+	    ss << " " << prefix;
+	  }
+	  throw std::invalid_argument(ss.str());
 	}
       }
       if (bu.prefix.size()==0) {
 	throw std::invalid_argument("Unknown unit prefix: "+expr_orig);
       }
     }
-    q.magnitude = 1;
-    q.baseunits.append(bu);
+    // fill UnitValue properties
+    uv.magnitude = 1;
+    uv.baseunits.append(bu);
   }
-  return UnitValue(q);
+  return uv;
 }
 
 std::string UnitAtom::to_string() {

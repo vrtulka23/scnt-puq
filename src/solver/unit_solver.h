@@ -7,7 +7,7 @@
 
 #include "../settings.h"
 #include "../../external/exs-cpp/src/exs.h"
-#include "../value/value.h"
+#include "../value/unit_value.h"
 
 struct UnitPrefixStruct {
   std::string symbol;
@@ -42,7 +42,7 @@ class UnitAtom: public exs::AtomBase<UnitValue> {
 
 class OperatorParentheses: public exs::OperatorGroup<UnitAtom, 1> {
 public:
-#ifdef FRACTIONAL_EXPONENTS
+#ifdef EXPONENT_FRACTIONS
   EXPONENT_TYPE exponent;
 #else
   EXPONENT_TYPE exponent = 1;

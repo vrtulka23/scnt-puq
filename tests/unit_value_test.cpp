@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+
 #include "../src/puq.h"
 
 TEST(UnitValue, Initialization) {
@@ -17,7 +18,7 @@ TEST(UnitValue, Initialization) {
   
 }
 
-#ifdef FRACTIONAL_EXPONENTS
+#ifdef EXPONENT_FRACTIONS
 
 TEST(UnitValue, InitializationFractions) {
   
