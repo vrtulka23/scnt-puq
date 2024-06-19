@@ -5,7 +5,7 @@
 std::string UnitValue::to_string() {
   std::stringstream ss;
 #ifdef MAGNITUDE_ERRORS
-  if (magnitude.magnitude!=1)
+  if (magnitude.value!=1)
     ss << magnitude.to_string() << SYMBOL_MULTIPLY;
 #else
   if (magnitude!=1)

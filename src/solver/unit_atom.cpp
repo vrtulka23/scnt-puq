@@ -19,10 +19,14 @@ UnitValue UnitAtom::from_string(std::string expr_orig) {
     //std::cout << m[6] << "|" << m[7] << "|" << m[8] << "|" << m[9] << "|" << m[10] << "|" << m[11] << std::endl;
     //std::cout << m[12] << "|" << m[13] << "|" << m[14] << "|" << m[15] << "|" << m[16] << "|" << m[17] << std::endl;
     if (m[6]=="") {
-      uv.magnitude.magnitude = std::stof(expr);
+      uv.magnitude.value = std::stof(expr);
     } else {
-      uv.magnitude.magnitude = std::stof(m[1].str()+m[3].str()+m[8].str());
-      uv.magnitude.error = std::stof(m[7]) * std::pow(10, 1-(int)m[3].str().size()+std::stoi(m[10])); 
+      std::string decimals = m[3].str()=="" ? "." : m[3].str();
+      uv.magnitude.value = std::stof(m[1].str()+decimals+m[8].str());
+      if (m[10]=="")
+	uv.magnitude.error = std::stof(m[7]) * std::pow(10, 1-(int)decimals.size()); 
+      else
+	uv.magnitude.error = std::stof(m[7]) * std::pow(10, 1-(int)decimals.size()+std::stoi(m[10])); 
     }
   }
 #else

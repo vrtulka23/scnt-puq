@@ -43,12 +43,24 @@ TEST(UnitAtom, FromString) {
 
 TEST(UnitAtom, FromStringErrors) {
 
-  UnitValue value = UnitAtom::from_string("1.223(23)e+02");
+  UnitValue value = UnitAtom::from_string("1.2345(67)"); // without exponent
+  EXPECT_EQ(value.to_string(), "1.2345(67)");
+
+  value = UnitAtom::from_string("1.223(23)e+02");        // with an exponent
   EXPECT_EQ(value.to_string(), "1.223(23)e+02");
 
-  value = UnitAtom::from_string("1.223(233)e+02");
+  value = UnitAtom::from_string("1.223(233)e+02");       // more error digits
   EXPECT_EQ(value.to_string(), "1.22(23)e+02");
-  
+
+  value = UnitAtom::from_string("1.2235(2)e+03");        // less error digits
+  EXPECT_EQ(value.to_string(), "1.22350(20)e+03");
+
+  value = UnitAtom::from_string("122.(23)e+03");         // no decimal digits
+  EXPECT_EQ(value.to_string(), "1.22(23)e+05");
+
+  value = UnitAtom::from_string("122(23)e+03");          // no decimal point
+  EXPECT_EQ(value.to_string(), "1.22(23)e+05");
+
 }
   
 #endif
