@@ -13,6 +13,8 @@ public:
   void operator+=(Exponent const&e);
   void operator-=(Exponent const&e);
   void operator*=(Exponent const&e);
+  bool operator==(Exponent const&d) const;
+  bool operator!=(Exponent const&d) const;
   EXPONENT_REAL_PRECISION to_real();
   std::string to_string();
   void rebase();

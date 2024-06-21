@@ -43,6 +43,46 @@ TEST(Magnitude, ErrorConversion) {
  
 }
 
+TEST(Magnitude, ArithmeticsAdd) {
+
+  Magnitude m1, m2, m3;
+
+  m1 = Magnitude(4, 0.01);
+  m2 = Magnitude(1, 0.005);
+  m3 = m1 + m2;
+  EXPECT_EQ(m3.to_string(), "5.000(15)");
+  m1 += m2;
+  EXPECT_EQ(m1.to_string(), "5.000(15)");
+
+  m1 = Magnitude(4, 0.01);
+  m2 = Magnitude(3);
+  m3 = m1 + m2;
+  EXPECT_EQ(m3.to_string(), "7.000(10)");
+  m1 += m2;
+  EXPECT_EQ(m1.to_string(), "7.000(10)");
+  
+}
+
+TEST(Magnitude, ArithmeticsSubtract) {
+
+  Magnitude m1, m2, m3;
+
+  m1 = Magnitude(4, 0.01);
+  m2 = Magnitude(1, 0.005);
+  m3 = m1 - m2;
+  EXPECT_EQ(m3.to_string(), "3.000(15)");
+  m1 -= m2;
+  EXPECT_EQ(m1.to_string(), "3.000(15)");
+
+  m1 = Magnitude(4, 0.01);
+  m2 = Magnitude(3);
+  m3 = m1 - m2;
+  EXPECT_EQ(m3.to_string(), "1.000(10)");
+  m1 -= m2;
+  EXPECT_EQ(m1.to_string(), "1.000(10)");
+  
+}
+
 TEST(Magnitude, ArithmeticsMultiply) {
 
   Magnitude m1, m2, m3;

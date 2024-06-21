@@ -64,7 +64,7 @@ UnitValue UnitAtom::from_string(std::string expr_orig) {
     if (expr.size()>0) {
       if (!munit.use_prefixes)
 	throw std::invalid_argument("Prefixes are not allowed for this unit: "+expr_orig);
-      for (auto prefix: UnitPrefixList) {
+      for (auto prefix: UnitPrefixList) {	
 	if (prefix.symbol==expr) {
 	  bu.prefix = prefix.symbol;
 	  break;

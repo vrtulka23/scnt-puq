@@ -22,6 +22,8 @@ public:
   Dimensions(MAGNITUDE_PRECISION const&m, MAGNITUDE_PRECISION const&e, BaseDimensions const&d): magnitude(m,e), dimensions(d) {};
 #endif
   std::string to_string();
+  bool operator==(Dimensions const&d) const;
+  bool operator!=(Dimensions const&d) const;
 };
 
 class BaseUnit {
@@ -86,8 +88,12 @@ public:
 #endif
   std::string to_string();
   void power(EXPONENT_TYPE &e);
+  UnitValue operator+(UnitValue &v);
+  UnitValue operator-(UnitValue &v);
   UnitValue operator*(UnitValue &v);
   UnitValue operator/(UnitValue &v);
+  void operator+=(UnitValue &v);
+  void operator-=(UnitValue &v);
   void operator*=(UnitValue &v);
   void operator/=(UnitValue &v);
 };

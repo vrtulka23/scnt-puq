@@ -42,3 +42,17 @@ TEST(Dimensions, InitializationFractions) {
 }
 
 #endif
+
+
+TEST(Dimensions, Comparison) {
+
+  Dimensions d1(2.34,{0,1,2,3,4,5,6,7});
+  Dimensions d2(2.34,{0,0,1,2,3,4,5,6});
+
+  EXPECT_EQ(d1==d2, false);
+  EXPECT_EQ(d1==d1, true);
+
+  EXPECT_EQ(d1!=d2, true);
+  EXPECT_EQ(d1!=d1, false);
+
+}

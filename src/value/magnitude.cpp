@@ -44,6 +44,28 @@ std::string Magnitude::to_string() {
 }
 
 /*
+ * Add two magnitudes
+ */
+Magnitude Magnitude::operator+(Magnitude const&m) {
+  return Magnitude(value+m.value, error+m.error);
+}
+void Magnitude::operator+=(Magnitude const&m) {
+  value += m.value;
+  error += m.error;
+}
+
+/*
+ * Subtract two magnitudes
+ */
+Magnitude Magnitude::operator-(Magnitude const&m) {
+  return Magnitude(value-m.value, error+m.error);
+}
+void Magnitude::operator-=(Magnitude const&m) {
+  value -= m.value;
+  error += m.error;
+}
+
+/*
  * Multiply magnitude by another magnitude
  */
 const Magnitude multiply(Magnitude const*m, Magnitude const*n) {

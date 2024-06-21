@@ -32,12 +32,28 @@ std::string Quantity::to_string() {
   return value.to_string();
 }
 
+Quantity Quantity::operator+(Quantity &q) {
+  return Quantity(value+q.value);
+}
+
+Quantity Quantity::operator-(Quantity &q) {
+  return Quantity(value-q.value);
+}
+
 Quantity Quantity::operator*(Quantity &q) {
   return Quantity(value*q.value);
 }
 
 Quantity Quantity::operator/(Quantity &q) {
   return Quantity(value/q.value);
+}
+
+void Quantity::operator+=(Quantity &q) {
+  value += q.value;
+}
+
+void Quantity::operator-=(Quantity &q) {
+  value -= q.value;
 }
 
 void Quantity::operator*=(Quantity &q) {

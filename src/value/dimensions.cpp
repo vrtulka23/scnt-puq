@@ -41,7 +41,7 @@ Dimensions::Dimensions(MAGNITUDE_PRECISION const&m, MAGNITUDE_PRECISION const&e)
 
 #endif
 
-std::string Dimensions::to_string() {
+std::string Dimensions::to_string(){
   std::stringstream ss;
 #ifdef MAGNITUDE_ERRORS
   if (magnitude.value!=1)
@@ -63,4 +63,22 @@ std::string Dimensions::to_string() {
   }
   std::string s = ss.str();
   return s.substr(0,s.size()-1);
+}
+
+bool Dimensions::operator==(Dimensions const&d) const {
+  bool equal = true;
+  for (int i=0; i<NUM_BASEDIM; i++) {
+    if (dimensions[i]!=d.dimensions[i])
+      equal = false;
+  }
+  return equal;
+}
+
+bool Dimensions::operator!=(Dimensions const&d) const {
+  bool equal = false;
+  for (int i=0; i<NUM_BASEDIM; i++) {
+    if (dimensions[i]!=d.dimensions[i])
+      equal = true;
+  }
+  return equal;
 }

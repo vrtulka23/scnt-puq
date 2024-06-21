@@ -34,6 +34,14 @@ void Exponent::operator*=(Exponent const&e) {
   denominator *= e.denominator;
 }
 
+bool Exponent::operator==(Exponent const&e) const {
+  return numerator==e.numerator && denominator==e.denominator;
+}
+
+bool Exponent::operator!=(Exponent const&e) const {
+  return numerator!=e.numerator || denominator!=e.denominator;
+}
+
 /*
  *  Convert rational exponents to real numbers
  */

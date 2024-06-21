@@ -21,8 +21,12 @@ public:
   Quantity(MAGNITUDE_TYPE const&m, BaseUnitsList const&bu): value(m,bu) {};
   Quantity(MAGNITUDE_TYPE m, std::string const&s);
   std::string to_string();
+  Quantity operator+(Quantity &q);
+  Quantity operator-(Quantity &q);
   Quantity operator*(Quantity &q);
   Quantity operator/(Quantity &q);
+  void operator+=(Quantity &q);
+  void operator-=(Quantity &q);
   void operator*=(Quantity &q);
   void operator/=(Quantity &q);
 };

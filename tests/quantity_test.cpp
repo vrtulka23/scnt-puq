@@ -25,7 +25,39 @@ TEST(Quantity, Initialization) {
   
 }
 
-TEST(Quantity, Arithmetics) {
+TEST(Quantity, ArithmeticsAdd) {
+
+  Quantity q1,q2,q3;
+
+  q1 = Quantity(6,"cm");
+  q2 = Quantity(3,"cm");
+  q3 = q1 + q2;
+  EXPECT_EQ(q3.to_string(), "9*cm");
+  q1 += q2;
+  EXPECT_EQ(q1.to_string(), "9*cm");
+
+  q3 = Quantity(3,"cm2");
+  EXPECT_THROW(q1+q3,  std::invalid_argument);
+  
+}
+
+TEST(Quantity, ArithmeticsSubtract) {
+
+  Quantity q1,q2,q3;
+
+  q1 = Quantity(6,"cm");
+  q2 = Quantity(3,"cm");
+  q3 = q1 - q2;
+  EXPECT_EQ(q3.to_string(), "3*cm");
+  q1 -= q2;
+  EXPECT_EQ(q1.to_string(), "3*cm");
+
+  q3 = Quantity(3,"cm2");
+  EXPECT_THROW(q1-q3,  std::invalid_argument);
+  
+}
+
+TEST(Quantity, ArithmeticsMultiply) {
 
   Quantity q1,q2,q3;
 
@@ -35,7 +67,12 @@ TEST(Quantity, Arithmetics) {
   EXPECT_EQ(q3.to_string(), "18*cm3*g2");
   q1 *= q2;
   EXPECT_EQ(q1.to_string(), "18*cm3*g2");
+}
 
+TEST(Quantity, ArithmeticsDivide) {
+
+  Quantity q1,q2,q3;
+  
   q1 = Quantity(6,"cm3");
   q2 = Quantity(3,"g2");
   q3 = q1 / q2;

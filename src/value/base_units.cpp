@@ -139,8 +139,8 @@ Dimensions BaseUnits::dimensions() {
     }
     for (auto &unit: UnitList) {
       if (unit.symbol==bu.unit) {
+	dim.magnitude *= unit.magnitude ^ bu.exponent;
 	for (int i=0; i<NUM_BASEDIM; i++) {
-	  dim.magnitude *= unit.magnitude ^ bu.exponent;
 	  dim.dimensions[i] += unit.dimensions[i] * bu.exponent;
 	}
 	break;

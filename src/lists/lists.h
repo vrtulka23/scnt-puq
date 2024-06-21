@@ -3,6 +3,7 @@
 
 #include <string>
 #include <set>
+#include <map>
 
 #include "../settings.h"
 #include "../value/exponent.h"

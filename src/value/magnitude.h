@@ -12,9 +12,13 @@ public:
   static MAGNITUDE_PRECISION abs_to_rel(MAGNITUDE_PRECISION const&v, MAGNITUDE_PRECISION const&a);
   static MAGNITUDE_PRECISION rel_to_abs(MAGNITUDE_PRECISION const&v, MAGNITUDE_PRECISION const&r);
   std::string to_string();
+  Magnitude operator+(Magnitude const&m);
+  Magnitude operator-(Magnitude const&m);
   Magnitude operator*(Magnitude const&m);
   Magnitude operator/(Magnitude const&m);
   Magnitude operator^(EXPONENT_TYPE &e);
+  void operator+=(Magnitude const&m);
+  void operator-=(Magnitude const&m);
   void operator*=(Magnitude const&m);
   void operator/=(Magnitude const&m);
   void operator^=(EXPONENT_TYPE &e);

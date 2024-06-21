@@ -15,6 +15,23 @@ TEST(BaseUnits, Initialization) {
 
 }
 
+#ifdef EXPONENT_FRACTIONS
+
+TEST(BaseUnits, InitializationFractions) {
+  
+  BaseUnits bus;
+  BaseUnit bu1 = {"k","g",2,1};
+  bus.append(bu1);
+  BaseUnit bu2("m","s",3,2);
+  bus.append(bu2);
+  bus.append("c","m",1,1);
+  EXPECT_EQ(bus.size(), 3);
+  EXPECT_EQ(bus.to_string(), "kg2*ms3:2*cm");
+
+}
+
+#endif
+
 TEST(BaseUnits, RemoveZeroExponents) {
   
   BaseUnits bus;
@@ -33,32 +50,7 @@ TEST(BaseUnits, RemoveZeroExponents) {
  
 }
 
-TEST(BaseUnits, Dimensions) {
-
-  BaseUnits bus;
-  bus.append("k","m",1);
-  bus.append("n","s",2);
-  bus.append("m","g",3);
-  EXPECT_EQ(bus.to_string(), "km*ns2*mg3");
-  Dimensions dim = bus.dimensions();
-  EXPECT_EQ(dim.to_string(), "1e-24*m*g3*s2");
-  
-}
-
 #ifdef EXPONENT_FRACTIONS
-
-TEST(BaseUnits, InitializationFractions) {
-  
-  BaseUnits bus;
-  BaseUnit bu1 = {"k","g",2,1};
-  bus.append(bu1);
-  BaseUnit bu2("m","s",3,2);
-  bus.append(bu2);
-  bus.append("c","m",1,1);
-  EXPECT_EQ(bus.size(), 3);
-  EXPECT_EQ(bus.to_string(), "kg2*ms3:2*cm");
-
-}
 
 TEST(BaseUnits, RemoveZeroExponentsFractions) {
   
@@ -78,4 +70,22 @@ TEST(BaseUnits, RemoveZeroExponentsFractions) {
  
 }
 
-#endif // EXPONENT_FRACTIONS
+#endif 
+
+TEST(BaseUnits, Dimensions) {
+
+  BaseUnits bus;
+  bus.append("k","m",1);
+  bus.append("n","s",2);
+  bus.append("m","g",3);
+  EXPECT_EQ(bus.to_string(), "km*ns2*mg3");
+  Dimensions dim = bus.dimensions();
+  EXPECT_EQ(dim.to_string(), "1e-24*m*g3*s2");
+
+  BaseUnits bus2;
+  bus2.append("","au",2);;
+  EXPECT_EQ(bus2.to_string(), "au2");
+  dim = bus2.dimensions();
+  EXPECT_EQ(dim.to_string(), "2.23795e+22*m2");
+  
+}

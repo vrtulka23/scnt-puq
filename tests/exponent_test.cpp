@@ -48,6 +48,19 @@ TEST(Exponent, InitializationFractions) {
   
 }
 
+TEST(Exponent, ArithmeticsComparison) {
+
+  Exponent a(2);
+  Exponent b(1);
+
+  EXPECT_EQ(a==b, false);
+  EXPECT_EQ(a==a, true);
+  
+  EXPECT_EQ(a!=b, true);
+  EXPECT_EQ(a!=a, false);
+  
+}
+
 TEST(Exponent, ArithmeticsIntegers) {
 
   Exponent a(2);

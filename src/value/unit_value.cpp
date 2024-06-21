@@ -18,6 +18,32 @@ std::string UnitValue::to_string() {
   return s.substr(0,s.size()-1);
 }
 
+UnitValue UnitValue::operator+(UnitValue &v) {
+  if (baseunits.dimensions()==v.baseunits.dimensions()) 
+    return UnitValue(magnitude + v.magnitude, baseunits);
+  else
+    throw std::invalid_argument("Adding values with different dimensions: "+baseunits.to_string()+" != "+v.baseunits.to_string());
+}
+void UnitValue::operator+=(UnitValue &v) {
+  if (baseunits.dimensions()==v.baseunits.dimensions()) 
+    magnitude += v.magnitude;
+  else
+    throw std::invalid_argument("Adding values with different dimensions: "+baseunits.to_string()+" != "+v.baseunits.to_string());
+}
+
+UnitValue UnitValue::operator-(UnitValue &v) {
+  if (baseunits.dimensions()==v.baseunits.dimensions()) 
+    return UnitValue(magnitude - v.magnitude, baseunits);
+  else
+    throw std::invalid_argument("Subtracting values with different dimensions: "+baseunits.to_string()+" != "+v.baseunits.to_string());
+} 
+void UnitValue::operator-=(UnitValue &v) {
+  if (baseunits.dimensions()==v.baseunits.dimensions()) 
+    magnitude -= v.magnitude;
+  else
+    throw std::invalid_argument("Subtracting values with different dimensions: "+baseunits.to_string()+" != "+v.baseunits.to_string());
+}
+
 UnitValue UnitValue::operator*(UnitValue &v) {
   return UnitValue(magnitude * v.magnitude, baseunits + v.baseunits);
 }
