@@ -28,8 +28,7 @@ MAGNITUDE_PRECISION Magnitude::rel_to_abs(MAGNITUDE_PRECISION const&v, MAGNITUDE
 std::string Magnitude::to_string() {
   std::stringstream ss;
   if (error==0) {
-    if (value!=1)
-      ss << value << std::scientific;
+    ss << value << std::scientific;
   } else {
     int exp_mag  = std::floor(std::log10(value));
     int exp_err  = std::floor(std::log10(error));
@@ -62,6 +61,9 @@ const Magnitude multiply(Magnitude const*m, Magnitude const*n) {
   }
   return nm;
 }
+Magnitude Magnitude::operator*(Magnitude const&m) {
+  return multiply(this, &m);
+}
 void Magnitude::operator*=(Magnitude const&m) {
   Magnitude nm = multiply(this, &m);
   value = nm.value;
@@ -88,6 +90,9 @@ const Magnitude divide(Magnitude const*m, Magnitude const*n) {
   }
   return nm;
 }
+Magnitude Magnitude::operator/(Magnitude const&m) {
+  return divide(this, &m);
+}
 void Magnitude::operator/=(Magnitude const&m) {
   Magnitude nm = divide(this, &m);
   value = nm.value;
@@ -97,6 +102,15 @@ void Magnitude::operator/=(Magnitude const&m) {
 /*
  *  Rise magnitude to the power of an exponent (not a binary operation!!)
  */
+Magnitude Magnitude::operator^(EXPONENT_TYPE &e) {
+  Magnitude nm;
+#ifdef EXPONENT_FRACTIONS
+  nm.value = std::pow(value, e.to_real());
+#else
+  nm.value = std::pow(value, e);
+#endif
+  return nm;
+}
 void Magnitude::operator^=(EXPONENT_TYPE &e) {
 #ifdef EXPONENT_FRACTIONS
   value = std::pow(value, e.to_real());

@@ -23,6 +23,12 @@ void Exponent::operator-=(Exponent const&e) {
   }
 }
 
+Exponent Exponent::operator*(Exponent &e) {
+  Exponent ne;
+  ne.numerator = numerator * e.numerator;
+  ne.denominator = denominator * e.denominator;
+  return ne;
+}
 void Exponent::operator*=(Exponent const&e) {
   numerator *= e.numerator;
   denominator *= e.denominator;

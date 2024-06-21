@@ -7,7 +7,7 @@
 TEST(Magnitude, Initialization) {
   
   Magnitude m;
-  EXPECT_EQ(m.to_string(), "");
+  EXPECT_EQ(m.to_string(), "1");
 
   m = Magnitude(0);
   EXPECT_EQ(m.to_string(), "0");
@@ -45,20 +45,26 @@ TEST(Magnitude, ErrorConversion) {
 
 TEST(Magnitude, ArithmeticsMultiply) {
 
-  Magnitude m1, m2;
+  Magnitude m1, m2, m3;
 
   m1 = Magnitude(4.0, 0.05);
   m2 = Magnitude(7, 0.1);
+  m3 = m1 * m2;
+  EXPECT_EQ(m3.to_string(), "2.800(75)e+01");
   m1 *= m2;
   EXPECT_EQ(m1.to_string(), "2.800(75)e+01");
 
   m1 = Magnitude(4.0, 0.05);
   m2 = Magnitude(5, 0);
+  m3 = m1 * m2;
+  EXPECT_EQ(m3.to_string(), "2.000(25)e+01");
   m1 *= m2;
   EXPECT_EQ(m1.to_string(), "2.000(25)e+01");
 
   m1 = Magnitude(5, 0);
   m2 = Magnitude(4.0, 0.05);
+  m3 = m1 * m2;
+  EXPECT_EQ(m3.to_string(), "2.000(25)e+01");
   m1 *= m2;
   EXPECT_EQ(m1.to_string(), "2.000(25)e+01");
   
@@ -66,20 +72,26 @@ TEST(Magnitude, ArithmeticsMultiply) {
 
 TEST(Magnitude, ArithmeticsDivide) {
 
-  Magnitude m1, m2;
+  Magnitude m1, m2, m3;
 
   m1 = Magnitude(12.0, 0.2);
   m2 = Magnitude(4, 0.1);
+  m3 = m1 / m2;
+  EXPECT_EQ(m3.to_string(), "3.00(13)");
   m1 /= m2;
   EXPECT_EQ(m1.to_string(), "3.00(13)");
 
   m1 = Magnitude(12.0, 0.2);
   m2 = Magnitude(6, 0);
+  m3 = m1 / m2;
+  EXPECT_EQ(m3.to_string(), "2.000(33)");
   m1 /= m2;
   EXPECT_EQ(m1.to_string(), "2.000(33)");
 
   m1 = Magnitude(6, 0);
   m2 = Magnitude(12.0, 0.2);
+  m3 = m1 / m2;
+  EXPECT_EQ(m3.to_string(), "5.000(85)e-01");
   m1 /= m2;
   EXPECT_EQ(m1.to_string(), "5.000(85)e-01");
   

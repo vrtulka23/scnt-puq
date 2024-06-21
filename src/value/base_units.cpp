@@ -1,5 +1,6 @@
 #include <string>
 #include <sstream>
+#include <iostream>
 
 #include "../settings.h"
 #include "unit_value.h"
@@ -64,12 +65,31 @@ BaseUnit& BaseUnits::operator[] (int index) {
   return baseunits[index];
 }
 
+BaseUnits BaseUnits::operator+(BaseUnits &bu) {
+  BaseUnits nbu(baseunits);  
+  for (auto const&unit: bu) {
+    nbu.append(unit);
+  }
+  return nbu;
+}
 void BaseUnits::operator+=(BaseUnits &bu) {
-  for (auto const &unit: bu) {
+  for (auto const&unit: bu) {
     append(unit);
   }
 }
 
+BaseUnits BaseUnits::operator-(BaseUnits &bu) {
+  BaseUnits nbu(baseunits);  
+  for (auto unit: bu) {
+#ifdef EXPONENT_FRACTIONS
+    unit.exponent.numerator = -unit.exponent.numerator;
+#else
+    unit.exponent = -unit.exponent;
+#endif
+    nbu.append(unit);
+  }
+  return nbu;
+}
 void BaseUnits::operator-=(BaseUnits &bu) {
   for (auto unit: bu) {
 #ifdef EXPONENT_FRACTIONS
@@ -80,21 +100,52 @@ void BaseUnits::operator-=(BaseUnits &bu) {
     append(unit);
   }
 }
-
+ 
 void BaseUnits::operator*=(EXPONENT_TYPE const&e) {
   for (auto &unit: baseunits) {
-    unit.exponent *= e;
+     unit.exponent *= e;
   }
 }
 
 BaseUnitsList::iterator BaseUnits::begin() {
   return baseunits.begin();
 }
-
-BaseUnitsList::iterator BaseUnits::end()   {
-  return baseunits.end();
+BaseUnitsList::const_iterator BaseUnits::cbegin() {
+  return baseunits.cbegin();
 }
 
+BaseUnitsList::iterator BaseUnits::end() {
+  return baseunits.end();
+}
+BaseUnitsList::const_iterator BaseUnits::cend() {
+  return baseunits.cend();
+}
+ 
 std::size_t BaseUnits::size() {
   return baseunits.size();
+}
+ 
+void BaseUnits::rebase() {
+}
+
+Dimensions BaseUnits::dimensions() {
+  Dimensions dim;
+  for (auto &bu: baseunits) {
+    for (auto &prefix: UnitPrefixList) {
+      if (prefix.symbol==bu.prefix) {
+	dim.magnitude *= prefix.magnitude ^ bu.exponent;
+	break;
+      }
+    }
+    for (auto &unit: UnitList) {
+      if (unit.symbol==bu.unit) {
+	for (int i=0; i<NUM_BASEDIM; i++) {
+	  dim.magnitude *= unit.magnitude ^ bu.exponent;
+	  dim.dimensions[i] += unit.dimensions[i] * bu.exponent;
+	}
+	break;
+      }
+    }
+  }
+  return dim;
 }

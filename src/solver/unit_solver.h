@@ -8,26 +8,7 @@
 #include "../settings.h"
 #include "../../external/exs-cpp/src/exs.h"
 #include "../value/unit_value.h"
-
-struct UnitPrefixStruct {
-  std::string symbol;
-  double magnitude;
-  int dimensions[NUM_BASEDIM];
-  std::string definition;
-  std::string name;
-};
-extern std::vector<UnitPrefixStruct> UnitPrefixList;
-
-struct UnitStruct {
-  std::string symbol;
-  double magnitude;
-  int dimensions[NUM_BASEDIM];
-  std::string definition;
-  std::string name;
-  bool use_prefixes;
-  std::set<std::string> allowed_prefixes;
-};
-extern std::vector<UnitStruct> UnitList;
+#include "../lists/lists.h"
 
 class UnitAtom: public exs::AtomBase<UnitValue> {
  public:

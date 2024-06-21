@@ -5,7 +5,7 @@
 TEST(UnitAtom, FromString) {
 
   UnitValue value = UnitAtom::from_string("1");
-  EXPECT_EQ(value.to_string(), "");             // unit
+  EXPECT_EQ(value.to_string(), "1");            // unit
 
   value = UnitAtom::from_string("2");
   EXPECT_EQ(value.to_string(), "2");            // integer numbers

@@ -33,6 +33,18 @@ TEST(BaseUnits, RemoveZeroExponents) {
  
 }
 
+TEST(BaseUnits, Dimensions) {
+
+  BaseUnits bus;
+  bus.append("k","m",1);
+  bus.append("n","s",2);
+  bus.append("m","g",3);
+  EXPECT_EQ(bus.to_string(), "km*ns2*mg3");
+  Dimensions dim = bus.dimensions();
+  EXPECT_EQ(dim.to_string(), "1e-24*m*g3*s2");
+  
+}
+
 #ifdef EXPONENT_FRACTIONS
 
 TEST(BaseUnits, InitializationFractions) {

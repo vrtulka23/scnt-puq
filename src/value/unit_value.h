@@ -4,40 +4,25 @@
 #include <vector>
 
 #include "../settings.h"
+#include "../lists/lists.h"
 
-#ifdef EXPONENT_FRACTIONS
-class Exponent {
+#include "exponent.h"
+#include "magnitude.h"
+
+typedef std::array<EXPONENT_TYPE, NUM_BASEDIM> BaseDimensions;
+class Dimensions {
 public:
-  EXPONENT_INT_PRECISION numerator;
-  EXPONENT_INT_PRECISION denominator;
-  Exponent(): numerator(1), denominator(1) {}
-  Exponent(EXPONENT_INT_PRECISION const&n): numerator(n), denominator(1) {};
-  Exponent(EXPONENT_INT_PRECISION const&n, EXPONENT_INT_PRECISION const&d): numerator(n), denominator(d) {};
-  void operator+=(Exponent const&e);
-  void operator-=(Exponent const&e);
-  void operator*=(Exponent const&e);
-  EXPONENT_REAL_PRECISION to_real();
-  std::string to_string();
-  void rebase();
-};
-#endif
-
+  MAGNITUDE_TYPE magnitude;
+  BaseDimensions dimensions;
+  Dimensions();
+  Dimensions(MAGNITUDE_TYPE const&m);
+  Dimensions(MAGNITUDE_TYPE const&m, BaseDimensions const&d): magnitude(m), dimensions(d) {};
 #ifdef MAGNITUDE_ERRORS
-class Magnitude {
-public:
-  MAGNITUDE_PRECISION value;
-  MAGNITUDE_PRECISION error;
-  Magnitude(): value(1), error(0) {}
-  Magnitude(MAGNITUDE_PRECISION const&m): value(m), error(0) {}
-  Magnitude(MAGNITUDE_PRECISION const&m, MAGNITUDE_PRECISION const&e): value(m), error(e) {}
-  static MAGNITUDE_PRECISION abs_to_rel(MAGNITUDE_PRECISION const&v, MAGNITUDE_PRECISION const&a);
-  static MAGNITUDE_PRECISION rel_to_abs(MAGNITUDE_PRECISION const&v, MAGNITUDE_PRECISION const&r);
-  std::string to_string();
-  void operator*=(Magnitude const&m);
-  void operator/=(Magnitude const&m);
-  void operator^=(EXPONENT_TYPE &e);
-};
+  Dimensions(MAGNITUDE_PRECISION const&m, MAGNITUDE_PRECISION const&e);
+  Dimensions(MAGNITUDE_PRECISION const&m, MAGNITUDE_PRECISION const&e, BaseDimensions const&d): magnitude(m,e), dimensions(d) {};
 #endif
+  std::string to_string();
+};
 
 class BaseUnit {
 public:
@@ -70,12 +55,18 @@ public:
 #endif
   std::string to_string();
   BaseUnit& operator[] (int index);
+  BaseUnits operator+(BaseUnits &bu);
+  BaseUnits operator-(BaseUnits &bu);
   void operator+=(BaseUnits &bu);
   void operator-=(BaseUnits &bu);
   void operator*=(EXPONENT_TYPE const&e);
   BaseUnitsList::iterator begin();
+  BaseUnitsList::const_iterator cbegin();
   BaseUnitsList::iterator end();
+  BaseUnitsList::const_iterator cend();
   std::size_t size();
+  void rebase();
+  Dimensions dimensions();
 };
 
 class UnitValue {
@@ -89,11 +80,14 @@ public:
 #ifdef MAGNITUDE_ERRORS
   UnitValue(MAGNITUDE_PRECISION const&m, BaseUnits const&bu): magnitude(m), baseunits(bu) {}
   UnitValue(MAGNITUDE_PRECISION const&m, BaseUnitsList const&bul): magnitude(m), baseunits(bul) {}
+  UnitValue(MAGNITUDE_PRECISION const&m, MAGNITUDE_PRECISION const&e): magnitude(m,e) {}
   UnitValue(MAGNITUDE_PRECISION const&m, MAGNITUDE_PRECISION const&e, BaseUnits const&bu): magnitude(m,e), baseunits(bu) {}
   UnitValue(MAGNITUDE_PRECISION const&m, MAGNITUDE_PRECISION const&e, BaseUnitsList const&bul): magnitude(m,e), baseunits(bul) {}
 #endif
   std::string to_string();
   void power(EXPONENT_TYPE &e);
+  UnitValue operator*(UnitValue &v);
+  UnitValue operator/(UnitValue &v);
   void operator*=(UnitValue &v);
   void operator/=(UnitValue &v);
 };
