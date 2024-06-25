@@ -9,6 +9,9 @@ public:
   UnitValue value;
   Quantity() {};
   Quantity(UnitValue const&v): value(v) {}; 
+  Quantity(MAGNITUDE_TYPE const&m): value(m) {}; 
+  Quantity(MAGNITUDE_TYPE const&m, BaseUnitsList const&bu): value(m,bu) {};
+  Quantity(MAGNITUDE_TYPE m, std::string const&s);
 #ifdef MAGNITUDE_ERRORS
   Quantity(MAGNITUDE_PRECISION const&m): value(m) {};
   Quantity(MAGNITUDE_PRECISION const&m, BaseUnitsList const&bu): value(m,bu) {};
@@ -17,9 +20,6 @@ public:
   Quantity(MAGNITUDE_PRECISION const&m, MAGNITUDE_PRECISION const&e, BaseUnitsList const&bu): value(m,e,bu) {};
   Quantity(MAGNITUDE_PRECISION const&m, MAGNITUDE_PRECISION const&e, std::string const&s);
 #endif
-  Quantity(MAGNITUDE_TYPE const&m): value(m) {}; 
-  Quantity(MAGNITUDE_TYPE const&m, BaseUnitsList const&bu): value(m,bu) {};
-  Quantity(MAGNITUDE_TYPE m, std::string const&s);
   std::string to_string();
   Quantity operator+(Quantity &q);
   Quantity operator-(Quantity &q);

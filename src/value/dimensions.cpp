@@ -4,23 +4,23 @@
 #include "unit_value.h"
 
 Dimensions::Dimensions() {
-  magnitude = 1;
+  numerical = 1;
   for (int i=0; i<NUM_BASEDIM; i++) {
 #ifdef EXPONENT_FRACTIONS
-    dimensions[i].numerator = 0;
+    physical[i].numerator = 0;
 #else
-    dimensions[i] = 0; 
+    physical[i] = 0; 
 #endif
   }
 }
 
-Dimensions::Dimensions(MAGNITUDE_TYPE const&m) {
-  magnitude = m;
+Dimensions::Dimensions(MAGNITUDE_TYPE const&n) {
+  numerical = n;
   for (int i=0; i<NUM_BASEDIM; i++) {
 #ifdef EXPONENT_FRACTIONS
-    dimensions[i].numerator = 0;
+    physical[i].numerator = 0;
 #else
-    dimensions[i] = 0; 
+    physical[i] = 0; 
 #endif
   }
 }
@@ -28,13 +28,13 @@ Dimensions::Dimensions(MAGNITUDE_TYPE const&m) {
 #ifdef MAGNITUDE_ERRORS
 
 Dimensions::Dimensions(MAGNITUDE_PRECISION const&m, MAGNITUDE_PRECISION const&e) {
-  magnitude.value = m;
-  magnitude.error = e;
+  numerical.value = m;
+  numerical.error = e;
   for (int i=0; i<NUM_BASEDIM; i++) {
 #ifdef EXPONENT_FRACTIONS
-    dimensions[i].numerator = 0;
+    physical[i].numerator = 0;
 #else
-    dimensions[i] = 0; 
+    physical[i] = 0; 
 #endif
   }  
 }
@@ -44,21 +44,21 @@ Dimensions::Dimensions(MAGNITUDE_PRECISION const&m, MAGNITUDE_PRECISION const&e)
 std::string Dimensions::to_string(){
   std::stringstream ss;
 #ifdef MAGNITUDE_ERRORS
-  if (magnitude.value!=1)
-    ss << magnitude.to_string() << SYMBOL_MULTIPLY;
+  if (numerical.value!=1)
+    ss << numerical.to_string() << SYMBOL_MULTIPLY;
 #else
-  if (magnitude!=1)
-    ss << magnitude << std::scientific << SYMBOL_MULTIPLY;
+  if (numerical!=1)
+    ss << numerical << std::scientific << SYMBOL_MULTIPLY;
 #endif
   for (int i=0; i<NUM_BASEDIM; i++) {
 #ifdef EXPONENT_FRACTIONS
-    if (dimensions[i].numerator!=0)
-      ss << UnitList[i].symbol << dimensions[i].to_string() << SYMBOL_MULTIPLY;
+    if (physical[i].numerator!=0)
+      ss << UnitList[i].symbol << physical[i].to_string() << SYMBOL_MULTIPLY;
 #else
-    if (dimensions[i]==1)
+    if (physical[i]==1)
       ss << UnitList[i].symbol << SYMBOL_MULTIPLY;
-    else if (dimensions[i]!=0)
-      ss << UnitList[i].symbol << dimensions[i] << SYMBOL_MULTIPLY;
+    else if (physical[i]!=0)
+      ss << UnitList[i].symbol << physical[i] << SYMBOL_MULTIPLY;
 #endif
   }
   std::string s = ss.str();
@@ -68,7 +68,7 @@ std::string Dimensions::to_string(){
 bool Dimensions::operator==(Dimensions const&d) const {
   bool equal = true;
   for (int i=0; i<NUM_BASEDIM; i++) {
-    if (dimensions[i]!=d.dimensions[i])
+    if (physical[i]!=d.physical[i])
       equal = false;
   }
   return equal;
@@ -77,7 +77,7 @@ bool Dimensions::operator==(Dimensions const&d) const {
 bool Dimensions::operator!=(Dimensions const&d) const {
   bool equal = false;
   for (int i=0; i<NUM_BASEDIM; i++) {
-    if (dimensions[i]!=d.dimensions[i])
+    if (physical[i]!=d.physical[i])
       equal = true;
   }
   return equal;

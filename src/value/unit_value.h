@@ -9,17 +9,18 @@
 #include "exponent.h"
 #include "magnitude.h"
 
-typedef std::array<EXPONENT_TYPE, NUM_BASEDIM> BaseDimensions;
+typedef std::array<EXPONENT_TYPE, NUM_BASEDIM> PhysicalDimensions;
+
 class Dimensions {
 public:
-  MAGNITUDE_TYPE magnitude;
-  BaseDimensions dimensions;
+  MAGNITUDE_TYPE numerical; 
+  PhysicalDimensions physical;
   Dimensions();
-  Dimensions(MAGNITUDE_TYPE const&m);
-  Dimensions(MAGNITUDE_TYPE const&m, BaseDimensions const&d): magnitude(m), dimensions(d) {};
+  Dimensions(MAGNITUDE_TYPE const&n);
+  Dimensions(MAGNITUDE_TYPE const&n, PhysicalDimensions const&p): numerical(n), physical(p) {};
 #ifdef MAGNITUDE_ERRORS
   Dimensions(MAGNITUDE_PRECISION const&m, MAGNITUDE_PRECISION const&e);
-  Dimensions(MAGNITUDE_PRECISION const&m, MAGNITUDE_PRECISION const&e, BaseDimensions const&d): magnitude(m,e), dimensions(d) {};
+  Dimensions(MAGNITUDE_PRECISION const&m, MAGNITUDE_PRECISION const&e, PhysicalDimensions const&p): numerical(m,e), physical(p) {};
 #endif
   std::string to_string();
   bool operator==(Dimensions const&d) const;

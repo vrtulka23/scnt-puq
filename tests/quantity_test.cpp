@@ -29,14 +29,14 @@ TEST(Quantity, ArithmeticsAdd) {
 
   Quantity q1,q2,q3;
 
-  q1 = Quantity(6,"cm");
+  q1 = Quantity(6,"cm");   // same units
   q2 = Quantity(3,"cm");
   q3 = q1 + q2;
   EXPECT_EQ(q3.to_string(), "9*cm");
   q1 += q2;
   EXPECT_EQ(q1.to_string(), "9*cm");
 
-  q3 = Quantity(3,"cm2");
+  q3 = Quantity(3,"cm2");  // different units
   EXPECT_THROW(q1+q3,  std::invalid_argument);
   
 }

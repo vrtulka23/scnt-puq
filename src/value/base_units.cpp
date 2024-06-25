@@ -133,15 +133,15 @@ Dimensions BaseUnits::dimensions() {
   for (auto &bu: baseunits) {
     for (auto &prefix: UnitPrefixList) {
       if (prefix.symbol==bu.prefix) {
-	dim.magnitude *= prefix.magnitude ^ bu.exponent;
+	dim.numerical *= prefix.magnitude ^ bu.exponent;
 	break;
       }
     }
     for (auto &unit: UnitList) {
       if (unit.symbol==bu.unit) {
-	dim.magnitude *= unit.magnitude ^ bu.exponent;
+	dim.numerical *= unit.magnitude ^ bu.exponent;
 	for (int i=0; i<NUM_BASEDIM; i++) {
-	  dim.dimensions[i] += unit.dimensions[i] * bu.exponent;
+	  dim.physical[i] += unit.dimensions[i] * bu.exponent;
 	}
 	break;
       }

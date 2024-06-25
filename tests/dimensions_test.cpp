@@ -36,7 +36,7 @@ TEST(Dimensions, InitializationFractions) {
   Dimensions d(2.34,{1,{1,-2},0,0,0,0,0,0});
   EXPECT_EQ(d.to_string(), "2.34*m*g-1:2");
 
-  d = Dimensions(2.34,BaseDimensions({Exponent(3,2),{1,-2},0,0,0,0,0,0}));
+  d = Dimensions(2.34,PhysicalDimensions({Exponent(3,2),{1,-2},0,0,0,0,0,0}));
   EXPECT_EQ(d.to_string(), "2.34*m3:2*g-1:2");
   
 }
