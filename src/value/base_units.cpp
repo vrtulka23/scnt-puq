@@ -133,13 +133,21 @@ Dimensions BaseUnits::dimensions() {
   for (auto &bu: baseunits) {
     for (auto &prefix: UnitPrefixList) {
       if (prefix.symbol==bu.prefix) {
+#if defined(MAGNITUDE_ERRORS) || defined(MAGNITUDE_ARRAYS)
 	dim.numerical *= prefix.magnitude ^ bu.exponent;
+#else
+	dim.numerical *= std::pow(prefix.magnitude, bu.exponent.to_real());
+#endif
 	break;
       }
     }
     for (auto &unit: UnitList) {
       if (unit.symbol==bu.unit) {
+#if defined(MAGNITUDE_ERRORS) || defined(MAGNITUDE_ARRAYS)
 	dim.numerical *= unit.magnitude ^ bu.exponent;
+#else
+	dim.numerical *= std::pow(unit.magnitude, bu.exponent.to_real());;	
+#endif
 	for (int i=0; i<NUM_BASEDIM; i++) {
 	  dim.physical[i] += unit.dimensions[i] * bu.exponent;
 	}

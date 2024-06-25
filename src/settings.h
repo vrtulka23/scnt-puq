@@ -6,7 +6,8 @@
 #define SYMBOL_POWER    "^"
 #define NUM_BASEDIM     8
 
-#define MAGNITUDE_ERRORS
+//#define MAGNITUDE_ERRORS
+#define MAGNITUDE_ARRAYS
 #define MAGNITUDE_PRECISION double
 
 #define EXPONENT_FRACTIONS
@@ -16,7 +17,11 @@
 #ifdef MAGNITUDE_ERRORS
   #define MAGNITUDE_TYPE Magnitude
 #else
-  #define MAGNITUDE_TYPE MAGNITUDE_PRECISION
+  #ifdef MAGNITUDE_ARRAYS
+    #define MAGNITUDE_TYPE Array
+  #else
+    #define MAGNITUDE_TYPE MAGNITUDE_PRECISION
+  #endif
 #endif
 
 #ifdef EXPONENT_FRACTIONS

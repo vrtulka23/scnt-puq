@@ -2,7 +2,7 @@
 #include <cmath>
 #include <iostream>
 #include <format>
-#include<algorithm>
+#include <algorithm>
 
 #include "unit_value.h"
 

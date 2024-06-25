@@ -5,7 +5,7 @@
 
 std::string UnitValue::to_string() {
   std::stringstream ss;
-#ifdef MAGNITUDE_ERRORS
+#if defined(MAGNITUDE_ERRORS) || defined(MAGNITUDE_ARRAYS)
   if (magnitude.value!=1 || baseunits.size()==0)
     ss << magnitude.to_string() << SYMBOL_MULTIPLY;
 #else
@@ -61,7 +61,7 @@ void UnitValue::operator/=(UnitValue &v) { // "UnitValue const& v" lead to an er
 } 
 
 void UnitValue::power(EXPONENT_TYPE &e) {
-#ifdef MAGNITUDE_ERRORS 
+#if defined(MAGNITUDE_ERRORS) || defined(MAGNITUDE_ARRAYS)
   magnitude ^= e;
 #else
 #ifdef EXPONENT_FRACTIONS

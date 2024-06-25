@@ -7,6 +7,7 @@
 
 #include "../settings.h"
 #include "../value/exponent.h"
+#include "../value/array.h"
 #include "../value/magnitude.h"
 
 struct UnitPrefixStruct {

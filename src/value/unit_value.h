@@ -7,6 +7,7 @@
 #include "../lists/lists.h"
 
 #include "exponent.h"
+#include "array.h"
 #include "magnitude.h"
 
 typedef std::array<EXPONENT_TYPE, NUM_BASEDIM> PhysicalDimensions;
