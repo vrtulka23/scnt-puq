@@ -7,10 +7,10 @@
 
 std::string BaseUnit::to_string() {
   std::stringstream ss;
-#ifdef EXPONENT_FRACTIONS
-  ss << prefix << unit << exponent.to_string();
-#else
   ss << prefix << unit;
+#ifdef EXPONENT_FRACTIONS
+  ss << exponent.to_string();
+#else
   if (exponent!=1) ss << std::to_string(exponent);
 #endif
   return ss.str();
@@ -23,21 +23,13 @@ void BaseUnits::append(BaseUnit bu) {
       exists = true;
       it->exponent += bu.exponent;
       // removing zero exponents
-#ifdef EXPONENT_FRACTIONS
-      if (it->exponent.numerator==0) { 
-#else
       if (it->exponent==0) {
-#endif
 	baseunits.erase(it);
       }
       break;
     }
   }
-#ifdef EXPONENT_FRACTIONS
-  if (!exists && bu.exponent.numerator!=0) {
-#else
   if (!exists && bu.exponent!=0) {
-#endif
     baseunits.push_back(bu);
   }
 }
@@ -52,7 +44,7 @@ void BaseUnits::append(std::string p, std::string u, EXPONENT_INT_PRECISION n, E
 }
 #endif
 
-std::string BaseUnits::to_string() {
+std::string BaseUnits::to_string() const {
   std::stringstream ss;
   for (auto unit: baseunits) {
     ss << unit.to_string() << SYMBOL_MULTIPLY;
@@ -65,78 +57,64 @@ BaseUnit& BaseUnits::operator[] (int index) {
   return baseunits[index];
 }
 
-BaseUnits BaseUnits::operator+(BaseUnits &bu) {
-  BaseUnits nbu(baseunits);  
-  for (auto const&unit: bu) {
+BaseUnits operator+(const BaseUnits& bu1, const BaseUnits& bu2) {
+  BaseUnits nbu(bu1.baseunits);  
+  for (auto const&unit: bu2) {
     nbu.append(unit);
   }
   return nbu;
 }
-void BaseUnits::operator+=(BaseUnits &bu) {
-  for (auto const&unit: bu) {
+void BaseUnits::operator+=(const BaseUnits& bu) {
+  for (auto unit: bu) {
     append(unit);
   }
 }
 
-BaseUnits BaseUnits::operator-(BaseUnits &bu) {
-  BaseUnits nbu(baseunits);  
-  for (auto unit: bu) {
-#ifdef EXPONENT_FRACTIONS
-    unit.exponent.numerator = -unit.exponent.numerator;
-#else
+BaseUnits operator-(const BaseUnits& bu1, const BaseUnits& bu2) {
+  BaseUnits nbu(bu1.baseunits);  
+  for (auto unit: bu2) {
     unit.exponent = -unit.exponent;
-#endif
     nbu.append(unit);
   }
   return nbu;
 }
-void BaseUnits::operator-=(BaseUnits &bu) {
+void BaseUnits::operator-=(const BaseUnits& bu) {
   for (auto unit: bu) {
-#ifdef EXPONENT_FRACTIONS
-    unit.exponent.numerator = -unit.exponent.numerator;
-#else
     unit.exponent = -unit.exponent;
-#endif
     append(unit);
   }
 }
  
-void BaseUnits::operator*=(EXPONENT_TYPE const&e) {
+void BaseUnits::operator*=(const EXPONENT_TYPE& e) {
   for (auto &unit: baseunits) {
      unit.exponent *= e;
   }
 }
 
-BaseUnitsList::iterator BaseUnits::begin() {
+BaseUnitsList::const_iterator BaseUnits::begin() const {
   return baseunits.begin();
 }
-BaseUnitsList::const_iterator BaseUnits::cbegin() {
-  return baseunits.cbegin();
-}
 
-BaseUnitsList::iterator BaseUnits::end() {
+BaseUnitsList::const_iterator BaseUnits::end() const {
   return baseunits.end();
 }
-BaseUnitsList::const_iterator BaseUnits::cend() {
-  return baseunits.cend();
-}
  
-std::size_t BaseUnits::size() {
+std::size_t BaseUnits::size() const {
   return baseunits.size();
 }
  
 void BaseUnits::rebase() {
 }
 
-Dimensions BaseUnits::dimensions() {
+Dimensions BaseUnits::dimensions() const {
   Dimensions dim;
   for (auto &bu: baseunits) {
     for (auto &prefix: UnitPrefixList) {
       if (prefix.symbol==bu.prefix) {
 #if defined(MAGNITUDE_ERRORS) || defined(MAGNITUDE_ARRAYS)
-	dim.numerical *= prefix.magnitude ^ bu.exponent;
+	dim.numerical *= pow(prefix.magnitude, (EXPONENT_REAL_PRECISION)bu.exponent);
 #else
-	dim.numerical *= std::pow(prefix.magnitude, bu.exponent.to_real());
+	dim.numerical *= std::pow(prefix.magnitude, (EXPONENT_REAL_PRECISION)bu.exponent);
 #endif
 	break;
       }
@@ -144,9 +122,9 @@ Dimensions BaseUnits::dimensions() {
     for (auto &unit: UnitList) {
       if (unit.symbol==bu.unit) {
 #if defined(MAGNITUDE_ERRORS) || defined(MAGNITUDE_ARRAYS)
-	dim.numerical *= unit.magnitude ^ bu.exponent;
+	dim.numerical *= pow(unit.magnitude, (EXPONENT_REAL_PRECISION)bu.exponent);
 #else
-	dim.numerical *= std::pow(unit.magnitude, bu.exponent.to_real());;	
+	dim.numerical *= std::pow(unit.magnitude, (EXPONENT_REAL_PRECISION)bu.exponent);
 #endif
 	for (int i=0; i<NUM_BASEDIM; i++) {
 	  dim.physical[i] += unit.dimensions[i] * bu.exponent;

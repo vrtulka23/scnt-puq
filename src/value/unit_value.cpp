@@ -3,7 +3,7 @@
 
 #include "unit_value.h"
 
-std::string UnitValue::to_string() {
+std::string UnitValue::to_string() const {
   std::stringstream ss;
 #if defined(MAGNITUDE_ERRORS) || defined(MAGNITUDE_ARRAYS)
   if (magnitude.value!=1 || baseunits.size()==0)
@@ -18,57 +18,53 @@ std::string UnitValue::to_string() {
   return s.substr(0,s.size()-1);
 }
 
-UnitValue UnitValue::operator+(UnitValue &v) {
-  if (baseunits.dimensions()==v.baseunits.dimensions()) 
-    return UnitValue(magnitude + v.magnitude, baseunits);
+UnitValue operator+(const UnitValue& v1, const UnitValue& v2) {
+  if (v1.baseunits.dimensions()==v2.baseunits.dimensions()) 
+    return UnitValue(v1.magnitude + v2.magnitude, v1.baseunits);
   else
-    throw std::invalid_argument("Adding values with different dimensions: "+baseunits.to_string()+" != "+v.baseunits.to_string());
+    throw std::invalid_argument("Adding values with different dimensions: "+v1.baseunits.to_string()+" != "+v2.baseunits.to_string());
 }
-void UnitValue::operator+=(UnitValue &v) {
+void UnitValue::operator+=(const UnitValue& v) {
   if (baseunits.dimensions()==v.baseunits.dimensions()) 
     magnitude += v.magnitude;
   else
     throw std::invalid_argument("Adding values with different dimensions: "+baseunits.to_string()+" != "+v.baseunits.to_string());
 }
 
-UnitValue UnitValue::operator-(UnitValue &v) {
-  if (baseunits.dimensions()==v.baseunits.dimensions()) 
-    return UnitValue(magnitude - v.magnitude, baseunits);
+UnitValue operator-(const UnitValue& v1, const UnitValue& v2) {
+  if (v1.baseunits.dimensions()==v2.baseunits.dimensions()) 
+    return UnitValue(v1.magnitude - v2.magnitude, v1.baseunits);
   else
-    throw std::invalid_argument("Subtracting values with different dimensions: "+baseunits.to_string()+" != "+v.baseunits.to_string());
+    throw std::invalid_argument("Subtracting values with different dimensions: "+v1.baseunits.to_string()+" != "+v2.baseunits.to_string());
 } 
-void UnitValue::operator-=(UnitValue &v) {
+void UnitValue::operator-=(const UnitValue& v) {
   if (baseunits.dimensions()==v.baseunits.dimensions()) 
     magnitude -= v.magnitude;
   else
     throw std::invalid_argument("Subtracting values with different dimensions: "+baseunits.to_string()+" != "+v.baseunits.to_string());
 }
 
-UnitValue UnitValue::operator*(UnitValue &v) {
-  return UnitValue(magnitude * v.magnitude, baseunits + v.baseunits);
+UnitValue operator*(const UnitValue& v1, const UnitValue& v2) {
+  return UnitValue(v1.magnitude * v2.magnitude, v1.baseunits + v2.baseunits);
 }
-void UnitValue::operator*=(UnitValue &v) { // "UnitValue const& v" lead to an error, TODO implement const_iterator
+void UnitValue::operator*=(const UnitValue& v) {
   magnitude *= v.magnitude;
   baseunits += v.baseunits;
 }
 
-UnitValue UnitValue::operator/(UnitValue &v) {
-  return UnitValue(magnitude / v.magnitude, baseunits - v.baseunits);
+UnitValue operator/(const UnitValue& v1, const UnitValue& v2) {
+  return UnitValue(v1.magnitude / v2.magnitude, v1.baseunits - v2.baseunits);
 } 
-void UnitValue::operator/=(UnitValue &v) { // "UnitValue const& v" lead to an error, TODO implement const_iterator
+void UnitValue::operator/=(const UnitValue& v) {
   magnitude /= v.magnitude;
   baseunits -= v.baseunits;
 } 
 
-void UnitValue::power(EXPONENT_TYPE &e) {
+void UnitValue::pow(const EXPONENT_TYPE& e) {
 #if defined(MAGNITUDE_ERRORS) || defined(MAGNITUDE_ARRAYS)
-  magnitude ^= e;
+  magnitude.pow(e);
 #else
-#ifdef EXPONENT_FRACTIONS
-  magnitude = std::pow(magnitude, e.to_real());
-#else
-  magnitude = std::pow(magnitude, e);
-#endif
+  magnitude = std::pow(magnitude, (EXPONENT_REAL_PRECISION)e);
 #endif
   baseunits *= e;
 }

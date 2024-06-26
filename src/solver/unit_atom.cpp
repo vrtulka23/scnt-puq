@@ -96,7 +96,7 @@ std::string UnitAtom::to_string() {
 }
 
 void UnitAtom::math_power(EXPONENT_TYPE &e) {
-  value.power(e);
+  value.pow(e);
 }
 
 void UnitAtom::math_multiply(UnitAtom *other) {

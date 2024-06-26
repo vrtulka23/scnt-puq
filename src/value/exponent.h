@@ -7,17 +7,23 @@ public:
   EXPONENT_INT_PRECISION numerator;
   EXPONENT_INT_PRECISION denominator;
   Exponent(): numerator(1), denominator(1) {}
-  Exponent(EXPONENT_INT_PRECISION const&n): numerator(n), denominator(1) {};
-  Exponent(EXPONENT_INT_PRECISION const&n, EXPONENT_INT_PRECISION const&d): numerator(n), denominator(d) {};
-  Exponent operator*(Exponent &e);
-  void operator+=(Exponent const&e);
-  void operator-=(Exponent const&e);
-  void operator*=(Exponent const&e);
-  bool operator==(Exponent const&d) const;
-  bool operator!=(Exponent const&d) const;
-  EXPONENT_REAL_PRECISION to_real();
-  std::string to_string();
-  void rebase();
+  Exponent(const EXPONENT_INT_PRECISION& n): numerator(n), denominator(1) {};
+  Exponent(const EXPONENT_INT_PRECISION& n, const EXPONENT_INT_PRECISION& d): numerator(n), denominator(d) {};
+  friend Exponent operator*(const Exponent& e1, const Exponent& e2);
+  Exponent operator-() const;
+  void operator+=(const Exponent& e);
+  void operator-=(const Exponent& e);
+  void operator*=(const Exponent& e);
+  bool operator==(const Exponent& e) const;
+  bool operator!=(const Exponent& e) const;
+  bool operator==(const EXPONENT_INT_PRECISION& e) const;
+  bool operator!=(const EXPONENT_INT_PRECISION& e) const;
+  bool operator==(const EXPONENT_REAL_PRECISION& e) const;
+  bool operator!=(const EXPONENT_REAL_PRECISION& e) const;
+  EXPONENT_REAL_PRECISION to_real() const;
+  std::string to_string() const;
+  Exponent rebase() const;
+  operator EXPONENT_REAL_PRECISION() const;
 };
 #endif
 

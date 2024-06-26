@@ -1,4 +1,5 @@
 #include <sstream>
+#include <iostream>
 
 #include "../settings.h"
 #include "unit_value.h"
@@ -6,42 +7,30 @@
 Dimensions::Dimensions() {
   numerical = 1;
   for (int i=0; i<NUM_BASEDIM; i++) {
-#ifdef EXPONENT_FRACTIONS
-    physical[i].numerator = 0;
-#else
     physical[i] = 0; 
-#endif
   }
 }
 
-Dimensions::Dimensions(MAGNITUDE_TYPE const&n) {
+Dimensions::Dimensions(const MAGNITUDE_TYPE& n) {
   numerical = n;
   for (int i=0; i<NUM_BASEDIM; i++) {
-#ifdef EXPONENT_FRACTIONS
-    physical[i].numerator = 0;
-#else
     physical[i] = 0; 
-#endif
   }
 }
 
 #ifdef MAGNITUDE_ERRORS
 
-Dimensions::Dimensions(MAGNITUDE_PRECISION const&m, MAGNITUDE_PRECISION const&e) {
+Dimensions::Dimensions(const MAGNITUDE_PRECISION& m, const MAGNITUDE_PRECISION& e) {
   numerical.value = m;
   numerical.error = e;
   for (int i=0; i<NUM_BASEDIM; i++) {
-#ifdef EXPONENT_FRACTIONS
-    physical[i].numerator = 0;
-#else
     physical[i] = 0; 
-#endif
   }  
 }
 
 #endif
 
-std::string Dimensions::to_string(){
+std::string Dimensions::to_string() const {
   std::stringstream ss;
 #if defined(MAGNITUDE_ERRORS) || defined(MAGNITUDE_ARRAYS)
   if (numerical.value!=1)
@@ -52,7 +41,7 @@ std::string Dimensions::to_string(){
 #endif
   for (int i=0; i<NUM_BASEDIM; i++) {
 #ifdef EXPONENT_FRACTIONS
-    if (physical[i].numerator!=0)
+    if (physical[i]!=0)
       ss << UnitList[i].symbol << physical[i].to_string() << SYMBOL_MULTIPLY;
 #else
     if (physical[i]==1)
@@ -65,20 +54,19 @@ std::string Dimensions::to_string(){
   return s.substr(0,s.size()-1);
 }
 
-bool Dimensions::operator==(Dimensions const&d) const {
-  bool equal = true;
+bool Dimensions::operator==(const Dimensions& d) const {
   for (int i=0; i<NUM_BASEDIM; i++) {
     if (physical[i]!=d.physical[i])
-      equal = false;
+      return false;
   }
-  return equal;
+  return true;
 }
 
-bool Dimensions::operator!=(Dimensions const&d) const {
+bool Dimensions::operator!=(const Dimensions& d) const {
   bool equal = false;
   for (int i=0; i<NUM_BASEDIM; i++) {
     if (physical[i]!=d.physical[i])
-      equal = true;
+      return true;
   }
-  return equal;
+  return false;
 }
