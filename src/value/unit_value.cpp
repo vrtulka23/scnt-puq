@@ -18,35 +18,36 @@ std::string UnitValue::to_string() const {
   return s.substr(0,s.size()-1);
 }
 
-UnitValue operator+(const UnitValue& v1, const UnitValue& v2) {
-  if (v1.baseunits.dimensions()==v2.baseunits.dimensions()) 
-    return UnitValue(v1.magnitude + v2.magnitude, v1.baseunits);
-  else
-    throw std::invalid_argument("Adding values with different dimensions: "+v1.baseunits.to_string()+" != "+v2.baseunits.to_string());
+inline void compare_dimensions(const UnitValue* v1, const UnitValue* v2) {
+  if (v1->baseunits.dimensions()!=v2->baseunits.dimensions()) {
+    throw std::invalid_argument("Values have different dimensions: "+v1->baseunits.to_string()+" != "+v2->baseunits.to_string());
+  }
 }
+
+UnitValue operator+(const UnitValue& v1, const UnitValue& v2) {
+  compare_dimensions(&v1, &v2);
+  return UnitValue(v1.magnitude + v2.magnitude, v1.baseunits);
+}
+
 void UnitValue::operator+=(const UnitValue& v) {
-  if (baseunits.dimensions()==v.baseunits.dimensions()) 
-    magnitude += v.magnitude;
-  else
-    throw std::invalid_argument("Adding values with different dimensions: "+baseunits.to_string()+" != "+v.baseunits.to_string());
+  compare_dimensions(this, &v);
+  magnitude += v.magnitude;
 }
 
 UnitValue operator-(const UnitValue& v1, const UnitValue& v2) {
-  if (v1.baseunits.dimensions()==v2.baseunits.dimensions()) 
-    return UnitValue(v1.magnitude - v2.magnitude, v1.baseunits);
-  else
-    throw std::invalid_argument("Subtracting values with different dimensions: "+v1.baseunits.to_string()+" != "+v2.baseunits.to_string());
-} 
+  compare_dimensions(&v1, &v2);
+  return UnitValue(v1.magnitude - v2.magnitude, v1.baseunits);
+}
+
 void UnitValue::operator-=(const UnitValue& v) {
-  if (baseunits.dimensions()==v.baseunits.dimensions()) 
-    magnitude -= v.magnitude;
-  else
-    throw std::invalid_argument("Subtracting values with different dimensions: "+baseunits.to_string()+" != "+v.baseunits.to_string());
+  compare_dimensions(this, &v);
+  magnitude -= v.magnitude;
 }
 
 UnitValue operator*(const UnitValue& v1, const UnitValue& v2) {
   return UnitValue(v1.magnitude * v2.magnitude, v1.baseunits + v2.baseunits);
 }
+
 void UnitValue::operator*=(const UnitValue& v) {
   magnitude *= v.magnitude;
   baseunits += v.baseunits;
@@ -54,7 +55,8 @@ void UnitValue::operator*=(const UnitValue& v) {
 
 UnitValue operator/(const UnitValue& v1, const UnitValue& v2) {
   return UnitValue(v1.magnitude / v2.magnitude, v1.baseunits - v2.baseunits);
-} 
+}
+
 void UnitValue::operator/=(const UnitValue& v) {
   magnitude /= v.magnitude;
   baseunits -= v.baseunits;
