@@ -32,8 +32,11 @@ Dimensions::Dimensions(const MAGNITUDE_PRECISION& m, const MAGNITUDE_PRECISION& 
 
 std::string Dimensions::to_string() const {
   std::stringstream ss;
-#if defined(MAGNITUDE_ERRORS) || defined(MAGNITUDE_ARRAYS)
+#if defined(MAGNITUDE_ERRORS)
   if (numerical.value!=1)
+    ss << numerical.to_string() << SYMBOL_MULTIPLY;
+#elif defined(MAGNITUDE_ARRAYS)
+  if (numerical!=1)
     ss << numerical.to_string() << SYMBOL_MULTIPLY;
 #else
   if (numerical!=1)

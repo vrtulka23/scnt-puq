@@ -1,5 +1,5 @@
 #import<iostream>
-#import "../../src/puq.h"
+#import "../../src/quantity.h"
 
 class InputParser{
 public:

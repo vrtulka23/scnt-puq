@@ -6,9 +6,9 @@
 #include <map>
 
 #include "../settings.h"
-#include "../value/exponent.h"
-#include "../value/array.h"
-#include "../value/magnitude.h"
+#include "../exponent.h"
+#include "../array.h"
+#include "../magnitude.h"
 
 struct UnitPrefixStruct {
   std::string symbol;

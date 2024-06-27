@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "../src/puq.h"
+#include "../src/value/unit_value.h"
 
 TEST(UnitValue, Initialization) {
   

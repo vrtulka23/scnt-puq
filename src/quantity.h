@@ -1,8 +1,9 @@
 #ifndef PUQ_QUANTITY_H
 #define PUQ_QUANTITY_H
 
-#include "../settings.h"
-#include "../value/unit_value.h"
+#include "settings.h"
+#include "value/unit_value.h"
+#include "solver/unit_solver.h"
 
 class Quantity {
 public:

@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "../src/puq.h"
+#include "../src/solver/unit_solver.h"
 
 TEST(UnitSolver, Initialization) {
 

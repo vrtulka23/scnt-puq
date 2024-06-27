@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include "quantity.h"
-#include "../solver/unit_solver.h"
+#include "solver/unit_solver.h"
 
 Quantity::Quantity(MAGNITUDE_TYPE m, std::string const&s) {
   UnitSolver solver;  

@@ -5,8 +5,11 @@
 
 std::string UnitValue::to_string() const {
   std::stringstream ss;
-#if defined(MAGNITUDE_ERRORS) || defined(MAGNITUDE_ARRAYS)
+#if defined(MAGNITUDE_ERRORS)
   if (magnitude.value!=1 || baseunits.size()==0)
+    ss << magnitude.to_string() << SYMBOL_MULTIPLY;
+#elif defined(MAGNITUDE_ARRAYS)
+  if (magnitude!=1 || baseunits.size()==0)
     ss << magnitude.to_string() << SYMBOL_MULTIPLY;
 #else
   if (magnitude!=1 || baseunits.size()==0)
