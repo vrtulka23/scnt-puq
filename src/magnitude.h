@@ -1,6 +1,9 @@
 #ifndef PUQ_MAGNITUDE_H
 #define PUQ_MAGNITUDE_H
 
+#include "settings.h"
+#include "array.h"
+
 #ifdef MAGNITUDE_ERRORS
 class Magnitude {
 public:
@@ -17,8 +20,8 @@ public:
   static MAGNITUDE_PRECISION abs_to_rel(const MAGNITUDE_PRECISION& v, const MAGNITUDE_PRECISION& a);
   static MAGNITUDE_PRECISION rel_to_abs(const MAGNITUDE_PRECISION& v, const MAGNITUDE_PRECISION& r);
 #ifdef MAGNITUDE_ARRAYS
-  Magnitude(const Array& m): value(m), error(0) {}
-  Magnitude(const Array& m, const Array& e): value(m), error(e) {}
+  Magnitude(const Array& m);
+  Magnitude(const Array& m, const Array& e);
   static Array abs_to_rel(const Array& v, const Array& a);
   static Array rel_to_abs(const Array& v, const Array& r);
 #endif

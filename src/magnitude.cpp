@@ -4,39 +4,65 @@
 #include <format>
 #include <algorithm>
 
-#include "value/unit_value.h"
+#include "magnitude.h"
 
 #ifdef MAGNITUDE_ERRORS
 
-/*
- * Convert absolute to relative (in %) error
- */
-MAGNITUDE_PRECISION Magnitude::abs_to_rel(const MAGNITUDE_PRECISION& v, const MAGNITUDE_PRECISION& a) {
-  return 100*a/v;
-};
-
 #ifdef MAGNITUDE_ARRAYS
-Array Magnitude::abs_to_rel(const Array& v, const Array& a) {
-  return 100*a/v;
-};
+
+Magnitude::Magnitude(const Array& m): value(m) {
+  ArrayValue av;
+  for (int i=0; i<m.size(); i++)
+    av.push_back(0);
+  error = Array(av);
+}
+
+Magnitude::Magnitude(const Array& m, const Array& e): value(m), error(e) {
+  if (m.size()!=e.size()) 
+    throw std::invalid_argument("Value and error arrays have different size: "+std::to_string(m.size())+" != "+std::to_string(e.size()));
+}
+
 #endif
 
 /*
- * Convert relative (in %) error to absolute
+ * Convert absolute and relative (in %) errors
  */
-MAGNITUDE_PRECISION Magnitude::rel_to_abs(const MAGNITUDE_PRECISION& v, const MAGNITUDE_PRECISION& r) {
-  return v*r/100;
+MAGNITUDE_PRECISION Magnitude::abs_to_rel(const MAGNITUDE_PRECISION& v, const MAGNITUDE_PRECISION& e) {
+  return 100*e/v;
+};
+
+MAGNITUDE_PRECISION Magnitude::rel_to_abs(const MAGNITUDE_PRECISION& v, const MAGNITUDE_PRECISION& e) {
+  return v*e/100;
 };
 
 #ifdef MAGNITUDE_ARRAYS
-Array Magnitude::rel_to_abs(const Array& v, const Array& r) {
-  return v*r/100;
+
+Array Magnitude::abs_to_rel(const Array& v, const Array& e) {
+  return Array::filled(100, v.size())*e/v;
 };
+
+Array Magnitude::rel_to_abs(const Array& v, const Array& e) {
+  return v*e/Array::filled(100, v.size());
+};
+
 #endif
 
 /*
  * Return a string representation of a magnitude
  */
+std::string _to_string(const MAGNITUDE_PRECISION& value, const MAGNITUDE_PRECISION& error) {
+  std::stringstream ss;
+  int exp_mag  = std::floor(std::log10(value));
+  int exp_err  = std::floor(std::log10(error));
+  int exp_diff = std::abs(exp_mag-exp_err)+1;
+  MAGNITUDE_PRECISION val_mag = value*std::pow(10,-exp_mag);
+  int val_err  = std::round(error*std::pow(10,1-exp_err));
+  ss << std::vformat("{:.0"+std::to_string(exp_diff)+"f}", std::make_format_args(val_mag));
+  ss << std::format("({:2d})", val_err);
+  if (exp_mag!=0)
+      ss << (exp_mag>=0 ? "e+" : "e-") << std::format("{:-02d}", std::abs(exp_mag));
+  return ss.str();  
+}
 std::string Magnitude::to_string() const {
   std::stringstream ss;
   if (error==0) {
@@ -47,22 +73,20 @@ std::string Magnitude::to_string() const {
 #endif
   } else {
 #ifdef MAGNITUDE_ARRAYS
-    int exp_mag  = std::floor(std::log10(value.value[0]));
-    int exp_err  = std::floor(std::log10(error.value[0]));
-    int exp_diff = std::abs(exp_mag-exp_err)+1;
-    MAGNITUDE_PRECISION val_mag = value.value[0]*std::pow(10,-exp_mag);
-    int val_err  = std::round(error.value[0]*std::pow(10,1-exp_err));
+    if (value.size()==1)
+      ss << _to_string(value[0], error[0]);
+    else if (value.size()==2) {
+      ss << SYMBOL_ARRAY_START << _to_string(value[0], error[0]);
+      ss << SYMBOL_ARRAY_SEPARATOR << " " << _to_string(value[0], error[0]);
+      ss << SYMBOL_ARRAY_END;
+    } else {
+      ss << SYMBOL_ARRAY_START << _to_string(value[0], error[0]);
+      ss << SYMBOL_ARRAY_SEPARATOR << " " << _to_string(value[0], error[0]);
+      ss << SYMBOL_ARRAY_SEPARATOR << " " << SYMBOL_ARRAY_MORE << SYMBOL_ARRAY_END;
+    }
 #else
-    int exp_mag  = std::floor(std::log10(value));
-    int exp_err  = std::floor(std::log10(error));
-    int exp_diff = std::abs(exp_mag-exp_err)+1;
-    MAGNITUDE_PRECISION val_mag = value*std::pow(10,-exp_mag);
-    int val_err  = std::round(error*std::pow(10,1-exp_err));
+    ss << _to_string(value, error);
 #endif
-    ss << std::vformat("{:.0"+std::to_string(exp_diff)+"f}", std::make_format_args(val_mag));
-    ss << std::format("({:2d})", val_err);
-    if (exp_mag!=0)
-      ss << (exp_mag>=0 ? "e+" : "e-") << std::format("{:-02d}", std::abs(exp_mag));
   }
   return ss.str();
 }

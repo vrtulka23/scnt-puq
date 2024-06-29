@@ -17,6 +17,9 @@ TEST(Quantity, Initialization) {
   q = Quantity(uv);                  // UnitValue
   EXPECT_EQ(q.to_string(), "1.2*km3");
 
+  q = Quantity("23.34*g/cm3");       // from a unit expression
+  EXPECT_EQ(q.to_string(), "23.34*g*cm-3");
+  
   q = Quantity(1.23,"g/cm3");        // magnitude and a unit expression
   EXPECT_EQ(q.to_string(), "1.23*g*cm-3");
 
@@ -24,6 +27,23 @@ TEST(Quantity, Initialization) {
   EXPECT_EQ(q.to_string(), "2.46*km3");
   
 }
+
+#ifdef MAGNITUDE_ERRORS
+
+TEST(Quantity, InitializationErrors) {
+
+  Quantity q(1.23,0.01);             // magnitudes with errors
+  EXPECT_EQ(q.to_string(), "1.230(10)");
+
+  q = Quantity(1.23,0.01,"km3");     // magnitude, errors and dimensions
+  EXPECT_EQ(q.to_string(), "1.230(10)*km3");
+
+  q = Quantity(1.23,0.01,"2*km3");   // magnitude, errors and dimensions with a number
+  EXPECT_EQ(q.to_string(), "2.460(20)*km3");
+
+}
+
+#endif
 
 TEST(Quantity, ArithmeticsAdd) {
 
@@ -82,19 +102,3 @@ TEST(Quantity, ArithmeticsDivide) {
 
 }
 
-#ifdef MAGNITUDE_ERRORS
-
-TEST(Quantity, InitializationErrors) {
-
-  Quantity q(1.23,0.01);             // magnitudes with errors
-  EXPECT_EQ(q.to_string(), "1.230(10)");
-
-  q = Quantity(1.23,0.01,"km3");     // magnitude, errors and dimensions
-  EXPECT_EQ(q.to_string(), "1.230(10)*km3");
-
-  q = Quantity(1.23,0.01,"2*km3");   // magnitude, errors and dimensions with a number
-  EXPECT_EQ(q.to_string(), "2.460(20)*km3");
-
-}
-
-#endif

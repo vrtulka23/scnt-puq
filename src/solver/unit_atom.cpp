@@ -39,8 +39,7 @@ UnitValue UnitAtom::from_string(std::string expr_orig) {
     BaseUnit bu;
     // register exponent values
 #ifdef EXPONENT_FRACTIONS
-    bu.exponent.numerator   = m[2]=="" ? 1 : std::stoi(m[2]);
-    bu.exponent.denominator = m[4]=="" ? 1 : std::stoi(m[4]);
+    bu.exponent = Exponent((m[2]==""?1:std::stoi(m[2])), (m[4]==""?1:std::stoi(m[4])));
 #else
     bu.exponent = m[2]=="" ? 1 : std::stoi(m[2]);
 #endif

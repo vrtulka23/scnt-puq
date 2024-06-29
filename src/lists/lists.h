@@ -6,8 +6,6 @@
 #include <map>
 
 #include "../settings.h"
-#include "../exponent.h"
-#include "../array.h"
 #include "../magnitude.h"
 
 struct UnitPrefixStruct {

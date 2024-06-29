@@ -6,10 +6,6 @@
 #include "../settings.h"
 #include "../lists/lists.h"
 
-#include "../exponent.h"
-#include "../array.h"
-#include "../magnitude.h"
-
 typedef std::array<EXPONENT_TYPE, NUM_BASEDIM> PhysicalDimensions;
 
 class Dimensions {
@@ -76,6 +72,7 @@ public:
   MAGNITUDE_TYPE magnitude;
   BaseUnits baseunits;
   UnitValue(): magnitude(1) {}
+  UnitValue(const std::string& s);
   UnitValue(const MAGNITUDE_TYPE& m): magnitude(m) {}
   UnitValue(const MAGNITUDE_TYPE& m, const BaseUnits& bu): magnitude(m), baseunits(bu) {}
   UnitValue(const MAGNITUDE_TYPE& m, const BaseUnitsList& bul): magnitude(m), baseunits(bul) {}

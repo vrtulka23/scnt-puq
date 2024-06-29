@@ -3,18 +3,23 @@
 #include "../src/value/unit_value.h"
 
 TEST(UnitValue, Initialization) {
+
+  UnitValue value;
   
-  UnitValue value1 = {3.34e3,{{"k","m",-1}}};
-  EXPECT_EQ(value1.to_string(), "3340*km-1");
+  value = {3.34e3,{{"k","m",-1}}};           // list initialization
+  EXPECT_EQ(value.to_string(), "3340*km-1");
 
-  UnitValue value2(3.34e3,{{"k","m",-1}});
-  EXPECT_EQ(value2.to_string(), "3340*km-1");
-
+  value = UnitValue(3.34e3,{{"k","m",-1}});  // assigning UnitValue
+  EXPECT_EQ(value.to_string(), "3340*km-1");
+		    
   BaseUnits bu;
   bu.append("k","m",-1);
   bu.append("","s",-2);
-  UnitValue value3(3, bu);
-  EXPECT_EQ(value3.to_string(), "3*km-1*s-2");
+  value = UnitValue(3, bu);                  // from BaseUnits
+  EXPECT_EQ(value.to_string(), "3*km-1*s-2");
+
+  value = UnitValue("3*km/s");               // from a string
+  EXPECT_EQ(value.to_string(), "3*km*s-1");
   
 }
 

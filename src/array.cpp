@@ -2,27 +2,53 @@
 #include <iostream>
 #include <string>
 
-#include "value/unit_value.h"
+#include "array.h"
 
 #ifdef MAGNITUDE_ARRAYS
 
+Array Array::filled(const MAGNITUDE_PRECISION& v, const size_t &s) {
+  Array a;
+  for (size_t i = 0; i<s; i++)
+    a.append(v);
+  return a;
+};
+
 inline constexpr void compare_size(const Array& a1, const Array& a2) {
-  if (a1.value.size()!=a2.value.size())
-    throw std::invalid_argument("Arrays have different size: "+std::to_string(a1.value.size())+" != "+std::to_string(a2.value.size()));
+  if (a1.size()!=a2.size())
+    throw std::invalid_argument("Arrays have different size: "+std::to_string(a1.size())+" != "+std::to_string(a2.size()));
 }
 
 std::string Array::to_string() const {
   std::stringstream ss;
   if (value.size()==1) {
     ss << value[0] << std::scientific;
-  } else {
-    ss << "[" << value[0] << ", " << value[1] << std::scientific;
-    if (value.size()>2)
-      ss << ", ...]";
-    else
-      ss << "]";
+  } else if (value.size()==2) {
+    ss << SYMBOL_ARRAY_START << value[0];
+    ss << SYMBOL_ARRAY_SEPARATOR << " " << value[1];
+    ss << std::scientific << SYMBOL_ARRAY_END;
+  } else if (value.size()>2) {
+    ss << SYMBOL_ARRAY_START << value[0];
+    ss << SYMBOL_ARRAY_SEPARATOR << " " << value[1];
+    ss << SYMBOL_ARRAY_SEPARATOR << " " << SYMBOL_ARRAY_MORE;
+    ss << std::scientific << SYMBOL_ARRAY_END;
   }
   return ss.str();
+}
+
+size_t Array::size() const {
+  return value.size();
+};
+
+void Array::append(const MAGNITUDE_PRECISION& v) {
+  value.push_back(v);
+}
+
+void Array::append(const ArrayValue& v) {
+  value.insert(value.end(), v.begin(), v.end());
+}
+
+MAGNITUDE_PRECISION Array::operator[](const size_t i) const {
+  return value[i];
 }
 
 void Array::operator+=(const Array& a) {

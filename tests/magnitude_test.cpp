@@ -43,6 +43,20 @@ TEST(Magnitude, ErrorConversion) {
  
 }
 
+#ifdef MAGNITUDE_ARRAYS
+
+TEST(Magnitude, ErrorConversionArrays) {
+
+  Array a = Magnitude::abs_to_rel(Array({30,20}), Array({0.3,0.4}));
+  EXPECT_EQ(a.to_string(), "{1, 2}");
+
+  a = Magnitude::rel_to_abs(Array({30,20}), Array({20,10}));
+  EXPECT_EQ(a.to_string(), "{6, 2}");
+ 
+}
+
+#endif
+
 TEST(Magnitude, ArithmeticsAdd) {
 
   Magnitude m1, m2, m3;
@@ -136,5 +150,21 @@ TEST(Magnitude, ArithmeticsDivide) {
   EXPECT_EQ(m1.to_string(), "5.000(85)e-01");
   
 }
+
+#ifdef MAGNITUDE_ARRAYS
+
+TEST(Magnitude, Arrays) {
+
+  Magnitude m1, m2, m3;
+
+  m1 = Magnitude(Array({12.1, 22.2}), Array({0.1, 0.2}));
+  EXPECT_EQ(m1.to_string(), "{1.210(10)e+01, 1.210(10)e+01}");
+
+  m1 = Magnitude(Array({12.1, 22.2, 32.3}), Array({0.1, 0.2, 0.3}));
+  EXPECT_EQ(m1.to_string(), "{1.210(10)e+01, 1.210(10)e+01, ...}");
+
+}
+
+#endif
 
 #endif // MAGNITUDE_ERRORS

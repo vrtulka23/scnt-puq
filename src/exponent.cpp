@@ -1,7 +1,7 @@
 #include <numeric>
 #include <sstream>
 
-#include "value/unit_value.h"
+#include "exponent.h"
 
 #ifdef EXPONENT_FRACTIONS
 
@@ -12,6 +12,7 @@ void Exponent::operator+=(const Exponent& e) {
     numerator = numerator*e.denominator+denominator*e.numerator;
     denominator = denominator*e.denominator;
   }
+  reduce();
 }
 
 void Exponent::operator-=(const Exponent& e) {
@@ -21,18 +22,20 @@ void Exponent::operator-=(const Exponent& e) {
     numerator = numerator*e.denominator-denominator*e.numerator;
     denominator = denominator*e.denominator;
   }
+  reduce();
 }
 
 Exponent operator*(const Exponent& e1, const Exponent& e2) {
   Exponent ne;
   ne.numerator = e1.numerator * e2.numerator;
   ne.denominator = e1.denominator * e2.denominator;
-  ne.rebase();
+  ne.reduce();
   return ne;
 }
 void Exponent::operator*=(const Exponent& e) {
   numerator *= e.numerator;
   denominator *= e.denominator;
+  reduce();
 }
 
 Exponent Exponent::operator-() const {
@@ -71,10 +74,18 @@ EXPONENT_REAL_PRECISION Exponent::to_real() const {
 }
 
 /*
+ *  Cast as a real number
+ */
+Exponent::operator EXPONENT_REAL_PRECISION() const {
+  return to_real();
+}
+
+/*
  *  Create a string representation of an exponent
  */
 std::string Exponent::to_string() const {
-  Exponent e = rebase();
+  Exponent e(numerator, denominator);
+  e.reduce();
   std::stringstream ss;
   if (e.denominator!=1)
     ss << std::to_string(e.numerator) << SYMBOL_FRACTION << std::to_string(e.denominator);
@@ -86,27 +97,21 @@ std::string Exponent::to_string() const {
 /*
  *  Reduce fraction to a standard minimal form
  */
-Exponent Exponent::rebase() const {
-  Exponent e(numerator, denominator);
-  if (e.numerator==0) { // zero exponent
-    e.numerator = 0;
-    e.denominator = 1;
-    return e;
+void Exponent::reduce() {
+  if (numerator==0) {         // zero exponent
+    numerator = 0;
+    denominator = 1;
+    return;
   }
-  if (e.denominator<0) { // keep minus sign in a numerator
-    e.numerator = -e.numerator;
-    e.denominator = -e.denominator;
+  if (denominator<0) { // keep minus sign in a numerator
+    numerator = -numerator;
+    denominator = -denominator;
   }
-  int gcd = std::gcd(e.numerator,e.denominator);
+  int gcd = std::gcd(numerator,denominator);
   if (gcd>1) {
-    e.numerator = e.numerator/gcd;
-    e.denominator = e.denominator/gcd;
+    numerator = numerator/gcd;
+    denominator = denominator/gcd;
   }
-  return e;
-}
-
-Exponent::operator EXPONENT_REAL_PRECISION() const {
-  return to_real();
 }
 
 #endif // EXPONENT_FRACTIONS

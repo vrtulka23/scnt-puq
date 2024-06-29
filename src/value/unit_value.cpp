@@ -2,6 +2,14 @@
 #include <iostream>
 
 #include "unit_value.h"
+#include "../solver/unit_solver.h"
+
+UnitValue::UnitValue(const std::string& s) {
+  UnitSolver solver;  
+  UnitAtom atom = solver.solve(s);
+  magnitude = atom.value.magnitude;
+  baseunits = atom.value.baseunits;
+}
 
 std::string UnitValue::to_string() const {
   std::stringstream ss;

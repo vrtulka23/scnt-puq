@@ -14,6 +14,13 @@
 #define EXPONENT_INT_PRECISION int
 #define EXPONENT_REAL_PRECISION double
 
+#ifdef MAGNITUDE_ARRAYS
+  #define SYMBOL_ARRAY_START     "{"
+  #define SYMBOL_ARRAY_END       "}"
+  #define SYMBOL_ARRAY_SEPARATOR ","
+  #define SYMBOL_ARRAY_MORE      "..."
+#endif
+
 #if defined(MAGNITUDE_ERRORS)
   #define MAGNITUDE_TYPE Magnitude
 #elif defined(MAGNITUDE_ARRAYS)

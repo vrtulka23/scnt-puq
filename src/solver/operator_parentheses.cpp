@@ -7,8 +7,7 @@ void OperatorParentheses::parse(exs::Expression &expr) {
 #ifdef EXPONENT_FRACTIONS
     std::regex rx_exponent("^([+-]?[0-9]*)("+std::string(SYMBOL_FRACTION)+"([0-9]+)|)");
     if (std::regex_search(expr.right, m, rx_exponent)) { // store exponent
-      if (m[1]!="") exponent.numerator   = std::stoi(m[1]);
-      if (m[3]!="") exponent.denominator = std::stoi(m[3]);
+      exponent = Exponent((m[1]==""?1:std::stoi(m[1])), (m[3]==""?1:std::stoi(m[3])));
       expr.remove(m[0]); 
     }
 #else
@@ -22,11 +21,7 @@ void OperatorParentheses::parse(exs::Expression &expr) {
 };
 
 void OperatorParentheses::operate_group(exs::TokenListBase<UnitAtom> *tokens) {
-#ifdef EXPONENT_FRACTIONS
-  if (exponent.numerator!=1 || exponent.denominator!=1) { // apply exponent to parentheses atom
-#else
   if (exponent!=1) {
-#endif
     exs::Token<UnitAtom> group1 = tokens->get_left();
     group1.atom->math_power(exponent);
     tokens->put_left(group1);

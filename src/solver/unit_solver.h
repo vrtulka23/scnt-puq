@@ -23,15 +23,28 @@ class UnitAtom: public exs::AtomBase<UnitValue> {
 
 class OperatorParentheses: public exs::OperatorGroup<UnitAtom, 1> {
 public:
-#ifdef EXPONENT_FRACTIONS
-  EXPONENT_TYPE exponent;
-#else
   EXPONENT_TYPE exponent = 1;
-#endif
   OperatorParentheses(): OperatorGroup<UnitAtom, 1>("par","(",exs::PARENTHESES_OPERATOR) {}
   virtual void parse(exs::Expression &expr);
   void operate_group(exs::TokenListBase<UnitAtom> *tokens);
 };
+
+#ifdef MAGNITUDE_ARRAYS
+
+enum CustomOperatorType {
+  ARRAY_OPERATOR = exs::NUM_OPERATOR_TYPES
+};
+
+class OperatorArray: public exs::OperatorGroup<UnitAtom> {
+public:
+  OperatorArray():
+    OperatorGroup<UnitAtom>("arr", SYMBOL_ARRAY_START, ARRAY_OPERATOR,
+			    SYMBOL_ARRAY_START, SYMBOL_ARRAY_SEPARATOR, SYMBOL_ARRAY_END) {}
+  virtual void parse(exs::Expression &expr);
+  void operate_group(exs::TokenListBase<UnitAtom> *tokens);
+};
+
+#endif
 
 class UnitSolver {
 public:

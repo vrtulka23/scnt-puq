@@ -1,29 +1,22 @@
 #include <iostream>
 
 #include "quantity.h"
-#include "solver/unit_solver.h"
 
-Quantity::Quantity(MAGNITUDE_TYPE m, std::string const&s) {
-  UnitSolver solver;  
-  UnitAtom atom = solver.solve(s);
-  value.magnitude = m * atom.value.magnitude;
-  value.baseunits = atom.value.baseunits;
+Quantity::Quantity(const MAGNITUDE_TYPE &m, const std::string& s) {
+  value = UnitValue(s);
+  value.magnitude *= m;
 }
 
 #ifdef MAGNITUDE_ERRORS
 
-Quantity::Quantity(MAGNITUDE_PRECISION const&m, std::string const&s) {
-  UnitSolver solver;  
-  UnitAtom atom = solver.solve(s);
-  value.magnitude = Magnitude(m) * atom.value.magnitude;
-  value.baseunits = atom.value.baseunits;
+Quantity::Quantity(const MAGNITUDE_PRECISION& m, const std::string& s) {
+  value = UnitValue(s);
+  value.magnitude *= Magnitude(m);
 }
 
-Quantity::Quantity(MAGNITUDE_PRECISION const&m, MAGNITUDE_PRECISION const&e, std::string const&s) {
-  UnitSolver solver;  
-  UnitAtom atom = solver.solve(s);
-  value.magnitude = Magnitude(m,e) * atom.value.magnitude;
-  value.baseunits = atom.value.baseunits;
+Quantity::Quantity(const MAGNITUDE_PRECISION& m, const MAGNITUDE_PRECISION& e, const std::string& s) {
+  value = UnitValue(s);
+  value.magnitude *= Magnitude(m,e);
 }
 
 #endif
