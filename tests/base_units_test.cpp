@@ -3,7 +3,8 @@
 #include "../src/value/unit_value.h"
 
 TEST(BaseUnits, Initialization) {
-  
+
+  // Appending BaseUnit-s
   BaseUnits bus;
   BaseUnit bu1 = {"k","g",2};
   bus.append(bu1);
@@ -13,6 +14,10 @@ TEST(BaseUnits, Initialization) {
   EXPECT_EQ(bus.size(), 3);
   EXPECT_EQ(bus.to_string(), "kg2*ms3*cm");
 
+  // Using a string expression
+  bus = BaseUnits("kg*m2/s2");
+  EXPECT_EQ(bus.to_string(), "kg*m2*s-2");
+  
 }
 
 #ifdef EXPONENT_FRACTIONS

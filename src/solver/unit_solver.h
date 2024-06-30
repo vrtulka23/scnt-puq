@@ -40,7 +40,6 @@ public:
   OperatorArray():
     OperatorGroup<UnitAtom>("arr", SYMBOL_ARRAY_START, ARRAY_OPERATOR,
 			    SYMBOL_ARRAY_START, SYMBOL_ARRAY_SEPARATOR, SYMBOL_ARRAY_END) {}
-  virtual void parse(exs::Expression &expr);
   void operate_group(exs::TokenListBase<UnitAtom> *tokens);
 };
 

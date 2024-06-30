@@ -4,6 +4,13 @@
 
 #include "../settings.h"
 #include "unit_value.h"
+#include "../solver/unit_solver.h"
+
+BaseUnits::BaseUnits(const std::string& s) {
+  UnitSolver solver;  
+  UnitAtom atom = solver.solve(s);
+  baseunits = atom.value.baseunits.baseunits;
+}
 
 std::string BaseUnit::to_string() {
   std::stringstream ss;

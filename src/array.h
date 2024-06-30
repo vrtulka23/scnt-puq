@@ -43,6 +43,8 @@ public:
   friend Array floor(const Array &a);
   friend Array abs(const Array &a);
   friend Array max(const Array &a1, const Array& a2);
+  ArrayValue::const_iterator begin() const;
+  ArrayValue::const_iterator end() const;
 };
 #endif
 

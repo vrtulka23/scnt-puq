@@ -52,23 +52,28 @@ Array Magnitude::rel_to_abs(const Array& v, const Array& e) {
  */
 std::string _to_string(const MAGNITUDE_PRECISION& value, const MAGNITUDE_PRECISION& error) {
   std::stringstream ss;
-  int exp_mag  = std::floor(std::log10(value));
-  int exp_err  = std::floor(std::log10(error));
-  int exp_diff = std::abs(exp_mag-exp_err)+1;
-  MAGNITUDE_PRECISION val_mag = value*std::pow(10,-exp_mag);
-  int val_err  = std::round(error*std::pow(10,1-exp_err));
-  ss << std::vformat("{:.0"+std::to_string(exp_diff)+"f}", std::make_format_args(val_mag));
-  ss << std::format("({:2d})", val_err);
-  if (exp_mag!=0)
-      ss << (exp_mag>=0 ? "e+" : "e-") << std::format("{:-02d}", std::abs(exp_mag));
+  int exp_val  = std::floor(std::log10(value));
+  if (error==0) {
+    ss << value << std::scientific;
+  } else {
+    int exp_err  = std::floor(std::log10(error));
+    int exp_diff = std::abs(exp_val-exp_err)+1;
+    MAGNITUDE_PRECISION val_mag = value*std::pow(10,-exp_val);
+    int val_err  = std::round(error*std::pow(10,1-exp_err));
+    ss << std::vformat("{:.0"+std::to_string(exp_diff)+"f}", std::make_format_args(val_mag));
+    ss << std::format("({:2d})", val_err);
+    if (exp_val!=0)
+      ss << (exp_val>=0 ? "e+" : "e-") << std::format("{:-02d}", std::abs(exp_val));
+  }
   return ss.str();  
 }
 std::string Magnitude::to_string() const {
   std::stringstream ss;
-  if (error==0) {
 #ifdef MAGNITUDE_ARRAYS
+  if (std::all_of(value.begin(), value.end(), [](auto i){return i==0;})) {
     ss << value.to_string();
 #else
+  if (error==0) {
     ss << value << std::scientific;
 #endif
   } else {
@@ -77,11 +82,11 @@ std::string Magnitude::to_string() const {
       ss << _to_string(value[0], error[0]);
     else if (value.size()==2) {
       ss << SYMBOL_ARRAY_START << _to_string(value[0], error[0]);
-      ss << SYMBOL_ARRAY_SEPARATOR << " " << _to_string(value[0], error[0]);
+      ss << SYMBOL_ARRAY_SEPARATOR << " " << _to_string(value[1], error[1]);
       ss << SYMBOL_ARRAY_END;
     } else {
-      ss << SYMBOL_ARRAY_START << _to_string(value[0], error[0]);
-      ss << SYMBOL_ARRAY_SEPARATOR << " " << _to_string(value[0], error[0]);
+      ss << SYMBOL_ARRAY_START << _to_string(value[0], error[0]); 
+      ss << SYMBOL_ARRAY_SEPARATOR << " " << _to_string(value[1], error[1]);
       ss << SYMBOL_ARRAY_SEPARATOR << " " << SYMBOL_ARRAY_MORE << SYMBOL_ARRAY_END;
     }
 #else

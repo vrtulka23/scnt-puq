@@ -158,10 +158,10 @@ TEST(Magnitude, Arrays) {
   Magnitude m1, m2, m3;
 
   m1 = Magnitude(Array({12.1, 22.2}), Array({0.1, 0.2}));
-  EXPECT_EQ(m1.to_string(), "{1.210(10)e+01, 1.210(10)e+01}");
+  EXPECT_EQ(m1.to_string(), "{1.210(10)e+01, 2.220(20)e+01}");
 
   m1 = Magnitude(Array({12.1, 22.2, 32.3}), Array({0.1, 0.2, 0.3}));
-  EXPECT_EQ(m1.to_string(), "{1.210(10)e+01, 1.210(10)e+01, ...}");
+  EXPECT_EQ(m1.to_string(), "{1.210(10)e+01, 2.220(20)e+01, ...}");
 
 }
 

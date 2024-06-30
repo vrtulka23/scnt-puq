@@ -81,3 +81,24 @@ void UnitValue::pow(const EXPONENT_TYPE& e) {
 #endif
   baseunits *= e;
 }
+
+UnitValue UnitValue::convert(const BaseUnits& bu) const {
+  Dimensions dim1 = baseunits.dimensions();
+  Dimensions dim2 = bu.dimensions();
+  if (dim1==dim2) {
+    return UnitValue(magnitude*dim1.numerical/dim2.numerical, bu);
+  } else {
+    throw std::invalid_argument("Values have different dimensions: "+baseunits.to_string()+" != "+bu.to_string());
+  }
+}
+
+UnitValue UnitValue::convert(const UnitValue& v) const {
+  Dimensions dim1 = baseunits.dimensions();
+  Dimensions dim2 = v.baseunits.dimensions();
+  if (dim1==dim2) {
+    return UnitValue(magnitude*dim1.numerical/dim2.numerical, v.baseunits);
+  } else {
+    throw std::invalid_argument("Values have different dimensions: "+baseunits.to_string()+" != "+v.baseunits.to_string());
+  }
+}
+

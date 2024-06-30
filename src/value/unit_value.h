@@ -47,6 +47,7 @@ private:
   BaseUnitsList baseunits;
 public:
   BaseUnits() {}
+  BaseUnits(const std::string& s);
   BaseUnits(const BaseUnitsList& bu): baseunits(bu) {}
   void append(BaseUnit bu);
   void append(std::string p, std::string u, EXPONENT_TYPE e);
@@ -74,6 +75,7 @@ public:
   UnitValue(): magnitude(1) {}
   UnitValue(const std::string& s);
   UnitValue(const MAGNITUDE_TYPE& m): magnitude(m) {}
+  UnitValue(const MAGNITUDE_TYPE& m, const std::string& bu): magnitude(m), baseunits(bu) {}
   UnitValue(const MAGNITUDE_TYPE& m, const BaseUnits& bu): magnitude(m), baseunits(bu) {}
   UnitValue(const MAGNITUDE_TYPE& m, const BaseUnitsList& bul): magnitude(m), baseunits(bul) {}
 #ifdef MAGNITUDE_ERRORS
@@ -93,6 +95,8 @@ public:
   void operator*=(const UnitValue& v);
   void operator/=(const UnitValue& v);
   void pow(const EXPONENT_TYPE& e);
+  UnitValue convert(const BaseUnits& bu) const;
+  UnitValue convert(const UnitValue& v) const;
 };
 
 #endif // PUQ_VALUE_H
