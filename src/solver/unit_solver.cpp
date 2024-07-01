@@ -26,5 +26,8 @@ UnitSolver::UnitSolver() {
 }
 
 UnitAtom UnitSolver::solve(std::string expression) {
-  return solver->solve(expression);
+  if (expression=="")
+    return solver->solve("1");
+  else
+    return solver->solve(expression);
 }

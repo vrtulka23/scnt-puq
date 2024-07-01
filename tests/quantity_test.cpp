@@ -41,9 +41,24 @@ TEST(Quantity, InitializationErrors) {
   q = Quantity(1.23,0.01,"2*km3");   // magnitude, errors and dimensions with a number
   EXPECT_EQ(q.to_string(), "2.460(20)*km3");
 
+  q = Quantity("3.40(10)*km3");      // unit expression
+  EXPECT_EQ(q.to_string(), "3.40(10)*km3");
 }
 
 #endif
+
+
+TEST(Quantity, UnitConversion) {
+
+  Quantity q;
+
+  q = Quantity(6,"cm").convert("km");
+  EXPECT_EQ(q.to_string(), "6e-05*km");
+  
+  q = Quantity(1,"au").convert("km");
+  EXPECT_EQ(q.to_string(), "1.49598e+08*km");
+
+}
 
 TEST(Quantity, ArithmeticsAdd) {
 

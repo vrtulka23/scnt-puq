@@ -30,28 +30,32 @@ Dimensions::Dimensions(const MAGNITUDE_PRECISION& m, const MAGNITUDE_PRECISION& 
 
 #endif
 
-std::string Dimensions::to_string() const {
+std::string Dimensions::to_string(char which) const {
   std::stringstream ss;
+  if (which=='a' || which=='n') {
 #if defined(MAGNITUDE_ERRORS)
-  if (numerical.value!=1)
-    ss << numerical.to_string() << SYMBOL_MULTIPLY;
+    if (numerical.value!=1)
+      ss << numerical.to_string() << SYMBOL_MULTIPLY;
 #elif defined(MAGNITUDE_ARRAYS)
-  if (numerical!=1)
-    ss << numerical.to_string() << SYMBOL_MULTIPLY;
+    if (numerical!=1)
+      ss << numerical.to_string() << SYMBOL_MULTIPLY;
 #else
-  if (numerical!=1)
-    ss << numerical << std::scientific << SYMBOL_MULTIPLY;
+    if (numerical!=1)
+      ss << numerical << std::scientific << SYMBOL_MULTIPLY;
 #endif
-  for (int i=0; i<NUM_BASEDIM; i++) {
+  }
+  if (which=='a' || which=='p') {
+    for (int i=0; i<NUM_BASEDIM; i++) {
 #ifdef EXPONENT_FRACTIONS
-    if (physical[i]!=0)
-      ss << UnitList[i].symbol << physical[i].to_string() << SYMBOL_MULTIPLY;
+      if (physical[i]!=0)
+	ss << UnitList[i].symbol << physical[i].to_string() << SYMBOL_MULTIPLY;
 #else
-    if (physical[i]==1)
-      ss << UnitList[i].symbol << SYMBOL_MULTIPLY;
-    else if (physical[i]!=0)
-      ss << UnitList[i].symbol << physical[i] << SYMBOL_MULTIPLY;
+      if (physical[i]==1)
+	ss << UnitList[i].symbol << SYMBOL_MULTIPLY;
+      else if (physical[i]!=0)
+	ss << UnitList[i].symbol << physical[i] << SYMBOL_MULTIPLY;
 #endif
+    }
   }
   std::string s = ss.str();
   return s.substr(0,s.size()-1);

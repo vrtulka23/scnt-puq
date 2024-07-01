@@ -16,9 +16,15 @@ function build_code {
     if [[ ! -d $DIR_BUILD ]]; then
 	    mkdir $DIR_BUILD
     fi
-    cmake -B $DIR_BUILD
+    cmake -DCODE_VERSION="${CODE_VERSION}" -B $DIR_BUILD 
     cd $DIR_BUILD
     make
+    cd $DIR_ROOT
+}
+
+function install_code {
+    cd $DIR_BUILD
+    make install
     cd $DIR_ROOT
 }
 
@@ -46,6 +52,7 @@ function show_help {
     echo "Options:"
     echo " -c|--clean          clean the build directory"
     echo " -b|--build          build code"
+    echo " -i|--install        install puq"
     echo " -r|--run <example>  run an example code"
     echo " -t|--test [<test>]  run all/specific tests"
     echo " -g|--grep <expr>    find expression in a code"
@@ -67,6 +74,8 @@ while [[ $# -gt 0 ]]; do
 	    clean_code; shift;;
 	-b|--build)
 	    build_code; shift;;
+	-i|--install)
+	    install_code; shift;;
 	-r|--run)
 	    run_code $2; shift; shift;;
 	-t|--test)

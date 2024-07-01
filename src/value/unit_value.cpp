@@ -11,6 +11,13 @@ UnitValue::UnitValue(const std::string& s) {
   baseunits = atom.value.baseunits;
 }
 
+UnitValue::UnitValue(const MAGNITUDE_TYPE& m, const std::string& s) {
+  UnitSolver solver;  
+  UnitAtom atom = solver.solve(s);
+  magnitude = m * atom.value.magnitude;
+  baseunits = atom.value.baseunits;
+}
+
 std::string UnitValue::to_string() const {
   std::stringstream ss;
 #if defined(MAGNITUDE_ERRORS)
@@ -29,30 +36,20 @@ std::string UnitValue::to_string() const {
   return s.substr(0,s.size()-1);
 }
 
-inline void compare_dimensions(const UnitValue* v1, const UnitValue* v2) {
-  if (v1->baseunits.dimensions()!=v2->baseunits.dimensions()) {
-    throw std::invalid_argument("Values have different dimensions: "+v1->baseunits.to_string()+" != "+v2->baseunits.to_string());
-  }
-}
-
 UnitValue operator+(const UnitValue& v1, const UnitValue& v2) {
-  compare_dimensions(&v1, &v2);
-  return UnitValue(v1.magnitude + v2.magnitude, v1.baseunits);
+  return UnitValue(v1.magnitude + v2.convert(v1.baseunits).magnitude, v1.baseunits);
 }
 
 void UnitValue::operator+=(const UnitValue& v) {
-  compare_dimensions(this, &v);
-  magnitude += v.magnitude;
+  magnitude += v.convert(baseunits).magnitude;
 }
 
 UnitValue operator-(const UnitValue& v1, const UnitValue& v2) {
-  compare_dimensions(&v1, &v2);
-  return UnitValue(v1.magnitude - v2.magnitude, v1.baseunits);
+  return UnitValue(v1.magnitude - v2.convert(v1.baseunits).magnitude, v1.baseunits);
 }
 
 void UnitValue::operator-=(const UnitValue& v) {
-  compare_dimensions(this, &v);
-  magnitude -= v.magnitude;
+  magnitude -= v.convert(baseunits).magnitude;
 }
 
 UnitValue operator*(const UnitValue& v1, const UnitValue& v2) {
@@ -82,23 +79,27 @@ void UnitValue::pow(const EXPONENT_TYPE& e) {
   baseunits *= e;
 }
 
-UnitValue UnitValue::convert(const BaseUnits& bu) const {
-  Dimensions dim1 = baseunits.dimensions();
-  Dimensions dim2 = bu.dimensions();
-  if (dim1==dim2) {
-    return UnitValue(magnitude*dim1.numerical/dim2.numerical, bu);
-  } else {
-    throw std::invalid_argument("Values have different dimensions: "+baseunits.to_string()+" != "+bu.to_string());
-  }
+UnitValue UnitValue::convert(const std::string& s) const {
+  UnitValue uv = UnitValue(s);
+  return convert(uv);
 }
 
 UnitValue UnitValue::convert(const UnitValue& v) const {
   Dimensions dim1 = baseunits.dimensions();
   Dimensions dim2 = v.baseunits.dimensions();
   if (dim1==dim2) {
-    return UnitValue(magnitude*dim1.numerical/dim2.numerical, v.baseunits);
+    return UnitValue(magnitude*dim1.numerical/(v.magnitude*dim2.numerical), v.baseunits);
   } else {
-    throw std::invalid_argument("Values have different dimensions: "+baseunits.to_string()+" != "+v.baseunits.to_string());
+    throw std::invalid_argument("Incompatible physical dimensions: "+dim1.to_string('p')+" != "+dim2.to_string('p'));
   }
 }
 
+UnitValue UnitValue::convert(const BaseUnits& bu) const {
+  Dimensions dim1 = baseunits.dimensions();
+  Dimensions dim2 = bu.dimensions();
+  if (dim1==dim2) {
+    return UnitValue(magnitude*dim1.numerical/dim2.numerical, bu);
+  } else {
+    throw std::invalid_argument("Incompatible physical dimensions: "+dim1.to_string('p')+" != "+dim2.to_string('p'));
+  }
+}

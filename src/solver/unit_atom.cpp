@@ -8,12 +8,12 @@ UnitValue UnitAtom::from_string(std::string expr_orig) {
   struct UnitValue uv;
   std::smatch m;
 #ifdef EXPONENT_FRACTIONS
-  std::regex rx_unit("^([a-zA-Z_%']+)([+-]?[0-9]*)("+std::string(SYMBOL_FRACTION)+"([0-9]+)|)$");
+  std::regex rx_unit("^(\\[?[a-zA-Z_%']+\\]?)([+-]?[0-9]*)("+std::string(SYMBOL_FRACTION)+"([0-9]+)|)$");
 #else
-  std::regex rx_unit("^([a-zA-Z_%']+)([+-]?[0-9]*)$");
+  std::regex rx_unit("^(\\[?[a-zA-Z_%']+\\]?)([+-]?[0-9]*)$");
 #endif
 #ifdef MAGNITUDE_ERRORS
-  std::regex rx_number("^((\\+|-)?[[:digit:]]+)(\\.(([[:digit:]]+)?))?(\\(([[:digit:]]+)\\))?((e|E)((\\+|-)?[[:digit:]]+))?$");
+  std::regex rx_number("^((\\+|-)?[0-9]+)(\\.(([0-9]+)?))?(\\(([0-9]+)\\))?((e|E)((\\+|-)?[0-9]+))?$");
   if (std::regex_match(expr, m, rx_number)) {       // atom expression is a number with an uncertainty
     //std::cout << m[0] << "|" << m[1] << "|" << m[2] << "|" << m[3] << "|" << m[4] << "|" << m[5] << std::endl;
     //std::cout << m[6] << "|" << m[7] << "|" << m[8] << "|" << m[9] << "|" << m[10] << "|" << m[11] << std::endl;
@@ -45,11 +45,13 @@ UnitValue UnitAtom::from_string(std::string expr_orig) {
 #endif
     expr = m[1];
     // determine unit
-    UnitStruct munit;
+    UnitStruct munit;  // current candidate unit
     for (auto unit: UnitList) {
-      if (unit.symbol.size()>expr.size() || unit.symbol.size()==bu.unit.size())
+      if (unit.symbol.size()>expr.size())           // symbol is longer than the expression
 	continue;
-      if (expr.compare(expr.size()-unit.symbol.size(), unit.symbol.size(), unit.symbol)==0) {
+      if (unit.symbol.size()<=munit.symbol.size())  // symbol is smaller or equal to the current candidate symbol
+	continue;
+      if (expr.compare(expr.size() - unit.symbol.size(), unit.symbol.size(), unit.symbol)==0) {
 	munit = unit;
       }
     }
@@ -86,6 +88,8 @@ UnitValue UnitAtom::from_string(std::string expr_orig) {
     // fill UnitValue properties
     uv.magnitude = 1;
     uv.baseunits.append(bu);
+  } else {
+    throw std::invalid_argument("Invalid unit expression: "+expr_orig);
   }
   return uv;
 }

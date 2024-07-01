@@ -8,10 +8,10 @@ set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -Wno-deprecated")
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-set(ENV{PATH} "settings.env")
-
 # compile example solvers
 ##########################
+
+message(STATUS "Version: ${CODE_VERSION}")
 
 file(GLOB examples LIST_DIRECTORIES true "examples/*")
 foreach(dirpath ${examples})
@@ -22,6 +22,9 @@ foreach(dirpath ${examples})
   file(GLOB example_files "examples/${dirname}/*.h" "examples/${dirname}/*.cpp"
                           "examples/${dirname}/**/*.h" "examples/${dirname}/**/*.cpp")
   add_executable(${dirname} ${source_files} ${example_files} )
+  target_compile_definitions(${dirname} PRIVATE CODE_VERSION="${CODE_VERSION}")
+
+install(TARGETS puq DESTINATION /usr/local/bin)
 
 endforeach()
 

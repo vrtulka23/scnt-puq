@@ -19,7 +19,7 @@ public:
   Dimensions(const MAGNITUDE_PRECISION& m, const MAGNITUDE_PRECISION& e);
   Dimensions(const MAGNITUDE_PRECISION& m, const MAGNITUDE_PRECISION& e, const PhysicalDimensions& p): numerical(m,e), physical(p) {};
 #endif
-  std::string to_string() const;
+  std::string to_string(char which='a') const;
   bool operator==(const Dimensions& d) const;
   bool operator!=(const Dimensions& d) const;
 };
@@ -75,7 +75,7 @@ public:
   UnitValue(): magnitude(1) {}
   UnitValue(const std::string& s);
   UnitValue(const MAGNITUDE_TYPE& m): magnitude(m) {}
-  UnitValue(const MAGNITUDE_TYPE& m, const std::string& bu): magnitude(m), baseunits(bu) {}
+  UnitValue(const MAGNITUDE_TYPE& m, const std::string& s);
   UnitValue(const MAGNITUDE_TYPE& m, const BaseUnits& bu): magnitude(m), baseunits(bu) {}
   UnitValue(const MAGNITUDE_TYPE& m, const BaseUnitsList& bul): magnitude(m), baseunits(bul) {}
 #ifdef MAGNITUDE_ERRORS
@@ -95,6 +95,7 @@ public:
   void operator*=(const UnitValue& v);
   void operator/=(const UnitValue& v);
   void pow(const EXPONENT_TYPE& e);
+  UnitValue convert(const std::string& s) const;
   UnitValue convert(const BaseUnits& bu) const;
   UnitValue convert(const UnitValue& v) const;
 };

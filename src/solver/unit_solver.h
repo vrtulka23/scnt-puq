@@ -25,6 +25,7 @@ class OperatorParentheses: public exs::OperatorGroup<UnitAtom, 1> {
 public:
   EXPONENT_TYPE exponent = 1;
   OperatorParentheses(): OperatorGroup<UnitAtom, 1>("par","(",exs::PARENTHESES_OPERATOR) {}
+  virtual bool check(exs::Expression &expr);
   virtual void parse(exs::Expression &expr);
   void operate_group(exs::TokenListBase<UnitAtom> *tokens);
 };

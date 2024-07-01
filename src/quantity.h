@@ -23,14 +23,17 @@ public:
   Quantity(const MAGNITUDE_PRECISION& m, const MAGNITUDE_PRECISION& e, const std::string& s);
 #endif
   std::string to_string();
-  Quantity operator+(Quantity &q);
-  Quantity operator-(Quantity &q);
-  Quantity operator*(Quantity &q);
-  Quantity operator/(Quantity &q);
-  void operator+=(Quantity &q);
-  void operator-=(Quantity &q);
-  void operator*=(Quantity &q);
-  void operator/=(Quantity &q);
+  Quantity operator+(Quantity& q);
+  Quantity operator-(Quantity& q);
+  Quantity operator*(Quantity& q);
+  Quantity operator/(Quantity& q);
+  void operator+=(Quantity& q);
+  void operator-=(Quantity& q);
+  void operator*=(Quantity& q);
+  void operator/=(Quantity& q);
+  Quantity convert(const std::string& s) const;
+  Quantity convert(const Quantity& q) const;
+  Quantity convert(const UnitValue& uv) const;
 };
 
 #endif // PUQ_QUANTITY_H

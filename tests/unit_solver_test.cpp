@@ -11,7 +11,11 @@ TEST(UnitSolver, Initialization) {
 TEST(UnitSolver, Solve) {
 
   UnitSolver solver;  
-  UnitAtom atom = solver.solve("3*(2.0e1/5.0)");     // only numbers
+  
+  UnitAtom atom = solver.solve("");                  // empty string
+  EXPECT_EQ(atom.value.to_string(), "1");
+
+  atom = solver.solve("3*(2.0e1/5.0)");              // only numbers
   EXPECT_EQ(atom.value.to_string(), "12");
   
   atom = solver.solve("2.4*km/s");
