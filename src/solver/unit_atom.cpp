@@ -8,9 +8,9 @@ UnitValue UnitAtom::from_string(std::string expr_orig) {
   struct UnitValue uv;
   std::smatch m;
 #ifdef EXPONENT_FRACTIONS
-  std::regex rx_unit("^(\\[?[a-zA-Z_%']+\\]?)([+-]?[0-9]*)("+std::string(SYMBOL_FRACTION)+"([0-9]+)|)$");
+  std::regex rx_unit("^(\\[?[a-zA-Z0_%']+\\]?)([+-]?[0-9]*)("+std::string(SYMBOL_FRACTION)+"([0-9]+)|)$");
 #else
-  std::regex rx_unit("^(\\[?[a-zA-Z_%']+\\]?)([+-]?[0-9]*)$");
+  std::regex rx_unit("^(\\[?[a-zA-Z0_%']+\\]?)([+-]?[0-9]*)$");
 #endif
 #ifdef MAGNITUDE_ERRORS
   std::regex rx_number("^((\\+|-)?[0-9]+)(\\.(([0-9]+)?))?(\\(([0-9]+)\\))?((e|E)((\\+|-)?[0-9]+))?$");

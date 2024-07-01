@@ -7,7 +7,6 @@
 #include "../lists/lists.h"
 
 typedef std::array<EXPONENT_TYPE, NUM_BASEDIM> PhysicalDimensions;
-
 class Dimensions {
 public:
   MAGNITUDE_TYPE numerical; 

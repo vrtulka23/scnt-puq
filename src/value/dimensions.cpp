@@ -34,13 +34,13 @@ std::string Dimensions::to_string(char which) const {
   std::stringstream ss;
   if (which=='a' || which=='n') {
 #if defined(MAGNITUDE_ERRORS)
-    if (numerical.value!=1)
+    if (numerical.value!=1 || which=='n')
       ss << numerical.to_string() << SYMBOL_MULTIPLY;
 #elif defined(MAGNITUDE_ARRAYS)
-    if (numerical!=1)
+    if (numerical!=1 || which=='n')
       ss << numerical.to_string() << SYMBOL_MULTIPLY;
 #else
-    if (numerical!=1)
+    if (numerical!=1 || which=='n')
       ss << numerical << std::scientific << SYMBOL_MULTIPLY;
 #endif
   }
