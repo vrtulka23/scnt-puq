@@ -219,4 +219,12 @@ void Magnitude::pow(const EXPONENT_TYPE& e) {
 #endif
 }
 
+bool Magnitude::operator==(const Magnitude& a) const {
+  return (value==a.value) && (error==a.error);
+};
+ 
+bool Magnitude::operator!=(const Magnitude& a) const {
+  return (value!=a.value) || (error!=a.error);
+};
+ 
 #endif

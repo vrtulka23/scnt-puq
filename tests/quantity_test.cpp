@@ -72,7 +72,7 @@ TEST(Quantity, ArithmeticsAdd) {
   EXPECT_EQ(q1.to_string(), "9*cm");
 
   q3 = Quantity(3,"cm2");  // different units
-  EXPECT_THROW(q1+q3,  std::invalid_argument);
+  EXPECT_THROW(q1+q3,  ConversionException);
   
 }
 
@@ -88,7 +88,7 @@ TEST(Quantity, ArithmeticsSubtract) {
   EXPECT_EQ(q1.to_string(), "3*cm");
 
   q3 = Quantity(3,"cm2");
-  EXPECT_THROW(q1-q3,  std::invalid_argument);
+  EXPECT_THROW(q1-q3,  ConversionException);
   
 }
 

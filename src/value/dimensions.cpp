@@ -4,15 +4,13 @@
 #include "../settings.h"
 #include "unit_value.h"
 
-Dimensions::Dimensions() {
-  numerical = 1;
+Dimensions::Dimensions(): utype(Utype::NUL), numerical(1) {
   for (int i=0; i<NUM_BASEDIM; i++) {
     physical[i] = 0; 
   }
 }
 
-Dimensions::Dimensions(const MAGNITUDE_TYPE& n) {
-  numerical = n;
+Dimensions::Dimensions(const MAGNITUDE_TYPE& n): utype(Utype::NUL), numerical(n) {
   for (int i=0; i<NUM_BASEDIM; i++) {
     physical[i] = 0; 
   }
@@ -20,9 +18,7 @@ Dimensions::Dimensions(const MAGNITUDE_TYPE& n) {
 
 #ifdef MAGNITUDE_ERRORS
 
-Dimensions::Dimensions(const MAGNITUDE_PRECISION& m, const MAGNITUDE_PRECISION& e) {
-  numerical.value = m;
-  numerical.error = e;
+Dimensions::Dimensions(const MAGNITUDE_PRECISION& m, const MAGNITUDE_PRECISION& e): utype(Utype::NUL), numerical(m,e) {
   for (int i=0; i<NUM_BASEDIM; i++) {
     physical[i] = 0; 
   }  

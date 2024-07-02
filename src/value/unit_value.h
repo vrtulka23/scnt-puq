@@ -11,12 +11,14 @@ class Dimensions {
 public:
   MAGNITUDE_TYPE numerical; 
   PhysicalDimensions physical;
+  std::vector<std::string> symbols;
+  Utype utype;
   Dimensions();
   Dimensions(const MAGNITUDE_TYPE& n);
-  Dimensions(const MAGNITUDE_TYPE& n, const PhysicalDimensions& p): numerical(n), physical(p) {};
+  Dimensions(const MAGNITUDE_TYPE& n, const PhysicalDimensions& p): utype(Utype::NUL), numerical(n), physical(p) {};
 #ifdef MAGNITUDE_ERRORS
   Dimensions(const MAGNITUDE_PRECISION& m, const MAGNITUDE_PRECISION& e);
-  Dimensions(const MAGNITUDE_PRECISION& m, const MAGNITUDE_PRECISION& e, const PhysicalDimensions& p): numerical(m,e), physical(p) {};
+  Dimensions(const MAGNITUDE_PRECISION& m, const MAGNITUDE_PRECISION& e, const PhysicalDimensions& p): utype(Utype::NUL), numerical(m,e), physical(p) {};
 #endif
   std::string to_string(char which='a') const;
   bool operator==(const Dimensions& d) const;
@@ -54,7 +56,7 @@ public:
   void append(std::string p, std::string u, EXPONENT_INT_PRECISION n, EXPONENT_INT_PRECISION d);
 #endif
   std::string to_string() const;
-  BaseUnit& operator[] (int index);
+  const BaseUnit& operator[] (int index) const;
   friend BaseUnits operator+(const BaseUnits& bu1, const BaseUnits& bu2);
   friend BaseUnits operator-(const BaseUnits& bu1, const BaseUnits& bu2);
   void operator+=(const BaseUnits& bu);
@@ -65,6 +67,24 @@ public:
   std::size_t size() const;
   void rebase();
   Dimensions dimensions() const;
+};
+
+class ConversionException: public std::exception {
+private:
+  std::string message;  
+public:
+  ConversionException(std::string m) : message(m) {}
+  ConversionException(const Dimensions& dim1, const Dimensions& dim2) {
+    message = "Incompatible physical dimensions: "+dim1.to_string('p')+" != "+dim2.to_string('p');
+  }
+  ConversionException(const BaseUnits& bu1, const BaseUnits& bu2) {
+    Dimensions dim1 = bu1.dimensions();
+    Dimensions dim2 = bu2.dimensions();
+    ConversionException(dim1, dim2);
+  }
+  const char * what () const noexcept override {
+    return message.c_str();
+  }
 };
 
 class UnitValue {

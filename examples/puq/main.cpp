@@ -34,21 +34,25 @@ private:
   std::vector <std::string> tokens;
 };
 
+void table_header(std::string title, std::vector<std::string> header, std::vector<int> width) {
+  std::cout << std::endl;
+  std::cout << title << std::endl << std::endl;
+  for (size_t i=0; i<header.size(); i++) {
+    std::cout << std::setfill(' ') << std::setw(width[i])  << std::left << header[i];
+  }
+  std::cout << std::endl;
+  for (size_t i=0; i<header.size(); i++) {
+    std::cout << std::setfill('-') << std::setw(width[i])  << std::right << "  ";
+  }
+  std::cout << std::endl;  
+}
+
 void display_prefixes() {
-  std::cout << std::endl;
-  std::cout << "Prefixes:" << std::endl << std::endl;
-  std::cout << std::setfill(' ') << std::setw(7)  << std::left << "Symbol";
-  std::cout << std::setfill(' ') << std::setw(6)  << std::left << "Name";
-  std::cout << std::setfill(' ') << std::setw(10) << std::left << "Magnitude";
-  std::cout << std::endl;
-  std::cout << std::setfill('-') << std::setw(7)  << std::right << " ";
-  std::cout << std::setfill('-') << std::setw(6)  << std::right << " ";
-  std::cout << std::setfill('-') << std::setw(10) << std::right << " ";
-  std::cout << std::endl;
+  table_header("Prefixes:", {"Symbol","Name","Magnitude"}, {8,7,11});
   for (auto prefix: UnitPrefixList) {
-    std::cout << std::setfill(' ') << std::setw(7)  << std::left << prefix.symbol;
-    std::cout << std::setfill(' ') << std::setw(6)  << std::left << prefix.name;
-    std::cout << std::setfill(' ') << std::setw(10) << std::left;
+    std::cout << std::setfill(' ') << std::setw(8)  << std::left << prefix.symbol;
+    std::cout << std::setfill(' ') << std::setw(7)  << std::left << prefix.name;
+    std::cout << std::setfill(' ') << std::setw(11) << std::left;
 #if defined(MAGNITUDE_ERRORS) || defined(MAGNITUDE_ARRAYS)
     std::cout << prefix.magnitude.to_string();
 #else
@@ -60,81 +64,70 @@ void display_prefixes() {
 }
 
 void display_base_units() {
-  std::cout << std::endl;
-  std::cout << "Base units:" << std::endl << std::endl;
-  std::cout << std::setfill(' ') << std::setw(7)  << std::left << "Symbol";
-  std::cout << std::setfill(' ') << std::setw(8)  << std::left << "Name";
-  std::cout << std::endl;
-  std::cout << std::setfill('-') << std::setw(7)  << std::right << " ";
-  std::cout << std::setfill('-') << std::setw(8)  << std::right << " ";
-  std::cout << std::endl;
-  for (size_t i=0; i<NUM_BASEDIM; i++) {
+  table_header("Base units:", {"Symbol","Name"}, {8,9});
+  for (size_t i=0; i<UnitList.size(); i++) {
     auto unit = UnitList[i];
-    std::cout << std::setfill(' ') << std::setw(7)  << std::left << unit.symbol;
-    std::cout << std::setfill(' ') << std::setw(8)  << std::left << unit.name;
+    if ((unit.utype & Utype::BAS)!=Utype::BAS) continue;
+    std::cout << std::setfill(' ') << std::setw(8)  << std::left << unit.symbol;
+    std::cout << std::setfill(' ') << std::setw(9)  << std::left << unit.name;
     std::cout << std::scientific << std::endl;
   }
   std::cout << std::endl;
 }
 
-void display_derived_units() {
-  std::cout << std::endl;
-  std::cout << "Derived units:" << std::endl << std::endl;
-  std::cout << std::setfill(' ') << std::setw(8)  << std::left << "Symbol";
-  std::cout << std::setfill(' ') << std::setw(18) << std::left << "Name";
-  std::cout << std::setfill(' ') << std::setw(12) << std::left << "Magnitude";
-  std::cout << std::setfill(' ') << std::setw(14) << std::left << "Dimension";
-  std::cout << std::setfill(' ') << std::setw(20) << std::left << "Definition";
-  std::cout << std::endl;
-  std::cout << std::setfill('-') << std::setw(8)  << std::right << " ";
-  std::cout << std::setfill('-') << std::setw(18) << std::right << " ";
-  std::cout << std::setfill('-') << std::setw(12) << std::right << " ";
-  std::cout << std::setfill('-') << std::setw(14) << std::right << " ";
-  std::cout << std::setfill('-') << std::setw(20) << std::right << " ";
-  std::cout << std::endl;
-  for (size_t i=NUM_BASEDIM; i<UnitList.size(); i++) {
+void display_linear_units() {
+  table_header("Linear units:", {"Symbol","Name","Magnitude","Dimension","Definition"}, {9,19,13,15,21});
+  for (size_t i=0; i<UnitList.size(); i++) {
     auto unit = UnitList[i];
-    if (unit.symbol[0]=='[')
-      continue;
+    if ((unit.utype & Utype::LIN)!=Utype::LIN) continue;
     UnitValue uv(unit.symbol);
     Dimensions dim = uv.baseunits.dimensions();
-    std::cout << std::setfill(' ') << std::setw(8)  << std::left << unit.symbol;
-    std::cout << std::setfill(' ') << std::setw(18) << std::left << unit.name;
-    std::cout << std::setfill(' ') << std::setw(12) << std::left;
-    std::cout << std::setfill(' ') << std::setw(12) << std::left << dim.to_string('n');
-    std::cout << std::setfill(' ') << std::setw(14) << std::left << dim.to_string('p');
-    std::cout << std::setfill(' ') << std::setw(20) << std::left << unit.definition;
+    std::cout << std::setfill(' ') << std::setw(9)  << std::left << unit.symbol;
+    std::cout << std::setfill(' ') << std::setw(19) << std::left << unit.name;
+    std::cout << std::setfill(' ') << std::setw(13) << std::left << dim.to_string('n');
+    std::cout << std::setfill(' ') << std::setw(15) << std::left << dim.to_string('p');
+    std::cout << std::setfill(' ') << std::setw(21) << std::left << unit.definition;
     std::cout << std::scientific << std::endl;
   }
   std::cout << std::endl;
 }
 
 void display_constants() {
-  std::cout << std::endl;
-  std::cout << "Derived units:" << std::endl << std::endl;
-  std::cout << std::setfill(' ') << std::setw(8)  << std::left << "Symbol";
-  std::cout << std::setfill(' ') << std::setw(18) << std::left << "Name";
-  std::cout << std::setfill(' ') << std::setw(12) << std::left << "Magnitude";
-  std::cout << std::setfill(' ') << std::setw(14) << std::left << "Dimension";
-  std::cout << std::setfill(' ') << std::setw(20) << std::left << "Definition";
-  std::cout << std::endl;
-  std::cout << std::setfill('-') << std::setw(8)  << std::right << " ";
-  std::cout << std::setfill('-') << std::setw(18) << std::right << " ";
-  std::cout << std::setfill('-') << std::setw(12) << std::right << " ";
-  std::cout << std::setfill('-') << std::setw(14) << std::right << " ";
-  std::cout << std::setfill('-') << std::setw(20) << std::right << " ";
-  std::cout << std::endl;
-  for (size_t i=NUM_BASEDIM; i<UnitList.size(); i++) {
+  table_header("Constants:", {"Symbol","Name","Magnitude","Dimension","Definition"}, {9,19,13,15,21});
+  for (size_t i=0; i<UnitList.size(); i++) {
     auto unit = UnitList[i];
-    if (unit.symbol[0]!='[')
-      continue;
+    if ((unit.utype & Utype::CST)!=Utype::CST) continue;
     UnitValue uv(unit.symbol);
     Dimensions dim = uv.baseunits.dimensions();
-    std::cout << std::setfill(' ') << std::setw(8)  << std::left << unit.symbol;
-    std::cout << std::setfill(' ') << std::setw(18) << std::left << unit.name;
-    std::cout << std::setfill(' ') << std::setw(12) << std::left << dim.to_string('n');
-    std::cout << std::setfill(' ') << std::setw(14) << std::left << dim.to_string('p');
-    std::cout << std::setfill(' ') << std::setw(20) << std::left << unit.definition;
+    std::cout << std::setfill(' ') << std::setw(9)  << std::left << unit.symbol;
+    std::cout << std::setfill(' ') << std::setw(19) << std::left << unit.name;
+    std::cout << std::setfill(' ') << std::setw(13) << std::left << dim.to_string('n');
+    std::cout << std::setfill(' ') << std::setw(15) << std::left << dim.to_string('p');
+    std::cout << std::setfill(' ') << std::setw(21) << std::left << unit.definition;
+    std::cout << std::scientific << std::endl;
+  }
+  std::cout << std::endl;
+}
+
+void display_temperature_units() {
+  table_header("Temperatures:", {"Symbol","Name"}, {9,19});
+  for (size_t i=0; i<UnitList.size(); i++) {
+    auto unit = UnitList[i];
+    if ((unit.utype & Utype::TMP)!=Utype::TMP) continue;
+    std::cout << std::setfill(' ') << std::setw(9)  << std::left << unit.symbol;
+    std::cout << std::setfill(' ') << std::setw(19) << std::left << unit.name;
+    std::cout << std::scientific << std::endl;
+  }
+  std::cout << std::endl;
+}
+
+void display_logarithmic_units() {
+  table_header("Logarithmic units:", {"Symbol","Name"}, {9,19});
+  for (size_t i=0; i<UnitList.size(); i++) {
+    auto unit = UnitList[i];
+    if ((unit.utype & Utype::LOG)!=Utype::LOG) continue;
+    std::cout << std::setfill(' ') << std::setw(9)  << std::left << unit.symbol;
+    std::cout << std::setfill(' ') << std::setw(19) << std::left << unit.name;
     std::cout << std::scientific << std::endl;
   }
   std::cout << std::endl;
@@ -177,8 +170,12 @@ int main(int argc, char * argv[]) {
 	display_prefixes();
       else if (convert[0]=="base")
 	display_base_units();
-      else if (convert[0]=="derived")
-	display_derived_units();
+      else if (convert[0]=="lin")
+	display_linear_units();
+      else if (convert[0]=="log")
+	display_logarithmic_units();
+      else if (convert[0]=="temp")
+	display_temperature_units();
       else if (convert[0]=="const")
 	display_constants();
     }

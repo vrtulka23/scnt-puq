@@ -29,7 +29,7 @@ TEST(UnitAtom, FromString) {
   
   EXPECT_THROW(UnitAtom::from_string("crad"), std::invalid_argument);  // unit prefix is not allowed
   
-  EXPECT_THROW(UnitAtom::from_string("Bm"),   std::invalid_argument);  // unknown unit prefix
+  EXPECT_THROW(UnitAtom::from_string("Hm"),   std::invalid_argument);  // unknown unit prefix
 
   value = UnitAtom::from_string("kg2");
   EXPECT_EQ(value.to_string(), "kg2");          // units with exponents

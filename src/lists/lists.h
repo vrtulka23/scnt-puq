@@ -8,6 +8,36 @@
 #include "../settings.h"
 #include "../magnitude.h"
 
+enum class Utype : std::uint8_t {
+  NUL = 0b00000000,  // empty flag
+  BAS = 0b00000001,  // base units
+  LIN = 0b00000010,  // standard unit (linear conversion)
+  LOG = 0b00000100,  // logarithmic unit
+  TMP = 0b00001000,  // temperature unit
+  CST = 0b00010000,  // constant
+};
+
+inline Utype operator|(Utype lhs, Utype rhs) {
+    return static_cast<Utype>(
+        static_cast<std::underlying_type_t<Utype>>(lhs) |
+        static_cast<std::underlying_type_t<Utype>>(rhs)
+    );
+}
+
+inline Utype operator&(Utype lhs, Utype rhs) {
+    return static_cast<Utype>(
+        static_cast<std::underlying_type_t<Utype>>(lhs) &
+        static_cast<std::underlying_type_t<Utype>>(rhs)
+    );
+}
+
+inline Utype operator^(Utype lhs, Utype rhs) {
+    return static_cast<Utype>(
+        static_cast<std::underlying_type_t<Utype>>(lhs) ^
+        static_cast<std::underlying_type_t<Utype>>(rhs)
+    );
+}
+
 struct UnitPrefixStruct {
   std::string symbol;
   MAGNITUDE_TYPE magnitude;
@@ -18,6 +48,7 @@ extern std::vector<UnitPrefixStruct> UnitPrefixList;
 
 struct UnitStruct {
   std::string symbol;
+  Utype utype;
   MAGNITUDE_TYPE magnitude;
   EXPONENT_TYPE dimensions[NUM_BASEDIM];
   std::string definition;

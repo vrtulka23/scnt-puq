@@ -60,7 +60,7 @@ std::string BaseUnits::to_string() const {
   return s.substr(0,s.size()-1);
 }
 
-BaseUnit& BaseUnits::operator[] (int index) {
+const BaseUnit& BaseUnits::operator[] (int index) const {
   return baseunits[index];
 }
 
@@ -128,6 +128,9 @@ Dimensions BaseUnits::dimensions() const {
     }
     for (auto &unit: UnitList) {
       if (unit.symbol==bu.unit) {
+	if (unit.utype==Utype::TMP)  // unit requires conversion of temperatures
+	  dim.utype = dim.utype | unit.utype;
+	dim.symbols.push_back(unit.symbol);
 #if defined(MAGNITUDE_ERRORS) || defined(MAGNITUDE_ARRAYS)
 	dim.numerical *= pow(unit.magnitude, (EXPONENT_REAL_PRECISION)bu.exponent);
 #else

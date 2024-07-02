@@ -84,22 +84,65 @@ UnitValue UnitValue::convert(const std::string& s) const {
   return convert(uv);
 }
 
+inline MAGNITUDE_TYPE _convert_temperature(const MAGNITUDE_TYPE& m, const BaseUnits& bu1, const BaseUnits& bu2) {
+  std::string s1 = bu1[0].unit;
+  std::string s2 = bu2[0].unit;
+  MAGNITUDE_TYPE const9div5 = 9./5.;
+  MAGNITUDE_TYPE const5div9 = 5./9.;
+  if (s1==s2) {
+    return m;
+  } else if (s1=="K" && s2=="Cel") {
+    return m-(MAGNITUDE_TYPE)273.15;
+  } else if (s1=="K" && s2=="degF") {
+    return (m-(MAGNITUDE_TYPE)273.15)*const9div5+(MAGNITUDE_TYPE)32;
+  } else if (s1=="degR" && s2=="degF") {
+    return m*const9div5-(MAGNITUDE_TYPE)459.67;
+  } else if (s1=="degR" && s2=="Cel") {
+    return (m*const9div5-(MAGNITUDE_TYPE)491.67)*const5div9;
+  } else if (s1=="Cel" && s2=="K") {
+    return m+(MAGNITUDE_TYPE)273.15;
+  } else if (s1=="Cel" && s2=="degF") {
+    return (m*const9div5)+(MAGNITUDE_TYPE)32;
+  } else if (s1=="Cel" && s2=="degR") {
+    return ((m*const9div5)+(MAGNITUDE_TYPE)491.67);
+  } else if (s1=="degF" && s2=="K") {
+    return ((m-(MAGNITUDE_TYPE)32)*const5div9)+(MAGNITUDE_TYPE)273.15;
+  } else if (s1=="degF" && s2=="Cel") {
+    return (m-(MAGNITUDE_TYPE)32)*const5div9;
+  } else if (s1=="degF" && s2=="degR") {
+    return (m+(MAGNITUDE_TYPE)459.67)*const5div9;
+  } else {
+    throw ConversionException(bu1, bu2);
+  }
+}
+
+inline MAGNITUDE_TYPE _convert_linear(const MAGNITUDE_TYPE& m1, const MAGNITUDE_TYPE& m2, const Dimensions& d1, const Dimensions& d2) {
+  return (m1*d1.numerical)/(m2*d2.numerical);
+}
+
 UnitValue UnitValue::convert(const UnitValue& v) const {
   Dimensions dim1 = baseunits.dimensions();
   Dimensions dim2 = v.baseunits.dimensions();
   if (dim1==dim2) {
-    return UnitValue(magnitude*dim1.numerical/(v.magnitude*dim2.numerical), v.baseunits);
-  } else {
-    throw std::invalid_argument("Incompatible physical dimensions: "+dim1.to_string('p')+" != "+dim2.to_string('p'));
+    if ((dim1.utype & Utype::TMP)==Utype::TMP  || (dim2.utype & Utype::TMP)==Utype::TMP) {
+      if (baseunits.size()==1 && v.baseunits.size()==1 && v.magnitude==(MAGNITUDE_TYPE)1) {
+	return UnitValue(_convert_temperature(magnitude, baseunits, v.baseunits), v.baseunits);
+      }
+    }
+    else if ((dim1.utype & Utype::LOG)==Utype::LOG) {
+    }
+    else {
+      return UnitValue(_convert_linear(magnitude, v.magnitude, dim1, dim2), v.baseunits);
+    }
   }
+  throw ConversionException(dim1, dim2);
 }
 
 UnitValue UnitValue::convert(const BaseUnits& bu) const {
   Dimensions dim1 = baseunits.dimensions();
   Dimensions dim2 = bu.dimensions();
   if (dim1==dim2) {
-    return UnitValue(magnitude*dim1.numerical/dim2.numerical, bu);
-  } else {
-    throw std::invalid_argument("Incompatible physical dimensions: "+dim1.to_string('p')+" != "+dim2.to_string('p'));
+    return UnitValue(_convert_linear(magnitude, 1, dim1, dim2), bu);
   }
+  throw ConversionException(dim1, dim2);
 }

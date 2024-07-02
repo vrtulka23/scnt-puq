@@ -34,6 +34,8 @@ public:
   void operator-=(const Magnitude& m);
   void operator*=(const Magnitude& m);
   void operator/=(const Magnitude& m);
+  bool operator==(const Magnitude& a) const;
+  bool operator!=(const Magnitude& a) const;
   friend Magnitude pow(const Magnitude& m, const EXPONENT_TYPE& e);
   void pow(const EXPONENT_TYPE& e);
 };

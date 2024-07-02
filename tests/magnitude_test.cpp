@@ -151,6 +151,20 @@ TEST(Magnitude, ArithmeticsDivide) {
   
 }
 
+TEST(Magnitude, Comparison) {
+
+  Magnitude a, b;
+
+  a = Magnitude(1.234, 0.001);
+  b = Magnitude(2.345, 0.002);
+
+  EXPECT_EQ(a==a, true);
+  EXPECT_EQ(a!=a, false);
+  EXPECT_EQ(a==b, false);
+  EXPECT_EQ(a!=b, true);
+
+}
+
 #ifdef MAGNITUDE_ARRAYS
 
 TEST(Magnitude, Arrays) {
