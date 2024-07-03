@@ -11,7 +11,7 @@ TEST(Dimensions, Initialization) {
   EXPECT_EQ(d.to_string(), "2.34");
   
   d = Dimensions(2.34,{0,1,2,3,4,5,6,7});
-  EXPECT_EQ(d.to_string(), "2.34*g*s2*K3*C4*cd5*mol6*rad7");
+  EXPECT_EQ(d.to_string(), "2.34*g*s2*K3*A4*cd5*mol6*rad7");
   
 }
 
@@ -23,7 +23,7 @@ TEST(Dimensions, InitializationErrors) {
   EXPECT_EQ(d.to_string(), "2.34(23)");
 
   d = Dimensions(2.34,0.23,{0,1,2,3,4,5,6,7});
-  EXPECT_EQ(d.to_string(), "2.34(23)*g*s2*K3*C4*cd5*mol6*rad7");
+  EXPECT_EQ(d.to_string(), "2.34(23)*g*s2*K3*A4*cd5*mol6*rad7");
   
 }
   

@@ -11,7 +11,7 @@ std::vector<UnitStruct> UnitList = {
   {"g",        LIN_BAS,         1.0,             { 0, 1, 0, 0, 0, 0, 0, 0},  "",                       "gram",              true,  {}             },
   {"s",        LIN_BAS,         1.0,             { 0, 0, 1, 0, 0, 0, 0, 0},  "",                       "second",            true,  {}             },
   {"K",        LIN_BAS_TMP,     1.0,             { 0, 0, 0, 1, 0, 0, 0, 0},  "",                       "Kelvin",            true,  {}             },
-  {"C",        LIN_BAS,         1.0,             { 0, 0, 0, 0, 1, 0, 0, 0},  "",                       "Coulomb",           true,  {}             },
+  {"A",        LIN_BAS,         1.0,             { 0, 0, 0, 0, 1, 0, 0, 0},  "",                       "Ampere",            true,  {}             },
   {"cd",       LIN_BAS,         1.0,             { 0, 0, 0, 0, 0, 1, 0, 0},  "",                       "candela",           true,  {}             },
   {"mol",      LIN_BAS,         1.0,             { 0, 0, 0, 0, 0, 0, 1, 0},  "",                       "mole",              true,  {}             },
   {"rad",      LIN_BAS,         1.0,             { 0, 0, 0, 0, 0, 0, 0, 1},  "",                       "radian",            true,  {"m"}          },
@@ -96,8 +96,8 @@ std::vector<UnitStruct> UnitList = {
   {"Sv",       Utype::LIN,      1.0e0,           { 2, 0,-2, 0, 0, 0, 0, 0},  "J/kg",                   "Sivert",            false, {}             },
   
   // units of magnetic flux density
-  {"T",        Utype::LIN,      1.0e3,           { 0, 1,-1, 0,-1, 0, 0, 0},  "Wb/m2",                  "Tesla",             true,  {}             },
-  {"G",        Utype::LIN,      1.0e-1,          { 0, 1,-1, 0,-1, 0, 0, 0},  "1e-4*T",                 "Gauss",             true,  {}             },
+  {"T",        Utype::LIN,      1.0e3,           { 0, 1,-2, 0,-1, 0, 0, 0},  "Wb/m2",                  "Tesla",             true,  {}             },
+  {"G",        Utype::LIN,      1.0e-1,          { 0, 1,-2, 0,-1, 0, 0, 0},  "1e-4*T",                 "Gauss",             true,  {}             },
   			           
   // units of frequency	           
   {"Hz",       Utype::LIN,      1.0e0,           { 0, 0,-1, 0, 0, 0, 0, 0},  "s-1",                    "Hertz",             true,  {}             },
@@ -112,29 +112,29 @@ std::vector<UnitStruct> UnitList = {
   {"kn",       Utype::LIN,      0.514444,        { 1, 0,-1, 0, 0, 0, 0, 0},  "0.514444*m/s",           "knot",              false, {}             },
   			           
   // units of magnetic flux         
-  {"Mx",       Utype::LIN,      1.0e-5,          { 2, 1,-1, 0,-1, 0, 0, 0},  "1e-8*Wb",                "Maxwell",           false, {}             },
-  {"Wb",       Utype::LIN,      1.0e3,           { 2, 1,-1, 0,-1, 0, 0, 0},  "V*s",                    "Weber",             false, {}             },
+  {"Mx",       Utype::LIN,      1.0e-5,          { 2, 1,-2, 0,-1, 0, 0, 0},  "1e-8*Wb",                "Maxwell",           false, {}             },
+  {"Wb",       Utype::LIN,      1.0e3,           { 2, 1,-2, 0,-1, 0, 0, 0},  "V*s",                    "Weber",             false, {}             },
   			           
   // other CGS units	           
   {"P",        Utype::LIN,      1.0e2,           {-1, 1,-1, 0, 0, 0, 0, 0},  "g/(cm*s)",               "Poise",             true,  {"c"}          },
   {"St",       Utype::LIN,      1.0e-4,          { 2, 0,-1, 0, 0, 0, 0, 0},  "cm2/s",                  "Stokes",            true,  {"c"}          },
   {"Ka",       Utype::LIN,      1.0e2,           {-1, 0, 0, 0, 0, 0, 0, 0},  "cm-1",                   "Kayser",            false, {}             },
-  {"D",        Utype::LIN,      3.33564e-30,     { 1, 0, 0, 0, 1, 0, 0, 0},  "3.33564e-30*C*m",        "Debye",             true,  {}             },
-  {"Oe",       Utype::LIN,      79.57747,        {-1, 0,-1, 0, 1, 0, 0, 0},  "1e3*A/(4*[pi]*m)",       "Oersted",           false, {}             },
+  {"D",        Utype::LIN,      3.33564e-30,     { 1, 0, 1, 0, 1, 0, 0, 0},  "3.33564e-30*C*m",        "Debye",             true,  {}             },
+  {"Oe",       Utype::LIN,      79.57747,        {-1, 0, 0, 0, 1, 0, 0, 0},  "1e3*A/(4*[pi]*m)",       "Oersted",           false, {}             },
   {"Gal",      Utype::LIN,      0.01,            { 1, 0,-2, 0, 0, 0, 0, 0},  "cm/s2",                  "Gal",               false, {}             },
-  {"Bi",       Utype::LIN,      10,              { 0, 0,-1, 0, 1, 0, 0, 0},  "10*A",                   "Biot",              false, {}             },
+  {"Bi",       Utype::LIN,      10,              { 0, 0, 0, 0, 1, 0, 0, 0},  "10*A",                   "Biot",              false, {}             },
   {"Rad",      Utype::LIN,      1e-2,            { 2, 0,-2, 0, 0, 0, 0, 0},  "0.01*Gy",                "radiation dose",    false, {}             },
   			           
   // other derived units           	      
   {"sr",       Utype::LIN,      1.0e0,           { 0, 0, 0, 0, 0, 0, 0, 2},  "rad2",                   "steradian",         false, {}             },
   {"lm",       Utype::LIN,      1.0e0,           { 0, 0, 0, 0, 0, 1, 0, 2},  "cd*sr",                  "lumen",             false, {}             },
-  {"A",        Utype::LIN,      1.0e0,           { 0, 0,-1, 0, 1, 0, 0, 0},  "C/s",                    "Ampere",            true,  {}             },
-  {"H",        Utype::LIN,      1.0e3,           { 2, 1, 0, 0,-2, 0, 0, 0},  "Wb/A",                   "Henry",             true,  {}             },
-  {"Ohm",      Utype::LIN,      1.0e3,           { 2, 1,-1, 0,-2, 0, 0, 0},  "V/A",                    "Ohm",               true,  {}             },
-  {"V",        Utype::LIN,      1.0e3,           { 2, 1,-2, 0,-1, 0, 0, 0},  "J/C",                    "Volt",              true,  {}             },
+  {"C",        Utype::LIN,      1.0e0,           { 0, 0, 1, 0, 1, 0, 0, 0},  "A*s",                    "coulomb",           true,  {}             },
+  {"H",        Utype::LIN,      1.0e3,           { 2, 1,-2, 0,-2, 0, 0, 0},  "Wb/A",                   "Henry",             true,  {}             },
+  {"Ohm",      Utype::LIN,      1.0e3,           { 2, 1,-3, 0,-2, 0, 0, 0},  "V/A",                    "Ohm",               true,  {}             },
+  {"V",        Utype::LIN,      1.0e3,           { 2, 1,-3, 0,-1, 0, 0, 0},  "J/C",                    "Volt",              true,  {}             },
   {"lx",       Utype::LIN,      1.0e0,           {-2, 0, 0, 0, 0, 1, 0, 2},  "lm/m2",                  "lux",               false, {}             },
-  {"F",        Utype::LIN,      1.0e-3,          {-2,-1, 2, 0, 2, 0, 0, 0},  "C/V",                    "Farad",             true,  {}             },
-  {"S",        Utype::LIN,      1.0e-3,          {-2,-1, 1, 0, 2, 0, 0, 0},  "Ohm-1",                  "Siemens",           true,  {}             },
+  {"F",        Utype::LIN,      1.0e-3,          {-2,-1, 4, 0, 2, 0, 0, 0},  "C/V",                    "Farad",             true,  {}             },
+  {"S",        Utype::LIN,      1.0e-3,          {-2,-1, 3, 0, 2, 0, 0, 0},  "Ohm-1",                  "Siemens",           true,  {}             },
   {"kat",      Utype::LIN,      1,               { 0, 0,-1, 0, 0, 0, 1, 0},  "mol/s",                  "katal",             true,  {}             },
   			           
   // percentages	           	      
@@ -167,8 +167,8 @@ std::vector<UnitStruct> UnitList = {
   // natural constants              
   {"[a_0]",    LIN_CST,         5.291772109e-11, { 1, 0, 0, 0, 0, 0, 0, 0},  "5.29177210903e-11*m",    "Bohr radius",       false, {}             },
   {"[c]",      LIN_CST,         2.99792458e8,    { 1, 0,-1, 0, 0, 0, 0, 0},  "299792458*m/s",          "speed of light",    false, {}             },
-  {"[e]",      LIN_CST,         1.602176634e-19, { 0, 0, 0, 0, 1, 0, 0, 0},  "1.602176634e-19*C",      "elem. charge",      false, {}             },
-  {"[eps_0]",  LIN_CST,         8.854188e-15,    {-3,-1, 2, 0, 2, 0, 0, 0},  "8.854187817e-12*F/m",    "permit. of vac.",   false, {}             },
+  {"[e]",      LIN_CST,         1.602176634e-19, { 0, 0, 1, 0, 1, 0, 0, 0},  "1.602176634e-19*C",      "elem. charge",      false, {}             },
+  {"[eps_0]",  LIN_CST,         8.854188e-15,    {-3,-1, 4, 0, 2, 0, 0, 0},  "8.854187817e-12*F/m",    "permit. of vac.",   false, {}             },
   {"[G]",      LIN_CST,         6.672590e-14,    { 3,-1,-2, 0, 0, 0, 0, 0},  "6.67259e-11*m3/(kg*s2)", "grav. const.",      false, {}             },
   {"[g]",      LIN_CST,         9.806650e0,      { 1, 0,-2, 0, 0, 0, 0, 0},  "9.80665*m/s2",           "grav. accel.",      false, {}             },
   {"[h]",      LIN_CST,         6.626076e-31,    { 2, 1,-1, 0, 0, 0, 0, 0},  "6.6260755e-34*J*s",      "Planck const.",     false, {}             },
@@ -176,10 +176,10 @@ std::vector<UnitStruct> UnitList = {
   {"[H_0]",    LIN_CST,         2.197232394e-18, { 0, 0,-1, 0, 0, 0, 0, 0},  "67.8*km/(s*Mpc)",        "Hubble const.",     false, {}             },
   {"[k]",      LIN_CST,         1.380658e-20,    { 2, 1,-2,-1, 0, 0, 0, 0},  "1.380658e-23*J/K",       "Boltzmann const.",  false, {}             },
   {"[k_B]",    LIN_CST,         1.380658e-20,    { 2, 1,-2,-1, 0, 0, 0, 0},  "[k]",                    "Boltzmann const.",  false, {}             },
-  {"[k_e]",    LIN_CST,         8.9875517923e12, { 3, 1,-2, 0,-2, 0, 0, 0},  "8.9875517923e9*N*m2/C2", "Coulomb const.",    false, {}             },
+  {"[k_e]",    LIN_CST,         8.9875517923e12, { 3, 1,-4, 0,-2, 0, 0, 0},  "8.9875517923e9*N*m2/C2", "Coulomb const.",    false, {}             },
   {"[L_sol]",  LIN_CST,         3.826e29,        { 2, 1,-3, 0, 0, 0, 0, 0},  "3.826e33*erg/s",         "Solar luminosity",  false, {}             },
   {"[M_sol]",  LIN_CST,         1.98847e33,      { 0, 1, 0, 0, 0, 0, 0, 0},  "1.98847e30*kg",          "Solar mass",        false, {}             },
-  {"[mu_0]",   LIN_CST,         1.256637e-3,     { 1, 1, 0, 0,-2, 0, 0, 0},  "4*[pi]*1e-7*N/A2",       "permeab. of vac.",  false, {}             },
+  {"[mu_0]",   LIN_CST,         1.256637e-3,     { 1, 1,-2, 0,-2, 0, 0, 0},  "4*[pi]*1e-7*N/A2",       "permeab. of vac.",  false, {}             },
   {"[mu_B]",   LIN_CST,         1.67262e-24,     { 0, 1, 0, 0, 0, 0, 0, 0},  "1.67262e-24*g",          "Bohr magneton",     false, {}             },
   {"[m_e]",    LIN_CST,         9.109383e-28,    { 0, 1, 0, 0, 0, 0, 0, 0},  "9.1093837015e-31*kg",    "electron mass",     false, {}             },
   {"[m_p]",    LIN_CST,         1.672623e-24,    { 0, 1, 0, 0, 0, 0, 0, 0},  "1.6726231e-24*g",        "proton mass",       false, {}             },
