@@ -84,8 +84,8 @@ void display_linear_units() {
     Dimensions dim = uv.baseunits.dimensions();
     std::cout << std::setfill(' ') << std::setw(9)  << std::left << unit.symbol;
     std::cout << std::setfill(' ') << std::setw(19) << std::left << unit.name;
-    std::cout << std::setfill(' ') << std::setw(13) << std::left << dim.to_string('n');
-    std::cout << std::setfill(' ') << std::setw(15) << std::left << dim.to_string('p');
+    std::cout << std::setfill(' ') << std::setw(13) << std::left << dim.to_string(Dformat::NUM);
+    std::cout << std::setfill(' ') << std::setw(15) << std::left << dim.to_string(Dformat::PHYS);
     std::cout << std::setfill(' ') << std::setw(21) << std::left << unit.definition;
     std::cout << std::scientific << std::endl;
   }
@@ -101,8 +101,8 @@ void display_constants() {
     Dimensions dim = uv.baseunits.dimensions();
     std::cout << std::setfill(' ') << std::setw(9)  << std::left << unit.symbol;
     std::cout << std::setfill(' ') << std::setw(19) << std::left << unit.name;
-    std::cout << std::setfill(' ') << std::setw(13) << std::left << dim.to_string('n');
-    std::cout << std::setfill(' ') << std::setw(15) << std::left << dim.to_string('p');
+    std::cout << std::setfill(' ') << std::setw(13) << std::left << dim.to_string(Dformat::NUM);
+    std::cout << std::setfill(' ') << std::setw(15) << std::left << dim.to_string(Dformat::PHYS);
     std::cout << std::setfill(' ') << std::setw(21) << std::left << unit.definition;
     std::cout << std::scientific << std::endl;
   }
@@ -152,9 +152,19 @@ int main(int argc, char * argv[]) {
   }
   std::vector<std::string> convert;
   try {
+    Dformat format = Dformat::NUM|Dformat::PHYS;
+    convert = input.getCmdOption("-si");
+    if (!convert.empty()) {
+      format = format | Dformat::SI;
+    }
+    convert = input.getCmdOption("-cgs");
+    if (!convert.empty()) {
+      format = format | Dformat::CGS;
+    }
     convert = input.getCmdOption("-d");
     if (!convert.empty()) {
-      std::cout << Quantity(convert[0]).value.baseunits.dimensions().to_string('p') << std::endl;
+      Dimensions dim = Quantity(convert[0]).value.baseunits.dimensions();
+      std::cout << dim.to_string(format) << std::endl;
     }
     convert = input.getCmdOption("-b");
     if (!convert.empty()) {

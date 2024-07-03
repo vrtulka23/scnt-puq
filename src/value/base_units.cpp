@@ -128,6 +128,8 @@ Dimensions BaseUnits::dimensions() const {
     }
     for (auto &unit: UnitList) {
       if (unit.symbol==bu.unit) {
+	if ((unit.utype & Utype::LIN)==Utype::LIN)  // unit requires conversion of temperatures
+	  dim.utype = dim.utype | Utype::LIN;
 	if (unit.utype==Utype::TMP)  // unit requires conversion of temperatures
 	  dim.utype = dim.utype | unit.utype;
 	dim.symbols.push_back(unit.symbol);

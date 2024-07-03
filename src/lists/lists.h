@@ -46,11 +46,12 @@ struct UnitPrefixStruct {
 };
 extern std::vector<UnitPrefixStruct> UnitPrefixList;
 
+typedef std::array<EXPONENT_TYPE, NUM_BASEDIM> BaseDimensions;
 struct UnitStruct {
   std::string symbol;
   Utype utype;
   MAGNITUDE_TYPE magnitude;
-  EXPONENT_TYPE dimensions[NUM_BASEDIM];
+  BaseDimensions dimensions;
   std::string definition;
   std::string name;
   bool use_prefixes;

@@ -6,21 +6,41 @@
 #include "../settings.h"
 #include "../lists/lists.h"
 
-typedef std::array<EXPONENT_TYPE, NUM_BASEDIM> PhysicalDimensions;
+enum class Dformat : std::uint8_t {
+  SI   = 0b00000001,  // m/kg/s
+  CGS  = 0b00000010,  // cm/g/s;
+  NUM  = 0b00000100,  // numerical value
+  PHYS = 0b00001000,  // physical value
+};
+
+inline Dformat operator|(Dformat lhs, Dformat rhs) {
+    return static_cast<Dformat>(
+        static_cast<std::underlying_type_t<Dformat>>(lhs) |
+        static_cast<std::underlying_type_t<Dformat>>(rhs)
+    );
+}
+
+inline Dformat operator&(Dformat lhs, Dformat rhs) {
+    return static_cast<Dformat>(
+        static_cast<std::underlying_type_t<Dformat>>(lhs) &
+        static_cast<std::underlying_type_t<Dformat>>(rhs)
+    );
+}
+
 class Dimensions {
 public:
   MAGNITUDE_TYPE numerical; 
-  PhysicalDimensions physical;
+  BaseDimensions physical;
   std::vector<std::string> symbols;
   Utype utype;
   Dimensions();
   Dimensions(const MAGNITUDE_TYPE& n);
-  Dimensions(const MAGNITUDE_TYPE& n, const PhysicalDimensions& p): utype(Utype::NUL), numerical(n), physical(p) {};
+  Dimensions(const MAGNITUDE_TYPE& n, const BaseDimensions& p): utype(Utype::NUL), numerical(n), physical(p) {};
 #ifdef MAGNITUDE_ERRORS
   Dimensions(const MAGNITUDE_PRECISION& m, const MAGNITUDE_PRECISION& e);
-  Dimensions(const MAGNITUDE_PRECISION& m, const MAGNITUDE_PRECISION& e, const PhysicalDimensions& p): utype(Utype::NUL), numerical(m,e), physical(p) {};
+  Dimensions(const MAGNITUDE_PRECISION& m, const MAGNITUDE_PRECISION& e, const BaseDimensions& p): utype(Utype::NUL), numerical(m,e), physical(p) {};
 #endif
-  std::string to_string(char which='a') const;
+  std::string to_string(Dformat format=Dformat::NUM|Dformat::PHYS) const;
   bool operator==(const Dimensions& d) const;
   bool operator!=(const Dimensions& d) const;
 };
@@ -67,24 +87,6 @@ public:
   std::size_t size() const;
   void rebase();
   Dimensions dimensions() const;
-};
-
-class ConversionException: public std::exception {
-private:
-  std::string message;  
-public:
-  ConversionException(std::string m) : message(m) {}
-  ConversionException(const Dimensions& dim1, const Dimensions& dim2) {
-    message = "Incompatible physical dimensions: "+dim1.to_string('p')+" != "+dim2.to_string('p');
-  }
-  ConversionException(const BaseUnits& bu1, const BaseUnits& bu2) {
-    Dimensions dim1 = bu1.dimensions();
-    Dimensions dim2 = bu2.dimensions();
-    ConversionException(dim1, dim2);
-  }
-  const char * what () const noexcept override {
-    return message.c_str();
-  }
 };
 
 class UnitValue {

@@ -1,5 +1,6 @@
 #include <sstream>
 #include <iostream>
+#include <algorithm>
 
 #include "../settings.h"
 #include "unit_value.h"
@@ -26,32 +27,57 @@ Dimensions::Dimensions(const MAGNITUDE_PRECISION& m, const MAGNITUDE_PRECISION& 
 
 #endif
 
-std::string Dimensions::to_string(char which) const {
+inline std::string _numerical_to_string(MAGNITUDE_TYPE numerical, const BaseDimensions& physical,
+					Dformat& format) {
   std::stringstream ss;
-  if (which=='a' || which=='n') {
+  if ((format&Dformat::SI)==Dformat::SI) {
+    numerical = numerical * (MAGNITUDE_TYPE)(std::pow(1e-3,(EXPONENT_REAL_PRECISION)physical[1]));
+  } else if ((format&Dformat::CGS)==Dformat::CGS) {
+    numerical = numerical * (MAGNITUDE_TYPE)(std::pow(1e2,(EXPONENT_REAL_PRECISION)physical[0]));
+  }
 #if defined(MAGNITUDE_ERRORS)
-    if (numerical.value!=1 || which=='n')
-      ss << numerical.to_string() << SYMBOL_MULTIPLY;
+  if (numerical.value!=1 && (format&Dformat::NUM)==Dformat::NUM)
+    ss << numerical.to_string() << SYMBOL_MULTIPLY;
 #elif defined(MAGNITUDE_ARRAYS)
-    if (numerical!=1 || which=='n')
-      ss << numerical.to_string() << SYMBOL_MULTIPLY;
+  if (numerical!=1 && (format&Dformat::NUM)==Dformat::NUM)
+    ss << numerical.to_string() << SYMBOL_MULTIPLY;
 #else
-    if (numerical!=1 || which=='n')
-      ss << numerical << std::scientific << SYMBOL_MULTIPLY;
+  if (numerical!=1 && (format&Dformat::NUM)==Dformat::NUM)
+    ss << numerical << std::scientific << SYMBOL_MULTIPLY;
+#endif
+  return ss.str();
+}
+
+
+inline std::string _physical_to_string(const BaseDimensions& physical, Dformat& format) {
+  std::stringstream ss;
+  for (int i=0; i<NUM_BASEDIM; i++) {
+    std::string symbol = UnitList[i].symbol;
+    if (i==1 && (format&Dformat::SI)==Dformat::SI) {
+      symbol = "kg";
+    } else if (i==0 && (format&Dformat::CGS)==Dformat::CGS) {
+      symbol = "cm";
+    }
+#ifdef EXPONENT_FRACTIONS
+    if (physical[i]!=0)
+      ss << symbol << physical[i].to_string() << SYMBOL_MULTIPLY;
+#else
+    if (physical[i]==1)
+      ss << symbol << SYMBOL_MULTIPLY;
+    else if (physical[i]!=0)
+      ss << symbol << physical[i] << SYMBOL_MULTIPLY;
 #endif
   }
-  if (which=='a' || which=='p') {
-    for (int i=0; i<NUM_BASEDIM; i++) {
-#ifdef EXPONENT_FRACTIONS
-      if (physical[i]!=0)
-	ss << UnitList[i].symbol << physical[i].to_string() << SYMBOL_MULTIPLY;
-#else
-      if (physical[i]==1)
-	ss << UnitList[i].symbol << SYMBOL_MULTIPLY;
-      else if (physical[i]!=0)
-	ss << UnitList[i].symbol << physical[i] << SYMBOL_MULTIPLY;
-#endif
-    }
+  return ss.str();
+}
+
+std::string Dimensions::to_string(Dformat format) const {
+  std::stringstream ss;
+  if ((format&Dformat::NUM)==Dformat::NUM) {
+    ss << _numerical_to_string(numerical, physical, format);
+  }
+  if ((format&Dformat::PHYS)==Dformat::PHYS) {
+    ss << _physical_to_string(physical, format);
   }
   std::string s = ss.str();
   return s.substr(0,s.size()-1);

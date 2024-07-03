@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "../src/value/unit_value.h"
+#include "../src/converter.h"
 
 TEST(UnitValue, Initialization) {
 
@@ -75,28 +76,6 @@ TEST(UnitValue, UnitConversion) {
   
 }
 
-TEST(UnitValue, UnitConversionTemp) {
-
-  UnitValue v;
-
-  v = UnitValue("23*K").convert("Cel");
-  EXPECT_EQ(v.to_string(), "-250.15*Cel");
-  v = UnitValue("23*K").convert("degF");
-  EXPECT_EQ(v.to_string(), "-418.27*degF");
-  v = UnitValue("23*K").convert("degR");
-  EXPECT_EQ(v.to_string(), "41.4*degR");
-
-  v = UnitValue("23*Cel").convert("K");
-  EXPECT_EQ(v.to_string(), "296.15*K");
-  v = UnitValue("23*Cel").convert("degF");
-  EXPECT_EQ(v.to_string(), "73.4*degF");
-  v = UnitValue("23*Cel").convert("degR");
-  EXPECT_EQ(v.to_string(), "533.07*degR");
-
-  // TODO: implement rest of the tests
-  
-}
-
 TEST(UnitValue, ArithmeticsAdd) {
 
   UnitValue q1,q2,q3;
@@ -116,7 +95,7 @@ TEST(UnitValue, ArithmeticsAdd) {
   EXPECT_EQ(q1.to_string(), "30006*cm2*s-2");  
   
   q3 = UnitValue(3,"cm2");      // different units
-  EXPECT_THROW(q1+q3,  ConversionException);
+  EXPECT_THROW(q1+q3,  ConvDimExcept);
   
 }
 
@@ -139,7 +118,7 @@ TEST(UnitValue, ArithmeticsSubtract) {
   EXPECT_EQ(q1.to_string(), "5.9997*m2*s-2");
   
   q3 = UnitValue(3,"cm2");      // different units
-  EXPECT_THROW(q1-q3,  ConversionException);
+  EXPECT_THROW(q1-q3,  ConvDimExcept);
   
 }
 
