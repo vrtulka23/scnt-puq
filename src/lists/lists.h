@@ -50,7 +50,7 @@ typedef std::array<EXPONENT_TYPE, NUM_BASEDIM> BaseDimensions;
 struct UnitStruct {
   std::string symbol;
   Utype utype;
-  MAGNITUDE_TYPE magnitude;
+  MAGNITUDE_PRECISION magnitude;
   BaseDimensions dimensions;
   std::string definition;
   std::string name;

@@ -6,17 +6,6 @@
 
 #ifdef MAGNITUDE_ARRAYS
 
-class ArraySizeException : public std::exception {
-private:
-  std::string message;  
-public:
-  ArraySizeException(std::string m) : message(m) {}
-  ArraySizeException(const ArrayValue& v1, const ArrayValue& v2) : message("Arrays have different sizes: "+std::to_string(v1.size())+" != "+std::to_string(v2.size())) {}
-  const char * what () const noexcept override {
-    return message.c_str();
-  }
-};
-
 inline void mutating_operation(ArrayValue& v1, const ArrayValue& v2,
 			       void (*func)(MAGNITUDE_PRECISION& v1,
 					    const MAGNITUDE_PRECISION& v2)) {
@@ -33,22 +22,22 @@ inline void mutating_operation(ArrayValue& v1, const ArrayValue& v2,
     throw ArraySizeException(v1, v2);
 }
 
-inline ArrayValue const_operation(const ArrayValue& v1, const ArrayValue& v2,
-				  MAGNITUDE_PRECISION (*func)(const MAGNITUDE_PRECISION& v1,
-							      const MAGNITUDE_PRECISION& v2)) {
-  ArrayValue av;
-  if (v1.size()==v2.size())    // arrays have same sizes
-    for (int i=0; i<v1.size(); i++)
-      av.push_back(func(v1[i],v2[i]));
-  else if (v1.size()==1)       // first value is a scalar
-    for (int i=0; i<v2.size(); i++)
-      av.push_back(func(v1[0],v2[i]));
-  else if (v2.size()==1)       // second value is a scalar
-    for (int i=0; i<v1.size(); i++)
-      av.push_back(func(v1[i],v2[0]));
+Array Array::const_operation(const Array& a1, const Array& a2,
+			     MAGNITUDE_PRECISION (*func)(const MAGNITUDE_PRECISION& v1,
+							 const MAGNITUDE_PRECISION& v2)) {
+  Array a;
+  if (a1.size()==a2.size())    // arrays have same sizes
+    for (int i=0; i<a1.size(); i++)
+      a.append(func(a1[i],a2[i]));
+  else if (a1.size()==1)       // first value is a scalar
+    for (int i=0; i<a2.size(); i++)
+      a.append(func(a1[0],a2[i]));
+  else if (a2.size()==1)       // second value is a scalar
+    for (int i=0; i<a1.size(); i++)
+      a.append(func(a1[i],a2[0]));
   else                         // arrays have different sizes
-    throw ArraySizeException(v1, v2);
-  return av;
+    throw ArraySizeException(a1, a2);
+  return a;
 }
 
 Array Array::filled(const MAGNITUDE_PRECISION& v, const size_t &s) {
@@ -102,8 +91,7 @@ Array operator+(const Array& a1, const Array& a2) {
   auto fn = [](const MAGNITUDE_PRECISION& v1, const MAGNITUDE_PRECISION& v2) {
     return v1 + v2;
   };
-  ArrayValue av = const_operation(a1.value, a2.value, fn);
-  return Array(av);
+  return Array::const_operation(a1.value, a2.value, fn);
 }
 
 void Array::operator-=(const Array& a) {
@@ -124,8 +112,7 @@ Array operator-(const Array& a1, const Array& a2) {
   auto fn = [](const MAGNITUDE_PRECISION& v1, const MAGNITUDE_PRECISION& v2) {
     return v1 - v2;
   };
-  ArrayValue av = const_operation(a1.value, a2.value, fn);
-  return Array(av);
+  return Array::const_operation(a1.value, a2.value, fn);
 }
 
 void Array::operator*=(const Array& a) {
@@ -139,8 +126,7 @@ Array operator*(const Array& a1, const Array& a2) {
   auto fn = [](const MAGNITUDE_PRECISION& v1, const MAGNITUDE_PRECISION& v2) {
     return v1 * v2;
   };
-  ArrayValue av = const_operation(a1.value, a2.value, fn);
-  return Array(av);
+  return Array::const_operation(a1.value, a2.value, fn);
 }
 
 void Array::operator/=(const Array& a) {
@@ -154,35 +140,8 @@ Array operator/(const Array& a1, const Array& a2) {
   auto fn = [](const MAGNITUDE_PRECISION& v1, const MAGNITUDE_PRECISION& v2) {
     return v1 / v2;
   };
-  ArrayValue av = const_operation(a1.value, a2.value, fn);
-  return Array(av);
+  return Array::const_operation(a1.value, a2.value, fn);
 }
-
-void Array::pow(const EXPONENT_TYPE& e) {
-  for (int i=0; i<value.size(); i++)
-    value[i] = std::pow(value[i], (EXPONENT_REAL_PRECISION)e);
-}
-
-Array pow(const Array &a, const EXPONENT_TYPE& e) {
-  ArrayValue av;
-  for (int i=0; i<a.value.size(); i++)
-    av.push_back(std::pow(a.value[i], (EXPONENT_REAL_PRECISION)e));
-  return Array(av);
-}
-
-#ifdef EXPONENT_FRACTIONS
-void Array::pow(const EXPONENT_INT_PRECISION& e) {
-  for (int i=0; i<value.size(); i++)
-    value[i] = std::pow(value[i], e);
-}
-
-Array pow(const Array &a, const EXPONENT_INT_PRECISION& e) {
-  ArrayValue av;
-  for (int i=0; i<a.value.size(); i++)
-    av.push_back(std::pow(a.value[i], e));
-  return Array(av);
-}
-#endif
 
 bool Array::operator==(const Array& a) const {
   if (value.size()==a.value.size()) {    // arrays have same sizes
@@ -216,34 +175,17 @@ bool Array::operator!=(const Array& a) const {
   return false;
 }
 
-Array log10(const Array& a) {
-  ArrayValue av;
-  for (int i=0; i<a.value.size(); i++)
-    av.push_back(std::log10(a.value[i]));
-  return Array(av);
+void Array::pow(const EXPONENT_TYPE& e) {
+  for (int i=0; i<value.size(); i++)
+    value[i] = std::pow(value[i], (EXPONENT_REAL_PRECISION)e);
 }
 
-Array floor(const Array& a) {
-  ArrayValue av;
-  for (int i=0; i<a.value.size(); i++)
-    av.push_back(std::floor(a.value[i]));
-  return Array(av);
+#ifdef EXPONENT_FRACTIONS
+void Array::pow(const EXPONENT_INT_PRECISION& e) {
+  for (int i=0; i<value.size(); i++)
+    value[i] = std::pow(value[i], e);
 }
-
-Array abs(const Array& a) {
-  ArrayValue av;
-  for (int i=0; i<a.value.size(); i++)
-    av.push_back(std::abs(a.value[i]));
-  return Array(av);
-}
-
-Array max(const Array& a1, const Array& a2) {
-  auto fn = [](const MAGNITUDE_PRECISION& v1, const MAGNITUDE_PRECISION& v2) {
-    return std::max(v1, v2);
-  };
-  ArrayValue av = const_operation(a1.value, a2.value, fn);
-  return Array(av);
-}
+#endif
 
 ArrayValue::const_iterator Array::begin() const {
   return value.begin();

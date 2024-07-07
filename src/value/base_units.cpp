@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "../settings.h"
+#include "../nostd.h"
 #include "unit_value.h"
 #include "../solver/unit_solver.h"
 
@@ -118,26 +119,20 @@ Dimensions BaseUnits::dimensions() const {
   for (auto &bu: baseunits) {
     for (auto &prefix: UnitPrefixList) {
       if (prefix.symbol==bu.prefix) {
-#if defined(MAGNITUDE_ERRORS) || defined(MAGNITUDE_ARRAYS)
-	dim.numerical *= pow(prefix.magnitude, (EXPONENT_REAL_PRECISION)bu.exponent);
-#else
-	dim.numerical *= std::pow(prefix.magnitude, (EXPONENT_REAL_PRECISION)bu.exponent);
-#endif
+	dim.numerical *= nostd::pow(prefix.magnitude, (EXPONENT_TYPE)bu.exponent);
 	break;
       }
     }
     for (auto &unit: UnitList) {
       if (unit.symbol==bu.unit) {
-	if ((unit.utype & Utype::LIN)==Utype::LIN)  // unit requires conversion of temperatures
+	if ((unit.utype & Utype::LIN)==Utype::LIN)  // standard linear conversion
 	  dim.utype = dim.utype | Utype::LIN;
-	if (unit.utype==Utype::TMP)  // unit requires conversion of temperatures
+	if (unit.utype==Utype::TMP)                 // unit requires conversion of temperatures
+	  dim.utype = dim.utype | unit.utype;
+	if (unit.utype==Utype::LOG)                 // unit requires logarithmic conversions
 	  dim.utype = dim.utype | unit.utype;
 	dim.symbols.push_back(unit.symbol);
-#if defined(MAGNITUDE_ERRORS) || defined(MAGNITUDE_ARRAYS)
-	dim.numerical *= pow(unit.magnitude, (EXPONENT_REAL_PRECISION)bu.exponent);
-#else
-	dim.numerical *= std::pow(unit.magnitude, (EXPONENT_REAL_PRECISION)bu.exponent);
-#endif
+	dim.numerical *= nostd::pow(unit.magnitude, (EXPONENT_TYPE)bu.exponent);
 	for (int i=0; i<NUM_BASEDIM; i++) {
 	  dim.physical[i] += unit.dimensions[i] * bu.exponent;
 	}

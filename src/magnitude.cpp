@@ -5,6 +5,7 @@
 #include <algorithm>
 
 #include "magnitude.h"
+#include "nostd.h"
 
 #ifdef MAGNITUDE_ERRORS
 
@@ -132,15 +133,9 @@ const Magnitude multiply(const Magnitude* m, const Magnitude* n) {
   } else if (m->error!=0 && n->error==0) {
     nm.error = m->error * n->value;    
   } else {
-#ifdef MAGNITUDE_ARRAYS
-    Array maxerror = abs((m->value+m->error)*(n->value+n->error) - nm.value);
-    Array minerror = abs((m->value-m->error)*(n->value-n->error) - nm.value);
-    nm.error = max(maxerror,minerror);
-#else
-    MAGNITUDE_PRECISION maxerror = std::abs((m->value+m->error)*(n->value+n->error) - nm.value);
-    MAGNITUDE_PRECISION minerror = std::abs((m->value-m->error)*(n->value-n->error) - nm.value);
-    nm.error = std::max(maxerror,minerror);
-#endif
+    MAGNITUDE_VALUE maxerror = nostd::abs((m->value+m->error)*(n->value+n->error) - nm.value);
+    MAGNITUDE_VALUE minerror = nostd::abs((m->value-m->error)*(n->value-n->error) - nm.value);
+    nm.error = nostd::max(maxerror,minerror);
   }
   return nm;
 }
@@ -163,27 +158,15 @@ const Magnitude divide(const Magnitude* m, const Magnitude* n) {
   if (m->error==0 && n->error==0) {
       nm.error = 0;
   } else if (m->error==0 && n->error!=0) {
-#ifdef MAGNITUDE_ARRAYS
-    Array maxerror = abs(m->value/(n->value+n->error) - nm.value);
-    Array minerror = abs(m->value/(n->value-n->error) - nm.value);
-    nm.error = max(maxerror,minerror);
-#else
-    MAGNITUDE_PRECISION maxerror = std::abs(m->value/(n->value+n->error) - nm.value);
-    MAGNITUDE_PRECISION minerror = std::abs(m->value/(n->value-n->error) - nm.value);
-    nm.error = std::max(maxerror,minerror);
-#endif
+    MAGNITUDE_VALUE maxerror = nostd::abs(m->value/(n->value+n->error) - nm.value);
+    MAGNITUDE_VALUE minerror = nostd::abs(m->value/(n->value-n->error) - nm.value);
+    nm.error = nostd::max(maxerror,minerror);
   } else if (m->error!=0 && n->error==0) {
     nm.error = m->error / n->value;    
   } else {
-#ifdef MAGNITUDE_ARRAYS
-    Array maxerror = abs((m->value+m->error)/(n->value-n->error) - nm.value);
-    Array minerror = abs((m->value-m->error)/(n->value+n->error) - nm.value);
-    nm.error = max(maxerror,minerror);
-#else
-    MAGNITUDE_PRECISION maxerror = std::abs((m->value+m->error)/(n->value-n->error) - nm.value);
-    MAGNITUDE_PRECISION minerror = std::abs((m->value-m->error)/(n->value+n->error) - nm.value);
-    nm.error = std::max(maxerror,minerror);
-#endif
+    MAGNITUDE_VALUE maxerror = nostd::abs((m->value+m->error)/(n->value-n->error) - nm.value);
+    MAGNITUDE_VALUE minerror = nostd::abs((m->value-m->error)/(n->value+n->error) - nm.value);
+    nm.error = nostd::max(maxerror,minerror);
   }
   return nm;
 }
@@ -198,27 +181,10 @@ void Magnitude::operator/=(const Magnitude& m) {
   error = nm.error;
 }
 
-/*
- *  Rise magnitude to the power of an exponent (not a binary operation!!)
- */
-Magnitude pow(const Magnitude& m, const EXPONENT_TYPE& e) {
-  Magnitude nm;
-#ifdef MAGNITUDE_ARRAYS
-  nm.value = pow(m.value, (EXPONENT_REAL_PRECISION)e);
-#else
-  nm.value = std::pow(m.value, (EXPONENT_REAL_PRECISION)e);
-#endif
-  return nm;
-}
-
 void Magnitude::pow(const EXPONENT_TYPE& e) {
-#ifdef MAGNITUDE_ARRAYS
-  value.pow((EXPONENT_REAL_PRECISION)e);
-#else
-  value = std::pow(value, (EXPONENT_REAL_PRECISION)e);
-#endif
-}
-
+  value = nostd::pow(value, (EXPONENT_REAL_PRECISION)e);
+} 
+ 
 bool Magnitude::operator==(const Magnitude& a) const {
   return (value==a.value) && (error==a.error);
 };

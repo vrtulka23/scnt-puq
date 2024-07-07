@@ -4,6 +4,7 @@
 #import "settings.h"
 
 #ifdef EXPONENT_FRACTIONS
+
 class Exponent {
 private:
   EXPONENT_INT_PRECISION numerator;
@@ -28,6 +29,7 @@ public:
   std::string to_string() const;
   void reduce();
 };
+
 #endif
 
 #endif // PUQ_EXPONENT_H

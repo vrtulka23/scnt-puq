@@ -51,9 +51,11 @@ std::vector<UnitStruct> UnitList = {
   {"yr",       Utype::LIN,      3.155760e7,      { 0, 0, 1, 0, 0, 0, 0, 0},  "yr_j",                   "year",              true,  {"k","m","G"}  },
   			      
   // units of temperature	
-  {"Cel",      Utype::TMP,      1,               { 0, 0, 0, 1, 0, 0, 0, 0},  "",                       "degree Celsius",    false, {}             },
   {"degR",     LIN_TMP,         5./9.,           { 0, 0, 0, 1, 0, 0, 0, 0},  "5/9*K",                  "degree Rankine",    false, {}             },
-  {"degF",     Utype::TMP,      1,               { 0, 0, 0, 1, 0, 0, 0, 0},  "",                       "degree Fahrenheit", false, {}             },
+#ifdef UNITS_TEMPERATURES
+  {"Cel",      Utype::TMP,      1,               { 0, 0, 0, 1, 0, 0, 0, 0},  "K",                      "degree Celsius",    false, {}             },
+  {"degF",     Utype::TMP,      1,               { 0, 0, 0, 1, 0, 0, 0, 0},  "K",                      "degree Fahrenheit", false, {}             },
+#endif
   			      
   // angular units	      
   {"deg",      Utype::LIN,      1.7453292e-2,    { 0, 0, 0, 0, 0, 0, 0, 1},  "2*[pi]*rad/360",         "angle degree",      false, {}             },
@@ -140,24 +142,26 @@ std::vector<UnitStruct> UnitList = {
   // percentages	           	      
   {"%",        Utype::LIN,      1e-2,            { 0, 0, 0, 0, 0, 0, 0, 0},  "1e-2",                   "percent",           false, {}             },
   {"ppth",     Utype::LIN,      1e-3,            { 0, 0, 0, 0, 0, 0, 0, 0},  "1e-3",                   "promile",           false, {}             },
-  
+
+#ifdef UNITS_LOGARITHMIC
   // logarithmic units and ratios
   {"PR",       LIN_LOG,         1,               { 0, 0, 0, 0, 0, 0, 0, 0},  "1",                      "Power ratio",       false, {}             }, 
   {"AR",       LIN_LOG,         1,               { 0, 0, 0, 0, 0, 0, 0, 0},  "1",                      "Amplitude ratio",   false, {}             },
-  {"Np",       Utype::LOG,      1,               { 0, 0, 0, 0, 0, 0, 0, 0},  "",                       "Nepers",            true,  {"c","d"}      },
-  {"B",        Utype::LOG,      1,               { 0, 0, 0, 0, 0, 0, 0, 0},  "",                       "Bel",               true,  {"d"}          },
-  {"Bm",       Utype::LOG,      1,               { 2, 1,-3, 0, 0, 0, 0, 0},  "",                       "bel-milliwatt",     true,  {"d"}          },
-  {"BmW",      Utype::LOG,      1,               { 2, 1,-3, 0, 0, 0, 0, 0},  "",                       "bel-milliwatt",     true,  {"d"}          },
-  {"BW",       Utype::LOG,      1,               { 2, 1,-3, 0, 0, 0, 0, 0},  "",                       "bel-watt",          true,  {"d"}          },
-  {"BV",       Utype::LOG,      1,               { 2, 1,-2, 0,-1, 0, 0, 0},  "",                       "bel-volt",          true,  {"d"}          },
-  {"BuV",      Utype::LOG,      1,               { 2, 1,-2, 0,-1, 0, 0, 0},  "",                       "bel-microvolt",     true,  {"d"}          },
-  {"BA",       Utype::LOG,      1,               { 0, 0,-1, 0, 1, 0, 0, 0},  "",                       "bel-amps",          true,  {"d"}          },
-  {"BuA",      Utype::LOG,      1,               { 0, 0,-1, 0, 1, 0, 0, 0},  "",                       "bel-microamps",     true,  {"d"}          },
-  {"BOhm",     Utype::LOG,      1,               { 2, 1,-1, 0,-2, 0, 0, 0},  "",                       "bel-ohms",          true,  {"d"}          },
-  {"BSPL",     Utype::LOG,      1,               {-1, 1,-2, 0, 0, 0, 0, 0},  "",                       "bel-SPL (Pa)",      true,  {"d"}          },
-  {"BSIL",     Utype::LOG,      1,               { 0, 1,-3, 0, 0, 0, 0, 0},  "",                       "bel-SIL (W/m2)",    true,  {"d"}          }, 
-  {"BSWL",     Utype::LOG,      1,               { 2, 1,-3, 0, 0, 0, 0, 0},  "",                       "bel-SWL (W)",       true,  {"d"}          },
-  			        			      
+  {"Np",       Utype::LOG,      1,               { 0, 0, 0, 0, 0, 0, 0, 0},  "1",                      "Nepers",            true,  {"c","d"}      },
+  {"B",        Utype::LOG,      1,               { 0, 0, 0, 0, 0, 0, 0, 0},  "1",                      "Bel",               true,  {"d"}          },
+  {"Bm",       Utype::LOG,      1,               { 2, 1,-3, 0, 0, 0, 0, 0},  "mW",                     "bel-milliwatt",     true,  {"d"}          },
+  {"BmW",      Utype::LOG,      1,               { 2, 1,-3, 0, 0, 0, 0, 0},  "mW",                     "bel-milliwatt",     true,  {"d"}          },
+  {"BW",       Utype::LOG,      1,               { 2, 1,-3, 0, 0, 0, 0, 0},  "W",                      "bel-watt",          true,  {"d"}          },
+  {"BV",       Utype::LOG,      1,               { 2, 1,-3, 0,-1, 0, 0, 0},  "V",                      "bel-volt",          true,  {"d"}          },
+  {"BuV",      Utype::LOG,      1,               { 2, 1,-3, 0,-1, 0, 0, 0},  "uV",                     "bel-microvolt",     true,  {"d"}          },
+  {"BA",       Utype::LOG,      1,               { 0, 0, 0, 0, 1, 0, 0, 0},  "A",                      "bel-amps",          true,  {"d"}          },
+  {"BuA",      Utype::LOG,      1,               { 0, 0, 0, 0, 1, 0, 0, 0},  "uA",                     "bel-microamps",     true,  {"d"}          },
+  {"BOhm",     Utype::LOG,      1,               { 2, 1,-3, 0,-2, 0, 0, 0},  "Ohm",                    "bel-ohms",          true,  {"d"}          },
+  {"BSPL",     Utype::LOG,      1,               {-1, 1,-2, 0, 0, 0, 0, 0},  "Pa",                     "bel-SPL (Pa)",      true,  {"d"}          },
+  {"BSIL",     Utype::LOG,      1,               { 0, 1,-3, 0, 0, 0, 0, 0},  "W/m2",                   "bel-SIL (W/m2)",    true,  {"d"}          }, 
+  {"BSWL",     Utype::LOG,      1,               { 2, 1,-3, 0, 0, 0, 0, 0},  "W",                      "bel-SWL (W)",       true,  {"d"}          },
+#endif
+  
   // dimensionless constants    
   {"[alpha]",  LIN_CST,         7.29735256e-3,   { 0, 0, 0, 0, 0, 0, 0, 0},  "7.29735256e-3",          "fine str. const.",  false, {}             },
   {"[euler]",  LIN_CST,         2.718282,        { 0, 0, 0, 0, 0, 0, 0, 0},  "2.718282",               "Euler's num.",      false, {}             },
@@ -190,4 +194,3 @@ std::vector<UnitStruct> UnitList = {
   {"[N_A]",    LIN_CST,         6.02214076e23,   { 0, 0, 0, 0, 0, 0,-1, 0},  "[N_0]/mol",              "Avogadro's const.", false, {}             },
 
 };
-

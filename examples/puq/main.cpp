@@ -9,7 +9,6 @@ public:
     for (int i=1; i < argc; ++i)
       this->tokens.push_back(std::string(argv[i]));
   }
-  /// @author iain
   const std::vector<std::string> getCmdOption(const std::string &option, const int nstr=1) const {
     std::vector<std::string>::const_iterator itr;
     std::vector<std::string> strs;
@@ -22,7 +21,6 @@ public:
     }
     return strs;
   }
-  /// @author iain
   bool cmdOptionExists(const std::string &option) const {
     return std::find(this->tokens.begin(), this->tokens.end(), option)
       != this->tokens.end();
@@ -109,6 +107,7 @@ void display_constants() {
   std::cout << std::endl;
 }
 
+#ifdef UNITS_TEMPERATURES
 void display_temperature_units() {
   table_header("Temperatures:", {"Symbol","Name"}, {9,19});
   for (size_t i=0; i<UnitList.size(); i++) {
@@ -120,7 +119,9 @@ void display_temperature_units() {
   }
   std::cout << std::endl;
 }
+#endif
 
+#ifdef UNITS_LOGARITHMIC
 void display_logarithmic_units() {
   table_header("Logarithmic units:", {"Symbol","Name"}, {9,19});
   for (size_t i=0; i<UnitList.size(); i++) {
@@ -132,6 +133,7 @@ void display_logarithmic_units() {
   }
   std::cout << std::endl;
 }
+#endif
 
 int main(int argc, char * argv[]) {
   InputParser input(argc, argv);
@@ -142,9 +144,11 @@ int main(int argc, char * argv[]) {
     std::cout << "puq -h                  dislay help" << std::endl;
     std::cout << "puq -v                  dislay current version" << std::endl;
     std::cout << "puq -d <expr>           get unit dimensions" << std::endl;
+    std::cout << "puq -d-si <expr>        get unit dimensions in SI base" << std::endl;
+    std::cout << "puq -d-cgs <expr>       get unit dimensions in CGS base" << std::endl;
     std::cout << "puq -b <expr>           get base units" << std::endl;
     std::cout << "puq -c <expr1> <expr2>  get <expr1> in units of <expr2>" << std::endl;
-    std::cout << "puq -l <list>           display list: prefix/base/derived/const" << std::endl;
+    std::cout << "puq -l <list>           display list: prefix/base/lin/log/temp/const" << std::endl;
     std::cout << std::endl;
   }
   else if(input.cmdOptionExists("-v")) {
@@ -152,19 +156,20 @@ int main(int argc, char * argv[]) {
   }
   std::vector<std::string> convert;
   try {
-    Dformat format = Dformat::NUM|Dformat::PHYS;
-    convert = input.getCmdOption("-si");
+    convert = input.getCmdOption("-d-si");
     if (!convert.empty()) {
-      format = format | Dformat::SI;
+      Dimensions dim = Quantity(convert[0]).value.baseunits.dimensions();
+      std::cout << dim.to_string(Dformat::NUM|Dformat::PHYS|Dformat::SI) << std::endl;
     }
-    convert = input.getCmdOption("-cgs");
+    convert = input.getCmdOption("-d-cgs");
     if (!convert.empty()) {
-      format = format | Dformat::CGS;
+      Dimensions dim = Quantity(convert[0]).value.baseunits.dimensions();
+      std::cout << dim.to_string(Dformat::NUM|Dformat::PHYS|Dformat::CGS) << std::endl;
     }
     convert = input.getCmdOption("-d");
     if (!convert.empty()) {
       Dimensions dim = Quantity(convert[0]).value.baseunits.dimensions();
-      std::cout << dim.to_string(format) << std::endl;
+      std::cout << dim.to_string() << std::endl;
     }
     convert = input.getCmdOption("-b");
     if (!convert.empty()) {
@@ -182,10 +187,14 @@ int main(int argc, char * argv[]) {
 	display_base_units();
       else if (convert[0]=="lin")
 	display_linear_units();
+#ifdef UNITS_LOGARITHMIC
       else if (convert[0]=="log")
 	display_logarithmic_units();
+#endif
+#ifdef UNITS_TEMPERATURES
       else if (convert[0]=="temp")
 	display_temperature_units();
+#endif
       else if (convert[0]=="const")
 	display_constants();
     }

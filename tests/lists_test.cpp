@@ -43,8 +43,8 @@ TEST(Lists, UnitDefinitions) {
 
   for (auto unit: UnitList) {
     
-    if ((unit.utype & Utype::LIN)!=Utype::LIN) // check only linear units
-      continue;
+    //if ((unit.utype & Utype::LIN)!=Utype::LIN) // check only linear units
+    //  continue;
     if ((unit.utype & Utype::BAS)==Utype::BAS) // ignore base units
       continue;
 
@@ -56,6 +56,14 @@ TEST(Lists, UnitDefinitions) {
     dim2 = Dimensions(uv2.magnitude*dim2.numerical, dim2.physical);
     std::string m2 = dim2.to_string();
 
+#ifdef UNITS_LOGARITHMIC
+    if (unit.utype == Utype::LOG) {
+      // For logarithmic units compare only the physical dimensionality
+      m1 = dim1.to_string(Dformat::PHYS);
+      m2 = dim2.to_string(Dformat::PHYS);
+    }
+#endif
+    
     EXPECT_EQ(m1, m2) << "Numerical dimension of unit '" << unit.symbol
 		      << "' does not match with its definition: "
 		      << m1 << " != " << m2;

@@ -4,6 +4,7 @@
 #include <bitset>
 #include <memory> 
 
+#include "nostd.h"
 #include "value/unit_value.h"
 
 class ConvDimExcept: public std::exception {
@@ -28,12 +29,11 @@ class NoConvExcept: public std::exception {
 private:
   std::string message;  
 public:
-  NoConvExcept() : message("This conversion is not available!") {}
+  NoConvExcept(const std::string& s1, const std::string& s2) : message("Conversion '"+s1+" -> "+s2+"' is not available!") {}
   const char * what () const noexcept override {
     return message.c_str();
   }
 };
-
 
 class Converter {
 private:
@@ -42,12 +42,13 @@ private:
   Dimensions dimensions1;
   Dimensions dimensions2;
   MAGNITUDE_TYPE _convert_linear(const MAGNITUDE_TYPE& m1, const MAGNITUDE_TYPE& m2);
+  MAGNITUDE_TYPE _convert_logarithmic(MAGNITUDE_TYPE m);
   MAGNITUDE_TYPE _convert_temperature(MAGNITUDE_TYPE m);
 public:
   Converter() {};
   Converter(const BaseUnits& bu1, const BaseUnits& bu2);
   Converter(const std::string& s1, const std::string& s2): Converter(BaseUnits(s1), BaseUnits(s2)) {};
-  MAGNITUDE_TYPE convert(const MAGNITUDE_TYPE& m1, const MAGNITUDE_TYPE& m2);
+  MAGNITUDE_TYPE convert(const MAGNITUDE_TYPE& m1, const MAGNITUDE_TYPE& m2=1);
 };
 
 #endif // PUQ_CONVERTER_H
