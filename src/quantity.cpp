@@ -2,6 +2,8 @@
 
 #include "quantity.h"
 
+namespace puq {
+
 Quantity::Quantity(const MAGNITUDE_TYPE &m, const std::string& s) {
   value = UnitValue(m, s);
 }
@@ -69,4 +71,6 @@ Quantity Quantity::convert(const std::string& s) const {
 Quantity Quantity::convert(const UnitValue& uv1) const {
   UnitValue uv2 = value.convert(uv1);
   return Quantity(uv2);
+}
+
 }

@@ -6,6 +6,8 @@
 #include "../settings.h"
 #include "../lists/lists.h"
 
+namespace puq {
+
 enum class Dformat : std::uint8_t {
   SI   = 0b00000001,  // m/kg/s
   CGS  = 0b00000010,  // cm/g/s;
@@ -121,4 +123,7 @@ public:
   UnitValue convert(const UnitValue& v) const;
 };
 
+}
+  
 #endif // PUQ_VALUE_H
+

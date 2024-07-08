@@ -6,8 +6,10 @@
 
 #include "settings.h"
 #include "magnitude.h"
+#include "value/value.h"
 #include "array.h"
 
+namespace puq {
 namespace nostd {
   
   /*
@@ -20,6 +22,30 @@ namespace nostd {
     return ss.str();
   }
 
+  inline std::string to_string(const BaseUnits& value) {
+    return value.to_string();
+  }
+  
+  inline std::string to_string(const Dimensions& value) {
+    return value.to_string();
+  }
+
+  inline std::string to_string(const bool& use_prefixes, const AllowedPrefixes& value) {
+    std::stringstream ss;
+    if (use_prefixes) {
+      if (value.size()>0) {
+	std::stringstream sss;
+	bool sep = false;
+	for (auto pref: value) {
+	  sss << (sep?", ":"") << pref;
+	  sep = true;
+	}
+	ss << sss.str();
+      } else ss << "all";
+    }
+    return ss.str();
+  }
+  
 #ifdef MAGNITUDE_ARRAYS
   inline std::string to_string(const Array& value) {
     return value.to_string();
@@ -202,6 +228,7 @@ namespace nostd {
   }
 #endif
   
+}
 }
 
 #endif // PUQ_NOSTD_H

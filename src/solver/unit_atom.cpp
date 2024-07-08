@@ -1,7 +1,9 @@
 #include <regex>
 #include <algorithm>
 
-#include "unit_solver.h"
+#include "solver.h"
+
+namespace puq {
 
 UnitValue UnitAtom::from_string(std::string expr_orig) {
   std::string expr = expr_orig;
@@ -46,7 +48,7 @@ UnitValue UnitAtom::from_string(std::string expr_orig) {
     expr = m[1];
     // determine unit
     UnitStruct munit;  // current candidate unit
-    for (auto unit: UnitList) {
+    for (auto unit: si::UnitList) {
       if (unit.symbol.size()>expr.size())           // symbol is longer than the expression
 	continue;
       if (unit.symbol.size()<=munit.symbol.size())  // symbol is smaller or equal to the current candidate symbol
@@ -74,7 +76,8 @@ UnitValue UnitAtom::from_string(std::string expr_orig) {
       if (munit.allowed_prefixes.size()>0) {
 	if (std::find(munit.allowed_prefixes.begin(), munit.allowed_prefixes.end(), bu.prefix) == munit.allowed_prefixes.end()) {
 	  std::stringstream ss;
-	  ss << "Unit prefix is not allowed: "+expr_orig+". Allowed prefixes are:";
+	  ss << "Given prefix is not allowed in unit: "+expr_orig << std::endl;
+	  ss << "Allowed prefixes are:";
 	  for (auto prefix: munit.allowed_prefixes) {
 	    ss << " " << prefix;
 	  }
@@ -108,4 +111,6 @@ void UnitAtom::math_multiply(UnitAtom *other) {
 
 void UnitAtom::math_divide(UnitAtom *other) {
   value /= other->value;
+}
+
 }

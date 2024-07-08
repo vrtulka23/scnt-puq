@@ -3,6 +3,8 @@
 
 #include "exponent.h"
 
+namespace puq {
+
 #ifdef EXPONENT_FRACTIONS
 
 void Exponent::operator+=(const Exponent& e) {
@@ -112,6 +114,8 @@ void Exponent::reduce() {
     numerator = numerator/gcd;
     denominator = denominator/gcd;
   }
+}
+
 }
 
 #endif // EXPONENT_FRACTIONS

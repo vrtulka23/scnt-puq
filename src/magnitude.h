@@ -4,6 +4,8 @@
 #include "settings.h"
 #include "array.h"
 
+namespace puq {
+
 #ifdef MAGNITUDE_ERRORS
 class Magnitude {
 public:
@@ -39,5 +41,7 @@ public:
   void pow(const EXPONENT_TYPE& e);
 };
 #endif
-
+  
+}
+  
 #endif // PUQ_MAGNITUDE_H

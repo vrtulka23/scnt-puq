@@ -6,6 +6,8 @@
 
 #ifdef MAGNITUDE_ARRAYS
 
+namespace puq {
+
 inline void mutating_operation(ArrayValue& v1, const ArrayValue& v2,
 			       void (*func)(MAGNITUDE_PRECISION& v1,
 					    const MAGNITUDE_PRECISION& v2)) {
@@ -195,4 +197,6 @@ ArrayValue::const_iterator Array::end() const {
   return value.end();
 }
 
+}
+  
 #endif

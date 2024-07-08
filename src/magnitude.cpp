@@ -7,6 +7,8 @@
 #include "magnitude.h"
 #include "nostd.h"
 
+namespace puq {
+  
 #ifdef MAGNITUDE_ERRORS
 
 #ifdef MAGNITUDE_ARRAYS
@@ -192,5 +194,7 @@ bool Magnitude::operator==(const Magnitude& a) const {
 bool Magnitude::operator!=(const Magnitude& a) const {
   return (value!=a.value) || (error!=a.error);
 };
+
+}
  
 #endif

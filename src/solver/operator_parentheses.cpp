@@ -1,4 +1,6 @@
-#include "unit_solver.h"
+#include "solver.h"
+
+namespace puq {
 
 bool OperatorParentheses::check(exs::Expression &expr) {
 #ifdef MAGNITUDE_ERRORS
@@ -39,3 +41,5 @@ void OperatorParentheses::operate_group(exs::TokenListBase<UnitAtom> *tokens) {
     tokens->put_left(group1);
   }
 };
+
+}

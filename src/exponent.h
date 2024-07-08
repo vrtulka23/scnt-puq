@@ -3,6 +3,8 @@
 
 #import "settings.h"
 
+namespace puq {
+
 #ifdef EXPONENT_FRACTIONS
 
 class Exponent {
@@ -32,4 +34,6 @@ public:
 
 #endif
 
+}
+  
 #endif // PUQ_EXPONENT_H

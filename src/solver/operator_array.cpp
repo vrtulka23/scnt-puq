@@ -1,5 +1,7 @@
-#include "unit_solver.h"
+#include "solver.h"
 
+namespace puq {
+  
 #ifdef MAGNITUDE_ARRAYS
 
 void OperatorArray::operate_group(exs::TokenListBase<UnitAtom> *tokens) {
@@ -29,3 +31,5 @@ void OperatorArray::operate_group(exs::TokenListBase<UnitAtom> *tokens) {
 };
 
 #endif
+
+}

@@ -1,5 +1,7 @@
 #import "lists.h"
 
+namespace puq {
+  
 std::vector<UnitPrefixStruct> UnitPrefixList = {
   {"Y",  1.0e24,  "1e24",  "yotta" },
   {"Z",  1.0e21,  "1e21",  "zetta" },
@@ -23,8 +25,7 @@ std::vector<UnitPrefixStruct> UnitPrefixList = {
   {"y",  1.0e-24, "1e-24", "yocto" },
 };
 	 
-	 
-	 
+}	 
 	 
 	 
 	 

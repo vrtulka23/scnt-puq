@@ -5,26 +5,26 @@
 
 TEST(Quantity, Initialization) {
 
-  Quantity q;                        // default initialization
+  puq::Quantity q;                        // default initialization
   EXPECT_EQ(q.to_string(), "1");
   
-  q = Quantity(1.23);                // magnitude
+  q = puq::Quantity(1.23);                // magnitude
   EXPECT_EQ(q.to_string(), "1.23");
 
-  q = Quantity(1.2,{{"k","m",3}});   // magnitude and dimensions
+  q = puq::Quantity(1.2,{{"k","m",3}});   // magnitude and dimensions
   EXPECT_EQ(q.to_string(), "1.2*km3");
   
-  UnitValue uv(1.2,{{"k","m",3}});
-  q = Quantity(uv);                  // UnitValue
+  puq::UnitValue uv(1.2,{{"k","m",3}});
+  q = puq::Quantity(uv);                  // UnitValue
   EXPECT_EQ(q.to_string(), "1.2*km3");
 
-  q = Quantity("23.34*g/cm3");       // from a unit expression
+  q = puq::Quantity("23.34*g/cm3");       // from a unit expression
   EXPECT_EQ(q.to_string(), "23.34*g*cm-3");
   
-  q = Quantity(1.23,"g/cm3");        // magnitude and a unit expression
+  q = puq::Quantity(1.23,"g/cm3");        // magnitude and a unit expression
   EXPECT_EQ(q.to_string(), "1.23*g*cm-3");
 
-  q = Quantity(1.23,"2*km3");        // magnitude and a unit expression with a number
+  q = puq::Quantity(1.23,"2*km3");        // magnitude and a unit expression with a number
   EXPECT_EQ(q.to_string(), "2.46*km3");
   
 }
@@ -33,16 +33,16 @@ TEST(Quantity, Initialization) {
 
 TEST(Quantity, InitializationErrors) {
 
-  Quantity q(1.23,0.01);             // magnitudes with errors
+  puq::Quantity q(1.23,0.01);             // magnitudes with errors
   EXPECT_EQ(q.to_string(), "1.230(10)");
 
-  q = Quantity(1.23,0.01,"km3");     // magnitude, errors and dimensions
+  q = puq::Quantity(1.23,0.01,"km3");     // magnitude, errors and dimensions
   EXPECT_EQ(q.to_string(), "1.230(10)*km3");
 
-  q = Quantity(1.23,0.01,"2*km3");   // magnitude, errors and dimensions with a number
+  q = puq::Quantity(1.23,0.01,"2*km3");   // magnitude, errors and dimensions with a number
   EXPECT_EQ(q.to_string(), "2.460(20)*km3");
 
-  q = Quantity("3.40(10)*km3");      // unit expression
+  q = puq::Quantity("3.40(10)*km3");      // unit expression
   EXPECT_EQ(q.to_string(), "3.40(10)*km3");
 }
 
@@ -51,54 +51,54 @@ TEST(Quantity, InitializationErrors) {
 
 TEST(Quantity, UnitConversion) {
 
-  Quantity q;
+  puq::Quantity q;
 
-  q = Quantity(6,"cm").convert("km");
+  q = puq::Quantity(6,"cm").convert("km");
   EXPECT_EQ(q.to_string(), "6e-05*km");
   
-  q = Quantity(1,"au").convert("km");
+  q = puq::Quantity(1,"au").convert("km");
   EXPECT_EQ(q.to_string(), "1.49598e+08*km");
 
 }
 
 TEST(Quantity, ArithmeticsAdd) {
 
-  Quantity q1,q2,q3;
+  puq::Quantity q1,q2,q3;
 
-  q1 = Quantity(6,"cm");   // same units
-  q2 = Quantity(3,"cm");
+  q1 = puq::Quantity(6,"cm");   // same units
+  q2 = puq::Quantity(3,"cm");
   q3 = q1 + q2;
   EXPECT_EQ(q3.to_string(), "9*cm");
   q1 += q2;
   EXPECT_EQ(q1.to_string(), "9*cm");
 
-  q3 = Quantity(3,"cm2");  // different units
-  EXPECT_THROW(q1+q3,  ConvDimExcept);
+  q3 = puq::Quantity(3,"cm2");  // different units
+  EXPECT_THROW(q1+q3,  puq::ConvDimExcept);
   
 }
 
 TEST(Quantity, ArithmeticsSubtract) {
 
-  Quantity q1,q2,q3;
+  puq::Quantity q1,q2,q3;
 
-  q1 = Quantity(6,"cm");
-  q2 = Quantity(3,"cm");
+  q1 = puq::Quantity(6,"cm");
+  q2 = puq::Quantity(3,"cm");
   q3 = q1 - q2;
   EXPECT_EQ(q3.to_string(), "3*cm");
   q1 -= q2;
   EXPECT_EQ(q1.to_string(), "3*cm");
 
-  q3 = Quantity(3,"cm2");
-  EXPECT_THROW(q1-q3,  ConvDimExcept);
+  q3 = puq::Quantity(3,"cm2");
+  EXPECT_THROW(q1-q3,  puq::ConvDimExcept);
   
 }
 
 TEST(Quantity, ArithmeticsMultiply) {
 
-  Quantity q1,q2,q3;
+  puq::Quantity q1,q2,q3;
 
-  q1 = Quantity(6,"cm3");
-  q2 = Quantity(3,"g2");
+  q1 = puq::Quantity(6,"cm3");
+  q2 = puq::Quantity(3,"g2");
   q3 = q1 * q2;
   EXPECT_EQ(q3.to_string(), "18*cm3*g2");
   q1 *= q2;
@@ -107,10 +107,10 @@ TEST(Quantity, ArithmeticsMultiply) {
 
 TEST(Quantity, ArithmeticsDivide) {
 
-  Quantity q1,q2,q3;
+  puq::Quantity q1,q2,q3;
   
-  q1 = Quantity(6,"cm3");
-  q2 = Quantity(3,"g2");
+  q1 = puq::Quantity(6,"cm3");
+  q2 = puq::Quantity(3,"g2");
   q3 = q1 / q2;
   EXPECT_EQ(q3.to_string(), "2*cm3*g-2");
   q1 /= q2;

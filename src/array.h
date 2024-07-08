@@ -9,6 +9,8 @@
 
 #ifdef MAGNITUDE_ARRAYS
 
+namespace puq {
+
 typedef std::vector<MAGNITUDE_PRECISION> ArrayValue;
 class Array {
 private:
@@ -57,6 +59,8 @@ public:
   }
 };
 
+}
+  
 #endif
 
 #endif // PUQ_ARRAY_H

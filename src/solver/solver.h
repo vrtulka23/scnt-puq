@@ -7,8 +7,10 @@
 
 #include "../settings.h"
 #include "../../external/exs-cpp/src/exs.h"
-#include "../value/unit_value.h"
+#include "../value/value.h"
 #include "../lists/lists.h"
+
+namespace puq {
 
 class UnitAtom: public exs::AtomBase<UnitValue> {
  public:
@@ -53,4 +55,6 @@ public:
   UnitAtom solve(std::string expression);
 };
 
+}
+  
 #endif // PUQ_SOLVER_H

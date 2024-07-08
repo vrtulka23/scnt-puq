@@ -3,6 +3,8 @@
 
 #include "converter.h"
 
+namespace puq {
+  
 MAGNITUDE_TYPE Converter::_convert_linear(const MAGNITUDE_TYPE& m1, const MAGNITUDE_TYPE& m2) {
   return (m1*dimensions1.numerical)/(m2*dimensions2.numerical);    
 }
@@ -154,3 +156,4 @@ MAGNITUDE_TYPE Converter::convert(const MAGNITUDE_TYPE& m1, const MAGNITUDE_TYPE
   throw NoConvExcept(baseunits1.to_string(), baseunits2.to_string());
 };
 
+}

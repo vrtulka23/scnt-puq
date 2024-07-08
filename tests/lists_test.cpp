@@ -2,7 +2,7 @@
 #include <set>
 
 #include "../src/lists/lists.h"
-#include "../src/value/unit_value.h"
+#include "../src/value/value.h"
 
 inline void check_symbol(std::set<std::string>& set, std::string symbol) {
   auto result = set.insert(symbol);
@@ -13,13 +13,13 @@ TEST(Lists, UniqueSymbols) {
   
   // unique prefixes
   std::set<std::string> prefixes;
-  for (auto prefix: UnitPrefixList) {
+  for (auto prefix: puq::UnitPrefixList) {
     check_symbol(prefixes, prefix.symbol);
   }
 
   // unique unit symbols
   std::set<std::string> units;
-  for (auto unit: UnitList) {
+  for (auto unit: puq::si::UnitList) {
     // unique unit symbol without a prefix
     check_symbol(units, unit.symbol);
     if (unit.use_prefixes) {
@@ -41,26 +41,26 @@ TEST(Lists, UniqueSymbols) {
 
 TEST(Lists, UnitDefinitions) {
 
-  for (auto unit: UnitList) {
+  for (auto unit: puq::si::UnitList) {
     
     //if ((unit.utype & Utype::LIN)!=Utype::LIN) // check only linear units
     //  continue;
-    if ((unit.utype & Utype::BAS)==Utype::BAS) // ignore base units
+    if ((unit.utype & puq::Utype::BAS)==puq::Utype::BAS) // ignore base units
       continue;
 
-    Dimensions dim1(unit.magnitude, unit.dimensions);
+    puq::Dimensions dim1(unit.magnitude, unit.dimensions);
     std::string m1 = dim1.to_string();
 
-    UnitValue uv2(unit.definition);
-    Dimensions dim2 = uv2.baseunits.dimensions();
-    dim2 = Dimensions(uv2.magnitude*dim2.numerical, dim2.physical);
+    puq::UnitValue uv2(unit.definition);
+    puq::Dimensions dim2 = uv2.baseunits.dimensions();
+    dim2 = puq::Dimensions(uv2.magnitude*dim2.numerical, dim2.physical);
     std::string m2 = dim2.to_string();
 
 #ifdef UNITS_LOGARITHMIC
-    if (unit.utype == Utype::LOG) {
+    if (unit.utype == puq::Utype::LOG) {
       // For logarithmic units compare only the physical dimensionality
-      m1 = dim1.to_string(Dformat::PHYS);
-      m2 = dim2.to_string(Dformat::PHYS);
+      m1 = dim1.to_string(puq::Dformat::PHYS);
+      m2 = dim2.to_string(puq::Dformat::PHYS);
     }
 #endif
     

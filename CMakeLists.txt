@@ -13,15 +13,17 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 message(STATUS "Version: ${CODE_VERSION}")
 
+file(GLOB source_files "src/*.cpp" "src/**/*.cpp")
+add_library(puqcpp STATIC ${source_files})
+
 file(GLOB examples LIST_DIRECTORIES true "examples/*")
 foreach(dirpath ${examples})
 
   get_filename_component(dirname ${dirpath} NAME)
   message("Compiling example: ${dirname}")
-  file(GLOB source_files "src/*.h" "src/*.cpp" "src/**/*.h" "src/**/*.cpp")
-  file(GLOB example_files "examples/${dirname}/*.h" "examples/${dirname}/*.cpp"
-                          "examples/${dirname}/**/*.h" "examples/${dirname}/**/*.cpp")
-  add_executable(${dirname} ${source_files} ${example_files} )
+  file(GLOB example_files "examples/${dirname}/*.cpp" "examples/${dirname}/**/*.cpp")
+  add_executable(${dirname} ${example_files} )
+  target_link_libraries(${dirname} puqcpp)
   target_compile_definitions(${dirname} PRIVATE CODE_VERSION="${CODE_VERSION}")
 
 install(TARGETS puq DESTINATION /usr/local/bin)
@@ -38,15 +40,12 @@ include_directories(${GTEST_INCLUDE_DIRS})
 # compile tests
 ################
 
-file(GLOB test_files "tests/*.h" "tests/*.cpp")
+file(GLOB test_files "tests/*.cpp")
 #list(REMOVE_ITEM source_files "${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp")
 
 enable_testing()
-add_executable(
-   TestSolver
-   ${test_files}
-   ${source_files}
-)
+add_executable(TestSolver ${test_files})
+target_link_libraries(TestSolver puqcpp)
 target_link_libraries(TestSolver GTest::gtest_main)
 
 include(GoogleTest)

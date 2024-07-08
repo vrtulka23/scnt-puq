@@ -4,8 +4,10 @@
 
 #include "../settings.h"
 #include "../nostd.h"
-#include "unit_value.h"
-#include "../solver/unit_solver.h"
+#include "value.h"
+#include "../solver/solver.h"
+
+namespace puq {
 
 BaseUnits::BaseUnits(const std::string& s) {
   UnitSolver solver;  
@@ -123,7 +125,7 @@ Dimensions BaseUnits::dimensions() const {
 	break;
       }
     }
-    for (auto &unit: UnitList) {
+    for (auto &unit: si::UnitList) {
       if (unit.symbol==bu.unit) {
 	if ((unit.utype & Utype::LIN)==Utype::LIN)  // standard linear conversion
 	  dim.utype = dim.utype | Utype::LIN;
@@ -141,4 +143,6 @@ Dimensions BaseUnits::dimensions() const {
     }
   }
   return dim;
+}
+
 }

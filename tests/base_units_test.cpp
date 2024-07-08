@@ -1,21 +1,21 @@
 #include <gtest/gtest.h>
 
-#include "../src/value/unit_value.h"
+#include "../src/value/value.h"
 
 TEST(BaseUnits, Initialization) {
 
   // Appending BaseUnit-s
-  BaseUnits bus;
-  BaseUnit bu1 = {"k","g",2};
+  puq::BaseUnits bus;
+  puq::BaseUnit bu1 = {"k","g",2};
   bus.append(bu1);
-  BaseUnit bu2("m","s",3);
+  puq::BaseUnit bu2("m","s",3);
   bus.append(bu2);
   bus.append("c","m",1);
   EXPECT_EQ(bus.size(), 3);
   EXPECT_EQ(bus.to_string(), "kg2*ms3*cm");
 
   // Using a string expression
-  bus = BaseUnits("kg*m2/s2");
+  bus = puq::BaseUnits("kg*m2/s2");
   EXPECT_EQ(bus.to_string(), "kg*m2*s-2");
   
 }
@@ -24,10 +24,10 @@ TEST(BaseUnits, Initialization) {
 
 TEST(BaseUnits, InitializationFractions) {
   
-  BaseUnits bus;
-  BaseUnit bu1 = {"k","g",2,1};
+  puq::BaseUnits bus;
+  puq::BaseUnit bu1 = {"k","g",2,1};
   bus.append(bu1);
-  BaseUnit bu2("m","s",3,2);
+  puq::BaseUnit bu2("m","s",3,2);
   bus.append(bu2);
   bus.append("c","m",1,1);
   EXPECT_EQ(bus.size(), 3);
@@ -39,7 +39,7 @@ TEST(BaseUnits, InitializationFractions) {
 
 TEST(BaseUnits, RemoveZeroExponents) {
   
-  BaseUnits bus;
+  puq::BaseUnits bus;
   bus.append("m","s",2);    // adding normal units
   bus.append("c","m",1);
   EXPECT_EQ(bus.size(), 2);
@@ -59,7 +59,7 @@ TEST(BaseUnits, RemoveZeroExponents) {
 
 TEST(BaseUnits, RemoveZeroExponentsFractions) {
   
-  BaseUnits bus;
+  puq::BaseUnits bus;
   bus.append("m","s",2);    // adding normal units
   bus.append("c","m",1,2);
   EXPECT_EQ(bus.size(), 2);
@@ -79,15 +79,15 @@ TEST(BaseUnits, RemoveZeroExponentsFractions) {
 
 TEST(BaseUnits, Dimensions) {
 
-  BaseUnits bus;
+  puq::BaseUnits bus;
   bus.append("k","m",1);
   bus.append("n","s",2);
   bus.append("m","g",3);
   EXPECT_EQ(bus.to_string(), "km*ns2*mg3");
-  Dimensions dim = bus.dimensions();
+  puq::Dimensions dim = bus.dimensions();
   EXPECT_EQ(dim.to_string(), "1e-24*m*g3*s2");
 
-  BaseUnits bus2;
+  puq::BaseUnits bus2;
   bus2.append("","au",2);;
   EXPECT_EQ(bus2.to_string(), "au2");
   dim = bus2.dimensions();

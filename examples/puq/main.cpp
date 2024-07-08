@@ -2,6 +2,7 @@
 #include <iomanip>
 #include <exception>
 #include "../../src/quantity.h"
+#include "../../src/nostd.h"
 
 class InputParser{
 public:
@@ -47,7 +48,7 @@ void table_header(std::string title, std::vector<std::string> header, std::vecto
 
 void display_prefixes() {
   table_header("Prefixes:", {"Symbol","Name","Magnitude"}, {8,7,11});
-  for (auto prefix: UnitPrefixList) {
+  for (auto prefix: puq::UnitPrefixList) {
     std::cout << std::setfill(' ') << std::setw(8)  << std::left << prefix.symbol;
     std::cout << std::setfill(' ') << std::setw(7)  << std::left << prefix.name;
     std::cout << std::setfill(' ') << std::setw(11) << std::left;
@@ -62,10 +63,10 @@ void display_prefixes() {
 }
 
 void display_base_units() {
-  table_header("Base units:", {"Symbol","Name"}, {8,9});
-  for (size_t i=0; i<UnitList.size(); i++) {
-    auto unit = UnitList[i];
-    if ((unit.utype & Utype::BAS)!=Utype::BAS) continue;
+  table_header("Base units:", {"Symbol","Name","Allowed prefixes"}, {8,9,22});
+  for (size_t i=0; i<puq::si::UnitList.size(); i++) {
+    auto unit = puq::si::UnitList[i];
+    if ((unit.utype & puq::Utype::BAS)!=puq::Utype::BAS) continue;
     std::cout << std::setfill(' ') << std::setw(8)  << std::left << unit.symbol;
     std::cout << std::setfill(' ') << std::setw(9)  << std::left << unit.name;
     std::cout << std::scientific << std::endl;
@@ -74,34 +75,35 @@ void display_base_units() {
 }
 
 void display_linear_units() {
-  table_header("Linear units:", {"Symbol","Name","Magnitude","Dimension","Definition"}, {9,19,13,15,21});
-  for (size_t i=0; i<UnitList.size(); i++) {
-    auto unit = UnitList[i];
-    if ((unit.utype & Utype::LIN)!=Utype::LIN) continue;
-    UnitValue uv(unit.symbol);
-    Dimensions dim = uv.baseunits.dimensions();
+  table_header("Linear units:", {"Symbol","Name","Magnitude","Dimension","Definition","Allowed prefixes"}, {9,19,13,15,25,22});
+  for (size_t i=0; i<puq::si::UnitList.size(); i++) {
+    auto unit = puq::si::UnitList[i];
+    if ((unit.utype & puq::Utype::LIN)!=puq::Utype::LIN) continue;
+    puq::UnitValue uv(unit.symbol);
+    puq::Dimensions dim = uv.baseunits.dimensions();
     std::cout << std::setfill(' ') << std::setw(9)  << std::left << unit.symbol;
     std::cout << std::setfill(' ') << std::setw(19) << std::left << unit.name;
-    std::cout << std::setfill(' ') << std::setw(13) << std::left << dim.to_string(Dformat::NUM);
-    std::cout << std::setfill(' ') << std::setw(15) << std::left << dim.to_string(Dformat::PHYS);
-    std::cout << std::setfill(' ') << std::setw(21) << std::left << unit.definition;
+    std::cout << std::setfill(' ') << std::setw(13) << std::left << dim.to_string(puq::Dformat::NUM);
+    std::cout << std::setfill(' ') << std::setw(15) << std::left << dim.to_string(puq::Dformat::PHYS);
+    std::cout << std::setfill(' ') << std::setw(25) << std::left << unit.definition;
+    std::cout << std::setfill(' ') << std::setw(22) << std::left << puq::nostd::to_string(unit.use_prefixes, unit.allowed_prefixes);
     std::cout << std::scientific << std::endl;
   }
   std::cout << std::endl;
 }
 
 void display_constants() {
-  table_header("Constants:", {"Symbol","Name","Magnitude","Dimension","Definition"}, {9,19,13,15,21});
-  for (size_t i=0; i<UnitList.size(); i++) {
-    auto unit = UnitList[i];
-    if ((unit.utype & Utype::CST)!=Utype::CST) continue;
-    UnitValue uv(unit.symbol);
-    Dimensions dim = uv.baseunits.dimensions();
+  table_header("Constants:", {"Symbol","Name","Magnitude","Dimension","Definition"}, {9,19,13,15,25});
+  for (size_t i=0; i<puq::si::UnitList.size(); i++) {
+    auto unit = puq::si::UnitList[i];
+    if ((unit.utype & puq::Utype::CST)!=puq::Utype::CST) continue;
+    puq::UnitValue uv(unit.symbol);
+    puq::Dimensions dim = uv.baseunits.dimensions();
     std::cout << std::setfill(' ') << std::setw(9)  << std::left << unit.symbol;
     std::cout << std::setfill(' ') << std::setw(19) << std::left << unit.name;
-    std::cout << std::setfill(' ') << std::setw(13) << std::left << dim.to_string(Dformat::NUM);
-    std::cout << std::setfill(' ') << std::setw(15) << std::left << dim.to_string(Dformat::PHYS);
-    std::cout << std::setfill(' ') << std::setw(21) << std::left << unit.definition;
+    std::cout << std::setfill(' ') << std::setw(13) << std::left << dim.to_string(puq::Dformat::NUM);
+    std::cout << std::setfill(' ') << std::setw(15) << std::left << dim.to_string(puq::Dformat::PHYS);
+    std::cout << std::setfill(' ') << std::setw(25) << std::left << unit.definition;
     std::cout << std::scientific << std::endl;
   }
   std::cout << std::endl;
@@ -109,12 +111,13 @@ void display_constants() {
 
 #ifdef UNITS_TEMPERATURES
 void display_temperature_units() {
-  table_header("Temperatures:", {"Symbol","Name"}, {9,19});
-  for (size_t i=0; i<UnitList.size(); i++) {
-    auto unit = UnitList[i];
-    if ((unit.utype & Utype::TMP)!=Utype::TMP) continue;
+  table_header("Temperatures:", {"Symbol","Name","Allowed prefixes"}, {9,19,22});
+  for (size_t i=0; i<puq::si::UnitList.size(); i++) {
+    auto unit = puq::si::UnitList[i];
+    if ((unit.utype & puq::Utype::TMP)!=puq::Utype::TMP) continue;
     std::cout << std::setfill(' ') << std::setw(9)  << std::left << unit.symbol;
     std::cout << std::setfill(' ') << std::setw(19) << std::left << unit.name;
+    std::cout << std::setfill(' ') << std::setw(22) << std::left << puq::nostd::to_string(unit.use_prefixes, unit.allowed_prefixes);
     std::cout << std::scientific << std::endl;
   }
   std::cout << std::endl;
@@ -123,17 +126,62 @@ void display_temperature_units() {
 
 #ifdef UNITS_LOGARITHMIC
 void display_logarithmic_units() {
-  table_header("Logarithmic units:", {"Symbol","Name"}, {9,19});
-  for (size_t i=0; i<UnitList.size(); i++) {
-    auto unit = UnitList[i];
-    if ((unit.utype & Utype::LOG)!=Utype::LOG) continue;
+  table_header("Logarithmic units:", {"Symbol","Name","Allowed prefixes"}, {9,19,22});
+  for (size_t i=0; i<puq::si::UnitList.size(); i++) {
+    auto unit = puq::si::UnitList[i];
+    if ((unit.utype & puq::Utype::LOG)!=puq::Utype::LOG) continue;
     std::cout << std::setfill(' ') << std::setw(9)  << std::left << unit.symbol;
     std::cout << std::setfill(' ') << std::setw(19) << std::left << unit.name;
+    std::cout << std::setfill(' ') << std::setw(22) << std::left << puq::nostd::to_string(unit.use_prefixes, unit.allowed_prefixes);
     std::cout << std::scientific << std::endl;
   }
   std::cout << std::endl;
 }
 #endif
+
+void display_info(std::string expr) {
+  puq::UnitValue uv = puq::Quantity(expr).value;
+  puq::BaseUnits bus = uv.baseunits;
+  puq::Dimensions dim = bus.dimensions();
+  std::cout << std::endl << "Expression information" << std::endl << std::endl;
+  std::cout << "Magnitude:   " << puq::nostd::to_string(uv.magnitude) << std::endl;
+  std::cout << "Base units:  " << puq::nostd::to_string(uv.baseunits) << std::endl;
+  std::cout << std::endl;
+  std::cout << "Dimensions:  MGS  " << dim.to_string() << std::endl;
+  std::cout << "             SI   " << dim.to_string(puq::Dformat::NUM|puq::Dformat::PHYS|puq::Dformat::SI) << std::endl;
+  std::cout << "             CGS  " << dim.to_string(puq::Dformat::NUM|puq::Dformat::PHYS|puq::Dformat::CGS) << std::endl;
+  std::stringstream ss; bool conv = false;
+  for (auto unit: puq::si::UnitList) {
+    if (puq::Dimensions(1,unit.dimensions) != dim) continue;
+    
+    ss << (conv?", ":"") << unit.symbol;
+    conv = true;
+  }
+  if (conv) {
+    std::cout << std::endl;
+    std::cout << "Conversions: " << ss.str() << std::endl;
+  }
+  table_header("Components:",
+	       {"Prefix","Symbol","Exponent","Name","Definition","Dimensions MGS","Allowed prefixes"},
+	       {8,8,10,19,21,22,22});
+  for (size_t i=0; i<puq::si::UnitList.size(); i++) {
+    auto unit = puq::si::UnitList[i];
+    for (auto bu: bus) {
+      if (bu.unit!=unit.symbol)
+	continue;
+      puq::BaseUnits bu_unit({bu});
+      std::cout << std::setfill(' ') << std::setw(8) << std::left << bu.prefix;
+      std::cout << std::setfill(' ') << std::setw(8) << std::left << bu.unit;
+      std::cout << std::setfill(' ') << std::setw(10) << std::left << ((bu.exponent.to_string()=="") ? "1" : bu.exponent.to_string());
+      std::cout << std::setfill(' ') << std::setw(19) << std::left << unit.name;
+      std::cout << std::setfill(' ') << std::setw(21) << std::left << unit.definition;
+      std::cout << std::setfill(' ') << std::setw(22) << std::left << bu_unit.dimensions().to_string();
+      std::cout << std::setfill(' ') << std::setw(22) << std::left << puq::nostd::to_string(unit.use_prefixes, unit.allowed_prefixes);
+      std::cout << std::scientific << std::endl;
+    }
+  }
+  std::cout << std::endl;
+}
 
 int main(int argc, char * argv[]) {
   InputParser input(argc, argv);
@@ -143,12 +191,9 @@ int main(int argc, char * argv[]) {
     std::cout << "Example of use:" << std::endl;
     std::cout << "puq -h                  dislay help" << std::endl;
     std::cout << "puq -v                  dislay current version" << std::endl;
-    std::cout << "puq -d <expr>           get unit dimensions" << std::endl;
-    std::cout << "puq -d-si <expr>        get unit dimensions in SI base" << std::endl;
-    std::cout << "puq -d-cgs <expr>       get unit dimensions in CGS base" << std::endl;
-    std::cout << "puq -b <expr>           get base units" << std::endl;
     std::cout << "puq -c <expr1> <expr2>  get <expr1> in units of <expr2>" << std::endl;
     std::cout << "puq -l <list>           display list: prefix/base/lin/log/temp/const" << std::endl;
+    std::cout << "puq -i <expr>           get information about an unit" << std::endl;
     std::cout << std::endl;
   }
   else if(input.cmdOptionExists("-v")) {
@@ -156,28 +201,13 @@ int main(int argc, char * argv[]) {
   }
   std::vector<std::string> convert;
   try {
-    convert = input.getCmdOption("-d-si");
+    convert = input.getCmdOption("-i");
     if (!convert.empty()) {
-      Dimensions dim = Quantity(convert[0]).value.baseunits.dimensions();
-      std::cout << dim.to_string(Dformat::NUM|Dformat::PHYS|Dformat::SI) << std::endl;
-    }
-    convert = input.getCmdOption("-d-cgs");
-    if (!convert.empty()) {
-      Dimensions dim = Quantity(convert[0]).value.baseunits.dimensions();
-      std::cout << dim.to_string(Dformat::NUM|Dformat::PHYS|Dformat::CGS) << std::endl;
-    }
-    convert = input.getCmdOption("-d");
-    if (!convert.empty()) {
-      Dimensions dim = Quantity(convert[0]).value.baseunits.dimensions();
-      std::cout << dim.to_string() << std::endl;
-    }
-    convert = input.getCmdOption("-b");
-    if (!convert.empty()) {
-      std::cout << Quantity(convert[0]).value.baseunits.to_string() << std::endl;
+      display_info(convert[0]);
     }
     convert = input.getCmdOption("-c",2);
     if (!convert.empty()) {
-      std::cout << Quantity(convert[0]).convert(convert[1]).to_string() << std::endl;
+      std::cout << puq::Quantity(convert[0]).convert(convert[1]).to_string() << std::endl;
     }
     convert = input.getCmdOption("-l");
     if (!convert.empty()) {

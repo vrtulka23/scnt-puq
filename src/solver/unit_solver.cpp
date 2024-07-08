@@ -1,7 +1,9 @@
 #include <memory>
 #include <regex>
 
-#include "unit_solver.h"
+#include "solver.h"
+
+namespace puq {
 
 UnitSolver::UnitSolver() {
 
@@ -30,4 +32,6 @@ UnitAtom UnitSolver::solve(std::string expression) {
     return solver->solve("1");
   else
     return solver->solve(expression);
+}
+
 }

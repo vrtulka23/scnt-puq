@@ -8,6 +8,8 @@
 #include "../settings.h"
 #include "../magnitude.h"
 
+namespace puq {
+
 enum class Utype : std::uint8_t {
   NUL = 0b00000000,  // empty flag
   BAS = 0b00000001,  // base units
@@ -47,6 +49,7 @@ struct UnitPrefixStruct {
 extern std::vector<UnitPrefixStruct> UnitPrefixList;
 
 typedef std::array<EXPONENT_TYPE, NUM_BASEDIM> BaseDimensions;
+typedef std::set<std::string> AllowedPrefixes;
 struct UnitStruct {
   std::string symbol;
   Utype utype;
@@ -55,8 +58,12 @@ struct UnitStruct {
   std::string definition;
   std::string name;
   bool use_prefixes;
-  std::set<std::string> allowed_prefixes;
+  AllowedPrefixes allowed_prefixes;
 };
-extern std::vector<UnitStruct> UnitList;
+namespace si {
+  extern std::vector<UnitStruct> UnitList;
+}
 
+}
+  
 #endif // PUQ_LISTS_H

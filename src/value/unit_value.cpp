@@ -2,9 +2,11 @@
 #include <iostream>
 #include <memory>
 
-#include "unit_value.h"
-#include "../solver/unit_solver.h"
+#include "value.h"
+#include "../solver/solver.h"
 #include "../converter.h"
+
+namespace puq {
 
 UnitValue::UnitValue(const std::string& s) {
   UnitSolver solver;  
@@ -94,4 +96,6 @@ UnitValue UnitValue::convert(const UnitValue& v) const {
 UnitValue UnitValue::convert(const BaseUnits& bu) const {
   Converter conv(baseunits, bu);
   return UnitValue(conv.convert(magnitude, 1), bu);
+}
+
 }

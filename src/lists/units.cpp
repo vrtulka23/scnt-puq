@@ -1,20 +1,24 @@
 #import "lists.h"
 
+namespace puq {
+
 Utype LIN_BAS     = Utype::LIN|Utype::BAS;
 Utype LIN_BAS_TMP = Utype::LIN|Utype::BAS|Utype::TMP;
 Utype LIN_TMP     = Utype::LIN|Utype::TMP;
 Utype LIN_CST     = Utype::LIN|Utype::CST;
 Utype LIN_LOG     = Utype::LIN|Utype::LOG;
 
+namespace si {
+  
 std::vector<UnitStruct> UnitList = {
-  {"m",        LIN_BAS,         1.0,             { 1, 0, 0, 0, 0, 0, 0, 0},  "",                       "meter",             true,  {}             },
-  {"g",        LIN_BAS,         1.0,             { 0, 1, 0, 0, 0, 0, 0, 0},  "",                       "gram",              true,  {}             },
-  {"s",        LIN_BAS,         1.0,             { 0, 0, 1, 0, 0, 0, 0, 0},  "",                       "second",            true,  {}             },
-  {"K",        LIN_BAS_TMP,     1.0,             { 0, 0, 0, 1, 0, 0, 0, 0},  "",                       "Kelvin",            true,  {}             },
-  {"A",        LIN_BAS,         1.0,             { 0, 0, 0, 0, 1, 0, 0, 0},  "",                       "Ampere",            true,  {}             },
-  {"cd",       LIN_BAS,         1.0,             { 0, 0, 0, 0, 0, 1, 0, 0},  "",                       "candela",           true,  {}             },
-  {"mol",      LIN_BAS,         1.0,             { 0, 0, 0, 0, 0, 0, 1, 0},  "",                       "mole",              true,  {}             },
-  {"rad",      LIN_BAS,         1.0,             { 0, 0, 0, 0, 0, 0, 0, 1},  "",                       "radian",            true,  {"m"}          },
+  {"m",        LIN_BAS,         1.0,             { 1, 0, 0, 0, 0, 0, 0, 0},  "m",                      "meter",             true,  {}             },
+  {"g",        LIN_BAS,         1.0,             { 0, 1, 0, 0, 0, 0, 0, 0},  "g",                      "gram",              true,  {}             },
+  {"s",        LIN_BAS,         1.0,             { 0, 0, 1, 0, 0, 0, 0, 0},  "s",                      "second",            true,  {}             },
+  {"K",        LIN_BAS_TMP,     1.0,             { 0, 0, 0, 1, 0, 0, 0, 0},  "K",                      "Kelvin",            true,  {}             },
+  {"A",        LIN_BAS,         1.0,             { 0, 0, 0, 0, 1, 0, 0, 0},  "A",                      "Ampere",            true,  {}             },
+  {"cd",       LIN_BAS,         1.0,             { 0, 0, 0, 0, 0, 1, 0, 0},  "cd",                     "candela",           true,  {}             },
+  {"mol",      LIN_BAS,         1.0,             { 0, 0, 0, 0, 0, 0, 1, 0},  "mol",                    "mole",              true,  {}             },
+  {"rad",      LIN_BAS,         1.0,             { 0, 0, 0, 0, 0, 0, 0, 1},  "rad",                    "radian",            true,  {"m"}          },
 
   // units of length
   {"au",       Utype::LIN,      1.49597870e11,   { 1, 0, 0, 0, 0, 0, 0, 0},  "149597.870691*Mm",       "astr. unit",        false, {}             },
@@ -194,3 +198,7 @@ std::vector<UnitStruct> UnitList = {
   {"[N_A]",    LIN_CST,         6.02214076e23,   { 0, 0, 0, 0, 0, 0,-1, 0},  "[N_0]/mol",              "Avogadro's const.", false, {}             },
 
 };
+
+}
+  
+}

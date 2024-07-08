@@ -1,18 +1,18 @@
 #include <gtest/gtest.h>
 
-#include "../src/solver/unit_solver.h"
+#include "../src/solver/solver.h"
 
 TEST(UnitSolver, Initialization) {
 
-  UnitSolver solver;  
+  puq::UnitSolver solver;  
 
 }
 
 TEST(UnitSolver, Solve) {
 
-  UnitSolver solver;  
+  puq::UnitSolver solver;  
   
-  UnitAtom atom = solver.solve("");                  // empty string
+  puq::UnitAtom atom = solver.solve("");                  // empty string
   EXPECT_EQ(atom.value.to_string(), "1");
 
   atom = solver.solve("3*(2.0e1/5.0)");              // only numbers
@@ -36,8 +36,8 @@ TEST(UnitSolver, Solve) {
 
 TEST(UnitSolver, SolveFractions) {
 
-  UnitSolver solver;  
-  UnitAtom atom = solver.solve("km-2:3"); // units with fractions
+  puq::UnitSolver solver;  
+  puq::UnitAtom atom = solver.solve("km-2:3"); // units with fractions
   EXPECT_EQ(atom.value.to_string(), "km-2:3");
 
   atom = solver.solve("m1:2*m-3:5");      // reduction of fractions
@@ -54,8 +54,8 @@ TEST(UnitSolver, SolveFractions) {
 
 TEST(UnitSolver, SolveArrays) {
 
-  UnitSolver solver;
-  UnitAtom atom = solver.solve("{20, 40.5, 6.8e1}"); // numerical array only
+  puq::UnitSolver solver;
+  puq::UnitAtom atom = solver.solve("{20, 40.5, 6.8e1}"); // numerical array only
   EXPECT_EQ(atom.value.to_string(), "{20, 40.5, ...}");
 
   atom = solver.solve("{20, 40.5, 6.8e1}*kg/s");     // numerical array with units

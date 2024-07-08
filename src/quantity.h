@@ -2,8 +2,10 @@
 #define PUQ_QUANTITY_H
 
 #include "settings.h"
-#include "value/unit_value.h"
-#include "solver/unit_solver.h"
+#include "value/value.h"
+#include "solver/solver.h"
+
+namespace puq {
 
 class Quantity {
 public:
@@ -35,5 +37,7 @@ public:
   Quantity convert(const Quantity& q) const;
   Quantity convert(const UnitValue& uv) const;
 };
+
+}
 
 #endif // PUQ_QUANTITY_H
