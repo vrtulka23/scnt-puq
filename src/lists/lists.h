@@ -63,6 +63,15 @@ struct UnitStruct {
 namespace si {
   extern std::vector<UnitStruct> UnitList;
 }
+namespace esu {
+  extern std::vector<UnitStruct> UnitList;
+}
+namespace emu {
+  extern std::vector<UnitStruct> UnitList;
+}
+namespace gauss {
+  extern std::vector<UnitStruct> UnitList;
+}
 
 }
   

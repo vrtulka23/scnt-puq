@@ -9,7 +9,7 @@ inline void check_symbol(std::set<std::string>& set, std::string symbol) {
   EXPECT_EQ(result.second, true) << "Duplicated symbol: "+symbol;
 }
 
-TEST(Lists, UniqueSymbols) {
+TEST(Lists, UniqueSymbolsSI) {
   
   // unique prefixes
   std::set<std::string> prefixes;
@@ -39,7 +39,7 @@ TEST(Lists, UniqueSymbols) {
   
 }
 
-TEST(Lists, UnitDefinitions) {
+TEST(Lists, UnitDefinitionsSI) {
 
   for (auto unit: puq::si::UnitList) {
     
@@ -70,3 +70,26 @@ TEST(Lists, UnitDefinitions) {
   }  
   
 }
+
+/*
+TEST(Lists, UnitDefinitionsESU) {
+
+  for (auto unit: puq::esu::UnitList) {
+    
+    if ((unit.utype & puq::Utype::BAS)==puq::Utype::BAS) // ignore base units
+      continue;
+
+    puq::Dimensions dim1(unit.magnitude, unit.dimensions);
+    std::string m1 = dim1.to_string();
+
+    puq::UnitValue uv2(unit.definition);
+    puq::Dimensions dim2 = uv2.baseunits.dimensions();
+    dim2 = puq::Dimensions(uv2.magnitude*dim2.numerical, dim2.physical);
+    std::string m2 = dim2.to_string();
+    
+    EXPECT_EQ(m1, m2) << "Numerical dimension of unit '" << unit.symbol
+		      << "' does not match with its definition: "
+		      << m1 << " != " << m2;
+  }  
+}
+*/

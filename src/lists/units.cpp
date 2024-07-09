@@ -114,6 +114,7 @@ std::vector<UnitStruct> UnitList = {
   {"hp",       Utype::LIN,      745700.0,        { 2, 1,-3, 0, 0, 0, 0, 0},  "745.7*W",                "horse power",       false, {}             },
   			           
   // units of velocity	           
+  {"kph",      Utype::LIN,      0.277778,        { 1, 0,-1, 0, 0, 0, 0, 0},  "km/h",                   "kilometer p. hour", false, {}             },
   {"mph",      Utype::LIN,      0.44704,         { 1, 0,-1, 0, 0, 0, 0, 0},  "0.44704*m/s",            "US miles per hour", false, {}             },
   {"kn",       Utype::LIN,      0.514444,        { 1, 0,-1, 0, 0, 0, 0, 0},  "0.514444*m/s",           "knot",              false, {}             },
   			           
@@ -200,5 +201,51 @@ std::vector<UnitStruct> UnitList = {
 };
 
 }
+
+namespace esu {
   
+std::vector<UnitStruct> UnitList = {
+  {"m",        LIN_BAS,         1.0,             { 1, 0, 0, 0, 0, 0, 0, 0},  "m",                      "meter",             true,  {}             },
+  {"g",        LIN_BAS,         1.0,             { 0, 1, 0, 0, 0, 0, 0, 0},  "g",                      "gram",              true,  {}             },
+  {"s",        LIN_BAS,         1.0,             { 0, 0, 1, 0, 0, 0, 0, 0},  "s",                      "second",            true,  {}             },
+  {"K",        LIN_BAS_TMP,     1.0,             { 0, 0, 0, 1, 0, 0, 0, 0},  "K",                      "Kelvin",            true,  {}             },
+
+  {"Gal",      Utype::LIN,      0.01,            { 1, 0,-2, 0, 0, 0, 0, 0},  "cm/s2",                  "Gal",               false, {}             },
+  {"dyn",      Utype::LIN,      0.01,            { 1, 1,-2, 0, 0, 0, 0, 0},  "g*cm/s2",                "dyne",              true,  {}             },
+  {"erg",      Utype::LIN,      0.0001,          { 2, 1,-2, 0, 0, 0, 0, 0},  "dyn*cm",                 "erg",               false, {}             },
+  {"Ba",       Utype::LIN,      100,             {-1, 1,-2, 0, 0, 0, 0, 0},  "dyn/cm2",                "Barye",             false, {}             },
+  {"P",        Utype::LIN,      100,             {-1, 1,-1, 0, 0, 0, 0, 0},  "g/(cm*s)",               "Poise",             true,  {"c"}          },
+  {"St",       Utype::LIN,      0.0001,          { 2, 0,-1, 0, 0, 0, 0, 0},  "cm2/s",                  "Stokes",            true,  {"c"}          },
+  {"Ka",       Utype::LIN,      100,             {-1, 0, 0, 0, 0, 0, 0, 0},  "cm-1",                   "Kayser",            false, {}             },
+				     
+  {"Oe",       Utype::LIN,      10,              {-1, 2,-1, 0, 0, 0, 0, 0},  "g1:2/(cm1:2*s)",      "Oersted",           false, {}             },
+  {"Gb",       Utype::LIN,      1.0,             {-1, 0, 0, 0, 1, 0, 0, 0},  "Oe*cm",                  "Gilbert",           false, {}             },
+  {"Mx",       Utype::LIN,      1e-05,           { 2, 1,-2, 0,-1, 0, 0, 0},  "dyn1:2*cm2",             "Maxwell",           false, {}             },
+  {"rad",      Utype::LIN,      0.01,            { 2, 0,-2, 0, 0, 0, 0, 0},  "100*erg/g",              "radiation dose",    false, {}             },
+};
+  
+}
+
+namespace emu {
+  
+std::vector<UnitStruct> UnitList = {
+  {"m",        LIN_BAS,         1.0,             { 1, 0, 0, 0, 0, 0, 0, 0},  "m",                      "meter",             true,  {}             },
+  {"g",        LIN_BAS,         1.0,             { 0, 1, 0, 0, 0, 0, 0, 0},  "g",                      "gram",              true,  {}             },
+  {"s",        LIN_BAS,         1.0,             { 0, 0, 1, 0, 0, 0, 0, 0},  "s",                      "second",            true,  {}             },
+  {"K",        LIN_BAS_TMP,     1.0,             { 0, 0, 0, 1, 0, 0, 0, 0},  "K",                      "Kelvin",            true,  {}             },
+};
+  
+}
+
+namespace gauss {
+  
+std::vector<UnitStruct> UnitList = {
+  {"m",        LIN_BAS,         1.0,             { 1, 0, 0, 0, 0, 0, 0, 0},  "m",                      "meter",             true,  {}             },
+  {"g",        LIN_BAS,         1.0,             { 0, 1, 0, 0, 0, 0, 0, 0},  "g",                      "gram",              true,  {}             },
+  {"s",        LIN_BAS,         1.0,             { 0, 0, 1, 0, 0, 0, 0, 0},  "s",                      "second",            true,  {}             },
+  {"K",        LIN_BAS_TMP,     1.0,             { 0, 0, 0, 1, 0, 0, 0, 0},  "K",                      "Kelvin",            true,  {}             },
+};
+  
+}
+
 }
