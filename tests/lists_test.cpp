@@ -71,7 +71,6 @@ TEST(Lists, UnitDefinitionsSI) {
   
 }
 
-/*
 TEST(Lists, UnitDefinitionsESU) {
 
   for (auto unit: puq::esu::UnitList) {
@@ -92,4 +91,4 @@ TEST(Lists, UnitDefinitionsESU) {
 		      << m1 << " != " << m2;
   }  
 }
-*/
+

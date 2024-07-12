@@ -13,6 +13,7 @@ private:
   EXPONENT_INT_PRECISION denominator;
 public:
   Exponent(): numerator(1), denominator(1) {}
+  Exponent(const EXPONENT_INT_PRECISION n[2]): numerator(n[0]), denominator(n[1]) {};
   Exponent(const EXPONENT_INT_PRECISION& n): numerator(n), denominator(1) {};
   Exponent(const EXPONENT_INT_PRECISION& n, const EXPONENT_INT_PRECISION& d): numerator(n), denominator(d) {};
   friend Exponent operator*(const Exponent& e1, const Exponent& e2);

@@ -17,6 +17,9 @@ enum class Utype : std::uint8_t {
   LOG = 0b00000100,  // logarithmic unit
   TMP = 0b00001000,  // temperature unit
   CST = 0b00010000,  // constant
+  ESU = 0b00100000,  // ESU unit
+  EMU = 0b01000000,  // EMU unit
+  GAU = 0b10000000,  // Gauss unit
 };
 
 inline Utype operator|(Utype lhs, Utype rhs) {
@@ -60,17 +63,18 @@ struct UnitStruct {
   bool use_prefixes;
   AllowedPrefixes allowed_prefixes;
 };
+typedef std::vector<UnitStruct> UnitListType;
 namespace si {
-  extern std::vector<UnitStruct> UnitList;
+  extern UnitListType UnitList;
 }
 namespace esu {
-  extern std::vector<UnitStruct> UnitList;
+  extern UnitListType UnitList;
 }
 namespace emu {
-  extern std::vector<UnitStruct> UnitList;
+  extern UnitListType UnitList;
 }
 namespace gauss {
-  extern std::vector<UnitStruct> UnitList;
+  extern UnitListType UnitList;
 }
 
 }

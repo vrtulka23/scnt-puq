@@ -203,25 +203,30 @@ std::vector<UnitStruct> UnitList = {
 }
 
 namespace esu {
-  
-std::vector<UnitStruct> UnitList = {
-  {"m",        LIN_BAS,         1.0,             { 1, 0, 0, 0, 0, 0, 0, 0},  "m",                      "meter",             true,  {}             },
-  {"g",        LIN_BAS,         1.0,             { 0, 1, 0, 0, 0, 0, 0, 0},  "g",                      "gram",              true,  {}             },
-  {"s",        LIN_BAS,         1.0,             { 0, 0, 1, 0, 0, 0, 0, 0},  "s",                      "second",            true,  {}             },
-  {"K",        LIN_BAS_TMP,     1.0,             { 0, 0, 0, 1, 0, 0, 0, 0},  "K",                      "Kelvin",            true,  {}             },
 
-  {"Gal",      Utype::LIN,      0.01,            { 1, 0,-2, 0, 0, 0, 0, 0},  "cm/s2",                  "Gal",               false, {}             },
-  {"dyn",      Utype::LIN,      0.01,            { 1, 1,-2, 0, 0, 0, 0, 0},  "g*cm/s2",                "dyne",              true,  {}             },
-  {"erg",      Utype::LIN,      0.0001,          { 2, 1,-2, 0, 0, 0, 0, 0},  "dyn*cm",                 "erg",               false, {}             },
-  {"Ba",       Utype::LIN,      100,             {-1, 1,-2, 0, 0, 0, 0, 0},  "dyn/cm2",                "Barye",             false, {}             },
-  {"P",        Utype::LIN,      100,             {-1, 1,-1, 0, 0, 0, 0, 0},  "g/(cm*s)",               "Poise",             true,  {"c"}          },
-  {"St",       Utype::LIN,      0.0001,          { 2, 0,-1, 0, 0, 0, 0, 0},  "cm2/s",                  "Stokes",            true,  {"c"}          },
-  {"Ka",       Utype::LIN,      100,             {-1, 0, 0, 0, 0, 0, 0, 0},  "cm-1",                   "Kayser",            false, {}             },
-				     
-  {"Oe",       Utype::LIN,      10,              {-1, 2,-1, 0, 0, 0, 0, 0},  "g1:2/(cm1:2*s)",      "Oersted",           false, {}             },
-  {"Gb",       Utype::LIN,      1.0,             {-1, 0, 0, 0, 1, 0, 0, 0},  "Oe*cm",                  "Gilbert",           false, {}             },
-  {"Mx",       Utype::LIN,      1e-05,           { 2, 1,-2, 0,-1, 0, 0, 0},  "dyn1:2*cm2",             "Maxwell",           false, {}             },
-  {"rad",      Utype::LIN,      0.01,            { 2, 0,-2, 0, 0, 0, 0, 0},  "100*erg/g",              "radiation dose",    false, {}             },
+Utype ESU_LIN         = Utype::ESU|Utype::LIN;
+Utype ESU_LIN_BAS     = Utype::ESU|Utype::LIN|Utype::BAS;
+Utype ESU_LIN_BAS_TMP = Utype::ESU|Utype::LIN|Utype::BAS|Utype::TMP;
+  
+typedef EXPONENT_INT_PRECISION FRC[2];
+std::vector<UnitStruct> UnitList = {
+  {"m",        ESU_LIN_BAS,     1.0,             { 1, 0, 0, 0, 0, 0, 0, 0},  "m",                      "meter",             true,  {}             },
+  {"g",        ESU_LIN_BAS,     1.0,             { 0, 1, 0, 0, 0, 0, 0, 0},  "g",                      "gram",              true,  {}             },
+  {"s",        ESU_LIN_BAS,     1.0,             { 0, 0, 1, 0, 0, 0, 0, 0},  "s",                      "second",            true,  {}             },
+  {"K",        ESU_LIN_BAS_TMP, 1.0,             { 0, 0, 0, 1, 0, 0, 0, 0},  "K",                      "Kelvin",            true,  {}             },
+
+  {"Gal",      ESU_LIN,         0.01,            { 1, 0,-2, 0, 0, 0, 0, 0},  "cm/s2",                  "Gal",               false, {}             },
+  {"dyn",      ESU_LIN,         0.01,            { 1, 1,-2, 0, 0, 0, 0, 0},  "g*cm/s2",                "dyne",              true,  {}             },
+  {"erg",      ESU_LIN,         0.0001,          { 2, 1,-2, 0, 0, 0, 0, 0},  "dyn*cm",                 "erg",               false, {}             },
+  {"Ba",       ESU_LIN,         100,             {-1, 1,-2, 0, 0, 0, 0, 0},  "dyn/cm2",                "Barye",             false, {}             },
+  {"P",        ESU_LIN,         100,             {-1, 1,-1, 0, 0, 0, 0, 0},  "g/(cm*s)",               "Poise",             true,  {"c"}          },
+  {"St",       ESU_LIN,         0.0001,          { 2, 0,-1, 0, 0, 0, 0, 0},  "cm2/s",                  "Stokes",            true,  {"c"}          },
+  {"Ka",       ESU_LIN,         100,             {-1, 0, 0, 0, 0, 0, 0, 0},  "cm-1",                   "Kayser",            false, {}             },
+			     	     
+  {"Oe",       ESU_LIN,         10,              {(FRC){-1,2}, (FRC){1,2}, -1, 0, 0, 0, 0, 0},  "g1:2/(cm1:2*s)",      "Oersted",           false, {}             },
+  {"Gb",       ESU_LIN,         1.0,             {(FRC){1,2}, (FRC){1,2}, -1, 0, 1, 0, 0, 0},   "Oe*cm",               "Gilbert",           false, {}             },
+  {"Mx",       ESU_LIN,         1e-05,           {(FRC){5,2}, (FRC){1,2},-1, 0, 0, 0, 0, 0},    "dyn1:2*cm2",          "Maxwell",           false, {}             },
+  {"rad",      ESU_LIN,         0.01,            { 2, 0,-2, 0, 0, 0, 0, 0},                     "100*erg/g",           "radiation dose",    false, {}             },
 };
   
 }
