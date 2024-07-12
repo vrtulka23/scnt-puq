@@ -19,7 +19,7 @@ TEST(Lists, UniqueSymbolsSI) {
 
   // unique unit symbols
   std::set<std::string> units;
-  for (auto unit: puq::si::UnitList) {
+  for (auto unit: puq::UnitList) {
     // unique unit symbol without a prefix
     check_symbol(units, unit.symbol);
     if (unit.use_prefixes) {
@@ -41,7 +41,7 @@ TEST(Lists, UniqueSymbolsSI) {
 
 TEST(Lists, UnitDefinitionsSI) {
 
-  for (auto unit: puq::si::UnitList) {
+  for (auto unit: puq::UnitList) {
     
     //if ((unit.utype & Utype::LIN)!=Utype::LIN) // check only linear units
     //  continue;
@@ -73,7 +73,9 @@ TEST(Lists, UnitDefinitionsSI) {
 
 TEST(Lists, UnitDefinitionsESU) {
 
-  for (auto unit: puq::esu::UnitList) {
+  puq::UnitList = puq::esu::UnitList;
+  
+  for (auto unit: puq::UnitList) {
     
     if ((unit.utype & puq::Utype::BAS)==puq::Utype::BAS) // ignore base units
       continue;
@@ -89,6 +91,9 @@ TEST(Lists, UnitDefinitionsESU) {
     EXPECT_EQ(m1, m2) << "Numerical dimension of unit '" << unit.symbol
 		      << "' does not match with its definition: "
 		      << m1 << " != " << m2;
-  }  
+  }
+  
+  puq::UnitList = puq::si::UnitList;
+
 }
 

@@ -64,6 +64,7 @@ struct UnitStruct {
   AllowedPrefixes allowed_prefixes;
 };
 typedef std::vector<UnitStruct> UnitListType;
+extern UnitListType UnitList;
 namespace si {
   extern UnitListType UnitList;
 }

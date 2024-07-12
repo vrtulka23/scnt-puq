@@ -125,7 +125,7 @@ Dimensions BaseUnits::dimensions() const {
 	break;
       }
     }
-    for (auto &unit: si::UnitList) {
+    for (auto &unit: UnitList) {
       if (unit.symbol==bu.unit) {
 	if ((unit.utype & Utype::LIN)==Utype::LIN)  // standard linear conversion
 	  dim.utype = dim.utype | Utype::LIN;

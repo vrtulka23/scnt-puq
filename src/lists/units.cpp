@@ -10,7 +10,7 @@ Utype LIN_LOG     = Utype::LIN|Utype::LOG;
 
 namespace si {
   
-std::vector<UnitStruct> UnitList = {
+UnitListType UnitList = {
   {"m",        LIN_BAS,         1.0,             { 1, 0, 0, 0, 0, 0, 0, 0},  "m",                      "meter",             true,  {}             },
   {"g",        LIN_BAS,         1.0,             { 0, 1, 0, 0, 0, 0, 0, 0},  "g",                      "gram",              true,  {}             },
   {"s",        LIN_BAS,         1.0,             { 0, 0, 1, 0, 0, 0, 0, 0},  "s",                      "second",            true,  {}             },
@@ -209,11 +209,15 @@ Utype ESU_LIN_BAS     = Utype::ESU|Utype::LIN|Utype::BAS;
 Utype ESU_LIN_BAS_TMP = Utype::ESU|Utype::LIN|Utype::BAS|Utype::TMP;
   
 typedef EXPONENT_INT_PRECISION FRC[2];
-std::vector<UnitStruct> UnitList = {
+UnitListType UnitList = {
   {"m",        ESU_LIN_BAS,     1.0,             { 1, 0, 0, 0, 0, 0, 0, 0},  "m",                      "meter",             true,  {}             },
   {"g",        ESU_LIN_BAS,     1.0,             { 0, 1, 0, 0, 0, 0, 0, 0},  "g",                      "gram",              true,  {}             },
   {"s",        ESU_LIN_BAS,     1.0,             { 0, 0, 1, 0, 0, 0, 0, 0},  "s",                      "second",            true,  {}             },
   {"K",        ESU_LIN_BAS_TMP, 1.0,             { 0, 0, 0, 1, 0, 0, 0, 0},  "K",                      "Kelvin",            true,  {}             },
+  {"A",        ESU_LIN_BAS,     1.0,             { 0, 0, 0, 0, 1, 0, 0, 0},  "A",                      "Ampere",            true,  {}             },
+  {"cd",       ESU_LIN_BAS,     1.0,             { 0, 0, 0, 0, 0, 1, 0, 0},  "cd",                     "candela",           true,  {}             },
+  {"mol",      ESU_LIN_BAS,     1.0,             { 0, 0, 0, 0, 0, 0, 1, 0},  "mol",                    "mole",              true,  {}             },
+  {"rad",      ESU_LIN_BAS,     1.0,             { 0, 0, 0, 0, 0, 0, 0, 1},  "rad",                    "radian",            true,  {"m"}          },
 
   {"Gal",      ESU_LIN,         0.01,            { 1, 0,-2, 0, 0, 0, 0, 0},  "cm/s2",                  "Gal",               false, {}             },
   {"dyn",      ESU_LIN,         0.01,            { 1, 1,-2, 0, 0, 0, 0, 0},  "g*cm/s2",                "dyne",              true,  {}             },
@@ -224,8 +228,8 @@ std::vector<UnitStruct> UnitList = {
   {"Ka",       ESU_LIN,         100,             {-1, 0, 0, 0, 0, 0, 0, 0},  "cm-1",                   "Kayser",            false, {}             },
 			     	     
   {"Oe",       ESU_LIN,         10,              {(FRC){-1,2}, (FRC){1,2}, -1, 0, 0, 0, 0, 0},  "g1:2/(cm1:2*s)",      "Oersted",           false, {}             },
-  {"Gb",       ESU_LIN,         1.0,             {(FRC){1,2}, (FRC){1,2}, -1, 0, 1, 0, 0, 0},   "Oe*cm",               "Gilbert",           false, {}             },
-  {"Mx",       ESU_LIN,         1e-05,           {(FRC){5,2}, (FRC){1,2},-1, 0, 0, 0, 0, 0},    "dyn1:2*cm2",          "Maxwell",           false, {}             },
+  {"Gb",       ESU_LIN,         0.1,             {(FRC){1,2},  (FRC){1,2}, -1, 0, 0, 0, 0, 0},  "Oe*cm",               "Gilbert",           false, {}             },
+  {"Mx",       ESU_LIN,         1e-05,           {(FRC){5,2},  (FRC){1,2}, -1, 0, 0, 0, 0, 0},  "dyn1:2*cm2",          "Maxwell",           false, {}             },
   {"rad",      ESU_LIN,         0.01,            { 2, 0,-2, 0, 0, 0, 0, 0},                     "100*erg/g",           "radiation dose",    false, {}             },
 };
   
@@ -233,7 +237,7 @@ std::vector<UnitStruct> UnitList = {
 
 namespace emu {
   
-std::vector<UnitStruct> UnitList = {
+UnitListType UnitList = {
   {"m",        LIN_BAS,         1.0,             { 1, 0, 0, 0, 0, 0, 0, 0},  "m",                      "meter",             true,  {}             },
   {"g",        LIN_BAS,         1.0,             { 0, 1, 0, 0, 0, 0, 0, 0},  "g",                      "gram",              true,  {}             },
   {"s",        LIN_BAS,         1.0,             { 0, 0, 1, 0, 0, 0, 0, 0},  "s",                      "second",            true,  {}             },
@@ -244,7 +248,7 @@ std::vector<UnitStruct> UnitList = {
 
 namespace gauss {
   
-std::vector<UnitStruct> UnitList = {
+UnitListType UnitList = {
   {"m",        LIN_BAS,         1.0,             { 1, 0, 0, 0, 0, 0, 0, 0},  "m",                      "meter",             true,  {}             },
   {"g",        LIN_BAS,         1.0,             { 0, 1, 0, 0, 0, 0, 0, 0},  "g",                      "gram",              true,  {}             },
   {"s",        LIN_BAS,         1.0,             { 0, 0, 1, 0, 0, 0, 0, 0},  "s",                      "second",            true,  {}             },
@@ -252,5 +256,7 @@ std::vector<UnitStruct> UnitList = {
 };
   
 }
-
+  
+UnitListType UnitList = si::UnitList;
+  
 }

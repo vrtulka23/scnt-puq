@@ -48,7 +48,7 @@ UnitValue UnitAtom::from_string(std::string expr_orig) {
     expr = m[1];
     // determine unit
     UnitStruct munit;  // current candidate unit
-    for (auto unit: si::UnitList) {
+    for (auto unit: UnitList) {
       if (unit.symbol.size()>expr.size())           // symbol is longer than the expression
 	continue;
       if (unit.symbol.size()<=munit.symbol.size())  // symbol is smaller or equal to the current candidate symbol

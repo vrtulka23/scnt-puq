@@ -64,8 +64,8 @@ void display_prefixes() {
 
 void display_base_units() {
   table_header("Base units:", {"Symbol","Name","Allowed prefixes"}, {8,9,22});
-  for (size_t i=0; i<puq::si::UnitList.size(); i++) {
-    auto unit = puq::si::UnitList[i];
+  for (size_t i=0; i<puq::UnitList.size(); i++) {
+    auto unit = puq::UnitList[i];
     if ((unit.utype & puq::Utype::BAS)!=puq::Utype::BAS) continue;
     std::cout << std::setfill(' ') << std::setw(8)  << std::left << unit.symbol;
     std::cout << std::setfill(' ') << std::setw(9)  << std::left << unit.name;
@@ -76,8 +76,8 @@ void display_base_units() {
 
 void display_linear_units() {
   table_header("Linear units:", {"Symbol","Name","Magnitude","Dimension","Definition","Allowed prefixes"}, {9,19,13,15,25,22});
-  for (size_t i=0; i<puq::si::UnitList.size(); i++) {
-    auto unit = puq::si::UnitList[i];
+  for (size_t i=0; i<puq::UnitList.size(); i++) {
+    auto unit = puq::UnitList[i];
     if ((unit.utype & puq::Utype::LIN)!=puq::Utype::LIN) continue;
     puq::UnitValue uv(unit.symbol);
     puq::Dimensions dim = uv.baseunits.dimensions();
@@ -94,8 +94,8 @@ void display_linear_units() {
 
 void display_constants() {
   table_header("Constants:", {"Symbol","Name","Magnitude","Dimension","Definition"}, {9,19,13,15,25});
-  for (size_t i=0; i<puq::si::UnitList.size(); i++) {
-    auto unit = puq::si::UnitList[i];
+  for (size_t i=0; i<puq::UnitList.size(); i++) {
+    auto unit = puq::UnitList[i];
     if ((unit.utype & puq::Utype::CST)!=puq::Utype::CST) continue;
     puq::UnitValue uv(unit.symbol);
     puq::Dimensions dim = uv.baseunits.dimensions();
@@ -112,8 +112,8 @@ void display_constants() {
 #ifdef UNITS_TEMPERATURES
 void display_temperature_units() {
   table_header("Temperatures:", {"Symbol","Name","Allowed prefixes"}, {9,19,22});
-  for (size_t i=0; i<puq::si::UnitList.size(); i++) {
-    auto unit = puq::si::UnitList[i];
+  for (size_t i=0; i<puq::UnitList.size(); i++) {
+    auto unit = puq::UnitList[i];
     if ((unit.utype & puq::Utype::TMP)!=puq::Utype::TMP) continue;
     std::cout << std::setfill(' ') << std::setw(9)  << std::left << unit.symbol;
     std::cout << std::setfill(' ') << std::setw(19) << std::left << unit.name;
@@ -127,8 +127,8 @@ void display_temperature_units() {
 #ifdef UNITS_LOGARITHMIC
 void display_logarithmic_units() {
   table_header("Logarithmic units:", {"Symbol","Name","Allowed prefixes"}, {9,19,22});
-  for (size_t i=0; i<puq::si::UnitList.size(); i++) {
-    auto unit = puq::si::UnitList[i];
+  for (size_t i=0; i<puq::UnitList.size(); i++) {
+    auto unit = puq::UnitList[i];
     if ((unit.utype & puq::Utype::LOG)!=puq::Utype::LOG) continue;
     std::cout << std::setfill(' ') << std::setw(9)  << std::left << unit.symbol;
     std::cout << std::setfill(' ') << std::setw(19) << std::left << unit.name;
@@ -151,7 +151,7 @@ void display_info(std::string expr) {
   std::cout << "             SI   " << dim.to_string(puq::Dformat::NUM|puq::Dformat::PHYS|puq::Dformat::SI) << std::endl;
   std::cout << "             CGS  " << dim.to_string(puq::Dformat::NUM|puq::Dformat::PHYS|puq::Dformat::CGS) << std::endl;
   std::stringstream ss; bool conv = false;
-  for (auto unit: puq::si::UnitList) {
+  for (auto unit: puq::UnitList) {
     if (puq::Dimensions(1,unit.dimensions) != dim) continue;
     
     ss << (conv?", ":"") << unit.symbol;
@@ -164,8 +164,8 @@ void display_info(std::string expr) {
   table_header("Components:",
 	       {"Prefix","Symbol","Exponent","Name","Definition","Dimensions MGS","Allowed prefixes"},
 	       {8,8,10,19,21,22,22});
-  for (size_t i=0; i<puq::si::UnitList.size(); i++) {
-    auto unit = puq::si::UnitList[i];
+  for (size_t i=0; i<puq::UnitList.size(); i++) {
+    auto unit = puq::UnitList[i];
     for (auto bu: bus) {
       if (bu.unit!=unit.symbol)
 	continue;
