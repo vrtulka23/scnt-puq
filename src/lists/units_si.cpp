@@ -2,23 +2,17 @@
 
 namespace puq {
 
-Utype LIN_BAS     = Utype::LIN|Utype::BAS;
-Utype LIN_BAS_TMP = Utype::LIN|Utype::BAS|Utype::TMP;
-Utype LIN_TMP     = Utype::LIN|Utype::TMP;
-Utype LIN_CST     = Utype::LIN|Utype::CST;
-Utype LIN_LOG     = Utype::LIN|Utype::LOG;
-
 namespace si {
   
-UnitListType UnitList = {
-  {"m",        LIN_BAS,         1.0,             { 1, 0, 0, 0, 0, 0, 0, 0},  "m",                      "meter",             true,  {}             },
-  {"g",        LIN_BAS,         1.0,             { 0, 1, 0, 0, 0, 0, 0, 0},  "g",                      "gram",              true,  {}             },
-  {"s",        LIN_BAS,         1.0,             { 0, 0, 1, 0, 0, 0, 0, 0},  "s",                      "second",            true,  {}             },
-  {"K",        LIN_BAS_TMP,     1.0,             { 0, 0, 0, 1, 0, 0, 0, 0},  "K",                      "Kelvin",            true,  {}             },
-  {"A",        LIN_BAS,         1.0,             { 0, 0, 0, 0, 1, 0, 0, 0},  "A",                      "Ampere",            true,  {}             },
-  {"cd",       LIN_BAS,         1.0,             { 0, 0, 0, 0, 0, 1, 0, 0},  "cd",                     "candela",           true,  {}             },
-  {"mol",      LIN_BAS,         1.0,             { 0, 0, 0, 0, 0, 0, 1, 0},  "mol",                    "mole",              true,  {}             },
-  {"rad",      LIN_BAS,         1.0,             { 0, 0, 0, 0, 0, 0, 0, 1},  "rad",                    "radian",            true,  {"m"}          },
+const UnitListType UnitList = {
+  {"m",        UT_LIN_BAS,      1.0,             { 1, 0, 0, 0, 0, 0, 0, 0},  "m",                      "meter",             true,  {}             },
+  {"g",        UT_LIN_BAS,      1.0,             { 0, 1, 0, 0, 0, 0, 0, 0},  "g",                      "gram",              true,  {}             },
+  {"s",        UT_LIN_BAS,      1.0,             { 0, 0, 1, 0, 0, 0, 0, 0},  "s",                      "second",            true,  {}             },
+  {"K",        UT_LIN_BAS_TMP,  1.0,             { 0, 0, 0, 1, 0, 0, 0, 0},  "K",                      "Kelvin",            true,  {}             },
+  {"A",        UT_LIN_BAS,      1.0,             { 0, 0, 0, 0, 1, 0, 0, 0},  "A",                      "Ampere",            true,  {}             },
+  {"cd",       UT_LIN_BAS,      1.0,             { 0, 0, 0, 0, 0, 1, 0, 0},  "cd",                     "candela",           true,  {}             },
+  {"mol",      UT_LIN_BAS,      1.0,             { 0, 0, 0, 0, 0, 0, 1, 0},  "mol",                    "mole",              true,  {}             },
+  {"rad",      UT_LIN_BAS,      1.0,             { 0, 0, 0, 0, 0, 0, 0, 1},  "rad",                    "radian",            true,  {"m"}          },
 
   // units of length
   {"au",       Utype::LIN,      1.49597870e11,   { 1, 0, 0, 0, 0, 0, 0, 0},  "149597.870691*Mm",       "astr. unit",        false, {}             },
@@ -55,7 +49,7 @@ UnitListType UnitList = {
   {"yr",       Utype::LIN,      3.155760e7,      { 0, 0, 1, 0, 0, 0, 0, 0},  "yr_j",                   "year",              true,  {"k","m","G"}  },
   			      
   // units of temperature	
-  {"degR",     LIN_TMP,         5./9.,           { 0, 0, 0, 1, 0, 0, 0, 0},  "5/9*K",                  "degree Rankine",    false, {}             },
+  {"degR",     UT_LIN_TMP,      5./9.,           { 0, 0, 0, 1, 0, 0, 0, 0},  "5/9*K",                  "degree Rankine",    false, {}             },
 #ifdef UNITS_TEMPERATURES
   {"Cel",      Utype::TMP,      1,               { 0, 0, 0, 1, 0, 0, 0, 0},  "K",                      "degree Celsius",    false, {}             },
   {"degF",     Utype::TMP,      1,               { 0, 0, 0, 1, 0, 0, 0, 0},  "K",                      "degree Fahrenheit", false, {}             },
@@ -150,8 +144,8 @@ UnitListType UnitList = {
 
 #ifdef UNITS_LOGARITHMIC
   // logarithmic units and ratios
-  {"PR",       LIN_LOG,         1,               { 0, 0, 0, 0, 0, 0, 0, 0},  "1",                      "Power ratio",       false, {}             }, 
-  {"AR",       LIN_LOG,         1,               { 0, 0, 0, 0, 0, 0, 0, 0},  "1",                      "Amplitude ratio",   false, {}             },
+  {"PR",       UT_LIN_LOG,      1,               { 0, 0, 0, 0, 0, 0, 0, 0},  "1",                      "Power ratio",       false, {}             }, 
+  {"AR",       UT_LIN_LOG,      1,               { 0, 0, 0, 0, 0, 0, 0, 0},  "1",                      "Amplitude ratio",   false, {}             },
   {"Np",       Utype::LOG,      1,               { 0, 0, 0, 0, 0, 0, 0, 0},  "1",                      "Nepers",            true,  {"c","d"}      },
   {"B",        Utype::LOG,      1,               { 0, 0, 0, 0, 0, 0, 0, 0},  "1",                      "Bel",               true,  {"d"}          },
   {"Bm",       Utype::LOG,      1,               { 2, 1,-3, 0, 0, 0, 0, 0},  "mW",                     "bel-milliwatt",     true,  {"d"}          },
@@ -168,95 +162,41 @@ UnitListType UnitList = {
 #endif
   
   // dimensionless constants    
-  {"[alpha]",  LIN_CST,         7.29735256e-3,   { 0, 0, 0, 0, 0, 0, 0, 0},  "7.29735256e-3",          "fine str. const.",  false, {}             },
-  {"[euler]",  LIN_CST,         2.718282,        { 0, 0, 0, 0, 0, 0, 0, 0},  "2.718282",               "Euler's num.",      false, {}             },
-  {"[N_0]",    LIN_CST,         6.02214076e23,   { 0, 0, 0, 0, 0, 0, 0, 0},  "6.02214076e23",          "Avogadro's num.",   false, {}             },
-  {"[pi]",     LIN_CST,         3.1415926,       { 0, 0, 0, 0, 0, 0, 0, 0},  "3.1415926",              "pi num.",           false, {}             },
+  {"[alpha]",  UT_LIN_CST,      7.29735256e-3,   { 0, 0, 0, 0, 0, 0, 0, 0},  "7.29735256e-3",          "fine str. const.",  false, {}             },
+  {"[euler]",  UT_LIN_CST,      2.718282,        { 0, 0, 0, 0, 0, 0, 0, 0},  "2.718282",               "Euler's num.",      false, {}             },
+  {"[N_0]",    UT_LIN_CST,      6.02214076e23,   { 0, 0, 0, 0, 0, 0, 0, 0},  "6.02214076e23",          "Avogadro's num.",   false, {}             },
+  {"[pi]",     UT_LIN_CST,      3.1415926,       { 0, 0, 0, 0, 0, 0, 0, 0},  "3.1415926",              "pi num.",           false, {}             },
   			            
   // natural constants              
-  {"[a_0]",    LIN_CST,         5.291772109e-11, { 1, 0, 0, 0, 0, 0, 0, 0},  "5.29177210903e-11*m",    "Bohr radius",       false, {}             },
-  {"[c]",      LIN_CST,         2.99792458e8,    { 1, 0,-1, 0, 0, 0, 0, 0},  "299792458*m/s",          "speed of light",    false, {}             },
-  {"[e]",      LIN_CST,         1.602176634e-19, { 0, 0, 1, 0, 1, 0, 0, 0},  "1.602176634e-19*C",      "elem. charge",      false, {}             },
-  {"[eps_0]",  LIN_CST,         8.854188e-15,    {-3,-1, 4, 0, 2, 0, 0, 0},  "8.854187817e-12*F/m",    "permit. of vac.",   false, {}             },
-  {"[G]",      LIN_CST,         6.672590e-14,    { 3,-1,-2, 0, 0, 0, 0, 0},  "6.67259e-11*m3/(kg*s2)", "grav. const.",      false, {}             },
-  {"[g]",      LIN_CST,         9.806650e0,      { 1, 0,-2, 0, 0, 0, 0, 0},  "9.80665*m/s2",           "grav. accel.",      false, {}             },
-  {"[h]",      LIN_CST,         6.626076e-31,    { 2, 1,-1, 0, 0, 0, 0, 0},  "6.6260755e-34*J*s",      "Planck const.",     false, {}             },
-  {"[hbar]",   LIN_CST,         1.054572748e-31, { 2, 1,-1, 0, 0, 0, 0, 0},  "[h]/(2*[pi])",           "Reduced Pl. con.",  false, {}             },
-  {"[H_0]",    LIN_CST,         2.197232394e-18, { 0, 0,-1, 0, 0, 0, 0, 0},  "67.8*km/(s*Mpc)",        "Hubble const.",     false, {}             },
-  {"[k]",      LIN_CST,         1.380658e-20,    { 2, 1,-2,-1, 0, 0, 0, 0},  "1.380658e-23*J/K",       "Boltzmann const.",  false, {}             },
-  {"[k_B]",    LIN_CST,         1.380658e-20,    { 2, 1,-2,-1, 0, 0, 0, 0},  "[k]",                    "Boltzmann const.",  false, {}             },
-  {"[k_e]",    LIN_CST,         8.9875517923e12, { 3, 1,-4, 0,-2, 0, 0, 0},  "8.9875517923e9*N*m2/C2", "Coulomb const.",    false, {}             },
-  {"[L_sol]",  LIN_CST,         3.826e29,        { 2, 1,-3, 0, 0, 0, 0, 0},  "3.826e33*erg/s",         "Solar luminosity",  false, {}             },
-  {"[M_sol]",  LIN_CST,         1.98847e33,      { 0, 1, 0, 0, 0, 0, 0, 0},  "1.98847e30*kg",          "Solar mass",        false, {}             },
-  {"[mu_0]",   LIN_CST,         1.256637e-3,     { 1, 1,-2, 0,-2, 0, 0, 0},  "4*[pi]*1e-7*N/A2",       "permeab. of vac.",  false, {}             },
-  {"[mu_B]",   LIN_CST,         1.67262e-24,     { 0, 1, 0, 0, 0, 0, 0, 0},  "1.67262e-24*g",          "Bohr magneton",     false, {}             },
-  {"[m_e]",    LIN_CST,         9.109383e-28,    { 0, 1, 0, 0, 0, 0, 0, 0},  "9.1093837015e-31*kg",    "electron mass",     false, {}             },
-  {"[m_p]",    LIN_CST,         1.672623e-24,    { 0, 1, 0, 0, 0, 0, 0, 0},  "1.6726231e-24*g",        "proton mass",       false, {}             },
-  {"[m_n]",    LIN_CST,         1.6749286e-24,   { 0, 1, 0, 0, 0, 0, 0, 0},  "1.6749286e-24*g",        "neutron mass",      false, {}             },
-  {"[R_inf]",  LIN_CST,         1.09737e7,       {-1, 0, 0, 0, 0, 0, 0, 0},  "1.09737e5/cm",           "Rydberg constant",  false, {}             },
-  {"[R_sol]",  LIN_CST,         6.9558e8,        { 1, 0, 0, 0, 0, 0, 0, 0},  "6.9558e10*cm",           "Solar radius",      false, {}             },
-  {"[sigma]",  LIN_CST,         5.67037e-5,      { 0, 1,-3,-4, 0, 0, 0, 0},  "5.67037e-8*W/(m2*K4)",   "Stef.Bolt. const.", false, {}             },
-  {"[N_A]",    LIN_CST,         6.02214076e23,   { 0, 0, 0, 0, 0, 0,-1, 0},  "[N_0]/mol",              "Avogadro's const.", false, {}             },
+  {"[a_0]",    UT_LIN_CST,      5.291772109e-11, { 1, 0, 0, 0, 0, 0, 0, 0},  "5.29177210903e-11*m",    "Bohr radius",       false, {}             },
+  {"[c]",      UT_LIN_CST,      2.99792458e8,    { 1, 0,-1, 0, 0, 0, 0, 0},  "299792458*m/s",          "speed of light",    false, {}             },
+  {"[e]",      UT_LIN_CST,      1.602176634e-19, { 0, 0, 1, 0, 1, 0, 0, 0},  "1.602176634e-19*C",      "elem. charge",      false, {}             },
+  {"[eps_0]",  UT_LIN_CST,      8.854188e-15,    {-3,-1, 4, 0, 2, 0, 0, 0},  "8.854187817e-12*F/m",    "permit. of vac.",   false, {}             },
+  {"[G]",      UT_LIN_CST,      6.672590e-14,    { 3,-1,-2, 0, 0, 0, 0, 0},  "6.67259e-11*m3/(kg*s2)", "grav. const.",      false, {}             },
+  {"[g]",      UT_LIN_CST,      9.806650e0,      { 1, 0,-2, 0, 0, 0, 0, 0},  "9.80665*m/s2",           "grav. accel.",      false, {}             },
+  {"[h]",      UT_LIN_CST,      6.626076e-31,    { 2, 1,-1, 0, 0, 0, 0, 0},  "6.6260755e-34*J*s",      "Planck const.",     false, {}             },
+  {"[hbar]",   UT_LIN_CST,      1.054572748e-31, { 2, 1,-1, 0, 0, 0, 0, 0},  "[h]/(2*[pi])",           "Reduced Pl. con.",  false, {}             },
+  {"[H_0]",    UT_LIN_CST,      2.197232394e-18, { 0, 0,-1, 0, 0, 0, 0, 0},  "67.8*km/(s*Mpc)",        "Hubble const.",     false, {}             },
+  {"[k]",      UT_LIN_CST,      1.380658e-20,    { 2, 1,-2,-1, 0, 0, 0, 0},  "1.380658e-23*J/K",       "Boltzmann const.",  false, {}             },
+  {"[k_B]",    UT_LIN_CST,      1.380658e-20,    { 2, 1,-2,-1, 0, 0, 0, 0},  "[k]",                    "Boltzmann const.",  false, {}             },
+  {"[k_e]",    UT_LIN_CST,      8.9875517923e12, { 3, 1,-4, 0,-2, 0, 0, 0},  "8.9875517923e9*N*m2/C2", "Coulomb const.",    false, {}             },
+  {"[L_sol]",  UT_LIN_CST,      3.826e29,        { 2, 1,-3, 0, 0, 0, 0, 0},  "3.826e33*erg/s",         "Solar luminosity",  false, {}             },
+  {"[M_sol]",  UT_LIN_CST,      1.98847e33,      { 0, 1, 0, 0, 0, 0, 0, 0},  "1.98847e30*kg",          "Solar mass",        false, {}             },
+  {"[mu_0]",   UT_LIN_CST,      1.256637e-3,     { 1, 1,-2, 0,-2, 0, 0, 0},  "4*[pi]*1e-7*N/A2",       "permeab. of vac.",  false, {}             },
+  {"[mu_B]",   UT_LIN_CST,      1.67262e-24,     { 0, 1, 0, 0, 0, 0, 0, 0},  "1.67262e-24*g",          "Bohr magneton",     false, {}             },
+  {"[m_e]",    UT_LIN_CST,      9.109383e-28,    { 0, 1, 0, 0, 0, 0, 0, 0},  "9.1093837015e-31*kg",    "electron mass",     false, {}             },
+  {"[m_p]",    UT_LIN_CST,      1.672623e-24,    { 0, 1, 0, 0, 0, 0, 0, 0},  "1.6726231e-24*g",        "proton mass",       false, {}             },
+  {"[m_n]",    UT_LIN_CST,      1.6749286e-24,   { 0, 1, 0, 0, 0, 0, 0, 0},  "1.6749286e-24*g",        "neutron mass",      false, {}             },
+  {"[R_inf]",  UT_LIN_CST,      1.09737e7,       {-1, 0, 0, 0, 0, 0, 0, 0},  "1.09737e5/cm",           "Rydberg constant",  false, {}             },
+  {"[R_sol]",  UT_LIN_CST,      6.9558e8,        { 1, 0, 0, 0, 0, 0, 0, 0},  "6.9558e10*cm",           "Solar radius",      false, {}             },
+  {"[sigma]",  UT_LIN_CST,      5.67037e-5,      { 0, 1,-3,-4, 0, 0, 0, 0},  "5.67037e-8*W/(m2*K4)",   "Stef.Bolt. const.", false, {}             },
+  {"[N_A]",    UT_LIN_CST,      6.02214076e23,   { 0, 0, 0, 0, 0, 0,-1, 0},  "[N_0]/mol",              "Avogadro's const.", false, {}             },
 
 };
 
 }
-
-namespace esu {
-
-Utype ESU_LIN         = Utype::ESU|Utype::LIN;
-Utype ESU_LIN_BAS     = Utype::ESU|Utype::LIN|Utype::BAS;
-Utype ESU_LIN_BAS_TMP = Utype::ESU|Utype::LIN|Utype::BAS|Utype::TMP;
   
-typedef EXPONENT_INT_PRECISION FRC[2];
-UnitListType UnitList = {
-  {"m",        ESU_LIN_BAS,     1.0,             { 1, 0, 0, 0, 0, 0, 0, 0},  "m",                      "meter",             true,  {}             },
-  {"g",        ESU_LIN_BAS,     1.0,             { 0, 1, 0, 0, 0, 0, 0, 0},  "g",                      "gram",              true,  {}             },
-  {"s",        ESU_LIN_BAS,     1.0,             { 0, 0, 1, 0, 0, 0, 0, 0},  "s",                      "second",            true,  {}             },
-  {"K",        ESU_LIN_BAS_TMP, 1.0,             { 0, 0, 0, 1, 0, 0, 0, 0},  "K",                      "Kelvin",            true,  {}             },
-  {"A",        ESU_LIN_BAS,     1.0,             { 0, 0, 0, 0, 1, 0, 0, 0},  "A",                      "Ampere",            true,  {}             },
-  {"cd",       ESU_LIN_BAS,     1.0,             { 0, 0, 0, 0, 0, 1, 0, 0},  "cd",                     "candela",           true,  {}             },
-  {"mol",      ESU_LIN_BAS,     1.0,             { 0, 0, 0, 0, 0, 0, 1, 0},  "mol",                    "mole",              true,  {}             },
-  {"rad",      ESU_LIN_BAS,     1.0,             { 0, 0, 0, 0, 0, 0, 0, 1},  "rad",                    "radian",            true,  {"m"}          },
-
-  {"Gal",      ESU_LIN,         0.01,            { 1, 0,-2, 0, 0, 0, 0, 0},  "cm/s2",                  "Gal",               false, {}             },
-  {"dyn",      ESU_LIN,         0.01,            { 1, 1,-2, 0, 0, 0, 0, 0},  "g*cm/s2",                "dyne",              true,  {}             },
-  {"erg",      ESU_LIN,         0.0001,          { 2, 1,-2, 0, 0, 0, 0, 0},  "dyn*cm",                 "erg",               false, {}             },
-  {"Ba",       ESU_LIN,         100,             {-1, 1,-2, 0, 0, 0, 0, 0},  "dyn/cm2",                "Barye",             false, {}             },
-  {"P",        ESU_LIN,         100,             {-1, 1,-1, 0, 0, 0, 0, 0},  "g/(cm*s)",               "Poise",             true,  {"c"}          },
-  {"St",       ESU_LIN,         0.0001,          { 2, 0,-1, 0, 0, 0, 0, 0},  "cm2/s",                  "Stokes",            true,  {"c"}          },
-  {"Ka",       ESU_LIN,         100,             {-1, 0, 0, 0, 0, 0, 0, 0},  "cm-1",                   "Kayser",            false, {}             },
-			     	     
-  {"Oe",       ESU_LIN,         10,              {(FRC){-1,2}, (FRC){1,2}, -1, 0, 0, 0, 0, 0},  "g1:2/(cm1:2*s)",      "Oersted",           false, {}             },
-  {"Gb",       ESU_LIN,         0.1,             {(FRC){1,2},  (FRC){1,2}, -1, 0, 0, 0, 0, 0},  "Oe*cm",               "Gilbert",           false, {}             },
-  {"Mx",       ESU_LIN,         1e-05,           {(FRC){5,2},  (FRC){1,2}, -1, 0, 0, 0, 0, 0},  "dyn1:2*cm2",          "Maxwell",           false, {}             },
-  {"rad",      ESU_LIN,         0.01,            { 2, 0,-2, 0, 0, 0, 0, 0},                     "100*erg/g",           "radiation dose",    false, {}             },
-};
-  
-}
-
-namespace emu {
-  
-UnitListType UnitList = {
-  {"m",        LIN_BAS,         1.0,             { 1, 0, 0, 0, 0, 0, 0, 0},  "m",                      "meter",             true,  {}             },
-  {"g",        LIN_BAS,         1.0,             { 0, 1, 0, 0, 0, 0, 0, 0},  "g",                      "gram",              true,  {}             },
-  {"s",        LIN_BAS,         1.0,             { 0, 0, 1, 0, 0, 0, 0, 0},  "s",                      "second",            true,  {}             },
-  {"K",        LIN_BAS_TMP,     1.0,             { 0, 0, 0, 1, 0, 0, 0, 0},  "K",                      "Kelvin",            true,  {}             },
-};
-  
-}
-
-namespace gauss {
-  
-UnitListType UnitList = {
-  {"m",        LIN_BAS,         1.0,             { 1, 0, 0, 0, 0, 0, 0, 0},  "m",                      "meter",             true,  {}             },
-  {"g",        LIN_BAS,         1.0,             { 0, 1, 0, 0, 0, 0, 0, 0},  "g",                      "gram",              true,  {}             },
-  {"s",        LIN_BAS,         1.0,             { 0, 0, 1, 0, 0, 0, 0, 0},  "s",                      "second",            true,  {}             },
-  {"K",        LIN_BAS_TMP,     1.0,             { 0, 0, 0, 1, 0, 0, 0, 0},  "K",                      "Kelvin",            true,  {}             },
-};
-  
-}
-  
-UnitListType UnitList = si::UnitList;
+// setting SI as a default unit system
+const UnitListType* UnitList = &si::UnitList;
   
 }

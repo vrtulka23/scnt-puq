@@ -14,6 +14,12 @@ TEST(BaseUnits, Initialization) {
   EXPECT_EQ(bus.size(), 3);
   EXPECT_EQ(bus.to_string(), "kg2*ms3*cm");
 
+  // Appending same unit with a different prefix
+  bus = puq::BaseUnits();
+  bus.append("c","m",1);
+  bus.append("k","m",2);
+  EXPECT_EQ(bus.to_string(), "cm*km2");
+  
   // Using a string expression
   bus = puq::BaseUnits("kg*m2/s2");
   EXPECT_EQ(bus.to_string(), "kg*m2*s-2");

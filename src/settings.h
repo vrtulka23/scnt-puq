@@ -24,6 +24,8 @@
 #define EXPONENT_FRACTIONS
 #define UNITS_TEMPERATURES
 #define UNITS_LOGARITHMIC
+#define UNITS_SYSTEM_CGS
+#define UNITS_SYSTEM_AU
 
 /*
  *  Module specific settings

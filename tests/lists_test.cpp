@@ -19,7 +19,7 @@ TEST(Lists, UniqueSymbolsSI) {
 
   // unique unit symbols
   std::set<std::string> units;
-  for (auto unit: puq::UnitList) {
+  for (auto unit: *puq::UnitList) {
     // unique unit symbol without a prefix
     check_symbol(units, unit.symbol);
     if (unit.use_prefixes) {
@@ -39,9 +39,9 @@ TEST(Lists, UniqueSymbolsSI) {
   
 }
 
-TEST(Lists, UnitDefinitionsSI) {
+inline void test_unit_definitions() {
 
-  for (auto unit: puq::UnitList) {
+  for (auto unit: *puq::UnitList) {
     
     //if ((unit.utype & Utype::LIN)!=Utype::LIN) // check only linear units
     //  continue;
@@ -71,29 +71,45 @@ TEST(Lists, UnitDefinitionsSI) {
   
 }
 
+TEST(Lists, UnitDefinitionsSI) {
+
+  test_unit_definitions();
+  
+}
+
+#ifdef UNITS_SYSTEM_CGS
+
 TEST(Lists, UnitDefinitionsESU) {
 
-  puq::UnitList = puq::esu::UnitList;
+  puq::UnitSystem us = puq::UnitSystem::ESU;
+  test_unit_definitions();
   
-  for (auto unit: puq::UnitList) {
-    
-    if ((unit.utype & puq::Utype::BAS)==puq::Utype::BAS) // ignore base units
-      continue;
+}
 
-    puq::Dimensions dim1(unit.magnitude, unit.dimensions);
-    std::string m1 = dim1.to_string();
+TEST(Lists, UnitDefinitionsGauss) {
 
-    puq::UnitValue uv2(unit.definition);
-    puq::Dimensions dim2 = uv2.baseunits.dimensions();
-    dim2 = puq::Dimensions(uv2.magnitude*dim2.numerical, dim2.physical);
-    std::string m2 = dim2.to_string();
-    
-    EXPECT_EQ(m1, m2) << "Numerical dimension of unit '" << unit.symbol
-		      << "' does not match with its definition: "
-		      << m1 << " != " << m2;
-  }
-  
-  puq::UnitList = puq::si::UnitList;
+  puq::UnitSystem us = puq::UnitSystem::GAUSS;
+  test_unit_definitions();
 
 }
 
+TEST(Lists, UnitDefinitionsEMU) {
+
+  puq::UnitSystem us = puq::UnitSystem::EMU;
+  test_unit_definitions();
+    
+}
+
+#endif
+
+
+#ifdef UNITS_SYSTEM_AU
+
+TEST(Lists, UnitDefinitionsAU) {
+
+  puq::UnitSystem us = puq::UnitSystem::AU;
+  test_unit_definitions();
+
+}
+
+#endif
