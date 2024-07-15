@@ -148,3 +148,41 @@ TEST(UnitValue, ArithmeticsDivide) {
 
 }
 
+#ifdef UNITS_LOGARITHMIC
+
+TEST(UnitValue, ArithmeticsLog) {
+
+  puq::UnitValue q1,q2,q3;
+
+  // addition of same units
+  q1 = puq::UnitValue(1,"dB");     
+  q2 = puq::UnitValue(2,"dB");
+  q3 = q1 + q2;
+  EXPECT_EQ(q3.to_string(), "4.53902*dB");
+  q1 += q2;
+  EXPECT_EQ(q1.to_string(), "4.53902*dB");
+
+  // addition with different symbols, conversion
+  q1 = puq::UnitValue(20,"dBm");     
+  q2 = puq::UnitValue(23,"dBmW");
+  q3 = q1 + q2;
+  EXPECT_EQ(q3.to_string(), "24.7643*dBm");
+  q1 += q2;
+  EXPECT_EQ(q1.to_string(), "24.7643*dBm");
+  
+  // addition of different units throws an error
+  q1 = puq::UnitValue(20,"dBW");     
+  q2 = puq::UnitValue(23,"dBA");
+  EXPECT_THROW(q1+q2,  puq::ConvDimExcept);
+  
+  // subtraction
+  q1 = puq::UnitValue(87,"dBA");     
+  q2 = puq::UnitValue(83,"dBA");
+  q3 = q1 - q2;
+  EXPECT_EQ(q3.to_string(), "84.7952*dBA");
+  q1 -= q2;
+  EXPECT_EQ(q1.to_string(), "84.7952*dBA");
+  
+}
+
+#endif

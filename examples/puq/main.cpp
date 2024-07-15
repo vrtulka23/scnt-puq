@@ -63,28 +63,29 @@ void display_prefixes() {
 }
 
 void display_base_units() {
-  table_header("Base units:", {"Symbol","Name","Allowed prefixes"}, {8,9,22});
+  table_header("Base units:", {"Symbol","Name","Allowed prefixes"}, {8,19,22});
   for (size_t i=0; i<puq::UnitList->size(); i++) {
     auto unit = (*puq::UnitList)[i];
     if ((unit.utype & puq::Utype::BAS)!=puq::Utype::BAS) continue;
     std::cout << std::setfill(' ') << std::setw(8)  << std::left << unit.symbol;
-    std::cout << std::setfill(' ') << std::setw(9)  << std::left << unit.name;
+    std::cout << std::setfill(' ') << std::setw(19) << std::left << unit.name;
+    std::cout << std::setfill(' ') << std::setw(22) << std::left << puq::nostd::to_string(unit.use_prefixes, unit.allowed_prefixes);
     std::cout << std::scientific << std::endl;
   }
   std::cout << std::endl;
 }
 
 void display_linear_units() {
-  table_header("Linear units:", {"Symbol","Name","Magnitude","Dimension","Definition","Allowed prefixes"}, {9,19,13,15,25,22});
+  table_header("Linear units:", {"Symbol","Name","Magnitude","Dimension","Definition","Allowed prefixes"}, {9,22,13,30,25,22});
   for (size_t i=0; i<puq::UnitList->size(); i++) {
     auto unit = (*puq::UnitList)[i];
     if ((unit.utype & puq::Utype::LIN)!=puq::Utype::LIN) continue;
     puq::UnitValue uv(unit.symbol);
     puq::Dimensions dim = uv.baseunits.dimensions();
     std::cout << std::setfill(' ') << std::setw(9)  << std::left << unit.symbol;
-    std::cout << std::setfill(' ') << std::setw(19) << std::left << unit.name;
+    std::cout << std::setfill(' ') << std::setw(22) << std::left << unit.name;
     std::cout << std::setfill(' ') << std::setw(13) << std::left << dim.to_string(puq::Dformat::NUM);
-    std::cout << std::setfill(' ') << std::setw(15) << std::left << dim.to_string(puq::Dformat::PHYS);
+    std::cout << std::setfill(' ') << std::setw(30) << std::left << dim.to_string(puq::Dformat::PHYS);
     std::cout << std::setfill(' ') << std::setw(25) << std::left << unit.definition;
     std::cout << std::setfill(' ') << std::setw(22) << std::left << puq::nostd::to_string(unit.use_prefixes, unit.allowed_prefixes);
     std::cout << std::scientific << std::endl;
@@ -199,8 +200,24 @@ int main(int argc, char * argv[]) {
   else if(input.cmdOptionExists("-v")) {
     std::cout << CODE_VERSION << std::endl;
   }
+  puq::UnitSystem::Stype stype = puq::UnitSystem::SI;
   std::vector<std::string> convert;
   try {
+    if (input.cmdOptionExists("-esu")) {
+      stype = puq::UnitSystem::ESU;
+    }
+    else if (input.cmdOptionExists("-gauss")) {
+      stype = puq::UnitSystem::GAUSS;
+    }
+    else if (input.cmdOptionExists("-emu")) {
+      stype = puq::UnitSystem::EMU;
+    }
+    else if (input.cmdOptionExists("-au")) {
+      stype = puq::UnitSystem::AU;
+    } else {
+      stype = puq::UnitSystem::SI;
+    }
+    puq::UnitSystem us = stype;
     convert = input.getCmdOption("-i");
     if (!convert.empty()) {
       display_info(convert[0]);

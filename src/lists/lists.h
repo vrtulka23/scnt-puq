@@ -111,8 +111,12 @@ class UnitSystem {
 public:
   enum Stype {
     SI,
+#ifdef UNITS_SYSTEM_CGS
     ESU, GAUSS, EMU,
+#endif
+#ifdef UNITS_SYSTEM_AU
     AU
+#endif
   };
   UnitSystem(Stype st);
   ~UnitSystem();

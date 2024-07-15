@@ -26,9 +26,17 @@ foreach(dirpath ${examples})
   target_link_libraries(${dirname} puqcpp)
   target_compile_definitions(${dirname} PRIVATE CODE_VERSION="${CODE_VERSION}")
 
-install(TARGETS puq DESTINATION /usr/local/bin)
-
 endforeach()
+
+#set(INSTALL_DIR ${CMAKE_CURRENT_BINARY_DIR})
+#file(MAKE_DIRECTORY ${INSTALL_DIR}/include)
+#file(MAKE_DIRECTORY ${INSTALL_DIR}/include/puq)
+#file(MAKE_DIRECTORY ${INSTALL_DIR}/lib)
+#file(MAKE_DIRECTORY ${INSTALL_DIR}/bin)
+#file(COPY src/quantity.h DESTINATION ${INSTALL_DIR}/include/puq/quantity.h)
+#file(COPY ${INSTALL_DIR}/libpuqcpp.a DESTINATION ${INSTALL_DIR}/lib)
+#file(COPY ${INSTALL_DIR}/puq DESTINATION ${INSTALL_DIR}/bin)
+install(TARGETS puq DESTINATION /usr/local/bin)
 
 # add Google tests
 ###################

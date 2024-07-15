@@ -64,13 +64,18 @@ class Converter {
 private:
   BaseUnits baseunits1;
   BaseUnits baseunits2;
+  MAGNITUDE_TYPE _convert_linear(const MAGNITUDE_TYPE& m1, const MAGNITUDE_TYPE& m2);
+#ifdef UNITS_LOGARITHMIC
+  MAGNITUDE_TYPE _convert_logarithmic(MAGNITUDE_TYPE m);
+#endif
+#ifdef UNITS_TEMPERATURES
+  MAGNITUDE_TYPE _convert_temperature(MAGNITUDE_TYPE m);
+#endif
+public:
+  Utype utype;
   Dimensions dimensions1;
   Dimensions dimensions2;
-  MAGNITUDE_TYPE _convert_linear(const MAGNITUDE_TYPE& m1, const MAGNITUDE_TYPE& m2);
-  MAGNITUDE_TYPE _convert_logarithmic(MAGNITUDE_TYPE m);
-  MAGNITUDE_TYPE _convert_temperature(MAGNITUDE_TYPE m);
-public:
-  Converter() {};
+  Converter(): utype(Utype::NUL) {};
   Converter(const BaseUnits& bu1, const BaseUnits& bu2);
   Converter(const std::string& s1, const std::string& s2): Converter(BaseUnits(s1), BaseUnits(s2)) {};
   MAGNITUDE_TYPE convert(const MAGNITUDE_TYPE& m1, const MAGNITUDE_TYPE& m2=1);

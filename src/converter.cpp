@@ -121,39 +121,53 @@ MAGNITUDE_TYPE Converter::_convert_temperature(MAGNITUDE_TYPE m) {
 
 #endif // UNITS_TEMPERATURES
 
-Converter::Converter(const BaseUnits& bu1, const BaseUnits& bu2): baseunits1(bu1), baseunits2(bu2) {
+Converter::Converter(const BaseUnits& bu1, const BaseUnits& bu2): baseunits1(bu1), baseunits2(bu2), utype(Utype::NUL) {
+  // determine dimensions
   dimensions1 = bu1.dimensions();
   dimensions2 = bu2.dimensions();
   if (dimensions1!=dimensions2)
     throw ConvDimExcept(dimensions1, dimensions2);
-};
 
-MAGNITUDE_TYPE Converter::convert(const MAGNITUDE_TYPE& m1, const MAGNITUDE_TYPE& m2) {
+  // determine conversion type
   //std::cout << baseunits1.to_string() << " " << baseunits2.to_string() << std::endl;
   //std::cout << std::bitset<8>((int)dimensions1.utype) << std::endl;
   //std::cout << std::bitset<8>((int)dimensions2.utype) << std::endl;
 #ifdef UNITS_LOGARITHMIC
   if (((dimensions1.utype | dimensions2.utype) & Utype::LOG)==Utype::LOG) {
     if ((baseunits1.size()==1 || baseunits1.size()==2) &&
-	(baseunits2.size()==1 || baseunits2.size()==2) &&
-	m2==(MAGNITUDE_TYPE)1) {
-      return _convert_logarithmic(m1);
+	(baseunits2.size()==1 || baseunits2.size()==2)) {
+      utype = Utype::LOG;
     }  
   } else
 #endif
 #ifdef UNITS_TEMPERATURES
   if (((dimensions1.utype | dimensions2.utype) & Utype::TMP)==Utype::TMP) {
     if ((baseunits1.size()==1 || baseunits1.size()==2) &&
-	(baseunits2.size()==1 || baseunits2.size()==2) &&
-	m2==(MAGNITUDE_TYPE)1) {
-      return _convert_temperature(m1);
+	(baseunits2.size()==1 || baseunits2.size()==2)) {
+      utype = Utype::TMP;
     }  
   } else
 #endif
   if (((dimensions1.utype & dimensions2.utype) & Utype::LIN)==Utype::LIN) {
-    return _convert_linear(m1, m2);
+    utype = Utype::LIN;
   }
-  throw NoConvExcept(baseunits1.to_string(), baseunits2.to_string());
+};
+
+MAGNITUDE_TYPE Converter::convert(const MAGNITUDE_TYPE& m1, const MAGNITUDE_TYPE& m2) {
+#ifdef UNITS_LOGARITHMIC
+  if (utype==Utype::LOG && m2==(MAGNITUDE_TYPE)1)
+    return _convert_logarithmic(m1);
+  else
+#endif
+#ifdef UNITS_TEMPERATURES
+  if (utype==Utype::TMP && m2==(MAGNITUDE_TYPE)1)
+    return _convert_temperature(m1);
+  else
+#endif
+  if (utype==Utype::LIN)
+    return _convert_linear(m1, m2);
+  else
+    throw NoConvExcept(baseunits1.to_string(), baseunits2.to_string());
 };
 
 }

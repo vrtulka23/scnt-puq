@@ -8,6 +8,7 @@ UnitSystem::UnitSystem(Stype st): closed(false) {
   case UnitSystem::SI:
     UnitList = &puq::si::UnitList;
     break;
+#ifdef UNITS_SYSTEM_CGS
   case UnitSystem::ESU:
     UnitList = &puq::cgs::UnitListESU;
     break;
@@ -17,9 +18,12 @@ UnitSystem::UnitSystem(Stype st): closed(false) {
   case UnitSystem::EMU:
     UnitList = &puq::cgs::UnitListEMU;
     break;
+#endif
+#ifdef UNITS_SYSTEM_AU
   case UnitSystem::AU:
     UnitList = &puq::au::UnitList;
     break;
+#endif
   }
 }
 

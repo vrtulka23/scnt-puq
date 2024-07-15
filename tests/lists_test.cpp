@@ -45,6 +45,8 @@ inline void test_unit_definitions() {
     
     //if ((unit.utype & Utype::LIN)!=Utype::LIN) // check only linear units
     //  continue;
+    if ((unit.utype & puq::Utype::NUL)==puq::Utype::NUL) // ignore null units
+      continue;
     if ((unit.utype & puq::Utype::BAS)==puq::Utype::BAS) // ignore base units
       continue;
 
@@ -90,7 +92,7 @@ TEST(Lists, UnitDefinitionsGauss) {
 
   puq::UnitSystem us = puq::UnitSystem::GAUSS;
   test_unit_definitions();
-
+  
 }
 
 TEST(Lists, UnitDefinitionsEMU) {

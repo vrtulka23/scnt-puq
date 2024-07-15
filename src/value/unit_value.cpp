@@ -41,19 +41,69 @@ std::string UnitValue::to_string() const {
 }
 
 UnitValue operator+(const UnitValue& v1, const UnitValue& v2) {
-  return UnitValue(v1.magnitude + v2.convert(v1.baseunits).magnitude, v1.baseunits);
+  Converter conv(v2.baseunits, v1.baseunits);
+#ifdef UNITS_LOGARITHMIC
+  if (conv.utype==Utype::LOG) {
+    MAGNITUDE_TYPE m1 = v1.magnitude * conv.dimensions1.numerical;
+    MAGNITUDE_TYPE m2 = conv.convert(v2.magnitude) * conv.dimensions2.numerical;
+    if ((conv.dimensions1.utype & Utype::LOG) == Utype::LOG)
+      m1 = nostd::pow(10, m1);
+    if ((conv.dimensions2.utype & Utype::LOG) == Utype::LOG)
+      m2 = nostd::pow(10, m2);
+    return UnitValue(nostd::log10(m1 + m2) / conv.dimensions1.numerical, v1.baseunits);
+  }
+#endif
+  return UnitValue(v1.magnitude + conv.convert(v2.magnitude), v1.baseunits);
 }
 
 void UnitValue::operator+=(const UnitValue& v) {
-  magnitude += v.convert(baseunits).magnitude;
+  Converter conv(v.baseunits, baseunits);
+#ifdef UNITS_LOGARITHMIC
+  if (conv.utype==Utype::LOG) {
+    MAGNITUDE_TYPE m1 = magnitude * conv.dimensions1.numerical;
+    MAGNITUDE_TYPE m2 = conv.convert(v.magnitude) * conv.dimensions2.numerical;
+    if ((conv.dimensions1.utype & Utype::LOG) == Utype::LOG)
+      m1 = nostd::pow(10, m1);
+    if ((conv.dimensions2.utype & Utype::LOG) == Utype::LOG)
+      m2 = nostd::pow(10, m2);
+    magnitude = nostd::log10(m1 + m2) / conv.dimensions1.numerical;
+    return;
+  }
+#endif
+  magnitude += conv.convert(v.magnitude);
 }
 
 UnitValue operator-(const UnitValue& v1, const UnitValue& v2) {
-  return UnitValue(v1.magnitude - v2.convert(v1.baseunits).magnitude, v1.baseunits);
+  Converter conv(v2.baseunits, v1.baseunits);
+#ifdef UNITS_LOGARITHMIC
+  if (conv.utype==Utype::LOG) {
+    MAGNITUDE_TYPE m1 = v1.magnitude * conv.dimensions1.numerical;
+    MAGNITUDE_TYPE m2 = conv.convert(v2.magnitude) * conv.dimensions2.numerical;
+    if ((conv.dimensions1.utype & Utype::LOG) == Utype::LOG)
+      m1 = nostd::pow(10, m1);
+    if ((conv.dimensions2.utype & Utype::LOG) == Utype::LOG)
+      m2 = nostd::pow(10, m2);
+    return UnitValue(nostd::log10(m1 - m2) / conv.dimensions1.numerical, v1.baseunits);
+  }
+#endif
+  return UnitValue(v1.magnitude - conv.convert(v2.magnitude), v1.baseunits);
 }
 
 void UnitValue::operator-=(const UnitValue& v) {
-  magnitude -= v.convert(baseunits).magnitude;
+  Converter conv(v.baseunits, baseunits);
+#ifdef UNITS_LOGARITHMIC
+  if (conv.utype==Utype::LOG) {
+    MAGNITUDE_TYPE m1 = magnitude * conv.dimensions1.numerical;
+    MAGNITUDE_TYPE m2 = conv.convert(v.magnitude) * conv.dimensions2.numerical;
+    if ((conv.dimensions1.utype & Utype::LOG) == Utype::LOG)
+      m1 = nostd::pow(10, m1);
+    if ((conv.dimensions2.utype & Utype::LOG) == Utype::LOG)
+      m2 = nostd::pow(10, m2);
+    magnitude = nostd::log10(m1 - m2) / conv.dimensions1.numerical;
+    return;
+  }
+#endif
+  magnitude -= conv.convert(v.magnitude);
 }
 
 UnitValue operator*(const UnitValue& v1, const UnitValue& v2) {
