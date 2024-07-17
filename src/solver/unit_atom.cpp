@@ -48,7 +48,7 @@ UnitValue UnitAtom::from_string(std::string expr_orig) {
     expr = m[1];
     // determine unit
     UnitStruct munit;  // current candidate unit
-    for (auto unit: *UnitList) {
+    for (auto unit: *UnitSystem::UnitList) {
       if (unit.symbol.size()>expr.size())           // symbol is longer than the expression
 	continue;
       if (unit.symbol.size()<=munit.symbol.size())  // symbol is smaller or equal to the current candidate symbol
@@ -58,7 +58,7 @@ UnitValue UnitAtom::from_string(std::string expr_orig) {
       }
     }
     if (munit.symbol=="") {
-      throw std::invalid_argument("Unknown unit base: "+expr_orig);
+      throw AtomParsingExcept("Unknown unit base: "+expr_orig);
     } else {
       bu.unit = munit.symbol;
     }
@@ -66,7 +66,7 @@ UnitValue UnitAtom::from_string(std::string expr_orig) {
     // determine prefix
     if (expr.size()>0) {
       if (!munit.use_prefixes)
-	throw std::invalid_argument("Prefixes are not allowed for this unit: "+expr_orig);
+	throw AtomParsingExcept("Prefixes are not allowed for this unit: "+expr_orig);
       for (auto prefix: UnitPrefixList) {	
 	if (prefix.symbol==expr) {
 	  bu.prefix = prefix.symbol;
@@ -81,18 +81,18 @@ UnitValue UnitAtom::from_string(std::string expr_orig) {
 	  for (auto prefix: munit.allowed_prefixes) {
 	    ss << " " << prefix;
 	  }
-	  throw std::invalid_argument(ss.str());
+	  throw AtomParsingExcept(ss.str());
 	}
       }
       if (bu.prefix.size()==0) {
-	throw std::invalid_argument("Unknown unit prefix: "+expr_orig);
+	throw AtomParsingExcept("Unknown unit prefix: "+expr_orig);
       }
     }
     // fill UnitValue properties
     uv.magnitude = 1;
     uv.baseunits.append(bu);
   } else {
-    throw std::invalid_argument("Invalid unit expression: "+expr_orig);
+    throw AtomParsingExcept("Invalid unit expression: "+expr_orig);
   }
   return uv;
 }

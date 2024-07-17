@@ -4,9 +4,9 @@
 
 namespace puq {
 
-namespace au {
+namespace UnitList {
 
-  const UnitListType UnitList = { 
+  const UnitListType AU = { 
     {"[hbar]",   UT_LIN_BAS_CST, 1.0,             { 1, 0, 0, 0, 0, 0, 0, 0},  "[hbar]",                      "reduced Pl. con.",  false,  {}             },
     {"[e]",      UT_LIN_BAS_CST, 1.0,             { 0, 1, 0, 0, 0, 0, 0, 0},  "[e]",                         "elementary charge", false,  {}             },
     {"[m_e]",    UT_LIN_BAS_CST, 1.0,             { 0, 0, 1, 0, 0, 0, 0, 0},  "[m_e]",                       "electr. rest mass", false,  {}             },

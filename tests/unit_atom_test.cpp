@@ -25,11 +25,11 @@ TEST(UnitAtom, FromString) {
   value = puq::UnitAtom::from_string("mrad");
   EXPECT_EQ(value.to_string(), "mrad");         // allowed specific prefix
   
-  EXPECT_THROW(puq::UnitAtom::from_string("kau"),  std::invalid_argument);  // prefixes are not allowed
+  EXPECT_THROW(puq::UnitAtom::from_string("kau"),  puq::AtomParsingExcept);  // prefixes are not allowed
   
-  EXPECT_THROW(puq::UnitAtom::from_string("crad"), std::invalid_argument);  // unit prefix is not allowed
+  EXPECT_THROW(puq::UnitAtom::from_string("crad"), puq::AtomParsingExcept);  // unit prefix is not allowed
   
-  EXPECT_THROW(puq::UnitAtom::from_string("Hm"),   std::invalid_argument);  // unknown unit prefix
+  EXPECT_THROW(puq::UnitAtom::from_string("Hm"),   puq::AtomParsingExcept);  // unknown unit prefix
 
   value = puq::UnitAtom::from_string("kg2");
   EXPECT_EQ(value.to_string(), "kg2");          // units with exponents

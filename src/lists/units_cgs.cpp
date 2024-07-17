@@ -4,9 +4,9 @@
 
 namespace puq {
 
-namespace cgs {
+namespace UnitList {
 
-  const UnitListType UnitListCGS = { 
+  const UnitListType CGS = { 
     {"m",        UT_LIN_BAS,     1.0,             { 1, 0, 0, 0, 0, 0, 0, 0},  "m",                      "meter",             true,  {}             },
     {"g",        UT_LIN_BAS,     1.0,             { 0, 1, 0, 0, 0, 0, 0, 0},  "g",                      "gram",              true,  {}             },
     {"s",        UT_LIN_BAS,     1.0,             { 0, 0, 1, 0, 0, 0, 0, 0},  "s",                      "second",            true,  {}             },
@@ -40,7 +40,7 @@ namespace cgs {
     {"[c]",      Utype::CST,     2.99792e+08,     { 1, 0,-1, 0, 0, 0, 0, 0},  "2.99792458e10*cm/s",     "speed of light",    false, {}             },    
   };
 
-  const UnitListType UnitListGaussESU = {
+  const UnitListType GAUSS_ESU = {
     {"Fr",       Utype::LIN,         0.001,           {(FRC){3,2},  (FRC){1,2}, -1, 0, 0, 0, 0, 0},  "dyn1:2*cm",           "franklin",             false, {}             },
     {"statC",    Utype::LIN,         0.001,           {(FRC){3,2},  (FRC){1,2}, -1, 0, 0, 0, 0, 0},  "Fr",                  "Statcoulomb",          false, {}             },
     {"esu",      Utype::LIN,         0.001,           {(FRC){3,2},  (FRC){1,2}, -1, 0, 0, 0, 0, 0},  "Fr",                  "elstat. u.o. charge",  false, {}             },
@@ -53,7 +53,7 @@ namespace cgs {
     {"[e]",      Utype::CST,         4.8032e-13,      {(FRC){3,2},  (FRC){1,2}, -1, 0, 0, 0, 0, 0},  "4.80320471e-10*Fr",   "elementary charge",    false, {}             },
   };
 
-  const UnitListType UnitListGaussEMU = {
+  const UnitListType GAUSS_EMU = {
     {"G",        Utype::LIN,         10,              {(FRC){-1,2}, (FRC){1,2}, -1, 0, 0, 0, 0, 0},  "cm-1:2*g1:2*s-1",        "Gauss",             false, {}             },
     {"Oe",       Utype::LIN,         10,              {(FRC){-1,2}, (FRC){1,2}, -1, 0, 0, 0, 0, 0},  "g1:2/(cm1:2*s)",         "Oersted",           false, {}             },
     {"Gb",       Utype::LIN,         0.1,             {(FRC){1,2},  (FRC){1,2}, -1, 0, 0, 0, 0, 0},  "Oe*cm",                  "Gilbert",           false, {}             },
@@ -62,16 +62,16 @@ namespace cgs {
     {"[mu_B]",   Utype::CST,         9.27401e-26,     {(FRC){5,2},  (FRC){1,2}, -1, 0, 0, 0, 0, 0},  "9.274010066e-21*erg/G",  "Bohr magneton",     false, {}             },
   };
     
-  const UnitListType UnitListESU = UnitListCGS + UnitListGaussESU + UnitListType({
+  const UnitListType ESU = CGS + GAUSS_ESU + UnitListType({
       {"statT",    Utype::LIN,         1000,          {(FRC){-3,2}, (FRC){1,2},  0, 0, 0, 0, 0, 0},  "cm-3:2*g1:2",      "Stattesla",               false, {}             },
       {"statWb",   Utype::LIN,         0.0001,        {2,           1,           0, 0, 0, 0, 0, 0},  "cm2*g",            "Statweber",               false, {}             },
 
       {"[mu_B]",   Utype::CST,         2.78028e-17,   {(FRC){7,2},  (FRC){1,2}, -2, 0, 0, 0, 0, 0},  "2.780278273e-10*statA*cm2 ",  "Bohr magneton", false, {}             },
     });
   
-  const UnitListType UnitListGauss = UnitListCGS + UnitListGaussESU + UnitListGaussEMU;
+  const UnitListType GAUSS = CGS + GAUSS_ESU + GAUSS_EMU;
   
-  const UnitListType UnitListEMU = UnitListCGS + UnitListGaussEMU + UnitListType({
+  const UnitListType EMU = CGS + GAUSS_EMU + UnitListType({
       {"Bi",       Utype::LIN,         0.1,           {(FRC){1,2},  (FRC){1,2}, -1, 0, 0, 0, 0, 0},  "dyn1:2",              "biot",                 false, {}             },
       {"abA",      Utype::LIN,         0.1,           {(FRC){1,2},  (FRC){1,2}, -1, 0, 0, 0, 0, 0},  "Bi",                  "Abampere",             false, {}             },
       {"abC",      Utype::LIN,         0.1,           {(FRC){1,2},  (FRC){1,2},  0, 0, 0, 0, 0, 0},  "Bi*s",                "Abcoulomb",            false, {}             },

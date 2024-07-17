@@ -48,6 +48,19 @@ TEST(Quantity, InitializationErrors) {
 
 #endif
 
+#ifdef MAGNITUDE_ARRAYS
+
+TEST(Quantity, InitializationArrays) {
+
+  puq::Quantity q("{2,3.4,5e6}*km/s");                 // unit expression
+  EXPECT_EQ(q.to_string(), "{2, 3.4, ...}*km*s-1");
+
+  q = puq::Quantity(puq::Array({2,3.4,5e6}),"km2");    // magnitudes and units
+  EXPECT_EQ(q.to_string(), "{2, 3.4, ...}*km2");
+
+}
+
+#endif
 
 TEST(Quantity, UnitConversion) {
 
@@ -118,3 +131,38 @@ TEST(Quantity, ArithmeticsDivide) {
 
 }
 
+#ifdef UNITS_SYSTEM_CGS
+
+TEST(Quantity, UnitSystemDirect) {
+
+  puq::Quantity q1, q2;
+  
+  q1 = puq::Quantity(34,"statA",puq::UnitList::ESU);  // explicitely state the unit system
+  q2 = q1.convert("Fr/ms");
+  EXPECT_EQ(q2.to_string(), "0.034*Fr*ms-1");
+
+  q2 = puq::Quantity(2,"A");
+  EXPECT_THROW(q1+q2,  puq::UnitSystemExcept);
+  
+}
+
+TEST(Quantity, UnitSystemEnvironment) {
+
+  puq::UnitSystem us = puq::UnitList::ESU;            // set a default unit system environment
+
+  puq::Quantity q1, q2;
+
+  q1 = puq::Quantity(34,"statA");                     // ESU units are available by default
+  q2 = q1.convert("Fr/ms");
+  EXPECT_EQ(q2.to_string(), "0.034*Fr*ms-1");  
+
+  us.close();                                         // switch to previous system
+
+  EXPECT_THROW(puq::Quantity(2,"statA"), puq::AtomParsingExcept);  // ESU is no more available
+  
+  q1 = puq::Quantity(2,"A");
+  EXPECT_EQ(q1.to_string(), "2*A");                   // SI is available
+  
+}
+
+#endif

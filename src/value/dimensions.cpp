@@ -54,7 +54,7 @@ inline std::string _numerical_to_string(MAGNITUDE_TYPE numerical, const BaseDime
 inline std::string _physical_to_string(const BaseDimensions& physical, Dformat& format) {
   std::stringstream ss;
   for (int i=0; i<NUM_BASEDIM; i++) {
-    std::string symbol = (*UnitList)[i].symbol;
+    std::string symbol = (*UnitSystem::UnitList)[i].symbol;
     if (i==1 && (format&Dformat::SI)==Dformat::SI) {
       symbol = "kg";
     } else if (i==0 && (format&Dformat::CGS)==Dformat::CGS) {
