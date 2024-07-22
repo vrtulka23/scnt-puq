@@ -2,7 +2,7 @@
 
 namespace puq {
 
-  const UnitListType* UnitSystem::UnitList = &UnitList::SI;
+  const UnitListType* UnitSystem::UnitList = &UnitSystem::SI;
   
   std::stack<const UnitListType *> UnitSystem::systemStack;
   

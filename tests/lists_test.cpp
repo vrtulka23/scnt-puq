@@ -40,16 +40,17 @@ TEST(Lists, UniqueSymbolsSI) {
 }
 
 inline void test_unit_definitions() {
-
+  
   for (auto unit: *puq::UnitSystem::UnitList) {
     
+    //std::cout << "hello " << unit.symbol << " " << std::bitset<8>((int)unit.utype) << std::endl;
     //if ((unit.utype & Utype::LIN)!=Utype::LIN) // check only linear units
     //  continue;
-    if ((unit.utype & puq::Utype::NUL)==puq::Utype::NUL) // ignore null units
+    if (unit.utype==puq::Utype::NUL) // ignore null units
       continue;
     if ((unit.utype & puq::Utype::BAS)==puq::Utype::BAS) // ignore base units
-      continue;
-
+      continue;    
+    
     puq::Dimensions dim1(unit.magnitude, unit.dimensions);
     std::string m1 = dim1.to_string();
 
@@ -79,25 +80,25 @@ TEST(Lists, UnitDefinitionsSI) {
   
 }
 
-#ifdef UNITS_SYSTEM_CGS
+#ifdef UNIT_SYSTEM_CGS
 
 TEST(Lists, UnitDefinitionsESU) {
 
-  puq::UnitSystem us = puq::UnitList::ESU;
+  puq::UnitSystem us = puq::UnitSystem::ESU;
   test_unit_definitions();
   
 }
 
 TEST(Lists, UnitDefinitionsGauss) {
 
-  puq::UnitSystem us = puq::UnitList::GAUSS;
+  puq::UnitSystem us = puq::UnitSystem::GAUSS;
   test_unit_definitions();
   
 }
 
 TEST(Lists, UnitDefinitionsEMU) {
 
-  puq::UnitSystem us = puq::UnitList::EMU;
+  puq::UnitSystem us = puq::UnitSystem::EMU;
   test_unit_definitions();
     
 }
@@ -105,11 +106,29 @@ TEST(Lists, UnitDefinitionsEMU) {
 #endif
 
 
-#ifdef UNITS_SYSTEM_AU
+#ifdef UNIT_SYSTEM_AU
 
 TEST(Lists, UnitDefinitionsAU) {
 
-  puq::UnitSystem us = puq::UnitList::AU;
+  puq::UnitSystem us = puq::UnitSystem::AU;
+  test_unit_definitions();
+
+}
+
+#endif
+
+#ifdef UNIT_SYSTEM_EUS
+
+TEST(Lists, UnitDefinitionsIU) {
+
+  puq::UnitSystem us = puq::UnitSystem::IU;
+  test_unit_definitions();
+
+}
+
+TEST(Lists, UnitDefinitionsUSCU) {
+
+  puq::UnitSystem us = puq::UnitSystem::USCU;
   test_unit_definitions();
 
 }

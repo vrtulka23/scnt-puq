@@ -2,9 +2,7 @@
 
 namespace puq {
 
-  namespace UnitList {
-    
-  const UnitListType SI = {
+  const UnitListType UnitSystem::SI = {
     {"m",        UT_LIN_BAS,      1.0,             { 1, 0, 0, 0, 0, 0, 0, 0},  "m",                      "meter",             true,  {}             },
     {"g",        UT_LIN_BAS,      1.0,             { 0, 1, 0, 0, 0, 0, 0, 0},  "g",                      "gram",              true,  {}             },
     {"s",        UT_LIN_BAS,      1.0,             { 0, 0, 1, 0, 0, 0, 0, 0},  "s",                      "second",            true,  {}             },
@@ -194,6 +192,4 @@ namespace puq {
 
   };
 
-  }
-    
 }

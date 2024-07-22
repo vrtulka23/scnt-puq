@@ -1,12 +1,10 @@
 #import "lists.h"
 
-#ifdef UNITS_SYSTEM_AU
+#ifdef UNIT_SYSTEM_AU
 
 namespace puq {
 
-namespace UnitList {
-
-  const UnitListType AU = { 
+  const UnitListType UnitSystem::AU = { 
     {"[hbar]",   UT_LIN_BAS_CST, 1.0,             { 1, 0, 0, 0, 0, 0, 0, 0},  "[hbar]",                      "reduced Pl. con.",  false,  {}             },
     {"[e]",      UT_LIN_BAS_CST, 1.0,             { 0, 1, 0, 0, 0, 0, 0, 0},  "[e]",                         "elementary charge", false,  {}             },
     {"[m_e]",    UT_LIN_BAS_CST, 1.0,             { 0, 0, 1, 0, 0, 0, 0, 0},  "[m_e]",                       "electr. rest mass", false,  {}             },
@@ -26,7 +24,5 @@ namespace UnitList {
   };
 
 }
-  
-}
 
-#endif // UNITS_SYSTEM_AU
+#endif // UNIT_SYSTEM_AU

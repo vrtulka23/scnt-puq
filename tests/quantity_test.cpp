@@ -131,13 +131,13 @@ TEST(Quantity, ArithmeticsDivide) {
 
 }
 
-#ifdef UNITS_SYSTEM_CGS
+#ifdef UNIT_SYSTEM_CGS
 
 TEST(Quantity, UnitSystemDirect) {
 
   puq::Quantity q1, q2;
   
-  q1 = puq::Quantity(34,"statA",puq::UnitList::ESU);  // explicitely state the unit system
+  q1 = puq::Quantity(34,"statA",puq::UnitSystem::ESU);  // explicitely state the unit system
   q2 = q1.convert("Fr/ms");
   EXPECT_EQ(q2.to_string(), "0.034*Fr*ms-1");
 
@@ -148,7 +148,7 @@ TEST(Quantity, UnitSystemDirect) {
 
 TEST(Quantity, UnitSystemEnvironment) {
 
-  puq::UnitSystem us = puq::UnitList::ESU;            // set a default unit system environment
+  puq::UnitSystem us = puq::UnitSystem::ESU;            // set a default unit system environment
 
   puq::Quantity q1, q2;
 

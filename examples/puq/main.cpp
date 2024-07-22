@@ -202,22 +202,22 @@ int main(int argc, char * argv[]) {
   else if(input.cmdOptionExists("-v")) {
     std::cout << CODE_VERSION << std::endl;
   }
-  const puq::UnitListType* stype = &puq::UnitList::SI;
+  const puq::UnitListType* stype = &puq::UnitSystem::SI;
   std::vector<std::string> convert;
   try {
     if (input.cmdOptionExists("-esu")) {
-      stype = &puq::UnitList::ESU;
+      stype = &puq::UnitSystem::ESU;
     }
     else if (input.cmdOptionExists("-gauss")) {
-      stype = &puq::UnitList::GAUSS;
+      stype = &puq::UnitSystem::GAUSS;
     }
     else if (input.cmdOptionExists("-emu")) {
-      stype = &puq::UnitList::EMU;
+      stype = &puq::UnitSystem::EMU;
     }
     else if (input.cmdOptionExists("-au")) {
-      stype = &puq::UnitList::AU;
+      stype = &puq::UnitSystem::AU;
     } else {
-      stype = &puq::UnitList::SI;
+      stype = &puq::UnitSystem::SI;
     }
     puq::UnitSystem us = stype;
     convert = input.getCmdOption("-i");

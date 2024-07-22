@@ -81,26 +81,26 @@ namespace puq {
 #ifdef EXPONENT_FRACTIONS
   typedef EXPONENT_INT_PRECISION FRC[2];
 #endif
-  typedef std::vector<UnitStruct> UnitListType;
-  
-  namespace UnitList {
-    extern const UnitListType SI;
-#ifdef UNITS_SYSTEM_CGS
-    extern const UnitListType CGS;
-    extern const UnitListType ESU;
-    extern const UnitListType EMU;
-    extern const UnitListType GAUSS;  
-#endif  
-#ifdef UNITS_SYSTEM_AU
-    extern const UnitListType AU;
-#endif
-  }
+  typedef std::vector<UnitStruct> UnitListType;  
   
   // Changing unit systems
   class UnitSystem {
     bool closed;
     static std::stack<const UnitListType*> systemStack;
   public:
+    static const UnitListType SI;
+#ifdef UNIT_SYSTEM_CGS
+    static const UnitListType ESU;
+    static const UnitListType EMU;
+    static const UnitListType GAUSS;
+#endif  
+#ifdef UNIT_SYSTEM_AU
+    static const UnitListType AU;
+#endif
+#ifdef UNIT_SYSTEM_EUS
+    static const UnitListType IU;
+    static const UnitListType USCU;
+#endif
     static const UnitListType* UnitList;
     UnitSystem(const UnitListType& st);
     UnitSystem(const UnitListType* st);
