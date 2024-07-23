@@ -14,7 +14,7 @@ BaseUnits::BaseUnits(const std::string& s) {
   UnitAtom atom = solver.solve(s);
   baseunits = atom.value.baseunits.baseunits;
 }
-
+  
 std::string BaseUnit::to_string() {
   std::stringstream ss;
   ss << prefix << unit;
@@ -25,7 +25,7 @@ std::string BaseUnit::to_string() {
 #endif
   return ss.str();
 }
-
+  
 void BaseUnits::append(BaseUnit bu) {
   bool exists = false;
   for (auto it = baseunits.begin(); it != baseunits.end(); ++it) {

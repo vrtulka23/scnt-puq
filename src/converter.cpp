@@ -126,7 +126,7 @@ Converter::Converter(const BaseUnits& bu1, const BaseUnits& bu2): baseunits1(bu1
   dimensions1 = bu1.dimensions();
   dimensions2 = bu2.dimensions();
   if (dimensions1!=dimensions2)
-    throw ConvDimExcept(dimensions1, dimensions2);
+    throw ConvDimExcept(bu1, bu2);
 
   // determine conversion type
   //std::cout << baseunits1.to_string() << " " << baseunits2.to_string() << std::endl;

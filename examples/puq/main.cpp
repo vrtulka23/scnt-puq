@@ -197,6 +197,7 @@ int main(int argc, char * argv[]) {
     std::cout << "puq -c <expr1> <expr2>  get <expr1> in units of <expr2>" << std::endl;
     std::cout << "puq -l <list>           display list: prefix/base/lin/log/temp/const" << std::endl;
     std::cout << "puq -i <expr>           get information about an unit" << std::endl;
+    std::cout << "puq -si/-esu/-emu/-gauss/-au/-iu/-uscu    different unit types" << std::endl;
     std::cout << std::endl;
   }
   else if(input.cmdOptionExists("-v")) {
@@ -213,6 +214,12 @@ int main(int argc, char * argv[]) {
     }
     else if (input.cmdOptionExists("-emu")) {
       stype = &puq::UnitSystem::EMU;
+    }
+    else if (input.cmdOptionExists("-iu")) {
+      stype = &puq::UnitSystem::IU;
+    }
+    else if (input.cmdOptionExists("-uscu")) {
+      stype = &puq::UnitSystem::USCU;
     }
     else if (input.cmdOptionExists("-au")) {
       stype = &puq::UnitSystem::AU;

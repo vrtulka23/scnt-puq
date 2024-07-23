@@ -21,6 +21,13 @@ namespace puq {
       close();
   }
 
+  void UnitSystem::change(const UnitListType* st) {
+    UnitList = systemStack.top();
+    systemStack.pop();
+    systemStack.push(UnitList);
+    UnitList = st;
+  }
+  
   void UnitSystem::close() {
     UnitList = systemStack.top();
     systemStack.pop();

@@ -15,13 +15,15 @@ private:
   std::string message;
 public:
   ConvDimExcept(std::string m) : message(m) {}
-  ConvDimExcept(const Dimensions& dim1, const Dimensions& dim2) {
+  ConvDimExcept(const BaseUnits& bu1, const BaseUnits& bu2) { //const Dimensions& dim1, const Dimensions& dim2) {
+    Dimensions dim1 = bu1.dimensions();
+    Dimensions dim2 = bu2.dimensions();
     std::stringstream ss;
-    ss << "Incompatible physical dimensions: ";
+    ss << "Incompatible physical dimensions: " << bu1.to_string() << " (";
     ss << ((dim1.to_string(Dformat::PHYS)=="") ? "1" : dim1.to_string(Dformat::PHYS));
-    ss << " != ";
+    ss << ") -> " << bu2.to_string() << " (";
     ss << ((dim2.to_string(Dformat::PHYS)=="") ? "1" : dim2.to_string(Dformat::PHYS));
-    ss << std::endl;
+    ss << ")" << std::endl;
     ss << "Suggested conversions: ";
     std::string mgs = dim1.to_string(Dformat::PHYS);
     std::string mks = dim1.to_string(Dformat::PHYS|Dformat::SI);
@@ -39,11 +41,6 @@ public:
       ss << ", " << unit1.symbol;
     }
     message = ss.str();
-  }
-  ConvDimExcept(const BaseUnits& bu1, const BaseUnits& bu2) {
-    Dimensions dim1 = bu1.dimensions();
-    Dimensions dim2 = bu2.dimensions();
-    ConvDimExcept(dim1, dim2);
   }
   const char * what () const noexcept override {
     return message.c_str();

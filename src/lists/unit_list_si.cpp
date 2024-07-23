@@ -18,24 +18,12 @@ namespace puq {
     {"ly",       Utype::LIN,      9.460730e15,     { 1, 0, 0, 0, 0, 0, 0, 0},  "[c]*yr_j",               "light-year",        true,  {"k","M","G"}  },
     {"pc",       Utype::LIN,      3.0857e16,       { 1, 0, 0, 0, 0, 0, 0, 0},  "3.0857e16*m",            "parsec",            true,  {"k","M","G","T"}  },
     {"Ao",       Utype::LIN,      1e-10,           { 1, 0, 0, 0, 0, 0, 0, 0},  "1e-10*m",                "Angstrom",          true,  {"m","k"}      },
-    {"twip",     Utype::LIN,      1.76388887e-5,   { 1, 0, 0, 0, 0, 0, 0, 0},  "17.6388888*um",          "US twip",           false, {}             },
-    {"mil",      Utype::LIN,      2.53999999e-5,   { 1, 0, 0, 0, 0, 0, 0, 0},  "25.4*um",                "US mil",            false, {}             },
-    {"p",        Utype::LIN,      0.000352778,     { 1, 0, 0, 0, 0, 0, 0, 0},  "352.778*um",             "US point",          false, {}             },
-    {"pi",       Utype::LIN,      0.004233,        { 1, 0, 0, 0, 0, 0, 0, 0},  "4.233*mm",               "US pica",           false, {}             },
-    {"in",       Utype::LIN,      0.0254,          { 1, 0, 0, 0, 0, 0, 0, 0},  "25.4*mm",                "US inch",           false, {}             },
-    {"ft",       Utype::LIN,      0.3048,          { 1, 0, 0, 0, 0, 0, 0, 0},  "0.3048*m",               "US foot",           false, {}             },
-    {"yd",       Utype::LIN,      0.9144,          { 1, 0, 0, 0, 0, 0, 0, 0},  "0.9144*m",               "US yard",           false, {}             },
-    {"mi",       Utype::LIN,      1609.344,        { 1, 0, 0, 0, 0, 0, 0, 0},  "1.609344*km",            "US mile",           false, {}             },
-    {"le",       Utype::LIN,      4828.032,        { 1, 0, 0, 0, 0, 0, 0, 0},  "4.828032*km",            "US league",         false, {}             },
 
     // units of mass	      
     {"u",        Utype::LIN,      1.6605391e-24,   { 0, 1, 0, 0, 0, 0, 0, 0},  "g/[N_0]",                "atomic mass unit",  false, {}             },
     {"amu",      Utype::LIN,      1.6605391e-24,   { 0, 1, 0, 0, 0, 0, 0, 0},  "u",                      "atomic mass unit",  false, {}             },
     {"Da",       Utype::LIN,      1.6605391e-24,   { 0, 1, 0, 0, 0, 0, 0, 0},  "u",                      "Dalton",            false, {}             },
     {"t",        Utype::LIN,      1e6,             { 0, 1, 0, 0, 0, 0, 0, 0},  "1e3*kg",                 "tonne",             true,  {"k","m","G"}  },
-    {"oz",       Utype::LIN,      28.349523125,    { 0, 1, 0, 0, 0, 0, 0, 0},  "28.349523125*g",         "US ounce",          false, {}             },
-    {"lb",       Utype::LIN,      453.59237,       { 0, 1, 0, 0, 0, 0, 0, 0},  "453.59237*g",            "US pound",          false, {}             },
-    {"ton",      Utype::LIN,      907184.74,       { 0, 1, 0, 0, 0, 0, 0, 0},  "907.18474*kg",           "US ton",            false, {}             },
 
     // units of time	           
     {"min",      Utype::LIN,      6.0e1,           { 0, 0, 1, 0, 0, 0, 0, 0},  "60*s",                   "minute",            false, {}             },
@@ -60,15 +48,10 @@ namespace puq {
 
     // units of surface	           
     {"ar",       Utype::LIN,      1.0e2,           { 2, 0, 0, 0, 0, 0, 0, 0},  "100*m2",                 "are",               true,  {"c","d","da","h"} },
-    {"acre",     Utype::LIN,      4046.873,        { 2, 0, 0, 0, 0, 0, 0, 0},  "4046.873*m2",            "US acre",           false, {}             },
 
     // units of volume	           
     {"l",        Utype::LIN,      1e-3,            { 3, 0, 0, 0, 0, 0, 0, 0},  "dm3",                    "liter",             true,  {}             },
     {"L",        Utype::LIN,      1e-3,            { 3, 0, 0, 0, 0, 0, 0, 0},  "l",                      "liter",             true,  {}             },
-    {"floz",     Utype::LIN,      2.95735295e-05,  { 3, 0, 0, 0, 0, 0, 0, 0},  "29.5735295625*mL",       "US fluid ounce",    false, {}             },
-    {"pt",       Utype::LIN,      4.73176473e-04,  { 3, 0, 0, 0, 0, 0, 0, 0},  "473.176473*mL",          "US pint",           false, {}             },
-    {"gal",      Utype::LIN,      3.78541178e-03,  { 3, 0, 0, 0, 0, 0, 0, 0},  "3.785411784*L",          "US gallon",         false, {}             },
-    {"bbl",      Utype::LIN,      0.158987294928,  { 3, 0, 0, 0, 0, 0, 0, 0},  "158.987294928*L",        "US barrel",         false, {}             },
 
     // units of energy	           
     {"J",        Utype::LIN,      1.0e3,           { 2, 1,-2, 0, 0, 0, 0, 0},  "N*m",                    "Joule",             true,  {}             },
@@ -107,7 +90,6 @@ namespace puq {
 
     // units of velocity	           
     {"kph",      Utype::LIN,      0.277778,        { 1, 0,-1, 0, 0, 0, 0, 0},  "km/h",                   "kilometer p. hour", false, {}             },
-    {"mph",      Utype::LIN,      0.44704,         { 1, 0,-1, 0, 0, 0, 0, 0},  "0.44704*m/s",            "US miles per hour", false, {}             },
     {"kn",       Utype::LIN,      0.514444,        { 1, 0,-1, 0, 0, 0, 0, 0},  "0.514444*m/s",           "knot",              false, {}             },
 
     // units of magnetic flux         

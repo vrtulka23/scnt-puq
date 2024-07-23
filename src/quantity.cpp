@@ -125,11 +125,9 @@ namespace puq {
     UnitSystem us = stype;
     value /= q.value;
   }
-  
+
   Quantity Quantity::convert(const Quantity& q) const {
-    UnitSystem us = stype;
-    UnitValue uv = value.convert(q.value);
-    return Quantity(uv);
+    return convert(q.value, *q.stype);
   }
   
   Quantity Quantity::convert(const std::string& s) const {
@@ -138,10 +136,34 @@ namespace puq {
     return Quantity(uv);
   }
   
+  Quantity Quantity::convert(const std::string& s, const UnitListType& st) const {
+    if (stype == &st) {
+      return convert(s);
+    } else {
+      UnitSystem us = stype;
+      Dimensions dim = value.baseunits.dimensions();
+      us.change(&st);         // change the unit system
+      UnitValue uv(value.magnitude, dim);
+      return Quantity(uv.convert(s));
+    }
+  }
+  
   Quantity Quantity::convert(const UnitValue& uv1) const {
     UnitSystem us = stype;
     UnitValue uv2 = value.convert(uv1);
     return Quantity(uv2);
+  }
+  
+  Quantity Quantity::convert(const UnitValue& uv1, const UnitListType& st) const {
+    if (stype == &st) {
+      return convert(uv1);
+    } else {
+      UnitSystem us = stype;
+      Dimensions dim = value.baseunits.dimensions();
+      us.change(&st);        // change the unit system
+      UnitValue uv2(value.magnitude, dim);
+      return Quantity(uv2.convert(uv1));
+    }
   }
   
 }

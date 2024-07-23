@@ -19,7 +19,11 @@ TEST(UnitValue, Initialization) {
 
   value = puq::UnitValue("3*km/s");               // from a string
   EXPECT_EQ(value.to_string(), "3*km*s-1");
-  
+
+  puq::Dimensions dim(23,{1,2,3,4,0,0,0,0});
+  value = puq::UnitValue(2, dim);
+  EXPECT_EQ(value.to_string(), "46*m*g2*s3*K4");
+ 
 }
 
 #ifdef EXPONENT_FRACTIONS

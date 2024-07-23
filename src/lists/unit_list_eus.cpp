@@ -12,7 +12,7 @@ namespace puq {
     {"m",        UT_LIN_BAS,     1.0,             { 1, 0, 0, 0, 0, 0, 0, 0},  "m",                      "meter",             false, {}             },
     {"g",        UT_LIN_BAS,     1.0,             { 0, 1, 0, 0, 0, 0, 0, 0},  "g",                      "gramm",             false, {}             },
     {"s",        UT_LIN_BAS,     1.0,             { 0, 0, 1, 0, 0, 0, 0, 0},  "s",                      "second",            false, {}             },
-    {"degR",     UT_LIN_BAS_TMP, 1.0,             { 0, 0, 0, 1, 0, 0, 0, 0},  "degR",                   "degree Rankine",    false, {}             },
+    {"K",        UT_LIN_BAS_TMP, 1.0,             { 0, 0, 0, 1, 0, 0, 0, 0},  "K",                      "Kelfin",            false, {}             },
     {"x1",       Utype::NUL,     1.0,             { 0, 0, 0, 0, 1, 0, 0, 0},  "",                       "",                  false, {}             },
     {"x2",       Utype::NUL,     1.0,             { 0, 0, 0, 0, 0, 1, 0, 0},  "",                       "",                  false, {}             },
     {"x3",       Utype::NUL,     1.0,             { 0, 0, 0, 0, 0, 0, 1, 0},  "",                       "",                  false, {}             },
@@ -52,7 +52,25 @@ namespace puq {
     {"cwt",      Utype::LIN,     50.80234544e3,   { 0, 1, 0, 0, 0, 0, 0, 0},  "50.80234544e3*g",        "long hundredweight",false, {}             },
     {"ton",      Utype::LIN,     1.0160469088e6,  { 0, 1, 0, 0, 0, 0, 0, 0},  "1.0160469088e6*g",       "long ton",          false, {}             },  
     
-  };
+    // units of time	           
+    {"min",      Utype::LIN,     6.0e1,           { 0, 0, 1, 0, 0, 0, 0, 0},  "60*s",                   "minute",            false, {}             },
+    {"h",        Utype::LIN,     3.6e3,           { 0, 0, 1, 0, 0, 0, 0, 0},  "60*min",                 "hour",              false, {}             },
+    {"day",      Utype::LIN,     8.64e4,          { 0, 0, 1, 0, 0, 0, 0, 0},  "24*h",                   "day",               false, {}             },
+    {"yr_t",     Utype::LIN,     3.1556925e7,     { 0, 0, 1, 0, 0, 0, 0, 0},  "365.24219*day",          "tropical year",     true,  {"k","m","G"}  },
+    {"yr_j",     Utype::LIN,     3.1557600e7,     { 0, 0, 1, 0, 0, 0, 0, 0},  "365.25*day",             "Julian year",       true,  {"k","m","G"}  },
+    {"yr_g",     Utype::LIN,     3.155695e7,      { 0, 0, 1, 0, 0, 0, 0, 0},  "365.2425*day",           "Gregorian year",    true,  {"k","m","G"}  },
+    {"yr",       Utype::LIN,     3.155760e7,      { 0, 0, 1, 0, 0, 0, 0, 0},  "yr_j",                   "year",              true,  {"k","m","G"}  },
+    
+    // units of temperature	
+    {"degR",     UT_LIN_TMP,      5./9.,          { 0, 0, 0, 1, 0, 0, 0, 0},  "5/9*K",                  "degree Rankine",    false, {}             },
+#ifdef UNITS_TEMPERATURES
+    {"Cel",      Utype::TMP,      1,              { 0, 0, 0, 1, 0, 0, 0, 0},  "K",                      "degree Celsius",    false, {}             },
+    {"degF",     Utype::TMP,      1,              { 0, 0, 0, 1, 0, 0, 0, 0},  "K",                      "degree Fahrenheit", false, {}             },
+#endif
+    
+    // units of velocity	           
+    {"mph",      Utype::LIN,     0.44704,         { 1, 0,-1, 0, 0, 0, 0, 0},  "mi/h",                   "miles per hour",    false, {}             },
+};
   
   /*
    * Imperial units

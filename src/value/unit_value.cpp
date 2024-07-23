@@ -22,6 +22,14 @@ UnitValue::UnitValue(const MAGNITUDE_TYPE& m, const std::string& s) {
   baseunits = atom.value.baseunits;
 }
 
+UnitValue::UnitValue(const MAGNITUDE_TYPE& m, const Dimensions& dim) {
+  magnitude = m * dim.numerical;
+  for (int i=0; i<NUM_BASEDIM; i++) {
+    std::string symbol = (*UnitSystem::UnitList)[i].symbol;
+    baseunits.append("", symbol, dim.physical[i]);
+  }
+}
+    
 std::string UnitValue::to_string() const {
   std::stringstream ss;
 #if defined(MAGNITUDE_ERRORS)

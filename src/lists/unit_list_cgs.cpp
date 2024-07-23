@@ -22,7 +22,7 @@ namespace puq {
     {"St",       Utype::LIN,     0.0001,          { 2, 0,-1, 0, 0, 0, 0, 0},  "cm2/s",                  "Stokes",            true,  {"c"}          },
     {"P",        Utype::LIN,     100,             {-1, 1,-1, 0, 0, 0, 0, 0},  "g/(cm*s)",               "Poise",             true,  {"c"}          },
     {"Ka",       Utype::LIN,     100,             {-1, 0, 0, 0, 0, 0, 0, 0},  "cm-1",                   "Kayser",            false, {}             },
-    {"Pm",       Utype::LIN,     0.0001,          { 2, 0, 0, 0, 0, 0, 0, 0},  "1e-4*m2",                "Perm",              false, {}             },
+    {"Pm",       Utype::LIN,     0.0001,          { 2, 0, 0, 0, 0, 0, 0, 0},  "1e-4*m2",                "permeability",      false, {}             },
     {"Rayl",     Utype::LIN,     10000,           {-2, 1,-1, 0, 0, 0, 0, 0},  "g/(cm2*s)",              "Rayl",              false, {}             },
     
     {"rad",      Utype::LIN,     0.01,            { 2, 0,-2, 0, 0, 0, 0, 0},  "100*erg/g",              "radiation dose",    false, {"d","h","k","M"} },
@@ -81,7 +81,7 @@ namespace puq {
 
       {"[e]",      Utype::CST,         1.60218e-21,   {(FRC){1,2},  (FRC){1,2},  0, 0, 0, 0, 0, 0},  "1.602176634e-20*abC", "elementary charge",    false, {}             },
     });
-    
+  
 }
 
 #endif // UNIT_SYSTEM_CGS
