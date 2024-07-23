@@ -81,35 +81,38 @@ namespace puq {
 #ifdef EXPONENT_FRACTIONS
   typedef EXPONENT_INT_PRECISION FRC[2];
 #endif
-  //struct UnitListType {
-  //  std::string name;
-  //  std::vector<UnitStruct> units;
-  //};
   typedef std::vector<UnitStruct> UnitListType;  
+  struct SystemDataType {
+    std::string SystemName;
+    UnitListType UnitList;
+  };
+
+  namespace SystemData {
+    extern const SystemDataType SI;
+#ifdef UNIT_SYSTEM_CGS
+    extern const SystemDataType ESU;
+    extern const SystemDataType EMU;
+    extern const SystemDataType GAUSS;
+#endif  
+#ifdef UNIT_SYSTEM_AU
+    extern const SystemDataType AU;
+#endif
+#ifdef UNIT_SYSTEM_EUS
+    extern const SystemDataType IU;
+    extern const SystemDataType USCU;
+#endif
+  }
   
   // Changing unit systems
   class UnitSystem {
     bool closed;
-    static std::stack<const UnitListType*> systemStack;
+    static std::stack<const SystemDataType*> systemStack;
   public:
-    static const UnitListType SI;
-#ifdef UNIT_SYSTEM_CGS
-    static const UnitListType ESU;
-    static const UnitListType EMU;
-    static const UnitListType GAUSS;
-#endif  
-#ifdef UNIT_SYSTEM_AU
-    static const UnitListType AU;
-#endif
-#ifdef UNIT_SYSTEM_EUS
-    static const UnitListType IU;
-    static const UnitListType USCU;
-#endif
-    static const UnitListType* UnitList;
-    UnitSystem(const UnitListType& st);
-    UnitSystem(const UnitListType* st);
+    static const SystemDataType* Data;
+    UnitSystem(const SystemDataType& st);
+    UnitSystem(const SystemDataType* st);
     ~UnitSystem();
-    void change(const UnitListType* st);
+    void change(const SystemDataType* st);
     void close();
   };
   

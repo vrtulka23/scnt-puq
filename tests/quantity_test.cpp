@@ -137,7 +137,7 @@ TEST(Quantity, UnitSystemDirect) {
 
   puq::Quantity q1, q2;
   
-  q1 = puq::Quantity(34,"statA",puq::UnitSystem::ESU);  // explicitely state the unit system
+  q1 = puq::Quantity(34,"statA",puq::SystemData::ESU);  // explicitely state the unit system
   q2 = q1.convert("Fr/ms");
   EXPECT_EQ(q2.to_string(), "0.034*Fr*ms-1");
 
@@ -150,7 +150,7 @@ TEST(Quantity, UnitSystemEnvironment) {
   
   puq::Quantity q1, q2;
 
-  puq::UnitSystem us = puq::UnitSystem::ESU;            // set a default unit system environment
+  puq::UnitSystem us(puq::SystemData::ESU);           // set a default unit system environment
 
   q1 = puq::Quantity(34,"statA");                     // ESU units are available by default
   q2 = q1.convert("Fr/ms");
@@ -169,12 +169,12 @@ TEST(Quantity, UnitSystemConversion) {
 
   puq::Quantity q1, q2, q3;
 
-  q1 = puq::Quantity(34, "J", puq::UnitSystem::SI);   // convert using expression
-  q2 = q1.convert("erg", puq::UnitSystem::ESU); 
+  q1 = puq::Quantity(34, "J", puq::SystemData::SI);   // convert using expression
+  q2 = q1.convert("erg", puq::SystemData::ESU); 
   EXPECT_EQ(q2.to_string(), "3.4e+08*erg");
 
-  q1 = puq::Quantity(34, "J", puq::UnitSystem::SI);   // convert using Quantity/UnitValue
-  q2 = puq::Quantity("erg", puq::UnitSystem::ESU); 
+  q1 = puq::Quantity(34, "J", puq::SystemData::SI);   // convert using Quantity/UnitValue
+  q2 = puq::Quantity("erg", puq::SystemData::ESU); 
   q3 = q1.convert(q2); 
   EXPECT_EQ(q3.to_string(), "3.4e+08*erg");
   

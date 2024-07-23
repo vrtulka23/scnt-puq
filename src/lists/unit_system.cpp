@@ -2,18 +2,18 @@
 
 namespace puq {
 
-  const UnitListType* UnitSystem::UnitList = &UnitSystem::SI;
+  const SystemDataType* UnitSystem::Data = &SystemData::SI;
   
-  std::stack<const UnitListType *> UnitSystem::systemStack;
+  std::stack<const SystemDataType *> UnitSystem::systemStack;
   
-  UnitSystem::UnitSystem(const UnitListType& st): closed(false) {
-    systemStack.push(UnitList);
-    UnitList = &st;
+  UnitSystem::UnitSystem(const SystemDataType& st): closed(false) {
+    systemStack.push(Data);
+    Data = &st;
   }
   
-  UnitSystem::UnitSystem(const UnitListType* st): closed(false) {
-    systemStack.push(UnitList);
-    UnitList = st;
+  UnitSystem::UnitSystem(const SystemDataType* st): closed(false) {
+    systemStack.push(Data);
+    Data = st;
   }
   
   UnitSystem::~UnitSystem() {
@@ -21,15 +21,15 @@ namespace puq {
       close();
   }
 
-  void UnitSystem::change(const UnitListType* st) {
-    UnitList = systemStack.top();
+  void UnitSystem::change(const SystemDataType* st) {
+    Data = systemStack.top();
     systemStack.pop();
-    systemStack.push(UnitList);
-    UnitList = st;
+    systemStack.push(Data);
+    Data = st;
   }
   
   void UnitSystem::close() {
-    UnitList = systemStack.top();
+    Data = systemStack.top();
     systemStack.pop();
     closed = true;
   }

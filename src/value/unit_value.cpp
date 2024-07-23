@@ -25,7 +25,7 @@ UnitValue::UnitValue(const MAGNITUDE_TYPE& m, const std::string& s) {
 UnitValue::UnitValue(const MAGNITUDE_TYPE& m, const Dimensions& dim) {
   magnitude = m * dim.numerical;
   for (int i=0; i<NUM_BASEDIM; i++) {
-    std::string symbol = (*UnitSystem::UnitList)[i].symbol;
+    std::string symbol = (UnitSystem::Data->UnitList)[i].symbol;
     baseunits.append("", symbol, dim.physical[i]);
   }
 }

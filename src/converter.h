@@ -35,7 +35,7 @@ public:
       if (mgs!=mks) ss << ", " << mks;
       if (mgs!=cgs && mks!=cgs) ss << ", " << cgs;
     }
-    for (auto unit1: *UnitSystem::UnitList) {
+    for (auto unit1: UnitSystem::Data->UnitList) {
       if (Dimensions(1,unit1.dimensions) != dim1) continue;
       if (unit1.symbol==mgs || unit1.symbol==mks || unit1.symbol==cgs) continue;
       ss << ", " << unit1.symbol;

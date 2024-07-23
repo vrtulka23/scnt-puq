@@ -2,7 +2,7 @@
 
 #ifdef UNIT_SYSTEM_CGS
 
-namespace puq {
+namespace puq {namespace SystemData {
 
   const UnitListType _CGS = { 
     {"m",        UT_LIN_BAS,     1.0,             { 1, 0, 0, 0, 0, 0, 0, 0},  "m",                      "meter",             true,  {}             },
@@ -60,16 +60,24 @@ namespace puq {
     {"[mu_B]",   Utype::CST,         9.27401e-26,     {(FRC){5,2},  (FRC){1,2}, -1, 0, 0, 0, 0, 0},  "9.274010066e-21*erg/G",  "Bohr magneton",     false, {}             },
   };
     
-  const UnitListType UnitSystem::ESU = _CGS + _GAUSS_ESU + UnitListType({
-      {"statT",    Utype::LIN,         1000,          {(FRC){-3,2}, (FRC){1,2},  0, 0, 0, 0, 0, 0},  "cm-3:2*g1:2",      "Stattesla",               false, {}             },
-      {"statWb",   Utype::LIN,         0.0001,        {2,           1,           0, 0, 0, 0, 0, 0},  "cm2*g",            "Statweber",               false, {}             },
-
-      {"[mu_B]",   Utype::CST,         2.78028e-17,   {(FRC){7,2},  (FRC){1,2}, -2, 0, 0, 0, 0, 0},  "2.780278273e-10*statA*cm2 ",  "Bohr magneton", false, {}             },
-    });
+  const SystemDataType ESU = {
+    "Electrostatic units",
+    _CGS + _GAUSS_ESU + UnitListType({
+	{"statT",    Utype::LIN,         1000,          {(FRC){-3,2}, (FRC){1,2},  0, 0, 0, 0, 0, 0},  "cm-3:2*g1:2",      "Stattesla",               false, {}             },
+	{"statWb",   Utype::LIN,         0.0001,        {2,           1,           0, 0, 0, 0, 0, 0},  "cm2*g",            "Statweber",               false, {}             },
+	
+	{"[mu_B]",   Utype::CST,         2.78028e-17,   {(FRC){7,2},  (FRC){1,2}, -2, 0, 0, 0, 0, 0},  "2.780278273e-10*statA*cm2 ",  "Bohr magneton", false, {}             },
+      })
+  };
   
-  const UnitListType UnitSystem::GAUSS = _CGS + _GAUSS_ESU + _GAUSS_EMU;
+  const SystemDataType GAUSS = {
+    "Gaussian units",
+    _CGS + _GAUSS_ESU + _GAUSS_EMU
+  };
   
-  const UnitListType UnitSystem::EMU = _CGS + _GAUSS_EMU + UnitListType({
+  const SystemDataType EMU = {
+    "Electromagnetic units",
+    _CGS + _GAUSS_EMU + UnitListType({
       {"Bi",       Utype::LIN,         0.1,           {(FRC){1,2},  (FRC){1,2}, -1, 0, 0, 0, 0, 0},  "dyn1:2",              "biot",                 false, {}             },
       {"abA",      Utype::LIN,         0.1,           {(FRC){1,2},  (FRC){1,2}, -1, 0, 0, 0, 0, 0},  "Bi",                  "Abampere",             false, {}             },
       {"abC",      Utype::LIN,         0.1,           {(FRC){1,2},  (FRC){1,2},  0, 0, 0, 0, 0, 0},  "Bi*s",                "Abcoulomb",            false, {}             },
@@ -80,8 +88,9 @@ namespace puq {
       {"abH",      Utype::LIN,         0.01,          {1,           0,           0, 0, 0, 0, 0, 0},  "cm",                  "Abhenry",              false, {}             },
 
       {"[e]",      Utype::CST,         1.60218e-21,   {(FRC){1,2},  (FRC){1,2},  0, 0, 0, 0, 0, 0},  "1.602176634e-20*abC", "elementary charge",    false, {}             },
-    });
+      })
+  };
   
-}
+}}
 
 #endif // UNIT_SYSTEM_CGS

@@ -19,7 +19,7 @@ TEST(Lists, UniqueSymbolsSI) {
 
   // unique unit symbols
   std::set<std::string> units;
-  for (auto unit: *puq::UnitSystem::UnitList) {
+  for (auto unit: puq::UnitSystem::Data->UnitList) {
     // unique unit symbol without a prefix
     check_symbol(units, unit.symbol);
     if (unit.use_prefixes) {
@@ -41,7 +41,7 @@ TEST(Lists, UniqueSymbolsSI) {
 
 inline void test_unit_definitions() {
   
-  for (auto unit: *puq::UnitSystem::UnitList) {
+  for (auto unit: puq::UnitSystem::Data->UnitList) {
     
     //std::cout << "hello " << unit.symbol << " " << std::bitset<8>((int)unit.utype) << std::endl;
     //if ((unit.utype & Utype::LIN)!=Utype::LIN) // check only linear units
@@ -84,21 +84,21 @@ TEST(Lists, UnitDefinitionsSI) {
 
 TEST(Lists, UnitDefinitionsESU) {
 
-  puq::UnitSystem us = puq::UnitSystem::ESU;
+  puq::UnitSystem us(puq::SystemData::ESU);
   test_unit_definitions();
   
 }
 
 TEST(Lists, UnitDefinitionsGauss) {
 
-  puq::UnitSystem us = puq::UnitSystem::GAUSS;
+  puq::UnitSystem us(puq::SystemData::GAUSS);
   test_unit_definitions();
   
 }
 
 TEST(Lists, UnitDefinitionsEMU) {
 
-  puq::UnitSystem us = puq::UnitSystem::EMU;
+  puq::UnitSystem us(puq::SystemData::EMU);
   test_unit_definitions();
     
 }
@@ -110,7 +110,7 @@ TEST(Lists, UnitDefinitionsEMU) {
 
 TEST(Lists, UnitDefinitionsAU) {
 
-  puq::UnitSystem us = puq::UnitSystem::AU;
+  puq::UnitSystem us(puq::SystemData::AU);
   test_unit_definitions();
 
 }
@@ -121,14 +121,14 @@ TEST(Lists, UnitDefinitionsAU) {
 
 TEST(Lists, UnitDefinitionsIU) {
 
-  puq::UnitSystem us = puq::UnitSystem::IU;
+  puq::UnitSystem us(puq::SystemData::IU);
   test_unit_definitions();
 
 }
 
 TEST(Lists, UnitDefinitionsUSCU) {
 
-  puq::UnitSystem us = puq::UnitSystem::USCU;
+  puq::UnitSystem us(puq::SystemData::USCU);
   test_unit_definitions();
 
 }
