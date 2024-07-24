@@ -87,6 +87,7 @@ namespace puq {
     UnitListType UnitList;
   };
 
+  // Data of various unit systems
   namespace SystemData {
     extern const SystemDataType SI;
 #ifdef UNIT_SYSTEM_CGS

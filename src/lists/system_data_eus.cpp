@@ -5,10 +5,10 @@
 namespace puq {namespace SystemData {
 
   const UnitListType _EUS  = {
-    {"m",        UT_LIN_BAS,     1.0,             { 1, 0, 0, 0, 0, 0, 0, 0},  "m",                      "meter",             false, {}             },
-    {"g",        UT_LIN_BAS,     1.0,             { 0, 1, 0, 0, 0, 0, 0, 0},  "g",                      "gramm",             false, {}             },
-    {"s",        UT_LIN_BAS,     1.0,             { 0, 0, 1, 0, 0, 0, 0, 0},  "s",                      "second",            false, {}             },
-    {"K",        UT_LIN_BAS_TMP, 1.0,             { 0, 0, 0, 1, 0, 0, 0, 0},  "K",                      "Kelfin",            false, {}             },
+    {"m",        UT_LIN_BAS,     1.0,             { 1, 0, 0, 0, 0, 0, 0, 0},  "m",                      "meter",             true,  {}             },
+    {"g",        UT_LIN_BAS,     1.0,             { 0, 1, 0, 0, 0, 0, 0, 0},  "g",                      "gramm",             true,  {}             },
+    {"s",        UT_LIN_BAS,     1.0,             { 0, 0, 1, 0, 0, 0, 0, 0},  "s",                      "second",            true,  {}             },
+    {"K",        UT_LIN_BAS_TMP, 1.0,             { 0, 0, 0, 1, 0, 0, 0, 0},  "K",                      "Kelvin",            true,  {}             },
     {"x1",       Utype::NUL,     1.0,             { 0, 0, 0, 0, 1, 0, 0, 0},  "",                       "",                  false, {}             },
     {"x2",       Utype::NUL,     1.0,             { 0, 0, 0, 0, 0, 1, 0, 0},  "",                       "",                  false, {}             },
     {"x3",       Utype::NUL,     1.0,             { 0, 0, 0, 0, 0, 0, 1, 0},  "",                       "",                  false, {}             },
