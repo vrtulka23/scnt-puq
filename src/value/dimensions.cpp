@@ -32,7 +32,7 @@ Dimensions::Dimensions(const MAGNITUDE_PRECISION& m, const MAGNITUDE_PRECISION& 
 inline std::string _numerical_to_string(MAGNITUDE_TYPE numerical, const BaseDimensions& physical,
 					Dformat& format) {
   std::stringstream ss;
-  if ((format&Dformat::SI)==Dformat::SI) {
+  if ((format&Dformat::MKS)==Dformat::MKS) {
     numerical = numerical * (MAGNITUDE_TYPE)(std::pow(1e-3,(EXPONENT_REAL_PRECISION)physical[1]));
   } else if ((format&Dformat::CGS)==Dformat::CGS) {
     numerical = numerical * (MAGNITUDE_TYPE)(std::pow(1e2,(EXPONENT_REAL_PRECISION)physical[0]));
@@ -55,7 +55,7 @@ inline std::string _physical_to_string(const BaseDimensions& physical, Dformat& 
   std::stringstream ss;
   for (int i=0; i<NUM_BASEDIM; i++) {
     std::string symbol = (UnitSystem::Data->UnitList)[i].symbol;
-    if (i==1 && (format&Dformat::SI)==Dformat::SI) {
+    if (i==1 && (format&Dformat::MKS)==Dformat::MKS) {
       symbol = "kg";
     } else if (i==0 && (format&Dformat::CGS)==Dformat::CGS) {
       symbol = "cm";

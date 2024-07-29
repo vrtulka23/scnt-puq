@@ -31,14 +31,13 @@ private:
   std::vector <std::string> tokens;
 };
 
-typedef const puq::SystemDataType* SystemPtr;
 std::map<std::string, SystemPtr> systems = {
   {"SI",    &puq::SystemData::SI},
   {"ESU",   &puq::SystemData::ESU},
   {"GAUSS", &puq::SystemData::GAUSS},
   {"EMU",   &puq::SystemData::EMU},
   {"IU",    &puq::SystemData::IU},
-  {"USCU",  &puq::SystemData::USCU},
+  {"US",    &puq::SystemData::US},
   {"AU",    &puq::SystemData::AU},
 };
 
@@ -72,10 +71,10 @@ int main(int argc, char * argv[]) {
     std::cout << "Example of use:" << std::endl;
     std::cout << "puq -h                              dislay help" << std::endl;
     std::cout << "puq -v                              dislay current version" << std::endl;
-    //std::cout << "puq -s                              list available unit systems" << std::endl;
-    std::cout << "puq -c [sys] <expr1> [sys] <expr2>  get <expr1> in units of <expr2>" << std::endl;
-    std::cout << "puq -l [sys] <list>                 display list: prefix/base/lin/log/temp/const/sys" << std::endl;
+    std::cout << "puq -s                              list of supported unit systems" << std::endl;
     std::cout << "puq -i [sys] <expr>                 get information about an unit" << std::endl;
+    std::cout << "puq -c [sys] <expr1> [sys] <expr2>  get <expr1> in units of <expr2>" << std::endl;
+    std::cout << "puq -l [sys] <list>                 display list: prefix/base/deriv/log/temp/const" << std::endl;
     std::cout << std::endl;
   }
   else if(input.cmdOptionExists("-v")) {
@@ -84,6 +83,9 @@ int main(int argc, char * argv[]) {
   try {
     std::deque<std::string> convert;
     puq::UnitSystem us(puq::SystemData::SI);
+    if (input.cmdOptionExists("-s")) {
+      display_unit_systems();
+    }
     convert = input.getCmdOption("-i",2);
     if (!convert.empty()) {
       change_system(us, convert);
@@ -114,8 +116,8 @@ int main(int argc, char * argv[]) {
 	display_prefixes();
       else if (convert[0]=="base")
 	display_base_units();
-      else if (convert[0]=="lin")
-	display_linear_units();
+      else if (convert[0]=="deriv")
+	display_derived_units();
 #ifdef UNITS_LOGARITHMIC
       else if (convert[0]=="log")
 	display_logarithmic_units();

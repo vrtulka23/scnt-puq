@@ -5,15 +5,6 @@
 namespace puq {namespace SystemData {
 
   const UnitListType _CGS = { 
-    {"m",        UT_LIN_BAS,     1.0,             { 1, 0, 0, 0, 0, 0, 0, 0},  "m",                      "meter",             true,  {}             },
-    {"g",        UT_LIN_BAS,     1.0,             { 0, 1, 0, 0, 0, 0, 0, 0},  "g",                      "gram",              true,  {}             },
-    {"s",        UT_LIN_BAS,     1.0,             { 0, 0, 1, 0, 0, 0, 0, 0},  "s",                      "second",            true,  {}             },
-    {"K",        UT_LIN_BAS_TMP, 1.0,             { 0, 0, 0, 1, 0, 0, 0, 0},  "K",                      "Kelvin",            true,  {}             },
-    {"x1",       Utype::NUL,     1.0,             { 0, 0, 0, 0, 1, 0, 0, 0},  "",                       "",                  false, {}             },
-    {"x2",       Utype::NUL,     1.0,             { 0, 0, 0, 0, 0, 1, 0, 0},  "",                       "",                  false, {}             },
-    {"x3",       Utype::NUL,     1.0,             { 0, 0, 0, 0, 0, 0, 1, 0},  "",                       "",                  false, {}             },
-    {"x4",       Utype::NUL,     1.0,             { 0, 0, 0, 0, 0, 0, 0, 1},  "",                       "",                  false, {}             },
-     
     {"Gal",      Utype::LIN,     0.01,            { 1, 0,-2, 0, 0, 0, 0, 0},  "cm/s2",                  "Gal",               false, {}             },
     {"dyn",      Utype::LIN,     0.01,            { 1, 1,-2, 0, 0, 0, 0, 0},  "g*cm/s2",                "dyne",              true,  {}             },
     {"Ba",       Utype::LIN,     100,             {-1, 1,-2, 0, 0, 0, 0, 0},  "dyn/cm2",                "Barye",             false, {}             },
@@ -22,10 +13,10 @@ namespace puq {namespace SystemData {
     {"St",       Utype::LIN,     0.0001,          { 2, 0,-1, 0, 0, 0, 0, 0},  "cm2/s",                  "Stokes",            true,  {"c"}          },
     {"P",        Utype::LIN,     100,             {-1, 1,-1, 0, 0, 0, 0, 0},  "g/(cm*s)",               "Poise",             true,  {"c"}          },
     {"Ka",       Utype::LIN,     100,             {-1, 0, 0, 0, 0, 0, 0, 0},  "cm-1",                   "Kayser",            false, {}             },
-    {"Pm",       Utype::LIN,     0.0001,          { 2, 0, 0, 0, 0, 0, 0, 0},  "1e-4*m2",                "permeability",      false, {}             },
+    {"Pma",      Utype::LIN,     0.0001,          { 2, 0, 0, 0, 0, 0, 0, 0},  "1e-4*m2",                "permeability",      false, {}             },
     {"Rayl",     Utype::LIN,     10000,           {-2, 1,-1, 0, 0, 0, 0, 0},  "g/(cm2*s)",              "Rayl",              false, {}             },
     
-    {"rad",      Utype::LIN,     0.01,            { 2, 0,-2, 0, 0, 0, 0, 0},  "100*erg/g",              "radiation dose",    false, {"d","h","k","M"} },
+    {"radd",     Utype::LIN,     0.01,            { 2, 0,-2, 0, 0, 0, 0, 0},  "100*erg/g",              "radiation dose",    false, {"d","h","k","M"} },
 
     {"[m_u]",    Utype::CST,     1.66054e-24,     { 0, 1, 0, 0, 0, 0, 0, 0},  "1.660539069e-24*g",      "atom. mass const.", false, {}             },    
     {"[a_0]",    Utype::CST,     5.29177e-11,     { 1, 0, 0, 0, 0, 0, 0, 0},  "5.291772105e-9*cm",      "Bohr radius",       false, {}             },    
@@ -62,7 +53,7 @@ namespace puq {namespace SystemData {
     
   const SystemDataType ESU = {
     "Electrostatic CGS units",
-    _CGS + _GAUSS_ESU + UnitListType({
+    _BASE + _CGS + _GAUSS_ESU + UnitListType({
 	{"statT",    Utype::LIN,         1000,          {(FRC){-3,2}, (FRC){1,2},  0, 0, 0, 0, 0, 0},  "cm-3:2*g1:2",      "Stattesla",               false, {}             },
 	{"statWb",   Utype::LIN,         0.0001,        {2,           1,           0, 0, 0, 0, 0, 0},  "cm2*g",            "Statweber",               false, {}             },
 	
@@ -72,12 +63,12 @@ namespace puq {namespace SystemData {
   
   const SystemDataType GAUSS = {
     "Gaussian CGS units",
-    _CGS + _GAUSS_ESU + _GAUSS_EMU
+    _BASE + _CGS + _GAUSS_ESU + _GAUSS_EMU
   };
   
   const SystemDataType EMU = {
     "Electromagnetic CGS units",
-    _CGS + _GAUSS_EMU + UnitListType({
+    _BASE + _CGS + _GAUSS_EMU + UnitListType({
       {"Bi",       Utype::LIN,         0.1,           {(FRC){1,2},  (FRC){1,2}, -1, 0, 0, 0, 0, 0},  "dyn1:2",              "biot",                 false, {}             },
       {"abA",      Utype::LIN,         0.1,           {(FRC){1,2},  (FRC){1,2}, -1, 0, 0, 0, 0, 0},  "Bi",                  "Abampere",             false, {}             },
       {"abC",      Utype::LIN,         0.1,           {(FRC){1,2},  (FRC){1,2},  0, 0, 0, 0, 0, 0},  "Bi*s",                "Abcoulomb",            false, {}             },

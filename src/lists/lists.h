@@ -68,9 +68,20 @@ namespace puq {
     bool use_prefixes;
     AllowedPrefixes allowed_prefixes;
   };
+  typedef std::vector<UnitStruct> UnitListType;  
 
-  // System of units
+  #include "quantities.h"
+  
+  struct SystemDataType {
+    std::string SystemName;
+    UnitListType UnitList;
+    QuantityListType QuantityList;
+  };
 
+#ifdef EXPONENT_FRACTIONS
+  typedef EXPONENT_INT_PRECISION FRC[2];
+#endif
+    
   template<typename T>
   std::vector<T> operator+(const std::vector<T>& v1, const std::vector<T>& v2) {
     std::vector<T> vr(std::begin(v1), std::end(v1));
@@ -78,17 +89,8 @@ namespace puq {
     return vr;
   }
   
-#ifdef EXPONENT_FRACTIONS
-  typedef EXPONENT_INT_PRECISION FRC[2];
-#endif
-  typedef std::vector<UnitStruct> UnitListType;  
-  struct SystemDataType {
-    std::string SystemName;
-    UnitListType UnitList;
-  };
-
-  // Data of various unit systems
   namespace SystemData {
+    #include "system_base.h"
     extern const SystemDataType SI;
 #ifdef UNIT_SYSTEM_CGS
     extern const SystemDataType ESU;
@@ -100,7 +102,7 @@ namespace puq {
 #endif
 #ifdef UNIT_SYSTEM_EUS
     extern const SystemDataType IU;
-    extern const SystemDataType USCU;
+    extern const SystemDataType US;
 #endif
   }
   

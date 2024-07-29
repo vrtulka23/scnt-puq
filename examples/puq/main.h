@@ -9,9 +9,13 @@
 #include "../../src/nostd.h"
 #include "../../src/lists/lists.h"
 
+typedef const puq::SystemDataType* SystemPtr;
+extern std::map<std::string, SystemPtr> systems;
+
+void display_unit_systems();
 void display_prefixes();
 void display_base_units();
-void display_linear_units();
+void display_derived_units();
 void display_constants();
 #ifdef UNITS_TEMPERATURES
 void display_temperature_units();

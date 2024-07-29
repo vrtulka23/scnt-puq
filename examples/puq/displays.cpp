@@ -1,5 +1,15 @@
 #include "main.h"
 
+void display_unit_systems() {
+  std::cout << std::endl << "Unit systems:" << std::endl << std::endl;
+  for (auto sys: systems) {
+    std::cout << std::setfill(' ') << std::setw(8)  << std::left << sys.first;
+    std::cout << std::setfill(' ') << std::setw(22)  << std::left << sys.second->SystemName;
+    std::cout << std::endl;
+  }
+  std::cout << std::endl;
+}
+
 void table_header(std::string title, std::vector<std::string> header, std::vector<int> width) {
   std::cout << std::endl;
   std::cout << title << std::endl << std::endl;
@@ -42,11 +52,13 @@ void display_base_units() {
   std::cout << std::endl;
 }
 
-void display_linear_units() {
-  table_header("Linear units:", {"Symbol","Name","Magnitude","Dimension","Definition","Allowed prefixes"}, {9,22,13,30,25,22});
+void display_derived_units() {
+  table_header("Derived units:", {"Symbol","Name","Magnitude","Dimension","Definition","Allowed prefixes"}, {9,22,13,30,25,22});
   for (size_t i=0; i<puq::UnitSystem::Data->UnitList.size(); i++) {
     auto unit = (puq::UnitSystem::Data->UnitList)[i];
     if ((unit.utype & puq::Utype::LIN)!=puq::Utype::LIN) continue;
+    if ((unit.utype & puq::Utype::BAS)==puq::Utype::BAS) continue;
+    if ((unit.utype & puq::Utype::CST)==puq::Utype::CST) continue;
     puq::UnitValue uv(unit.symbol);
     puq::Dimensions dim = uv.baseunits.dimensions();
     std::cout << std::setfill(' ') << std::setw(9)  << std::left << unit.symbol;
@@ -117,7 +129,7 @@ void display_info(std::string expr) {
   std::cout << "Base units:  " << puq::nostd::to_string(uv.baseunits) << std::endl;
   std::cout << std::endl;
   std::cout << "Dimensions:  MGS  " << dim.to_string() << std::endl;
-  std::cout << "             SI   " << dim.to_string(puq::Dformat::NUM|puq::Dformat::PHYS|puq::Dformat::SI) << std::endl;
+  std::cout << "             MKS  " << dim.to_string(puq::Dformat::NUM|puq::Dformat::PHYS|puq::Dformat::MKS) << std::endl;
   std::cout << "             CGS  " << dim.to_string(puq::Dformat::NUM|puq::Dformat::PHYS|puq::Dformat::CGS) << std::endl;
   std::stringstream ss; bool conv = false;
   for (auto unit: puq::UnitSystem::Data->UnitList) {

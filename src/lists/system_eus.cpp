@@ -4,16 +4,7 @@
 
 namespace puq {namespace SystemData {
 
-  const UnitListType _EUS  = {
-    {"m",        UT_LIN_BAS,     1.0,             { 1, 0, 0, 0, 0, 0, 0, 0},  "m",                      "meter",             true,  {}             },
-    {"g",        UT_LIN_BAS,     1.0,             { 0, 1, 0, 0, 0, 0, 0, 0},  "g",                      "gramm",             true,  {}             },
-    {"s",        UT_LIN_BAS,     1.0,             { 0, 0, 1, 0, 0, 0, 0, 0},  "s",                      "second",            true,  {}             },
-    {"K",        UT_LIN_BAS_TMP, 1.0,             { 0, 0, 0, 1, 0, 0, 0, 0},  "K",                      "Kelvin",            true,  {}             },
-    {"x1",       Utype::NUL,     1.0,             { 0, 0, 0, 0, 1, 0, 0, 0},  "",                       "",                  false, {}             },
-    {"x2",       Utype::NUL,     1.0,             { 0, 0, 0, 0, 0, 1, 0, 0},  "",                       "",                  false, {}             },
-    {"x3",       Utype::NUL,     1.0,             { 0, 0, 0, 0, 0, 0, 1, 0},  "",                       "",                  false, {}             },
-    {"x4",       Utype::NUL,     1.0,             { 0, 0, 0, 0, 0, 0, 0, 1},  "",                       "",                  false, {}             },
-
+  const UnitListType _EUS = {
     // units of length
     {"twip",     Utype::LIN,     17.6388888e-6,   { 1, 0, 0, 0, 0, 0, 0, 0},  "17.6388888e-6*m",        "twip",              false, {}             },    
     {"th",       Utype::LIN,     25.4e-6,         { 1, 0, 0, 0, 0, 0, 0, 0},  "25.4e-6*m",              "thou",              false, {}             },    
@@ -66,11 +57,11 @@ namespace puq {namespace SystemData {
     
     // units of velocity	           
     {"mph",      Utype::LIN,     0.44704,         { 1, 0,-1, 0, 0, 0, 0, 0},  "mi/h",                   "miles per hour",    false, {}             },
-};
+  };
   
   const SystemDataType IU = {
     "Imperial units",
-    _EUS + UnitListType({
+    _BASE + _EUS + UnitListType({
 
 	// units of length
 	{"bc",       Utype::LIN,     8.4667e-3,       { 1, 0, 0, 0, 0, 0, 0, 0},  "8.4667e-3*m",            "barleycorn",        false, {}             },    
@@ -82,7 +73,7 @@ namespace puq {namespace SystemData {
 	{"sqmi",     Utype::LIN,     2589988.110336,  { 2, 0, 0, 0, 0, 0, 0, 0},  "2589988.110336*m2",      "square mile",       false, {}             },
         
 	// units of volume
-	{"min",      Utype::LIN,     59.1938802083e-9,{ 3, 0, 0, 0, 0, 0, 0, 0},  "59.1938802083e-9*m3",    "minim",             false, {}             },
+	{"minim",    Utype::LIN,     59.1938802083e-9,{ 3, 0, 0, 0, 0, 0, 0, 0},  "59.1938802083e-9*m3",    "minim",             false, {}             },
 	{"fls",      Utype::LIN,     1.18387760416e-6,{ 3, 0, 0, 0, 0, 0, 0, 0},  "1.18387760416e-6*m3",    "fluid scruple",     false, {}             },
 	{"fldr",     Utype::LIN,     3.5516328125e-6, { 3, 0, 0, 0, 0, 0, 0, 0},  "3.5516328125e-6*m3",     "fluid drachm",      false, {}             },
 	{"floz",     Utype::LIN,     28.4130625e-6,   { 3, 0, 0, 0, 0, 0, 0, 0},  "28.4130625e-6*m3",       "fluid ounce",       false, {}             },
@@ -100,9 +91,9 @@ namespace puq {namespace SystemData {
       })
   };
   
-  const SystemDataType USCU = {
+  const SystemDataType US = {
     "United States customary units",
-    _EUS + UnitListType({
+    _BASE + _EUS + UnitListType({
 	
 	// units of length
 	{"p",        Utype::LIN,     352.778e-6,      { 1, 0, 0, 0, 0, 0, 0, 0},  "352.778e-6*m",           "point",             false, {}             },
@@ -120,7 +111,7 @@ namespace puq {namespace SystemData {
 	{"cuyd",     Utype::LIN,     0.764554857984,  { 3, 0, 0, 0, 0, 0, 0, 0},  "0.764554857984*m3",      "cubic yard",        false, {}             },
 	{"acft",     Utype::LIN,     1233.482,        { 3, 0, 0, 0, 0, 0, 0, 0},  "1233.482*m3",            "acre-foot",         false, {}             },
 	// fluid units of volume
-	{"min",      Utype::LIN,     61.611519921875e-9, { 3, 0, 0, 0, 0, 0, 0, 0},  "61.611519921875e-9*m3", "minim",           false, {}             },
+	{"minim",    Utype::LIN,     61.611519921875e-9, { 3, 0, 0, 0, 0, 0, 0, 0},  "61.611519921875e-9*m3", "minim",           false, {}             },
 	{"fldr",     Utype::LIN,     3.6966911953125e-6, { 3, 0, 0, 0, 0, 0, 0, 0},  "3.6966911953125e-6*m3", "fluid drachm",    false, {}             },
 	{"tsp",      Utype::LIN,     4.92892159375e-6,   { 3, 0, 0, 0, 0, 0, 0, 0},  "4.92892159375e-6*m3",   "teaspoon",        false, {}             },
 	{"tbsp",     Utype::LIN,     14.78676478125e-6,  { 3, 0, 0, 0, 0, 0, 0, 0},  "14.78676478125e-6*m3",  "tablespoon",      false, {}             },
@@ -141,7 +132,7 @@ namespace puq {namespace SystemData {
 	{"gald",     Utype::LIN,     4.4048837708599e-3,  { 3, 0, 0, 0, 0, 0, 0, 0},  "4.4048837708599e-3*m3",   "dry gallon",    false, {}            },
 	{"pk",       Utype::LIN,     8.8097675417199e-3,  { 3, 0, 0, 0, 0, 0, 0, 0},  "8.8097675417199e-3*m3",   "peck",          false, {}            },
 	{"bu",       Utype::LIN,     35.239070166879e-3,  { 3, 0, 0, 0, 0, 0, 0, 0},  "35.239070166879e-3*m3",   "bushel",        false, {}            },
-	{"bbl",      Utype::LIN,     115.62712358400e-3,  { 3, 0, 0, 0, 0, 0, 0, 0},  "115.62712358400e-3*m3",   "liquid barrel", false, {}            },
+	{"bbll",     Utype::LIN,     115.62712358400e-3,  { 3, 0, 0, 0, 0, 0, 0, 0},  "115.62712358400e-3*m3",   "liquid barrel", false, {}            },
 	
 	// units of mass
 	{"cwts",     Utype::LIN,     45.359237e3,     { 0, 1, 0, 0, 0, 0, 0, 0},  "45.359237e3*g",          "short hundredwe.",  false, {}             },

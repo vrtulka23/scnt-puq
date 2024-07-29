@@ -9,7 +9,7 @@
 namespace puq {
 
 enum class Dformat : std::uint8_t {
-  SI   = 0b00000001,  // m/kg/s
+  MKS  = 0b00000001,  // m/kg/s
   CGS  = 0b00000010,  // cm/g/s;
   NUM  = 0b00000100,  // numerical value
   PHYS = 0b00001000,  // physical value

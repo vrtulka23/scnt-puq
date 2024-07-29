@@ -9,14 +9,13 @@ inline void check_symbol(std::set<std::string>& set, std::string symbol) {
   EXPECT_EQ(result.second, true) << "Duplicated symbol: "+symbol;
 }
 
-TEST(Lists, UniqueSymbolsSI) {
+void test_unit_symbols() {
   
   // unique prefixes
   std::set<std::string> prefixes;
   for (auto prefix: puq::UnitPrefixList) {
     check_symbol(prefixes, prefix.symbol);
   }
-
   // unique unit symbols
   std::set<std::string> units;
   for (auto unit: puq::UnitSystem::Data->UnitList) {
@@ -39,7 +38,7 @@ TEST(Lists, UniqueSymbolsSI) {
   
 }
 
-inline void test_unit_definitions() {
+void test_unit_definitions() {
   
   for (auto unit: puq::UnitSystem::Data->UnitList) {
     
@@ -75,8 +74,18 @@ inline void test_unit_definitions() {
 }
 
 TEST(Lists, UnitDefinitionsSI) {
-
+  
+  test_unit_symbols();
   test_unit_definitions();
+  
+}
+
+TEST(Lists, QuantitySymbols) {
+
+  std::set<std::string> quantities;
+  for (auto quantity: puq::QuantityNames) {
+    check_symbol(quantities, quantity.first);
+  }  
   
 }
 
@@ -85,6 +94,7 @@ TEST(Lists, UnitDefinitionsSI) {
 TEST(Lists, UnitDefinitionsESU) {
 
   puq::UnitSystem us(puq::SystemData::ESU);
+  test_unit_symbols();
   test_unit_definitions();
   
 }
@@ -92,6 +102,7 @@ TEST(Lists, UnitDefinitionsESU) {
 TEST(Lists, UnitDefinitionsGauss) {
 
   puq::UnitSystem us(puq::SystemData::GAUSS);
+  test_unit_symbols();
   test_unit_definitions();
   
 }
@@ -99,6 +110,7 @@ TEST(Lists, UnitDefinitionsGauss) {
 TEST(Lists, UnitDefinitionsEMU) {
 
   puq::UnitSystem us(puq::SystemData::EMU);
+  test_unit_symbols();
   test_unit_definitions();
     
 }
@@ -111,6 +123,7 @@ TEST(Lists, UnitDefinitionsEMU) {
 TEST(Lists, UnitDefinitionsAU) {
 
   puq::UnitSystem us(puq::SystemData::AU);
+  test_unit_symbols();
   test_unit_definitions();
 
 }
@@ -122,13 +135,15 @@ TEST(Lists, UnitDefinitionsAU) {
 TEST(Lists, UnitDefinitionsIU) {
 
   puq::UnitSystem us(puq::SystemData::IU);
+  test_unit_symbols();
   test_unit_definitions();
 
 }
 
-TEST(Lists, UnitDefinitionsUSCU) {
+TEST(Lists, UnitDefinitionsUS) {
 
-  puq::UnitSystem us(puq::SystemData::USCU);
+  puq::UnitSystem us(puq::SystemData::US);
+  test_unit_symbols();
   test_unit_definitions();
 
 }

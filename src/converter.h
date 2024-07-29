@@ -26,7 +26,7 @@ public:
     ss << ")" << std::endl;
     ss << "Suggested conversions: ";
     std::string mgs = dim1.to_string(Dformat::PHYS);
-    std::string mks = dim1.to_string(Dformat::PHYS|Dformat::SI);
+    std::string mks = dim1.to_string(Dformat::PHYS|Dformat::MKS);
     std::string cgs = dim1.to_string(Dformat::PHYS|Dformat::CGS);
     if (mgs=="") {
       ss << "1";
