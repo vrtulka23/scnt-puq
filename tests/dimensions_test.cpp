@@ -5,7 +5,7 @@
 TEST(Dimensions, Initialization) {
 
   puq::Dimensions d;
-  EXPECT_EQ(d.to_string(), "");
+  EXPECT_EQ(d.to_string(), "1");
 
   d = puq::Dimensions(2.34);
   EXPECT_EQ(d.to_string(), "2.34");

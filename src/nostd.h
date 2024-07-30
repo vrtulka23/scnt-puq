@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <sstream>
+#include <stdexcept>
 
 #include "settings.h"
 #include "magnitude.h"
@@ -13,17 +14,18 @@ namespace puq {
 namespace nostd {
 
   /*
-   *  stof, stod, stold
+   *  stof, stod, stold -> to_number
    */
 
-  inline MAGNITUDE_PRECISION ston(const std::string& value) {
-    //#if 0 == c_strcmp(MAGNITUDE_PRECISION, float)
-    //return std::stof(value);
-    //#elif 0 == c_strcmp(MAGITUDE_PRECISION, double)
-    return std::stod(value);
-    //#elif 0 == c_strcmp(MAGITUDE_PRECISION, long double)
-    //return std::stold(value);
-    //#endif
+  inline MAGNITUDE_PRECISION to_number(const std::string& value) {
+    if (typeid(MAGNITUDE_PRECISION)==typeid(float)) 
+      return std::stof(value); 
+    else if (typeid(MAGNITUDE_PRECISION)==typeid(double)) 
+      return std::stod(value);
+    else if (typeid(MAGNITUDE_PRECISION)==typeid(long double)) 
+      return std::stold(value);
+    else
+      throw std::range_error("Unsupported magnitude precision.");
   }
   
   /*

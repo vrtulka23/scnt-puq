@@ -22,20 +22,20 @@ UnitValue UnitAtom::from_string(std::string expr_orig) {
     //std::cout << m[6] << "|" << m[7] << "|" << m[8] << "|" << m[9] << "|" << m[10] << "|" << m[11] << std::endl;
     //std::cout << m[12] << "|" << m[13] << "|" << m[14] << "|" << m[15] << "|" << m[16] << "|" << m[17] << std::endl;
     if (m[6]=="") {
-      uv.magnitude.value = nostd::ston(expr);
+      uv.magnitude.value = nostd::to_number(expr);
     } else {
       std::string decimals = m[3].str()=="" ? "." : m[3].str();
-      uv.magnitude.value = nostd::ston(m[1].str()+decimals+m[8].str());
+      uv.magnitude.value = nostd::to_number(m[1].str()+decimals+m[8].str());
       if (m[10]=="")
-	uv.magnitude.error = nostd::ston(m[7]) * std::pow(10, 1-(int)decimals.size()); 
+	uv.magnitude.error = nostd::to_number(m[7]) * std::pow(10, 1-(int)decimals.size()); 
       else
-	uv.magnitude.error = nostd::ston(m[7]) * std::pow(10, 1-(int)decimals.size()+std::stoi(m[10]));
+	uv.magnitude.error = nostd::to_number(m[7]) * std::pow(10, 1-(int)decimals.size()+std::stoi(m[10]));
     }
   }
 #else
   std::regex rx_number("^((\\+|-)?[[:digit:]]+)(\\.(([[:digit:]]+)?))?((e|E)((\\+|-)?)[[:digit:]]+)?$");
   if (std::regex_match(expr, rx_number)) {          // atom expression is a simple number
-    uv.magnitude = nostd::ston(expr);
+    uv.magnitude = nostd::to_number(expr);
   }
 #endif
   else if (std::regex_match(expr, m, rx_unit)) {  // atom expression has dimensions
