@@ -44,7 +44,7 @@ const QuantityNamesType QuantityNames = {
   {"a_ome",  "angular acceleration"        },
   {"L_ome",  "angular momentum"            },
   
-  {"Force",  "force"                       },
+  {"F",      "force"                       },
   {"freq",   "frequecy"                    },
   
   {"J_i",    "impulse"                     },
@@ -74,6 +74,7 @@ const QuantityNamesType QuantityNames = {
   {"C_mol",  "molar concentration"         },
   {"E_mol",  "molar energy"                },
   {"c_mol",  "molar heat capacity"         },
+  {"S_mol",  "molar entropy"               },
   
   {"rr",     "reaction rate"               },
   
@@ -84,7 +85,7 @@ const QuantityNamesType QuantityNames = {
   {"kap",    "thermal conductance"         },
   {"lam_t",  "thermal conductivity"        },
   {"R_t",    "thermal resistance"          },
-  {"R_l",    "thermal resistivity"         },
+  {"R_lam",  "thermal resistivity"         },
   
   {"Q_vol",  "volumetric flow rate"        },
   
@@ -92,19 +93,24 @@ const QuantityNamesType QuantityNames = {
   {"q",      "electric charge"             },
   {"rho_q",  "electric charge density"     },
   {"p_e",    "electric dipole moment"      },
+  {"p_qe",   "electric quadrupole moment"  },
   {"D_e",    "electric displacement field" },
   {"E_e",    "electric field strength"     },
+  {"V_e",    "electric field gradient"     },
+  {"alp_e",  "electric polarizability"     },
+  {"alp_he", "1st hyperpolarizability"     },
+  {"alp_hhe","2nd hyperpolarizability"     },
   {"G_e",    "electrical conductance"      },
   {"sig_e",  "electrical conductivity"     },
   {"phi_e",  "electric potential"          },
-  {"R_e",    "electrical resistance"       },
+  {"R",      "electrical resistance"       },
   {"rho_e",  "electrical resistivity"      },
  
   {"Mag",    "magnetization"               },
-  {"H_m",    "magnetic field strenght"     },
+  {"H",      "magnetic field strenght"     },
   {"phi_m",  "magnetic flux"               },
-  {"B_m",    "magnetic flux density"       },
-  {"m_m",    "magnetic moment"             },
+  {"B",      "magnetic flux density"       },
+  {"mm",     "magnetic dipole moment"      },
 
   {"mu",     "permeability"                },
   {"eps",    "permittivity"                },
@@ -133,7 +139,7 @@ const QuantityNamesType QuantityNames = {
   {"D_a",    "absorbed dose rate"          },
   {"H_de",   "dose equivalent"             },
   {"D_r",    "radiation dose"              },
-  {"Act",    "activity"                    },  
+  {"A_r",    "radioactivity"               },  
 
   // quantum mechanics
   {"S_a",    "action"                      },

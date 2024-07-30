@@ -123,14 +123,30 @@ void display_info(std::string expr) {
   puq::UnitValue uv = puq::Quantity(expr).value;
   puq::BaseUnits bus = uv.baseunits;
   puq::Dimensions dim = bus.dimensions();
-  std::cout << std::endl << "Expression information" << std::endl << std::endl;
+  puq::Dimensions dim_m = bus.dimensions();
+  dim_m.numerical *= uv.magnitude;
+  std::cout << std::endl << "Expression:  " << expr << std::endl << std::endl;
   std::cout << "Unit system: " << puq::UnitSystem::Data->SystemName << std::endl;
   std::cout << "Magnitude:   " << puq::nostd::to_string(uv.magnitude) << std::endl;
   std::cout << "Base units:  " << puq::nostd::to_string(uv.baseunits) << std::endl;
   std::cout << std::endl;
-  std::cout << "Dimensions:  MGS  " << dim.to_string() << std::endl;
-  std::cout << "             MKS  " << dim.to_string(puq::Dformat::NUM|puq::Dformat::PHYS|puq::Dformat::MKS) << std::endl;
-  std::cout << "             CGS  " << dim.to_string(puq::Dformat::NUM|puq::Dformat::PHYS|puq::Dformat::CGS) << std::endl;
+  std::cout << "Dimensions:" << std::endl << std::endl;
+  std::cout << "Base   Num*Mag                  Numerical                Physical" << std::endl;
+  std::cout << "MGS    ";
+  std::cout << std::setfill(' ') << std::setw(25) << std::left << dim_m.to_string(puq::Dformat::NUM);
+  std::cout << std::setfill(' ') << std::setw(25) << std::left << dim.to_string(puq::Dformat::NUM);
+  std::cout << std::setfill(' ') << std::setw(25) << std::left << dim.to_string(puq::Dformat::PHYS);
+  std::cout << std::endl;
+  std::cout << "MKS    ";
+  std::cout << std::setfill(' ') << std::setw(25) << std::left << dim_m.to_string(puq::Dformat::NUM|puq::Dformat::MKS);
+  std::cout << std::setfill(' ') << std::setw(25) << std::left << dim.to_string(puq::Dformat::NUM|puq::Dformat::MKS);
+  std::cout << std::setfill(' ') << std::setw(25) << std::left << dim.to_string(puq::Dformat::PHYS|puq::Dformat::MKS);
+  std::cout << std::endl;
+  std::cout << "CGS    ";
+  std::cout << std::setfill(' ') << std::setw(25) << std::left << dim_m.to_string(puq::Dformat::NUM|puq::Dformat::CGS);
+  std::cout << std::setfill(' ') << std::setw(25) << std::left << dim.to_string(puq::Dformat::NUM|puq::Dformat::CGS);
+  std::cout << std::setfill(' ') << std::setw(25) << std::left << dim.to_string(puq::Dformat::PHYS|puq::Dformat::CGS);
+  std::cout << std::endl;
   std::stringstream ss; bool conv = false;
   for (auto unit: puq::UnitSystem::Data->UnitList) {
     if (puq::Dimensions(1,unit.dimensions) != dim) continue;
@@ -142,23 +158,25 @@ void display_info(std::string expr) {
     std::cout << std::endl;
     std::cout << "Conversions: " << ss.str() << std::endl;
   }
-  table_header("Components:",
-	       {"Prefix","Symbol","Exponent","Name","Definition","Dimensions MGS","Allowed prefixes"},
-	       {8,8,10,19,21,22,22});
-  for (size_t i=0; i<puq::UnitSystem::Data->UnitList.size(); i++) {
-    auto unit = (puq::UnitSystem::Data->UnitList)[i];
-    for (auto bu: bus) {
-      if (bu.unit!=unit.symbol)
-	continue;
-      puq::BaseUnits bu_unit({bu});
-      std::cout << std::setfill(' ') << std::setw(8) << std::left << bu.prefix;
-      std::cout << std::setfill(' ') << std::setw(8) << std::left << bu.unit;
-      std::cout << std::setfill(' ') << std::setw(10) << std::left << ((bu.exponent.to_string()=="") ? "1" : bu.exponent.to_string());
-      std::cout << std::setfill(' ') << std::setw(19) << std::left << unit.name;
-      std::cout << std::setfill(' ') << std::setw(21) << std::left << unit.definition;
-      std::cout << std::setfill(' ') << std::setw(22) << std::left << bu_unit.dimensions().to_string();
-      std::cout << std::setfill(' ') << std::setw(22) << std::left << puq::nostd::to_string(unit.use_prefixes, unit.allowed_prefixes);
-      std::cout << std::scientific << std::endl;
+  if (bus.size() > 0) {
+    table_header("Components:",
+		 {"Prefix","Symbol","Exponent","Name","Definition","Dimensions MGS","Allowed prefixes"},
+		 {8,8,10,19,21,22,22});
+    for (size_t i=0; i<puq::UnitSystem::Data->UnitList.size(); i++) {
+      auto unit = (puq::UnitSystem::Data->UnitList)[i];
+      for (auto bu: bus) {
+	if (bu.unit!=unit.symbol)
+	  continue;
+	puq::BaseUnits bu_unit({bu});
+	std::cout << std::setfill(' ') << std::setw(8) << std::left << bu.prefix;
+	std::cout << std::setfill(' ') << std::setw(8) << std::left << bu.unit;
+	std::cout << std::setfill(' ') << std::setw(10) << std::left << ((bu.exponent.to_string()=="") ? "1" : bu.exponent.to_string());
+	std::cout << std::setfill(' ') << std::setw(19) << std::left << unit.name;
+	std::cout << std::setfill(' ') << std::setw(21) << std::left << unit.definition;
+	std::cout << std::setfill(' ') << std::setw(22) << std::left << bu_unit.dimensions().to_string();
+	std::cout << std::setfill(' ') << std::setw(22) << std::left << puq::nostd::to_string(unit.use_prefixes, unit.allowed_prefixes);
+	std::cout << std::scientific << std::endl;
+      }
     }
   }
   std::cout << std::endl;

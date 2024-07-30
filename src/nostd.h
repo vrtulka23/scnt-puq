@@ -11,6 +11,20 @@
 
 namespace puq {
 namespace nostd {
+
+  /*
+   *  stof, stod, stold
+   */
+
+  inline MAGNITUDE_PRECISION ston(const std::string& value) {
+    //#if 0 == c_strcmp(MAGNITUDE_PRECISION, float)
+    //return std::stof(value);
+    //#elif 0 == c_strcmp(MAGITUDE_PRECISION, double)
+    return std::stod(value);
+    //#elif 0 == c_strcmp(MAGITUDE_PRECISION, long double)
+    //return std::stold(value);
+    //#endif
+  }
   
   /*
    *  to_string

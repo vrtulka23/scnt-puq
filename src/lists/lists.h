@@ -81,13 +81,6 @@ namespace puq {
 #ifdef EXPONENT_FRACTIONS
   typedef EXPONENT_INT_PRECISION FRC[2];
 #endif
-    
-  template<typename T>
-  std::vector<T> operator+(const std::vector<T>& v1, const std::vector<T>& v2) {
-    std::vector<T> vr(std::begin(v1), std::end(v1));
-    vr.insert(std::end(vr), std::begin(v2), std::end(v2));
-    return vr;
-  }
   
   namespace SystemData {
     #include "system_base.h"

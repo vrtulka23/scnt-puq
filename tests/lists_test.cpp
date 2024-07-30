@@ -73,11 +73,17 @@ void test_unit_definitions() {
   
 }
 
-TEST(Lists, UnitDefinitionsSI) {
-  
-  test_unit_symbols();
-  test_unit_definitions();
-  
+void test_quantities() {
+  for (auto quantity: puq::UnitSystem::Data->QuantityList) {
+    
+    // check if quantity symbol is in the quantity name list
+    EXPECT_FALSE(puq::QuantityNames.find(quantity.symbol)==puq::QuantityNames.end())
+      << "Quantity symbol is not in a name list: " << quantity.symbol;
+    
+    // check if quantity definition expression is valid 
+    EXPECT_NO_THROW(puq::UnitValue(quantity.definition));
+    
+  }  
 }
 
 TEST(Lists, QuantitySymbols) {
@@ -86,6 +92,14 @@ TEST(Lists, QuantitySymbols) {
   for (auto quantity: puq::QuantityNames) {
     check_symbol(quantities, quantity.first);
   }  
+  
+}
+
+TEST(Lists, UnitDefinitionsSI) {
+
+  test_unit_symbols();
+  test_unit_definitions();
+  test_quantities();
   
 }
 
@@ -125,6 +139,7 @@ TEST(Lists, UnitDefinitionsAU) {
   puq::UnitSystem us(puq::SystemData::AU);
   test_unit_symbols();
   test_unit_definitions();
+  test_quantities();
 
 }
 

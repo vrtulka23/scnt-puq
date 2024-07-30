@@ -75,14 +75,14 @@ inline std::string _physical_to_string(const BaseDimensions& physical, Dformat& 
 
 std::string Dimensions::to_string(Dformat format) const {
   std::stringstream ss;
-  if ((format&Dformat::NUM)==Dformat::NUM) {
+  if ((format & Dformat::NUM)==Dformat::NUM) {
     ss << _numerical_to_string(numerical, physical, format);
   }
-  if ((format&Dformat::PHYS)==Dformat::PHYS) {
+  if ((format & Dformat::PHYS)==Dformat::PHYS) {
     ss << _physical_to_string(physical, format);
   }
   std::string s = ss.str();
-  return s.substr(0,s.size()-1);
+  return (s=="") ? "1" : s.substr(0,s.size()-1);
 }
 
 bool Dimensions::operator==(const Dimensions& d) const {

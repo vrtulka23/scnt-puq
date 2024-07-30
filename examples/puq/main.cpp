@@ -89,7 +89,6 @@ int main(int argc, char * argv[]) {
     convert = input.getCmdOption("-i",2);
     if (!convert.empty()) {
       change_system(us, convert);
-      std::cout << "unit: " << convert[0] << std::endl;
       display_info(convert[0]);
     }
     convert = input.getCmdOption("-c",4);

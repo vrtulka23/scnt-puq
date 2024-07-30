@@ -27,10 +27,17 @@ TEST(Quantity, Initialization) {
   q = puq::Quantity(1.23,"2*km3");        // magnitude and a unit expression with a number
   EXPECT_EQ(q.to_string(), "2.46*km3");
   
+#ifdef PREPROCESS_EXPRESSIONS
+  q = puq::Quantity("6.23537×10−12 C4⋅m4⋅J−3");
+  EXPECT_EQ(q.to_string(), "6.23537e-12*C4*m4*J-3");
+
+  q = puq::Quantity("6.23537×1012 C4⋅m4⋅J−3");
+  EXPECT_EQ(q.to_string(), "6.23537e+12*C4*m4*J-3");
+#endif
+  
 }
-
+  
 #ifdef MAGNITUDE_ERRORS
-
 TEST(Quantity, InitializationErrors) {
 
   puq::Quantity q(1.23,0.01);             // magnitudes with errors
@@ -44,12 +51,16 @@ TEST(Quantity, InitializationErrors) {
 
   q = puq::Quantity("3.40(10)*km3");      // unit expression
   EXPECT_EQ(q.to_string(), "3.40(10)*km3");
-}
 
+#ifdef PREPROCESS_EXPRESSIONS
+  q = puq::Quantity("6.23537(39)×10−12 C4⋅m4⋅J−3");
+  EXPECT_EQ(q.to_string(), "6.23537(39)e-12*C4*m4*J-3");
+#endif
+  
+}
 #endif
 
 #ifdef MAGNITUDE_ARRAYS
-
 TEST(Quantity, InitializationArrays) {
 
   puq::Quantity q("{2,3.4,5e6}*km/s");                 // unit expression
@@ -58,8 +69,12 @@ TEST(Quantity, InitializationArrays) {
   q = puq::Quantity(puq::Array({2,3.4,5e6}),"km2");    // magnitudes and units
   EXPECT_EQ(q.to_string(), "{2, 3.4, ...}*km2");
 
+#ifdef PREPROCESS_EXPRESSIONS
+  q = puq::Quantity("{2,3.4,5×106} C4⋅m4⋅J−3");
+  EXPECT_EQ(q.to_string(), "{2, 3.4, ...}*C4*m4*J-3");
+#endif
+  
 }
-
 #endif
 
 TEST(Quantity, UnitConversion) {

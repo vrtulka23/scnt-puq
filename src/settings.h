@@ -5,9 +5,12 @@
  *  General settings
  */
 #define NUM_BASEDIM     8
+#define SYMBOL_PLUS     "+"
+#define SYMBOL_MINUS    "-"
 #define SYMBOL_MULTIPLY "*"
 #define SYMBOL_DIVIDE   "/"
 #define SYMBOL_POWER    "^"
+#define SYMBOL_EXPONENT "e"
 
 /*
  *  Numerical precision
@@ -27,6 +30,7 @@
 #define UNIT_SYSTEM_CGS
 #define UNIT_SYSTEM_AU
 #define UNIT_SYSTEM_EUS
+#define PREPROCESS_EXPRESSIONS
 
 /*
  *  Module specific settings

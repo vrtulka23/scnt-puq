@@ -4,8 +4,30 @@
 
 namespace puq {
 
-  Quantity::Quantity(const std::string& s, const SystemDataType& st): stype(&st) {
+#ifdef PREPROCESS_EXPRESSIONS
+  void Quantity::preprocess(std::string& s) {
+    // replace non standard symbols
+    std::map<std::string, std::string> dict {
+      {"\u00D710", SYMBOL_EXPONENT},  // ×10 -> e
+      {"\u2212",   SYMBOL_MINUS},     // −   -> -
+      {"\u22C5",   SYMBOL_MULTIPLY},  // ⋅   -> *
+      {" ",        SYMBOL_MULTIPLY},  //     -> *
+    };
+    for (auto item: dict) {
+      size_t pos = s.find(item.first);
+      while (pos != std::string::npos) {
+	s.replace(pos, item.first.size(), item.second);
+	pos = s.find(item.first, pos + item.first.size());
+      }
+    }
+  }
+#endif
+  
+  Quantity::Quantity(std::string s, const SystemDataType& st): stype(&st) {
     UnitSystem us(stype);
+#ifdef PREPROCESS_EXPRESSIONS
+    preprocess(s);
+#endif
     value = UnitValue(s);
   }
   
@@ -24,8 +46,11 @@ namespace puq {
     value = UnitValue(m, bu);
   }
   
-  Quantity::Quantity(const MAGNITUDE_TYPE &m, const std::string& s, const SystemDataType& st): stype(&st) {
-    UnitSystem us(stype);
+  Quantity::Quantity(const MAGNITUDE_TYPE &m, std::string s, const SystemDataType& st): stype(&st) {
+    UnitSystem us(stype); 
+#ifdef PREPROCESS_EXPRESSIONS
+    preprocess(s);
+#endif
     value = UnitValue(m, s);
   }
   
@@ -41,9 +66,12 @@ namespace puq {
     value = UnitValue(m, bu);
   }
   
-  Quantity::Quantity(const MAGNITUDE_PRECISION& m, const std::string& s, const SystemDataType& st): stype(&st) {
+  Quantity::Quantity(const MAGNITUDE_PRECISION& m, std::string s, const SystemDataType& st): stype(&st) {
     UnitSystem us(stype);
     Magnitude mag(m);
+#ifdef PREPROCESS_EXPRESSIONS
+    preprocess(s);
+#endif
     value = UnitValue(mag, s);
   }
 
@@ -57,9 +85,12 @@ namespace puq {
     value = UnitValue(m, e, bu);
   }
  
-  Quantity::Quantity(const MAGNITUDE_PRECISION& m, const MAGNITUDE_PRECISION& e, const std::string& s, const SystemDataType& st): stype(&st) {
+  Quantity::Quantity(const MAGNITUDE_PRECISION& m, const MAGNITUDE_PRECISION& e, std::string s, const SystemDataType& st): stype(&st) {
     UnitSystem us(stype);
     Magnitude mag(m,e);
+#ifdef PREPROCESS_EXPRESSIONS
+    preprocess(s);
+#endif
     value = UnitValue(mag, s);
   }
   
