@@ -26,8 +26,8 @@ namespace puq {namespace SystemData {
     {"[G]",      Utype::CST,     6.6743e-14,      { 3,-1,-2, 0, 0, 0, 0, 0},  "6.6743e-8*dyn*cm2/g2",   "gravit. const.",    false, {}             },    
     {"[h]",      Utype::CST,     6.62607e-31,     { 2, 1,-1, 0, 0, 0, 0, 0},  "6.62607015e-27*erg*s",   "Planck const.",     false, {}             },    
     {"[hbar]",   Utype::CST,     1.05457e-31,     { 2, 1,-1, 0, 0, 0, 0, 0},  "1.054571817e-27*erg*s",  "reduced Pl. con.",  false, {}             },    
-    {"[c]",      Utype::CST,     2.99792e+08,     { 1, 0,-1, 0, 0, 0, 0, 0},  "2.99792458e10*cm/s",     "speed of light",    false, {}             },    
-    {"[c_0]",    Utype::CST,     2.99792e+11,     { 0, 0, 0, 0, 0, 0, 0, 0},  "2.99792458e11",          "speed of light",    false, {}             },    
+    {"[c]",      Utype::CST,     2.997922458e+08, { 1, 0,-1, 0, 0, 0, 0, 0},  "2.99792458e10*cm/s",     "speed of light",    false, {}             },    
+    {"[c_0]",    Utype::CST,     2.997922458e+08, { 0, 0, 0, 0, 0, 0, 0, 0},  "2.99792458e8",           "num. speed of li.", false, {}             },    
   };
 
   const UnitListType _GAUSS_ESU = {
