@@ -2,11 +2,10 @@
 #define PUQ_QUANTITIES_H
 
 struct QuantityStruct {
-  std::string symbol;
   std::string definition;
   std::string conversion;
 };
-typedef std::vector<QuantityStruct> QuantityListType;
+typedef std::map<std::string, QuantityStruct> QuantityListType;
 
 typedef std::map<std::string, std::string> QuantityNamesType;
 const QuantityNamesType QuantityNames = {

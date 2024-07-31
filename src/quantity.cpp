@@ -167,14 +167,27 @@ namespace puq {
     return Quantity(uv);
   }
   
-  Quantity Quantity::convert(const std::string& s, const SystemDataType& st) const {
+  Quantity Quantity::convert(const std::string& s, const SystemDataType& st, const std::string& q) const {
     if (stype == &st) {
       return convert(s);
-    } else {
+    } else if (q == "") {
       UnitSystem us(stype);
       Dimensions dim = value.baseunits.dimensions();
       us.change(&st);         // change the unit system
       UnitValue uv(value.magnitude, dim);
+      return Quantity(uv.convert(s));
+    } else { 
+      UnitSystem us(stype);
+      QuantityStruct qs = puq::UnitSystem::Data->QuantityList.at(q);
+      UnitValue uv = value.convert(qs.definition);
+      if (qs.conversion != "")
+	uv *= UnitValue(qs.conversion);
+      Dimensions dim = uv.baseunits.dimensions();
+      us.change(&st);         // change the unit system
+      uv = UnitValue(uv.magnitude, dim);
+      qs = puq::UnitSystem::Data->QuantityList.at(q);
+      if (qs.conversion != "")
+	uv /= UnitValue(qs.conversion);
       return Quantity(uv.convert(s));
     }
   }
@@ -185,14 +198,27 @@ namespace puq {
     return Quantity(uv2);
   }
   
-  Quantity Quantity::convert(const UnitValue& uv1, const SystemDataType& st) const {
+  Quantity Quantity::convert(const UnitValue& uv1, const SystemDataType& st, const std::string& q) const {
     if (stype == &st) {
       return convert(uv1);
-    } else {
+    } else if (q == "") {
       UnitSystem us(stype);
       Dimensions dim = value.baseunits.dimensions();
       us.change(&st);        // change the unit system
       UnitValue uv2(value.magnitude, dim);
+      return Quantity(uv2.convert(uv1));
+    } else {
+      UnitSystem us(stype);
+      QuantityStruct qs = puq::UnitSystem::Data->QuantityList.at(q);
+      UnitValue uv2 = value.convert(qs.definition);
+      if (qs.conversion != "")
+	uv2 *= UnitValue(qs.conversion);
+      Dimensions dim = uv2.baseunits.dimensions();
+      us.change(&st);        // change the unit system
+      uv2 = UnitValue(value.magnitude, dim);
+      qs = puq::UnitSystem::Data->QuantityList.at(q);
+      if (qs.conversion != "")
+	uv2 /= UnitValue(qs.conversion);
       return Quantity(uv2.convert(uv1));
     }
   }

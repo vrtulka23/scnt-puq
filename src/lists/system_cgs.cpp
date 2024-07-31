@@ -27,6 +27,7 @@ namespace puq {namespace SystemData {
     {"[h]",      Utype::CST,     6.62607e-31,     { 2, 1,-1, 0, 0, 0, 0, 0},  "6.62607015e-27*erg*s",   "Planck const.",     false, {}             },    
     {"[hbar]",   Utype::CST,     1.05457e-31,     { 2, 1,-1, 0, 0, 0, 0, 0},  "1.054571817e-27*erg*s",  "reduced Pl. con.",  false, {}             },    
     {"[c]",      Utype::CST,     2.99792e+08,     { 1, 0,-1, 0, 0, 0, 0, 0},  "2.99792458e10*cm/s",     "speed of light",    false, {}             },    
+    {"[c_0]",    Utype::CST,     2.99792e+11,     { 0, 0, 0, 0, 0, 0, 0, 0},  "2.99792458e11",          "speed of light",    false, {}             },    
   };
 
   const UnitListType _GAUSS_ESU = {
@@ -58,6 +59,15 @@ namespace puq {namespace SystemData {
 	{"statWb",   Utype::LIN,         0.0001,        {2,           1,           0, 0, 0, 0, 0, 0},  "cm2*g",            "Statweber",               false, {}             },
 	
 	{"[mu_B]",   Utype::CST,         2.78028e-17,   {(FRC){7,2},  (FRC){1,2}, -2, 0, 0, 0, 0, 0},  "2.780278273e-10*statA*cm2 ",  "Bohr magneton", false, {}             },
+      }),
+    QuantityListType({
+	{"l",       {"cm"                                          }},
+	{"m",       {"g"                                           }},    
+	{"t",       {"s"                                           }},
+	{"I",       {"statA",              "A*0.1/([c_0]*statA)"   }},
+	{"Iv",      {"cd"                                          }},
+	{"n",       {"mol"                                         }},
+	{"the",     {"rad"                                         }},
       })
   };
   

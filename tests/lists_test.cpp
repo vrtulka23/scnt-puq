@@ -77,11 +77,11 @@ void test_quantities() {
   for (auto quantity: puq::UnitSystem::Data->QuantityList) {
     
     // check if quantity symbol is in the quantity name list
-    EXPECT_FALSE(puq::QuantityNames.find(quantity.symbol)==puq::QuantityNames.end())
-      << "Quantity symbol is not in a name list: " << quantity.symbol;
+    EXPECT_FALSE(puq::QuantityNames.find(quantity.first)==puq::QuantityNames.end())
+      << "Quantity symbol is not in a name list: " << quantity.first;
     
     // check if quantity definition expression is valid 
-    EXPECT_NO_THROW(puq::UnitValue(quantity.definition));
+    EXPECT_NO_THROW(puq::UnitValue(quantity.second.definition));
     
   }  
 }
