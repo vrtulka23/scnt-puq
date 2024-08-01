@@ -212,6 +212,10 @@ TEST(Quantity, UnitSystemQuantityContext) {
 
   q1 = puq::Quantity("1.13412e-08*A", puq::SystemData::SI); // error without given context 
   EXPECT_THROW(q1.convert("statA", puq::SystemData::ESU), puq::ConvDimExcept);  
+
+  q1 = puq::Quantity(34,"T", puq::SystemData::SI);  
+  q2 = q1.convert("statT", puq::SystemData::ESU, "B");           // specify conversion context
+  EXPECT_EQ(q2.to_string(), "0.00113412*statT");
   
 }
 

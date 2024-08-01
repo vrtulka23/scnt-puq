@@ -30,7 +30,7 @@ namespace puq {
 	  {"n",       {"mol"                    }},
 	  {"the",     {"rad"                    }},
 
-	  {"vel",     {"[a_0]*E_h/[hbar]"       }},
+	  {"v",       {"[a_0]*E_h/[hbar]"       }},
  	  {"p_mom",   {"[hbar]/[a_0]"           }},
 
 	  {"rho_q",   {"[e]/[a_0]3"             }},

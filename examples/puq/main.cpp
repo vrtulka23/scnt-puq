@@ -42,9 +42,13 @@ std::map<std::string, SystemPtr> systems = {
 };
 
 inline std::string get_expression(std::deque<std::string>& convert) {
-  std::string expr = convert.front();
-  convert.pop_front();
-  return expr;
+  if (convert.size()) {
+    std::string expr = convert.front();
+    convert.pop_front();
+    return expr;
+  } else {
+    return "";
+  }
 }
 
 inline SystemPtr get_system(std::deque<std::string>& convert) {
@@ -69,12 +73,12 @@ int main(int argc, char * argv[]) {
     std::cout << std::endl;
     std::cout << "Physical Units and Quantities (PUQ)" << std::endl << std::endl;
     std::cout << "Example of use:" << std::endl;
-    std::cout << "puq -h                              dislay help" << std::endl;
-    std::cout << "puq -v                              dislay current version" << std::endl;
-    std::cout << "puq -s                              list of supported unit systems" << std::endl;
-    std::cout << "puq -i [sys] <expr>                 get information about an unit" << std::endl;
-    std::cout << "puq -c [sys] <expr1> [sys] <expr2>  get <expr1> in units of <expr2>" << std::endl;
-    std::cout << "puq -l [sys] <list>                 display list: prefix/base/deriv/log/temp/const" << std::endl;
+    std::cout << "puq -h                          dislay help" << std::endl;
+    std::cout << "puq -v                          dislay current version" << std::endl;
+    std::cout << "puq -s                          list of supported unit systems" << std::endl;
+    std::cout << "puq -i [s] <e>                  get information about an expression <e> in a unit system [s]" << std::endl;
+    std::cout << "puq -c [s1] <e1> [s2] <e2> [q]  convert expression <e1> in a unit system [s1] into expression <e2> in a system [s2] as a quantity [q]" << std::endl;
+    std::cout << "puq -l [s] <l>                  display list <l>=prefix/base/deriv/log/temp/const in a unit system [s]" << std::endl;
     std::cout << std::endl;
   }
   else if(input.cmdOptionExists("-v")) {
@@ -91,12 +95,13 @@ int main(int argc, char * argv[]) {
       change_system(us, convert);
       display_info(convert[0]);
     }
-    convert = input.getCmdOption("-c",4);
+    convert = input.getCmdOption("-c",5);
     if (!convert.empty()) {
       SystemPtr sys1 = get_system(convert);
       std::string expr1 = get_expression(convert);
       SystemPtr sys2 = get_system(convert);
       std::string expr2 = get_expression(convert);
+      std::string quant = get_expression(convert);
       puq::Quantity q;
       if (sys1 == NULL)
 	q = puq::Quantity(expr1);
@@ -104,8 +109,10 @@ int main(int argc, char * argv[]) {
 	q = puq::Quantity(expr1, *sys1);
       if (sys2 == NULL)
 	q = q.convert(expr2);
-      else
+      else if (quant=="") {
 	q = q.convert(expr2, *sys2);
+      } else
+	q = q.convert(expr2, *sys2, quant);
       std::cout << q.to_string() << std::endl;
     }
     convert = input.getCmdOption("-l",2);

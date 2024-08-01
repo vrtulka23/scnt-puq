@@ -30,7 +30,7 @@ namespace puq {namespace SystemData {
     {"[c_0]",    Utype::CST,     2.997922458e+08, { 0, 0, 0, 0, 0, 0, 0, 0},  "2.99792458e8",           "num. speed of li.", false, {}             },    
   };
 
-  const UnitListType _GAUSS_ESU = {
+  const UnitListType _GAUSS_ESU_UNITS = {
     {"Fr",       Utype::LIN,         0.001,           {(FRC){3,2},  (FRC){1,2}, -1, 0, 0, 0, 0, 0},  "dyn1:2*cm",           "franklin",             false, {}             },
     {"statC",    Utype::LIN,         0.001,           {(FRC){3,2},  (FRC){1,2}, -1, 0, 0, 0, 0, 0},  "Fr",                  "Statcoulomb",          false, {}             },
     {"esu",      Utype::LIN,         0.001,           {(FRC){3,2},  (FRC){1,2}, -1, 0, 0, 0, 0, 0},  "Fr",                  "elstat. u.o. charge",  false, {}             },
@@ -41,6 +41,16 @@ namespace puq {namespace SystemData {
     {"statH",    Utype::LIN,         100,             {-1,          0,           2, 0, 0, 0, 0, 0},  "s2/cm",               "Stathenry",            false, {}             },
     
     {"[e]",      Utype::CST,         4.8032e-13,      {(FRC){3,2},  (FRC){1,2}, -1, 0, 0, 0, 0, 0},  "4.80320471e-10*Fr",   "elementary charge",    false, {}             },
+  };
+
+  const QuantityListType _GAUSS_ESU_QUANTITIES = {
+    {"l",       {"cm"                                          }},
+    {"m",       {"g"                                           }},    
+    {"t",       {"s"                                           }},
+    {"I",       {"statA",              "A*0.1/([c_0]*statA)"   }},
+    {"Iv",      {"cd"                                          }},
+    {"n",       {"mol"                                         }},
+    {"the",     {"rad"                                         }},
   };
 
   const UnitListType _GAUSS_EMU = {
@@ -54,26 +64,21 @@ namespace puq {namespace SystemData {
     
   const SystemDataType ESU = {
     "Electrostatic CGS units",
-    _BASE + _CGS + _GAUSS_ESU + UnitListType({
+    _BASE + _CGS + _GAUSS_ESU_UNITS + UnitListType({
 	{"statT",    Utype::LIN,         1000,          {(FRC){-3,2}, (FRC){1,2},  0, 0, 0, 0, 0, 0},  "cm-3:2*g1:2",      "Stattesla",               false, {}             },
 	{"statWb",   Utype::LIN,         0.0001,        {2,           1,           0, 0, 0, 0, 0, 0},  "cm2*g",            "Statweber",               false, {}             },
 	
 	{"[mu_B]",   Utype::CST,         2.78028e-17,   {(FRC){7,2},  (FRC){1,2}, -2, 0, 0, 0, 0, 0},  "2.780278273e-10*statA*cm2 ",  "Bohr magneton", false, {}             },
       }),
-    QuantityListType({
-	{"l",       {"cm"                                          }},
-	{"m",       {"g"                                           }},    
-	{"t",       {"s"                                           }},
-	{"I",       {"statA",              "A*0.1/([c_0]*statA)"   }},
-	{"Iv",      {"cd"                                          }},
-	{"n",       {"mol"                                         }},
-	{"the",     {"rad"                                         }},
+    _GAUSS_ESU_QUANTITIES + QuantityListType({
+	{"B",     {"statT",    "kg/(s2*A)*[c_0]/(1e4*statT)"}},
       })
   };
   
   const SystemDataType GAUSS = {
     "Gaussian CGS units",
-    _BASE + _CGS + _GAUSS_ESU + _GAUSS_EMU
+    _BASE + _CGS + _GAUSS_ESU_UNITS + _GAUSS_EMU,
+    _GAUSS_ESU_QUANTITIES
   };
   
   const SystemDataType EMU = {
