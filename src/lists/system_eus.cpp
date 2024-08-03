@@ -45,7 +45,7 @@ namespace puq {namespace SystemData {
     {"day",      Utype::LIN,     8.64e4,          { 0, 0, 1, 0, 0, 0, 0, 0},  "24*h",                   "day",               false, {}             },
     {"yr_t",     Utype::LIN,     3.1556925e7,     { 0, 0, 1, 0, 0, 0, 0, 0},  "365.24219*day",          "tropical year",     true,  {"k","m","G"}  },
     {"yr_j",     Utype::LIN,     3.1557600e7,     { 0, 0, 1, 0, 0, 0, 0, 0},  "365.25*day",             "Julian year",       true,  {"k","m","G"}  },
-    {"yr_g",     Utype::LIN,     3.155695e7,      { 0, 0, 1, 0, 0, 0, 0, 0},  "365.2425*day",           "Gregorian year",    true,  {"k","m","G"}  },
+    {"yr_g",     Utype::LIN,     3.1556952e7,     { 0, 0, 1, 0, 0, 0, 0, 0},  "365.2425*day",           "Gregorian year",    true,  {"k","m","G"}  },
     {"yr",       Utype::LIN,     3.155760e7,      { 0, 0, 1, 0, 0, 0, 0, 0},  "yr_j",                   "year",              true,  {"k","m","G"}  },
     
     // units of temperature	
@@ -60,7 +60,7 @@ namespace puq {namespace SystemData {
   };
   
   const SystemDataType IU = {
-    "Imperial units",
+    "EUS", "Imperial units",
     _BASE + _EUS + UnitListType({
 
 	// units of length
@@ -92,7 +92,7 @@ namespace puq {namespace SystemData {
   };
   
   const SystemDataType US = {
-    "United States customary units",
+    "US", "United States customary units",
     _BASE + _EUS + UnitListType({
 	
 	// units of length

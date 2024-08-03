@@ -77,7 +77,7 @@ TEST(UnitValue, UnitConversion) {
   v1 = puq::UnitValue("4*cm2");
   v2 = v1.convert("2*m2");      // conversion using an expression
   EXPECT_EQ(v2.to_string(), "0.0002*m2");  
-  
+
 }
 
 TEST(UnitValue, ArithmeticsAdd) {

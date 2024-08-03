@@ -85,18 +85,16 @@ TEST(BaseUnits, RemoveZeroExponentsFractions) {
 
 TEST(BaseUnits, Dimensions) {
 
-  puq::BaseUnits bus;
-  bus.append("k","m",1);
-  bus.append("n","s",2);
-  bus.append("m","g",3);
-  EXPECT_EQ(bus.to_string(), "km*ns2*mg3");
+  puq::BaseUnits bus("km*ns2*mg3");     // units with prefixes
   puq::Dimensions dim = bus.dimensions();
   EXPECT_EQ(dim.to_string(), "1e-24*m*g3*s2");
 
-  puq::BaseUnits bus2;
-  bus2.append("","au",2);;
-  EXPECT_EQ(bus2.to_string(), "au2");
-  dim = bus2.dimensions();
+  bus = puq::BaseUnits("au2");          // derived units
+  dim = bus.dimensions();
   EXPECT_EQ(dim.to_string(), "2.23795e+22*m2");
+
+  bus = puq::BaseUnits("<v>");          // quantities
+  dim = bus.dimensions();
+  EXPECT_EQ(dim.to_string(), "m*s-1");  
   
 }

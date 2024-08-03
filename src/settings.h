@@ -11,6 +11,8 @@
 #define SYMBOL_DIVIDE   "/"
 #define SYMBOL_POWER    "^"
 #define SYMBOL_EXPONENT "e"
+#define SYMBOL_QUANTITY_START "<"
+#define SYMBOL_QUANTITY_END   ">"
 
 /*
  *  Numerical precision

@@ -49,12 +49,11 @@ namespace puq {
   const Utype UT_LIN_LOG     = Utype::LIN|Utype::LOG;
 
   struct UnitPrefixStruct {
-    std::string symbol;
     MAGNITUDE_TYPE magnitude;
     std::string definition;
     std::string name;
   };
-  extern std::vector<UnitPrefixStruct> UnitPrefixList;
+  extern std::map<std::string, UnitPrefixStruct> UnitPrefixList;
 
   typedef std::array<EXPONENT_TYPE, NUM_BASEDIM> BaseDimensions;
   typedef std::set<std::string> AllowedPrefixes;
@@ -73,6 +72,7 @@ namespace puq {
   #include "quantities.h"
   
   struct SystemDataType {
+    std::string SystemAbrev;
     std::string SystemName;
     UnitListType UnitList;
     QuantityListType QuantityList;

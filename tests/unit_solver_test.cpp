@@ -29,6 +29,9 @@ TEST(UnitSolver, Solve) {
 
   atom = solver.solve("kg/(m*s)2*C");                // parentheses with eponents
   EXPECT_EQ(atom.value.to_string(), "kg*m-2*s-2*C");
+
+  atom = solver.solve("kg*<v>2");                    // quantities
+  EXPECT_EQ(atom.value.to_string(), "kg*<v>2");    
   
 }
 

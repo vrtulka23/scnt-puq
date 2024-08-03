@@ -32,13 +32,13 @@ private:
 };
 
 std::map<std::string, SystemPtr> systems = {
-  {"SI",    &puq::SystemData::SI},
-  {"ESU",   &puq::SystemData::ESU},
-  {"GAUSS", &puq::SystemData::GAUSS},
-  {"EMU",   &puq::SystemData::EMU},
-  {"IU",    &puq::SystemData::IU},
-  {"US",    &puq::SystemData::US},
-  {"AU",    &puq::SystemData::AU},
+  {"-si",    &puq::SystemData::SI},
+  {"-esu",   &puq::SystemData::ESU},
+  {"-gauss", &puq::SystemData::GAUSS},
+  {"-emu",   &puq::SystemData::EMU},
+  {"-iu",    &puq::SystemData::IU},
+  {"-us",    &puq::SystemData::US},
+  {"-au",    &puq::SystemData::AU},
 };
 
 inline std::string get_expression(std::deque<std::string>& convert) {
