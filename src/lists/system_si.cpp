@@ -4,7 +4,7 @@ namespace puq {
   namespace SystemData {
     
     const SystemDataType SI = {
-      "SI", "International System of Units",
+      "SI", "International System of Units", 
       _BASE + UnitListType({
 	  // units of length
 	  {"au",       Utype::LIN,      1.49597870e11,   { 1, 0, 0, 0, 0, 0, 0, 0},  "149597.870691*Mm",       "astr. unit",        false, {}             },

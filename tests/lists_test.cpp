@@ -4,7 +4,6 @@
 #include "../src/lists/lists.h"
 #include "../src/value/value.h"
 #include "../src/solver/solver.h"
-#include "../src/nostd.h"
 
 inline void check_symbol(std::set<std::string>& set, std::string symbol) {
   auto result = set.insert(symbol);
@@ -185,31 +184,13 @@ TEST(Lists, UnitDefinitionsUS) {
 
 #endif
 
-struct DimensionStruct {
-  MAGNITUDE_PRECISION magnitude;
-  puq::BaseDimensions dimensions;
-};
-typedef std::map<std::string, DimensionStruct> DimensionMapType;
-inline DimensionMapType get_dimension_map() {
-  DimensionMapType dm = {
-    {"m",   {1.0, { 1, 0, 0, 0, 0, 0, 0, 0} } },
-    {"g",   {1.0, { 0, 1, 0, 0, 0, 0, 0, 0} } },
-    {"s",   {1.0, { 0, 0, 1, 0, 0, 0, 0, 0} } },
-    {"K",   {1.0, { 0, 0, 0, 1, 0, 0, 0, 0} } },
-    {"A",   {1.0, { 0, 0, 0, 0, 1, 0, 0, 0} } },
-    {"cd",  {1.0, { 0, 0, 0, 0, 0, 1, 0, 0} } },
-    {"mol", {1.0, { 0, 0, 0, 0, 0, 0, 1, 0} } },
-    {"rad", {1.0, { 0, 0, 0, 0, 0, 0, 0, 1} } },
-  };
-  puq::UnitSolver solver;
-  for (auto unit: puq::UnitSystem::Data->UnitList) {
-    if ((unit.utype & puq::Utype::BAS)==puq::Utype::BAS)  
-      continue;
-    puq::UnitAtom atom = solver.solve(unit.definition);
+TEST(List, DimensionMap) {
+  
+  puq::DimensionMap dmap;
+  auto it = dmap.find("<B>");
+  if (it!=dmap.end()) {
+    puq::Dimensions dim(it->second.magnitude, it->second.dimensions);
+    std::cout << it->first << " " << dim.to_string() << std::endl;
   }
-  return dm;
-}
-
-TEST(List, CreateList) {
-  DimensionMapType dims = get_dimension_map();
+  EXPECT_TRUE(it!=dmap.end());
 }

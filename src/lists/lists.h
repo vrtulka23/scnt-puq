@@ -11,6 +11,10 @@
 
 namespace puq {
 
+  /*
+   *  Unit types
+   */
+  
   enum class Utype : std::uint8_t {
     NUL = 0b00000000,  // empty flag
     BAS = 0b00000001,  // base units
@@ -18,6 +22,7 @@ namespace puq {
     LOG = 0b00000100,  // logarithmic unit
     TMP = 0b00001000,  // temperature unit
     CST = 0b00010000,  // constant
+    QUA = 0b00100000,  // quantity
   };
 
   inline Utype operator|(Utype lhs, Utype rhs) {
@@ -47,7 +52,12 @@ namespace puq {
   const Utype UT_LIN_TMP     = Utype::LIN|Utype::TMP;
   const Utype UT_LIN_CST     = Utype::LIN|Utype::CST;
   const Utype UT_LIN_LOG     = Utype::LIN|Utype::LOG;
+  const Utype UT_LIN_QUA     = Utype::LIN|Utype::QUA;
 
+  /*
+   *  Prefix and unit list definitions
+   */
+  
   struct UnitPrefixStruct {
     MAGNITUDE_TYPE magnitude;
     std::string definition;
@@ -69,10 +79,53 @@ namespace puq {
   };
   typedef std::vector<UnitStruct> UnitListType;  
 
+  /*
+   *  Quantities
+   */
+  
   #include "quantities.h"
+
+  /*
+   *  Dimension map
+   */
+
+  class DimensionMapExcept: public std::exception {
+  private:
+    std::string message;
+  public:
+    DimensionMapExcept(std::string m) : message(m) {}
+    const char * what () const noexcept override {
+      return message.c_str();
+    }
+  };
+
+  struct DimensionStruct {
+    MAGNITUDE_TYPE magnitude;
+    BaseDimensions dimensions;
+  };
+  typedef std::unordered_map<std::string, DimensionStruct> DimensionMapType;
+  class DimensionMap {
+  private:
+    DimensionMapType dmap;
+    std::string file_data;
+    std::string file_table;
+    void _create_map();
+    void _write_map();
+    void _read_map();
+  public:
+    DimensionMap();
+    DimensionStruct at(const std::string& s) const;
+    DimensionMapType::const_iterator find(const std::string& s) const;
+    DimensionMapType::const_iterator begin() const;
+    DimensionMapType::const_iterator end() const;
+  };
+
+  /*
+   *  System of units
+   */
   
   struct SystemDataType {
-    std::string SystemAbrev;
+    std::string SystemAbbrev;
     std::string SystemName;
     UnitListType UnitList;
     QuantityListType QuantityList;

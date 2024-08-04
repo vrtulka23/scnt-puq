@@ -6,7 +6,7 @@ namespace puq {
   namespace SystemData {
     
     const SystemDataType AU = {
-      "AU", "Atomic units",
+      "AU", "Atomic units", 
       _BASE + UnitListType({
 	  {"E_h",      Utype::LIN,     4.35975e-15,      { 2, 1,-2, 0, 0, 0, 0, 0},  "[hbar]2/([m_e]*[a_0]2)",          "hartree",           false,  {}             },
 	  

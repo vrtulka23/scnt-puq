@@ -63,7 +63,7 @@ namespace puq {namespace SystemData {
   };
     
   const SystemDataType ESU = {
-    "ESU", "Electrostatic CGS units",
+    "ESU", "Electrostatic CGS units", 
     _BASE + _CGS + _GAUSS_ESU_UNITS + UnitListType({
 	{"statT",    Utype::LIN,         1000,          {(FRC){-3,2}, (FRC){1,2},  0, 0, 0, 0, 0, 0},  "cm-3:2*g1:2",      "Stattesla",               false, {}             },
 	{"statWb",   Utype::LIN,         0.0001,        {2,           1,           0, 0, 0, 0, 0, 0},  "cm2*g",            "Statweber",               false, {}             },
@@ -76,7 +76,7 @@ namespace puq {namespace SystemData {
   };
   
   const SystemDataType GAUSS = {
-    "GAUSS", "Gaussian CGS units",
+    "GAUSS", "Gaussian CGS units", 
     _BASE + _CGS + _GAUSS_ESU_UNITS + _GAUSS_EMU,
     _GAUSS_ESU_QUANTITIES
   };

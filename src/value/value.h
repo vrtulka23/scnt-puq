@@ -73,7 +73,7 @@ namespace puq {
 #endif
     std::string to_string();
   };
-  
+    
   typedef std::vector<BaseUnit> BaseUnitsList;
   class BaseUnits {
   private:

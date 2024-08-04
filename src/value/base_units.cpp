@@ -128,10 +128,19 @@ namespace puq {
       // quantity
       if (bu.unit.rfind(SYMBOL_QUANTITY_START, 0)==0) {
 	std::string symbol = bu.unit.substr(1,bu.unit.size()-2);
-	auto quantity = puq::UnitSystem::Data->QuantityList.find(symbol);
-	if (quantity!=puq::UnitSystem::Data->QuantityList.end()) {
+	auto quantity = UnitSystem::Data->QuantityList.find(symbol);
+	if (quantity!=UnitSystem::Data->QuantityList.end()) {
 	  dim.utype = dim.utype | Utype::LIN;
 	  dim.symbols.push_back(quantity->first);
+
+	  /*
+	  DimensionMap dmap;
+	  DimensionStruct ds = dmap.at(bu.unit);
+	  dim.numerical *= nostd::pow(ds.magnitude, (EXPONENT_TYPE)bu.exponent);
+	  for (int i=0; i<NUM_BASEDIM; i++) {
+	    dim.physical[i] += ds.dimensions[i] * bu.exponent;
+	  }
+	  */
 	  dim.numerical *= nostd::pow(quantity->second.magnitude, (EXPONENT_TYPE)bu.exponent);
 	  for (int i=0; i<NUM_BASEDIM; i++) {
 	    dim.physical[i] += quantity->second.dimensions[i] * bu.exponent;

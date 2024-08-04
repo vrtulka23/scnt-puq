@@ -60,7 +60,7 @@ namespace puq {namespace SystemData {
   };
   
   const SystemDataType IU = {
-    "EUS", "Imperial units",
+    "IU", "Imperial units", 
     _BASE + _EUS + UnitListType({
 
 	// units of length

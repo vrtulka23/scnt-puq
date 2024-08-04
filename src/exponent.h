@@ -8,10 +8,9 @@ namespace puq {
 #ifdef EXPONENT_FRACTIONS
 
 class Exponent {
-private:
+public:
   EXPONENT_INT_PRECISION numerator;
   EXPONENT_INT_PRECISION denominator;
-public:
   Exponent(): numerator(1), denominator(1) {}
   Exponent(const EXPONENT_INT_PRECISION n[2]): numerator(n[0]), denominator(n[1]) {};
   Exponent(const EXPONENT_INT_PRECISION& n): numerator(n), denominator(1) {};
