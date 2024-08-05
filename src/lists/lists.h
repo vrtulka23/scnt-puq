@@ -70,8 +70,6 @@ namespace puq {
   struct UnitStruct {
     std::string symbol;
     Utype utype;
-    MAGNITUDE_PRECISION magnitude;
-    BaseDimensions dimensions;
     std::string definition;
     std::string name;
     bool use_prefixes;

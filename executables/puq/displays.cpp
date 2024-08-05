@@ -125,9 +125,9 @@ void display_info(std::string expr) {
   std::cout << "Magnitude:   " << puq::nostd::to_string(uv.magnitude) << std::endl;
   std::cout << "Base units:  " << puq::nostd::to_string(uv.baseunits) << std::endl;
   std::stringstream ss; bool display = false;
-  for (auto unit: puq::UnitSystem::Data->UnitList) {
-    if (puq::Dimensions(1,unit.dimensions) != dim) continue;
-    ss << (display?", ":"") << unit.symbol;
+  for (auto unit: puq::UnitSystem::Data->DimensionMap) {
+    if (puq::Dimensions(1,unit.second.dimensions) != dim) continue;
+    ss << (display?", ":"") << unit.first;
     display = true;
   }
   if (display) {

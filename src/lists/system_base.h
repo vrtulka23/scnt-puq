@@ -9,14 +9,14 @@ std::vector<T> operator+(const std::vector<T>& v1, const std::vector<T>& v2) {
 }
 
 const UnitListType _BASE_UNITS = {
-  {"m",        UT_LIN_BAS,      1.0,             { 1, 0, 0, 0, 0, 0, 0, 0},  "m",                      "meter",             true,  {}             },
-  {"g",        UT_LIN_BAS,      1.0,             { 0, 1, 0, 0, 0, 0, 0, 0},  "g",                      "gram",              true,  {}             },
-  {"s",        UT_LIN_BAS,      1.0,             { 0, 0, 1, 0, 0, 0, 0, 0},  "s",                      "second",            true,  {}             },
-  {"K",        UT_LIN_BAS_TMP,  1.0,             { 0, 0, 0, 1, 0, 0, 0, 0},  "K",                      "Kelvin",            true,  {}             },
-  {"A",        UT_LIN_BAS,      1.0,             { 0, 0, 0, 0, 1, 0, 0, 0},  "A",                      "Ampere",            true,  {}             },
-  {"cd",       UT_LIN_BAS,      1.0,             { 0, 0, 0, 0, 0, 1, 0, 0},  "cd",                     "candela",           true,  {}             },
-  {"mol",      UT_LIN_BAS,      1.0,             { 0, 0, 0, 0, 0, 0, 1, 0},  "mol",                    "mole",              true,  {}             },
-  {"rad",      UT_LIN_BAS,      1.0,             { 0, 0, 0, 0, 0, 0, 0, 1},  "rad",                    "radian",            true,  {"m"}          },
+  {"m",        UT_LIN_BAS,      "m",                      "meter",             true,  {}             },
+  {"g",        UT_LIN_BAS,      "g",                      "gram",              true,  {}             },
+  {"s",        UT_LIN_BAS,      "s",                      "second",            true,  {}             },
+  {"K",        UT_LIN_BAS_TMP,  "K",                      "Kelvin",            true,  {}             },
+  {"A",        UT_LIN_BAS,      "A",                      "Ampere",            true,  {}             },
+  {"cd",       UT_LIN_BAS,      "cd",                     "candela",           true,  {}             },
+  {"mol",      UT_LIN_BAS,      "mol",                    "mole",              true,  {}             },
+  {"rad",      UT_LIN_BAS,      "rad",                    "radian",            true,  {"m"}          },
 };
 
 const DimensionMapType _BASE_MAP = {

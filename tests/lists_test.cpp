@@ -50,8 +50,9 @@ void test_unit_definitions() {
       continue;
     if ((unit.utype & puq::Utype::BAS)==puq::Utype::BAS) // ignore base units
       continue;    
-    
-    puq::Dimensions dim1(unit.magnitude, unit.dimensions);
+
+    puq::DimensionStruct dmap = puq::UnitSystem::Data->DimensionMap.at(unit.symbol);
+    puq::Dimensions dim1(dmap.magnitude, dmap.dimensions);
     std::string m1 = dim1.to_string();
 
     puq::UnitValue uv2(unit.definition);
