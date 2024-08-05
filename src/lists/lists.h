@@ -98,70 +98,56 @@ namespace puq {
       return message.c_str();
     }
   };
+  
+  /*
+   *  System of units
+   */
+
+#ifdef EXPONENT_FRACTIONS
+  typedef EXPONENT_INT_PRECISION FRC[2];
+#endif
 
   struct DimensionStruct {
     MAGNITUDE_TYPE magnitude;
     BaseDimensions dimensions;
   };
   typedef std::unordered_map<std::string, DimensionStruct> DimensionMapType;
-  class DimensionMap {
-  private:
-    DimensionMapType dmap;
-    std::string file_data;
-    std::string file_table;
-    void _create_map();
-    void _write_map();
-    void _read_map();
-  public:
-    DimensionMap();
-    DimensionStruct at(const std::string& s) const;
-    DimensionMapType::const_iterator find(const std::string& s) const;
-    DimensionMapType::const_iterator begin() const;
-    DimensionMapType::const_iterator end() const;
-  };
 
-  /*
-   *  System of units
-   */
-  
   struct SystemDataType {
     std::string SystemAbbrev;
     std::string SystemName;
     UnitListType UnitList;
     QuantityListType QuantityList;
+    DimensionMapType DimensionMap;
   };
-
-#ifdef EXPONENT_FRACTIONS
-  typedef EXPONENT_INT_PRECISION FRC[2];
-#endif
-  
   namespace SystemData {
     #include "system_base.h"
-    extern const SystemDataType SI;
+    extern SystemDataType SI;
 #ifdef UNIT_SYSTEM_CGS
-    extern const SystemDataType ESU;
-    extern const SystemDataType EMU;
-    extern const SystemDataType GAUSS;
+    extern SystemDataType ESU;
+    extern SystemDataType EMU;
+    extern SystemDataType GAUSS;
 #endif  
 #ifdef UNIT_SYSTEM_AU
-    extern const SystemDataType AU;
+    extern SystemDataType AU;
 #endif
 #ifdef UNIT_SYSTEM_EUS
-    extern const SystemDataType IU;
-    extern const SystemDataType US;
+    extern SystemDataType IU;
+    extern SystemDataType US;
 #endif
+    extern std::map<std::string, SystemDataType*> SystemMap;
   }
   
-  // Changing unit systems
   class UnitSystem {
     bool closed;
-    static std::stack<const SystemDataType*> systemStack;
+    static std::stack<SystemDataType*> systemStack;
   public:
-    static const SystemDataType* Data;
-    UnitSystem(const SystemDataType& st);
-    UnitSystem(const SystemDataType* st);
+    static SystemDataType* Data;
+    UnitSystem(): UnitSystem(&SystemData::SI) {};
+    UnitSystem(SystemDataType& st): UnitSystem(&st) {};
+    UnitSystem(SystemDataType* st);
     ~UnitSystem();
-    void change(const SystemDataType* st);
+    void change(SystemDataType* st);
     void close();
   };
   

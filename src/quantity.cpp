@@ -23,7 +23,7 @@ namespace puq {
   }
 #endif
   
-  Quantity::Quantity(std::string s, const SystemDataType& st): stype(&st) {
+  Quantity::Quantity(std::string s, SystemDataType& st): stype(&st) {
     UnitSystem us(stype);
 #ifdef PREPROCESS_EXPRESSIONS
     preprocess(s);
@@ -31,22 +31,22 @@ namespace puq {
     value = UnitValue(s);
   }
   
-  Quantity::Quantity(const UnitValue& v, const SystemDataType& st): stype(&st) {
+  Quantity::Quantity(const UnitValue& v, SystemDataType& st): stype(&st) {
     UnitSystem us(stype);
     value = v;
   }
   
-  Quantity::Quantity(const MAGNITUDE_TYPE& m, const SystemDataType& st): stype(&st) {
+  Quantity::Quantity(const MAGNITUDE_TYPE& m, SystemDataType& st): stype(&st) {
     UnitSystem us(stype);
     value = UnitValue(m);
   }
   
-  Quantity::Quantity(const MAGNITUDE_TYPE& m, const BaseUnitsList& bu, const SystemDataType& st): stype(&st) {
+  Quantity::Quantity(const MAGNITUDE_TYPE& m, const BaseUnitsList& bu, SystemDataType& st): stype(&st) {
     UnitSystem us(stype);
     value = UnitValue(m, bu);
   }
   
-  Quantity::Quantity(const MAGNITUDE_TYPE &m, std::string s, const SystemDataType& st): stype(&st) {
+  Quantity::Quantity(const MAGNITUDE_TYPE &m, std::string s, SystemDataType& st): stype(&st) {
     UnitSystem us(stype); 
 #ifdef PREPROCESS_EXPRESSIONS
     preprocess(s);
@@ -56,17 +56,17 @@ namespace puq {
   
 #ifdef MAGNITUDE_ERRORS
   
-  Quantity::Quantity(const MAGNITUDE_PRECISION& m, const SystemDataType& st): stype(&st) {
+  Quantity::Quantity(const MAGNITUDE_PRECISION& m, SystemDataType& st): stype(&st) {
     UnitSystem us(stype);
     value = UnitValue(m);
   }
   
-  Quantity::Quantity(const MAGNITUDE_PRECISION& m, const BaseUnitsList& bu, const SystemDataType& st): stype(&st) {
+  Quantity::Quantity(const MAGNITUDE_PRECISION& m, const BaseUnitsList& bu, SystemDataType& st): stype(&st) {
     UnitSystem us(stype);
     value = UnitValue(m, bu);
   }
   
-  Quantity::Quantity(const MAGNITUDE_PRECISION& m, std::string s, const SystemDataType& st): stype(&st) {
+  Quantity::Quantity(const MAGNITUDE_PRECISION& m, std::string s, SystemDataType& st): stype(&st) {
     UnitSystem us(stype);
     Magnitude mag(m);
 #ifdef PREPROCESS_EXPRESSIONS
@@ -75,17 +75,17 @@ namespace puq {
     value = UnitValue(mag, s);
   }
 
-  Quantity::Quantity(const MAGNITUDE_PRECISION& m, const MAGNITUDE_PRECISION& e, const SystemDataType& st): stype(&st) {
+  Quantity::Quantity(const MAGNITUDE_PRECISION& m, const MAGNITUDE_PRECISION& e, SystemDataType& st): stype(&st) {
     UnitSystem us(stype);
     value = UnitValue(m, e);
   }
   
-  Quantity::Quantity(const MAGNITUDE_PRECISION& m, const MAGNITUDE_PRECISION& e, const BaseUnitsList& bu, const SystemDataType& st): stype(&st) {
+  Quantity::Quantity(const MAGNITUDE_PRECISION& m, const MAGNITUDE_PRECISION& e, const BaseUnitsList& bu, SystemDataType& st): stype(&st) {
     UnitSystem us(stype);
     value = UnitValue(m, e, bu);
   }
  
-  Quantity::Quantity(const MAGNITUDE_PRECISION& m, const MAGNITUDE_PRECISION& e, std::string s, const SystemDataType& st): stype(&st) {
+  Quantity::Quantity(const MAGNITUDE_PRECISION& m, const MAGNITUDE_PRECISION& e, std::string s, SystemDataType& st): stype(&st) {
     UnitSystem us(stype);
     Magnitude mag(m,e);
 #ifdef PREPROCESS_EXPRESSIONS
@@ -167,7 +167,7 @@ namespace puq {
     return Quantity(uv);
   }
   
-  Quantity Quantity::convert(const std::string& s, const SystemDataType& st, const std::string& q) const {
+  Quantity Quantity::convert(const std::string& s, SystemDataType& st, const std::string& q) const {
     if (stype == &st) {
       return convert(s);
     } else if (q == "") {
@@ -198,7 +198,7 @@ namespace puq {
     return Quantity(uv2);
   }
   
-  Quantity Quantity::convert(const UnitValue& uv1, const SystemDataType& st, const std::string& q) const {
+  Quantity Quantity::convert(const UnitValue& uv1, SystemDataType& st, const std::string& q) const {
     if (stype == &st) {
       return convert(uv1);
     } else if (q == "") {

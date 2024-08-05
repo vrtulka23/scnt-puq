@@ -10,21 +10,21 @@ namespace puq {
   class Quantity {
     void preprocess(std::string& s);
   public:
-    const SystemDataType* stype;
+    SystemDataType* stype;
     UnitValue value;
-    Quantity(const SystemDataType& st=*UnitSystem::Data): stype(&st) {};
-    Quantity(std::string s, const SystemDataType& st=*UnitSystem::Data);
-    Quantity(const UnitValue& v, const SystemDataType& st=*UnitSystem::Data);
-    Quantity(const MAGNITUDE_TYPE& m, const SystemDataType& st=*UnitSystem::Data);
-    Quantity(const MAGNITUDE_TYPE& m, const BaseUnitsList& bu, const SystemDataType& st=*UnitSystem::Data);
-    Quantity(const MAGNITUDE_TYPE& m, std::string s, const SystemDataType& st=*UnitSystem::Data);
+    Quantity(SystemDataType& st=*UnitSystem::Data): stype(&st) {};
+    Quantity(std::string s, SystemDataType& st=*UnitSystem::Data);
+    Quantity(const UnitValue& v, SystemDataType& st=*UnitSystem::Data);
+    Quantity(const MAGNITUDE_TYPE& m, SystemDataType& st=*UnitSystem::Data);
+    Quantity(const MAGNITUDE_TYPE& m, const BaseUnitsList& bu, SystemDataType& st=*UnitSystem::Data);
+    Quantity(const MAGNITUDE_TYPE& m, std::string s, SystemDataType& st=*UnitSystem::Data);
 #ifdef MAGNITUDE_ERRORS
-    Quantity(const MAGNITUDE_PRECISION& m, const SystemDataType& st=*UnitSystem::Data);
-    Quantity(const MAGNITUDE_PRECISION& m, const BaseUnitsList& bu, const SystemDataType& st=*UnitSystem::Data);
-    Quantity(const MAGNITUDE_PRECISION& m, std::string s, const SystemDataType& st=*UnitSystem::Data);
-    Quantity(const MAGNITUDE_PRECISION& m, const MAGNITUDE_PRECISION& e, const SystemDataType& st=*UnitSystem::Data);
-    Quantity(const MAGNITUDE_PRECISION& m, const MAGNITUDE_PRECISION& e, const BaseUnitsList& bu, const SystemDataType& st=*UnitSystem::Data);
-    Quantity(const MAGNITUDE_PRECISION& m, const MAGNITUDE_PRECISION& e, std::string s, const SystemDataType& st=*UnitSystem::Data);
+    Quantity(const MAGNITUDE_PRECISION& m, SystemDataType& st=*UnitSystem::Data);
+    Quantity(const MAGNITUDE_PRECISION& m, const BaseUnitsList& bu, SystemDataType& st=*UnitSystem::Data);
+    Quantity(const MAGNITUDE_PRECISION& m, std::string s, SystemDataType& st=*UnitSystem::Data);
+    Quantity(const MAGNITUDE_PRECISION& m, const MAGNITUDE_PRECISION& e, SystemDataType& st=*UnitSystem::Data);
+    Quantity(const MAGNITUDE_PRECISION& m, const MAGNITUDE_PRECISION& e, const BaseUnitsList& bu, SystemDataType& st=*UnitSystem::Data);
+    Quantity(const MAGNITUDE_PRECISION& m, const MAGNITUDE_PRECISION& e, std::string s, SystemDataType& st=*UnitSystem::Data);
 #endif
     std::string to_string();
     friend Quantity operator+(Quantity& q1, Quantity& q2);
@@ -37,9 +37,9 @@ namespace puq {
     void operator/=(Quantity& q);
     Quantity convert(const Quantity& q) const;
     Quantity convert(const std::string& s) const;
-    Quantity convert(const std::string& s, const SystemDataType& st, const std::string& q = "") const;
+    Quantity convert(const std::string& s, SystemDataType& st, const std::string& q = "") const;
     Quantity convert(const UnitValue& uv) const;
-    Quantity convert(const UnitValue& uv, const SystemDataType& st, const std::string& q = "") const;
+    Quantity convert(const UnitValue& uv, SystemDataType& st, const std::string& q = "") const;
   };
   
   class UnitSystemExcept: public std::exception {

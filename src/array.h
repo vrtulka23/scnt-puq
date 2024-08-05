@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <array>
+#include <iostream>
 
 #include "settings.h"
 #include "exponent.h"
@@ -23,7 +24,7 @@ public:
 			       MAGNITUDE_PRECISION (*func)(const MAGNITUDE_PRECISION& v1,
 							   const MAGNITUDE_PRECISION& v2));
   static Array filled(const MAGNITUDE_PRECISION& v, const size_t &s);
-  std::string to_string() const;
+  std::string to_string(int precision=std::cout.precision()) const;
   size_t size() const;
   void append(const MAGNITUDE_PRECISION& v);
   void append(const ArrayValue& v);

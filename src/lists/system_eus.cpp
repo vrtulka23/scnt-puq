@@ -4,7 +4,7 @@
 
 namespace puq {namespace SystemData {
 
-  const UnitListType _EUS = {
+  const UnitListType _EUS_UNITS = {
     // units of length
     {"twip",     Utype::LIN,     17.6388888e-6,   { 1, 0, 0, 0, 0, 0, 0, 0},  "17.6388888e-6*m",        "twip",              false, {}             },    
     {"th",       Utype::LIN,     25.4e-6,         { 1, 0, 0, 0, 0, 0, 0, 0},  "25.4e-6*m",              "thou",              false, {}             },    
@@ -59,9 +59,9 @@ namespace puq {namespace SystemData {
     {"mph",      Utype::LIN,     0.44704,         { 1, 0,-1, 0, 0, 0, 0, 0},  "mi/h",                   "miles per hour",    false, {}             },
   };
   
-  const SystemDataType IU = {
+  SystemDataType IU = {
     "IU", "Imperial units", 
-    _BASE + _EUS + UnitListType({
+    _BASE_UNITS + _EUS_UNITS + UnitListType({
 
 	// units of length
 	{"bc",       Utype::LIN,     8.4667e-3,       { 1, 0, 0, 0, 0, 0, 0, 0},  "8.4667e-3*m",            "barleycorn",        false, {}             },    
@@ -88,12 +88,17 @@ namespace puq {namespace SystemData {
 	{"qr",       Utype::LIN,     12.70058636e3,   { 0, 1, 0, 0, 0, 0, 0, 0},  "12.70058636e3*g",        "quarter",           false, {}             },
 	{"slug",     Utype::LIN,     14.59390294e3,   { 0, 1, 0, 0, 0, 0, 0, 0},  "14.59390294e3*g",        "slug",              false, {}             },
     
+      }),
+    QuantityListType({
+      }),
+    DimensionMapType({
+#include "dmap_IU.h"
       })
   };
   
-  const SystemDataType US = {
+  SystemDataType US = {
     "US", "United States customary units",
-    _BASE + _EUS + UnitListType({
+    _BASE_UNITS + _EUS_UNITS + UnitListType({
 	
 	// units of length
 	{"p",        Utype::LIN,     352.778e-6,      { 1, 0, 0, 0, 0, 0, 0, 0},  "352.778e-6*m",           "point",             false, {}             },
@@ -141,6 +146,11 @@ namespace puq {namespace SystemData {
 	{"ozt",      Utype::LIN,     31.1034768,      { 0, 1, 0, 0, 0, 0, 0, 0},  "31.1034768*g",           "troy ounce",        false, {}             },  
 	{"lbt",      Utype::LIN,     373.241721,      { 0, 1, 0, 0, 0, 0, 0, 0},  "373.241721*g",           "troy pound",        false, {}             },
 	
+      }),
+    QuantityListType({
+      }),
+    DimensionMapType({
+#include "dmap_US.h"
       })
   };
 

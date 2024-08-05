@@ -1,5 +1,6 @@
 #include <sstream>
 #include <iostream>
+#include <iomanip>
 #include <string>
 
 #include "array.h"
@@ -49,15 +50,18 @@ Array Array::filled(const MAGNITUDE_PRECISION& v, const size_t &s) {
   return a;
 };
 
-std::string Array::to_string() const {
+std::string Array::to_string(int precision) const {
   std::stringstream ss;
   if (value.size()==1) {
+    ss << std::setprecision(precision);
     ss << value[0] << std::scientific;
   } else if (value.size()==2) {
+    ss << std::setprecision(precision);
     ss << SYMBOL_ARRAY_START << value[0];
     ss << SYMBOL_ARRAY_SEPARATOR << " " << value[1];
     ss << std::scientific << SYMBOL_ARRAY_END;
   } else if (value.size()>2) {
+    ss << std::setprecision(precision);
     ss << SYMBOL_ARRAY_START << value[0];
     ss << SYMBOL_ARRAY_SEPARATOR << " " << value[1];
     ss << SYMBOL_ARRAY_SEPARATOR << " " << SYMBOL_ARRAY_MORE;

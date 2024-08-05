@@ -52,7 +52,7 @@ namespace puq {
     Dimensions(const MAGNITUDE_PRECISION& m, const MAGNITUDE_PRECISION& e);
     Dimensions(const MAGNITUDE_PRECISION& m, const MAGNITUDE_PRECISION& e, const BaseDimensions& p): utype(Utype::NUL), numerical(m,e), physical(p) {};
 #endif
-    std::string to_string(Dformat format=Dformat::NUM|Dformat::PHYS) const;
+    std::string to_string(Dformat format=Dformat::NUM|Dformat::PHYS, int precision=std::cout.precision()) const;
     bool operator==(const Dimensions& d) const;
     bool operator!=(const Dimensions& d) const;
   };

@@ -7,7 +7,6 @@ project(PhysicalUnitsAndQuantities VERSION 1.0 LANGUAGES CXX)
 set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -Wno-deprecated")
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
-
 # compile example solvers
 ##########################
 
@@ -16,12 +15,12 @@ message(STATUS "Version: ${CODE_VERSION}")
 file(GLOB source_files "src/*.cpp" "src/**/*.cpp")
 add_library(puqcpp STATIC ${source_files})
 
-file(GLOB examples LIST_DIRECTORIES true "examples/*")
-foreach(dirpath ${examples})
+file(GLOB executables LIST_DIRECTORIES true "executables/*")
+foreach(dirpath ${executables})
 
   get_filename_component(dirname ${dirpath} NAME)
   message("Compiling example: ${dirname}")
-  file(GLOB example_files "examples/${dirname}/*.cpp" "examples/${dirname}/**/*.cpp")
+  file(GLOB example_files "executables/${dirname}/*.cpp" "executables/${dirname}/**/*.cpp")
   add_executable(${dirname} ${example_files} )
   target_link_libraries(${dirname} puqcpp)
   target_compile_definitions(${dirname} PRIVATE CODE_VERSION="${CODE_VERSION}")

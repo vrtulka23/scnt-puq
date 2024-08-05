@@ -8,7 +8,7 @@ std::vector<T> operator+(const std::vector<T>& v1, const std::vector<T>& v2) {
   return vr;
 }
 
-const UnitListType _BASE = {
+const UnitListType _BASE_UNITS = {
   {"m",        UT_LIN_BAS,      1.0,             { 1, 0, 0, 0, 0, 0, 0, 0},  "m",                      "meter",             true,  {}             },
   {"g",        UT_LIN_BAS,      1.0,             { 0, 1, 0, 0, 0, 0, 0, 0},  "g",                      "gram",              true,  {}             },
   {"s",        UT_LIN_BAS,      1.0,             { 0, 0, 1, 0, 0, 0, 0, 0},  "s",                      "second",            true,  {}             },

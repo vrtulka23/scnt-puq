@@ -31,16 +31,6 @@ private:
   std::vector <std::string> tokens;
 };
 
-std::map<std::string, SystemPtr> systems = {
-  {"-si",    &puq::SystemData::SI},
-  {"-esu",   &puq::SystemData::ESU},
-  {"-gauss", &puq::SystemData::GAUSS},
-  {"-emu",   &puq::SystemData::EMU},
-  {"-iu",    &puq::SystemData::IU},
-  {"-us",    &puq::SystemData::US},
-  {"-au",    &puq::SystemData::AU},
-};
-
 inline std::string get_expression(std::deque<std::string>& convert) {
   if (convert.size()) {
     std::string expr = convert.front();
@@ -51,8 +41,8 @@ inline std::string get_expression(std::deque<std::string>& convert) {
   }
 }
 
-inline SystemPtr get_system(std::deque<std::string>& convert) {
-  for (auto sys: systems) {
+inline puq::SystemDataType* get_system(std::deque<std::string>& convert) {
+  for (auto sys: puq::SystemData::SystemMap) {
     if (sys.first==convert.front()) {
       convert.pop_front();
       return sys.second;
@@ -62,7 +52,7 @@ inline SystemPtr get_system(std::deque<std::string>& convert) {
 }
 
 inline void change_system(puq::UnitSystem& us, std::deque<std::string>& convert) {
-  SystemPtr system = get_system(convert);
+  puq::SystemDataType* system = get_system(convert);
   if (system != NULL)
     us.change(system);
 }
@@ -97,9 +87,9 @@ int main(int argc, char * argv[]) {
     }
     convert = input.getCmdOption("-c",5);
     if (!convert.empty()) {
-      SystemPtr sys1 = get_system(convert);
+      puq::SystemDataType* sys1 = get_system(convert);
       std::string expr1 = get_expression(convert);
-      SystemPtr sys2 = get_system(convert);
+      puq::SystemDataType* sys2 = get_system(convert);
       std::string expr2 = get_expression(convert);
       std::string quant = get_expression(convert);
       puq::Quantity q;

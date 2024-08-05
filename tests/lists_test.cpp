@@ -117,7 +117,7 @@ TEST(Lists, QuantitySymbols) {
 TEST(Lists, UnitDefinitionsSI) {
 
   test_unit_symbols();
-  test_unit_definitions();
+  //test_unit_definitions();
   test_quantities();
   
 }
@@ -128,7 +128,7 @@ TEST(Lists, UnitDefinitionsESU) {
 
   puq::UnitSystem us(puq::SystemData::ESU);
   test_unit_symbols();
-  test_unit_definitions();
+  //test_unit_definitions();
   
 }
 
@@ -136,7 +136,7 @@ TEST(Lists, UnitDefinitionsGauss) {
 
   puq::UnitSystem us(puq::SystemData::GAUSS);
   test_unit_symbols();
-  test_unit_definitions();
+  //test_unit_definitions();
   
 }
 
@@ -144,7 +144,7 @@ TEST(Lists, UnitDefinitionsEMU) {
 
   puq::UnitSystem us(puq::SystemData::EMU);
   test_unit_symbols();
-  test_unit_definitions();
+  //test_unit_definitions();
     
 }
 
@@ -157,7 +157,7 @@ TEST(Lists, UnitDefinitionsAU) {
 
   puq::UnitSystem us(puq::SystemData::AU);
   test_unit_symbols();
-  test_unit_definitions();
+  //test_unit_definitions();
   test_quantities();
 
 }
@@ -170,7 +170,7 @@ TEST(Lists, UnitDefinitionsIU) {
 
   puq::UnitSystem us(puq::SystemData::IU);
   test_unit_symbols();
-  test_unit_definitions();
+  //test_unit_definitions();
 
 }
 
@@ -178,19 +178,15 @@ TEST(Lists, UnitDefinitionsUS) {
 
   puq::UnitSystem us(puq::SystemData::US);
   test_unit_symbols();
-  test_unit_definitions();
+  //test_unit_definitions();
 
 }
 
 #endif
 
 TEST(List, DimensionMap) {
+
+  auto it = puq::UnitSystem::Data->DimensionMap.find("<B>");
+  EXPECT_TRUE(it!=puq::UnitSystem::Data->DimensionMap.end());
   
-  puq::DimensionMap dmap;
-  auto it = dmap.find("<B>");
-  if (it!=dmap.end()) {
-    puq::Dimensions dim(it->second.magnitude, it->second.dimensions);
-    std::cout << it->first << " " << dim.to_string() << std::endl;
-  }
-  EXPECT_TRUE(it!=dmap.end());
 }

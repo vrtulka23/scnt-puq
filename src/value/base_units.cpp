@@ -127,23 +127,13 @@ namespace puq {
       }
       // quantity
       if (bu.unit.rfind(SYMBOL_QUANTITY_START, 0)==0) {
-	std::string symbol = bu.unit.substr(1,bu.unit.size()-2);
-	auto quantity = UnitSystem::Data->QuantityList.find(symbol);
-	if (quantity!=UnitSystem::Data->QuantityList.end()) {
+	auto dmap = UnitSystem::Data->DimensionMap.find(bu.unit);
+	if (dmap!=UnitSystem::Data->DimensionMap.end()) {
 	  dim.utype = dim.utype | Utype::LIN;
-	  dim.symbols.push_back(quantity->first);
-
-	  /*
-	  DimensionMap dmap;
-	  DimensionStruct ds = dmap.at(bu.unit);
-	  dim.numerical *= nostd::pow(ds.magnitude, (EXPONENT_TYPE)bu.exponent);
+	  dim.symbols.push_back(dmap->first);
+	  dim.numerical *= nostd::pow(dmap->second.magnitude, (EXPONENT_TYPE)bu.exponent);
 	  for (int i=0; i<NUM_BASEDIM; i++) {
-	    dim.physical[i] += ds.dimensions[i] * bu.exponent;
-	  }
-	  */
-	  dim.numerical *= nostd::pow(quantity->second.magnitude, (EXPONENT_TYPE)bu.exponent);
-	  for (int i=0; i<NUM_BASEDIM; i++) {
-	    dim.physical[i] += quantity->second.dimensions[i] * bu.exponent;
+	    dim.physical[i] += dmap->second.dimensions[i] * bu.exponent;
 	  }
 	  continue;
 	} else {
@@ -161,12 +151,17 @@ namespace puq {
 	  if (unit.utype==Utype::LOG)                 // unit requires logarithmic conversions
 	    dim.utype = dim.utype | unit.utype;
 	  dim.symbols.push_back(unit.symbol);
-	  dim.numerical *= nostd::pow(unit.magnitude, (EXPONENT_TYPE)bu.exponent);
-	  for (int i=0; i<NUM_BASEDIM; i++) {
-	    dim.physical[i] += unit.dimensions[i] * bu.exponent;
+	  auto dmap = UnitSystem::Data->DimensionMap.find(unit.symbol);
+	  if (dmap!=UnitSystem::Data->DimensionMap.end()) {
+	    dim.numerical *= nostd::pow(dmap->second.magnitude, (EXPONENT_TYPE)bu.exponent);
+	    for (int i=0; i<NUM_BASEDIM; i++) {
+	      dim.physical[i] += dmap->second.dimensions[i] * bu.exponent;
+	    }
+	    found = true;
+	    break;
+	  } else {
+	    throw UnitValueExcept("Undefined unit symbol: "+bu.unit);
 	  }
-	  found = true;
-	  break;
 	}
       }
       if (!found)

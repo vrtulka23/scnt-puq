@@ -2,8 +2,6 @@
 #define PUQ_QUANTITIES_H
 
 struct QuantityStruct {
-  MAGNITUDE_PRECISION magnitude;
-  BaseDimensions dimensions;
   std::string definition;
   std::string conversion;
 };

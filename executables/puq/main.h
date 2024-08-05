@@ -9,9 +9,6 @@
 #include "../../src/nostd.h"
 #include "../../src/lists/lists.h"
 
-typedef const puq::SystemDataType* SystemPtr;
-extern std::map<std::string, SystemPtr> systems;
-
 void display_unit_systems();
 void display_prefixes();
 void display_base_units();
