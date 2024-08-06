@@ -58,7 +58,19 @@ namespace puq {namespace SystemData {
     // units of velocity	 
     {"mph",      {Utype::LIN,     "mi/h",                   "miles per hour",    false, {}             }},
   };
-  
+
+  const QuantityListType _EUS_QUANTITIES = {
+    {"l",       {"ft"       }},
+    {"m",       {"lb"       }},    
+    {"t",       {"s"        }},
+    {"Iv",      {"cd"       }},
+    {"n",       {"mol"      }},
+    {"the",     {"rad"      }},
+    {"V",       {"gal"      }},
+    {"A",       {"ac"       }},
+    {"v",       {"mph"      }},
+  };
+    
   SystemDataType IU = {
     "IU", "Imperial units", 
     _BASE_UNITS + _EUS_UNITS + UnitListType({
@@ -89,7 +101,7 @@ namespace puq {namespace SystemData {
 	{"slug",     {Utype::LIN,     "14.59390294e3*g",        "slug",              false, {}             }},
     
       }),
-    QuantityListType({
+    _EUS_QUANTITIES + QuantityListType({
       }),
     DimensionMapType({
 #include "dmap_IU.h"
@@ -147,7 +159,7 @@ namespace puq {namespace SystemData {
 	{"lbt",      {Utype::LIN,     "373.241721*g",           "troy pound",        false, {}             }},
 	
       }),
-    QuantityListType({
+    _EUS_QUANTITIES + QuantityListType({
       }),
     DimensionMapType({
 #include "dmap_US.h"

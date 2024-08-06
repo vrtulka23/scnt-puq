@@ -68,7 +68,7 @@ int main(int argc, char * argv[]) {
     std::cout << "puq -s                          list of supported unit systems" << std::endl;
     std::cout << "puq -i [s] <e>                  get information about an expression <e> in a unit system [s]" << std::endl;
     std::cout << "puq -c [s1] <e1> [s2] <e2> [q]  convert expression <e1> in a unit system [s1] into expression <e2> in a system [s2] as a quantity [q]" << std::endl;
-    std::cout << "puq -l [s] <l>                  display list <l>=prefix/base/deriv/log/temp/const in a unit system [s]" << std::endl;
+    std::cout << "puq -l [s] <l>                  display list <l>=prefix/base/deriv/log/temp/const/quant in a unit system [s]" << std::endl;
     std::cout << std::endl;
   }
   else if(input.cmdOptionExists("-v")) {
@@ -124,6 +124,8 @@ int main(int argc, char * argv[]) {
 #endif
       else if (convert[0]=="const")
 	display_constants();
+      else if (convert[0]=="quant")
+	display_quantities();
     }
   } catch (std::exception& e) {
     std::cout << e.what() << std::endl;

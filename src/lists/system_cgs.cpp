@@ -63,14 +63,18 @@ namespace puq {namespace SystemData {
   };
     
   const QuantityListType _GAUSS_ESU_QUANTITIES = {
-    {"q",       {"statC",        "(s*A)/(statC*1e-1*[c_0])"                       }},
-    {"I",       {"statA",        "A/(statA*1e-1*[c_0])"                           }},
-    {"phi_e",   {"statV",        "(m2*kg*s-3*A-1)/(statV*1e8*[c_0]-1)"            }},
-    {"E_e",     {"statV/cm",     "(m*kg*s-3*A-1)/(statV/cm*1e6*[c_0]-1)"          }},
-    //{"D_e",     {"statC/cm2",    "(m-2*s*A)/(statC/cm2*)"              }},
-    //{"p_e",     {"",      ""                                         }},
-    //{"Phi_E",   {"",      ""                                         }},
-    //{"eps",     {"1",     "(m-3*kg-1*s4*A2)"                         }},
+    {"q",       {"statC",        "1e1/[c_0]"              }},
+    {"I",       {"statA",        "1e1/[c_0]"              }},
+    {"phi_e",   {"statV",        "1e-8*[c_0]"             }},
+    {"E_e",     {"statV/cm",     "1e-6*[c_0]"             }},
+    {"D_e",     {"statC/cm2",    "1e5/(4*[pi]*[c_0])"     }},
+    {"p_e",     {"statC*cm",     "1e-1/[c_0]"             }},
+    {"Phi_E",   {"statC",        "1e1/(4*[pi]*[c_0])"     }},
+    {"eps",     {"1",            "1e11/(4*[pi]*[c_0]2)"   }},
+    {"R",       {"statOhm",      "[c_0]2/1e9"             }},
+    {"rho_e",   {"statOhm*cm",   "[c_0]2/1e11"            }},
+    {"C",       {"statF",        "1e9/[c_0]2"             }},
+    {"L",       {"statH",        "[c_0]2/1e9"             }},
   };
 
   SystemDataType ESU = {
@@ -82,7 +86,11 @@ namespace puq {namespace SystemData {
 	{"[mu_B]",   {Utype::CST,     "2.780278273e-10*statA*cm2 ",  "Bohr magneton", false, {}             }},
       }),
     _CGS_QUANTITIES + _GAUSS_ESU_QUANTITIES + QuantityListType({
-	{"B",     {"statT",    "(kg/(s2*A))/(statT*1e4*[c_0]-1)"}},
+	{"B",      {"statT",       "1e-4*[c_0]"           }},
+	{"H",      {"statA/cm",    "1e3/(4*[pi]*[c_0])"   }},
+	{"mm",     {"statA*cm2",   "1e-3/[c_0]"           }},
+	{"Phi_M",  {"statWb",      "[c_0]*1e-8"           }},
+	{"mu",     {"s2/cm2",      "4*[pi]*[c_0]2*1e-7"   }},
       }),
     DimensionMapType({
 #include "dmap_ESU.h"
@@ -97,11 +105,19 @@ namespace puq {namespace SystemData {
     // constants 										     
     {"[mu_B]",   {Utype::CST,    "9.274010066e-21*erg/G",  "Bohr magneton",     false, {}             }},
   };
+
+  const QuantityListType _GAUSS_EMU_QUANTITIES = {
+    {"B",      {"G",           "1e-4"           }},
+    {"H",      {"Oe",          "1e3/(4*[pi])"   }},
+    {"mm",     {"erg/G",       "1e-3"           }},
+    {"Phi_M",  {"Mx",          "1e-8"           }},
+    {"mu",     {"1",           "4*[pi]*1e-7"    }},
+  };
     
   SystemDataType GAUSS = {
     "GAUSS", "Gaussian CGS units", 
     _BASE_UNITS + _CGS_UNITS + _GAUSS_ESU_UNITS + _GAUSS_EMU_UNITS,
-    _CGS_QUANTITIES + _GAUSS_ESU_QUANTITIES,
+    _CGS_QUANTITIES + _GAUSS_ESU_QUANTITIES + _GAUSS_EMU_QUANTITIES,
     DimensionMapType({
 #include "dmap_GAUSS.h"
       })
@@ -110,19 +126,30 @@ namespace puq {namespace SystemData {
   SystemDataType EMU = {
     "EMU", "Electromagnetic CGS units",
     _BASE_UNITS + _CGS_UNITS + _GAUSS_EMU_UNITS + UnitListType({
-      {"Bi",       {Utype::LIN,     "dyn1:2",              "biot",                 false, {}             }},
-      {"abA",      {Utype::LIN,     "Bi",                  "Abampere",             false, {}             }},
-      {"abC",      {Utype::LIN,     "Bi*s",                "Abcoulomb",            false, {}             }},
-      {"aC",       {Utype::LIN,     "abC",                 "Abcoulomb",            false, {}             }},
-      {"abV",      {Utype::LIN,     "g1:2*cm3:2*s-2",      "Abvolt",               false, {}             }},
-      {"abOhm",    {Utype::LIN,     "cm*s",                "Abohm",                false, {}             }},
-      {"abF",      {Utype::LIN,     "cm-1*s2",             "Abfarad",              false, {}             }},
-      {"abH",      {Utype::LIN,     "cm",                  "Abhenry",              false, {}             }},
-      // constants	   											 
-      {"[e]",      {Utype::CST,     "1.602176634e-20*abC", "elementary charge",    false, {}             }},
+        {"Bi",       {Utype::LIN,     "dyn1:2",              "biot",                 false, {}             }},
+        {"abA",      {Utype::LIN,     "Bi",                  "Abampere",             false, {}             }},
+        {"abC",      {Utype::LIN,     "Bi*s",                "Abcoulomb",            false, {}             }},
+        {"aC",       {Utype::LIN,     "abC",                 "Abcoulomb",            false, {}             }},
+        {"abV",      {Utype::LIN,     "g1:2*cm3:2*s-2",      "Abvolt",               false, {}             }},
+        {"abOhm",    {Utype::LIN,     "cm*s",                "Abohm",                false, {}             }},
+        {"abF",      {Utype::LIN,     "cm-1*s2",             "Abfarad",              false, {}             }},
+        {"abH",      {Utype::LIN,     "cm",                  "Abhenry",              false, {}             }},
+        // constants	   											 
+        {"[e]",      {Utype::CST,     "1.602176634e-20*abC", "elementary charge",    false, {}             }},
       }),
-    _CGS_QUANTITIES + QuantityListType({
-	{"I",       {"abA",    "A/(abA*1e-1)"  }},
+    _CGS_QUANTITIES + _GAUSS_EMU_QUANTITIES + QuantityListType({
+	{"q",       {"abC",        "1e1"              }},
+	{"I",       {"abA",        "1e1"              }},
+	{"phi_e",   {"abV",        "1e-8"             }},
+	{"E_e",     {"abV/cm",     "1e-6"             }},
+	{"D_e",     {"abC/cm2",    "1e5/(4*[pi])"     }},
+	{"p_e",     {"abC*cm",     "1e-1"             }},
+	{"Phi_E",   {"abC",        "1e1/(4*[pi])"     }},
+	{"eps",     {"s2/cm2",     "1e11/(4*[pi])"    }},
+	{"R",       {"abOhm",      "1e-9"             }},
+	{"rho_e",   {"abOhm*cm",   "1e-11"            }},
+	{"C",       {"abF",        "1e9"              }},
+	{"L",       {"abH",        "1e-9"             }},
       }),
     DimensionMapType({
 #include "dmap_EMU.h"

@@ -1,7 +1,7 @@
 /*
  * Do not modify this file!
  * This file can be updated using 'dmap' executable.
- * Last update: Tue Aug  6 18:18:15 2024
+ * Last update: Tue Aug  6 22:48:51 2024
  * Code version: v1.0.1
  * Symbol legend:
  * ..   units
@@ -90,3 +90,12 @@
 {"yr_t",        {31556925.216,            { 0, 0, 1, 0, 0, 0, 0, 0} } },     // tropical year
 {"yr_j",        {31557600,                { 0, 0, 1, 0, 0, 0, 0, 0} } },     // Julian year
 {"yr",          {31557600,                { 0, 0, 1, 0, 0, 0, 0, 0} } },     // year
+{"<l>",         {0.3048,                  { 1, 0, 0, 0, 0, 0, 0, 0} } },     // length
+{"<m>",         {453.59237,               { 0, 1, 0, 0, 0, 0, 0, 0} } },     // mass
+{"<V>",         {0.003785411784,          { 3, 0, 0, 0, 0, 0, 0, 0} } },     // volume
+{"<t>",         {1,                       { 0, 0, 1, 0, 0, 0, 0, 0} } },     // time
+{"<the>",       {1,                       { 0, 0, 0, 0, 0, 0, 0, 1} } },     // angular displacement
+{"<n>",         {1,                       { 0, 0, 0, 0, 0, 0, 1, 0} } },     // amount of substance
+{"<v>",         {0.44704,                 { 1, 0,-1, 0, 0, 0, 0, 0} } },     // velocity
+{"<Iv>",        {1,                       { 0, 0, 0, 0, 0, 1, 0, 0} } },     // luminous intensity
+{"<A>",         {4046.8564224,            { 2, 0, 0, 0, 0, 0, 0, 0} } },     // area

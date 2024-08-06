@@ -1,7 +1,7 @@
 /*
  * Do not modify this file!
  * This file can be updated using 'dmap' executable.
- * Last update: Tue Aug  6 18:18:15 2024
+ * Last update: Tue Aug  6 22:48:51 2024
  * Code version: v1.0.1
  * Symbol legend:
  * ..   units
@@ -18,7 +18,7 @@
 {"mol",         {1,                       { 0, 0, 0, 0, 0, 0, 1, 0} } },     // mole
 {"m",           {1,                       { 1, 0, 0, 0, 0, 0, 0, 0} } },     // meter
 {"ar",          {100,                     { 2, 0, 0, 0, 0, 0, 0, 0} } },     // are
-{"dpt",         {1,                       {-1, 0, 0, 0, 0, 0, 0, 0} } },     // dpt
+{"dpt",         {1,                       {-1, 0, 0, 0, 0, 0, 0, 0} } },     // dioptre
 {"[euler]",     {2.718282,                { 0, 0, 0, 0, 0, 0, 0, 0} } },     // Euler's num.
 {"au",          {149597870691,            { 1, 0, 0, 0, 0, 0, 0, 0} } },     // astr. unit
 {"min",         {60,                      { 0, 0, 1, 0, 0, 0, 0, 0} } },     // minute
@@ -133,8 +133,6 @@
 {"<S_a>",       {1000,                    { 2, 1,-1, 0, 0, 0, 0, 0} } },     // action
 {"<D_r>",       {1,                       { 2, 0,-2, 0, 0, 0, 0, 0} } },     // radiation dose
 {"<H_de>",      {1,                       { 2, 0,-2, 0, 0, 0, 0, 0} } },     // dose equivalent
-{"<A>",         {1,                       { 2, 0, 0, 0, 0, 0, 0, 0} } },     // area
-{"<D_a>",       {1,                       { 2, 0,-3, 0, 0, 0, 0, 0} } },     // absorbed dose rate
 {"<L_r>",       {1000,                    { 0, 1,-3, 0, 0, 0, 0,-2} } },     // radiance
 {"<Iv>",        {1,                       { 0, 0, 0, 0, 0, 1, 0, 0} } },     // luminous intensity
 {"<R_lam>",     {0.001,                   {-1,-1, 3, 1, 0, 0, 0, 0} } },     // thermal resistivity
@@ -150,15 +148,10 @@
 {"<E_il>",      {1,                       {-2, 0, 0, 0, 0, 1, 0, 2} } },     // illuminance
 {"<k_v>",       {1,                       {-1, 0, 0, 0, 0, 0, 0, 0} } },     // wave vector
 {"<lam_w>",     {1,                       { 1, 0, 0, 0, 0, 0, 0, 0} } },     // wave length
-{"<L_i>",       {1000,                    { 2, 1,-2, 0,-2, 0, 0, 0} } },     // inductance
-{"<E_e>",       {1000,                    { 1, 1,-3, 0,-1, 0, 0, 0} } },     // electric field strength
-{"<Ca>",        {0.001,                   {-2,-1, 4, 0, 2, 0, 0, 0} } },     // capacitance
 {"<A_r>",       {1,                       { 0, 0,-1, 0, 0, 0, 0, 0} } },     // radioactivity
 {"<mm>",        {1,                       { 2, 0, 0, 0, 1, 0, 0, 0} } },     // magnetic dipole moment
 {"<C_mol>",     {1,                       {-3, 0, 0, 0, 0, 0, 1, 0} } },     // molar concentration
 {"<B>",         {1000,                    { 0, 1,-2, 0,-1, 0, 0, 0} } },     // magnetic flux density
-{"<c_mol>",     {1000,                    { 2, 1,-2,-1, 0, 0,-1, 0} } },     // molar heat capacity
-{"<phi_m>",     {1000,                    { 2, 1,-2, 0,-1, 0, 0, 0} } },     // magnetic flux
 {"<lam_t>",     {1000,                    { 1, 1,-3,-1, 0, 0, 0, 0} } },     // thermal conductivity
 {"<H>",         {1,                       {-1, 0, 0, 0, 1, 0, 0, 0} } },     // magnetic field strenght
 {"<rho_e>",     {1000,                    { 3, 1,-3, 0,-2, 0, 0, 0} } },     // electrical resistivity
@@ -169,6 +162,7 @@
 {"<alp_e>",     {0.001,                   { 0,-1, 4, 0, 2, 0, 0, 0} } },     // electric polarizability
 {"<Rel>",       {0.001,                   {-2,-1, 2, 0, 2, 0, 0, 0} } },     // reluctance
 {"<q>",         {1,                       { 0, 0, 1, 0, 1, 0, 0, 0} } },     // electric charge
+{"<E_e>",       {1000,                    { 1, 1,-3, 0,-1, 0, 0, 0} } },     // electric field strength
 {"<R_t>",       {0.001,                   {-2,-1, 3, 1, 0, 0, 0, 0} } },     // thermal resistance
 {"<V_e>",       {1000,                    { 0, 1,-3, 0,-1, 0, 0, 0} } },     // electric field gradient
 {"<kap>",       {1000,                    { 2, 1,-3,-1, 0, 0, 0, 0} } },     // thermal conductance
@@ -178,6 +172,7 @@
 {"<alp_hhe>",   {1e-09,                   {-2,-3,10, 0, 4, 0, 0, 0} } },     // 2nd hyperpolarizability
 {"<E_mol>",     {1000,                    { 2, 1,-2, 0, 0, 0,-1, 0} } },     // molar energy
 {"<I_r>",       {1000,                    { 2, 1,-3, 0, 0, 0, 0,-2} } },     // radiant intensity
+{"<c_mol>",     {1000,                    { 2, 1,-2,-1, 0, 0,-1, 0} } },     // molar heat capacity
 {"<rho_q>",     {1,                       {-3, 0, 1, 0, 1, 0, 0, 0} } },     // electric charge density
 {"<phi_Q>",     {1000,                    { 0, 1,-3, 0, 0, 0, 0, 0} } },     // heat flux density
 {"<p_qe>",      {1,                       { 2, 0, 1, 0, 1, 0, 0, 0} } },     // electric quadrupole moment
@@ -194,6 +189,10 @@
 {"<E>",         {1000,                    { 2, 1,-2, 0, 0, 0, 0, 0} } },     // energy
 {"<jerk>",      {1,                       { 1, 0,-3, 0, 0, 0, 0, 0} } },     // jerk
 {"<F>",         {1000,                    { 1, 1,-2, 0, 0, 0, 0, 0} } },     // force
+{"<mu_c>",      {1000,                    { 2, 1,-2, 0, 0, 0,-1, 0} } },     // chemical potential
+{"<a_ome>",     {1,                       { 0, 0,-2, 0, 0, 0, 0, 1} } },     // angular acceleration
+{"<L_ome>",     {1000,                    { 2, 1,-1, 0, 0, 0, 0, 0} } },     // angular momentum
+{"<C>",         {0.001,                   {-2,-1, 4, 0, 2, 0, 0, 0} } },     // capacitance
 {"<k_s>",       {1000,                    { 0, 1,-2, 0, 0, 0, 0, 0} } },     // spring constant
 {"<E_Y>",       {1000,                    {-1, 1,-2, 0, 0, 0, 0, 0} } },     // Young's modulus
 {"<gam>",       {1000,                    { 0, 1,-2, 0, 0, 0, 0, 0} } },     // surface tension
@@ -203,17 +202,18 @@
 {"<mu_v>",      {1000,                    {-1, 1,-1, 0, 0, 0, 0, 0} } },     // dynamic viscosity
 {"<V>",         {1,                       { 3, 0, 0, 0, 0, 0, 0, 0} } },     // volume
 {"<Abs>",       {1,                       { 1, 0, 1, 0, 0, 0, 0, 0} } },     // absement
-{"<mu_c>",      {1000,                    { 2, 1,-2, 0, 0, 0,-1, 0} } },     // chemical potential
-{"<a_ome>",     {1,                       { 0, 0,-2, 0, 0, 0, 0, 1} } },     // angular acceleration
-{"<L_ome>",     {1000,                    { 2, 1,-1, 0, 0, 0, 0, 0} } },     // angular momentum
 {"<the>",       {1,                       { 0, 0, 0, 0, 0, 0, 0, 1} } },     // angular displacement
+{"<L>",         {1000,                    { 2, 1,-2, 0,-2, 0, 0, 0} } },     // inductance
 {"<rho_E>",     {1000,                    {-1, 1,-2, 0, 0, 0, 0, 0} } },     // energy density
 {"<V_sp>",      {0.001,                   { 3,-1, 0, 0, 0, 0, 0, 0} } },     // specific volume
 {"<sig_e>",     {0.001,                   {-3,-1, 3, 0, 2, 0, 0, 0} } },     // electrical conductivity
 {"<p_mom>",     {1000,                    { 1, 1,-1, 0, 0, 0, 0, 0} } },     // momentum
 {"<p_e>",       {1,                       { 1, 0, 1, 0, 1, 0, 0, 0} } },     // electric dipole moment
 {"<W>",         {1000,                    { 2, 1,-2, 0, 0, 0, 0, 0} } },     // work
+{"<D_a>",       {1,                       { 2, 0,-3, 0, 0, 0, 0, 0} } },     // absorbed dose rate
+{"<A>",         {1,                       { 2, 0, 0, 0, 0, 0, 0, 0} } },     // area
 {"<rho_A>",     {1000,                    {-2, 1, 0, 0, 0, 0, 0, 0} } },     // area density
+{"<Phi_M>",     {1000,                    { 2, 1,-2, 0,-1, 0, 0, 0} } },     // magnetic flux
 {"<T>",         {1,                       { 0, 0, 0, 1, 0, 0, 0, 0} } },     // temperature
 {"<a>",         {1,                       { 1, 0,-2, 0, 0, 0, 0, 0} } },     // acceleration
 {"<I_mom>",     {1000,                    { 2, 1, 0, 0, 0, 0, 0, 0} } },     // moment of inertia
@@ -223,6 +223,7 @@
 {"<v>",         {1,                       { 1, 0,-1, 0, 0, 0, 0, 0} } },     // velocity
 {"<P_o>",       {1,                       {-1, 0, 0, 0, 0, 0, 0, 0} } },     // optical power
 {"<J_c>",       {1,                       {-2, 0, 0, 0, 1, 0, 0, 0} } },     // current density
+{"<Phi_E>",     {1000,                    { 3, 1,-3, 0,-1, 0, 0, 0} } },     // electric flux
 {"<snap>",      {1,                       { 1, 0,-4, 0, 0, 0, 0, 0} } },     // snap
 {"<D_e>",       {1,                       {-2, 0, 1, 0, 1, 0, 0, 0} } },     // electric displacement field
 {"<nu_v>",      {1,                       { 2, 0,-1, 0, 0, 0, 0, 0} } },     // kinematic viscosity

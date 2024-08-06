@@ -179,13 +179,12 @@ namespace puq {
     } else { 
       UnitSystem us(stype);
       QuantityStruct qs = puq::UnitSystem::Data->QuantityList.at(q);
-      UnitValue uv2 = value.convert(SYMBOL_QUANTITY_START+q+SYMBOL_QUANTITY_END);
-      if (qs.sifactor != "") {
+      UnitValue uv2 = value;
+      if (qs.sifactor != "")
 	uv2 *= UnitValue(SYMBOL_SIFACTOR_START+q+SYMBOL_SIFACTOR_END);
-      }
-      Dimensions dim = uv2.baseunits.dimensions();
+      uv2 = uv2.convert(SYMBOL_QUANTITY_START+q+SYMBOL_QUANTITY_END);
       us.change(&st);         // change the unit system
-      uv2 = UnitValue(uv2.magnitude, dim);
+      uv2 = UnitValue(uv2.magnitude, SYMBOL_QUANTITY_START+q+SYMBOL_QUANTITY_END);
       qs = puq::UnitSystem::Data->QuantityList.at(q);
       if (qs.sifactor != "") {
 	uv2 /= UnitValue(SYMBOL_SIFACTOR_START+q+SYMBOL_SIFACTOR_END);
@@ -212,12 +211,12 @@ namespace puq {
     } else {
       UnitSystem us(stype);
       QuantityStruct qs = puq::UnitSystem::Data->QuantityList.at(q);
-      UnitValue uv2 = value.convert(SYMBOL_QUANTITY_START+q+SYMBOL_QUANTITY_END);
+      UnitValue uv2 = value;
       if (qs.sifactor != "")
 	uv2 *= UnitValue(SYMBOL_SIFACTOR_START+q+SYMBOL_SIFACTOR_END);
-      Dimensions dim = uv2.baseunits.dimensions();
+      uv2 = uv2.convert(SYMBOL_QUANTITY_START+q+SYMBOL_QUANTITY_END);
       us.change(&st);        // change the unit system
-      uv2 = UnitValue(value.magnitude, dim);
+      uv2 = UnitValue(value.magnitude, SYMBOL_SIFACTOR_START+q+SYMBOL_SIFACTOR_END);
       qs = puq::UnitSystem::Data->QuantityList.at(q);
       if (qs.sifactor != "")
 	uv2 /= UnitValue(SYMBOL_SIFACTOR_START+q+SYMBOL_SIFACTOR_END);

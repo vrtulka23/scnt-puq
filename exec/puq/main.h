@@ -14,6 +14,7 @@ void display_prefixes();
 void display_base_units();
 void display_derived_units();
 void display_constants();
+void display_quantities();
 #ifdef UNITS_TEMPERATURES
 void display_temperature_units();
 #endif

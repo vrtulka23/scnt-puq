@@ -24,10 +24,10 @@ void table_header(std::string title, std::vector<std::string> header, std::vecto
 }
 
 void display_prefixes() {
-  table_header("Prefixes:", {"Symbol","Name","Magnitude"}, {8,7,11});
+  table_header("Prefixes:", {"Symbol","Name","Magnitude"}, {8,8,11});
   for (auto prefix: puq::UnitPrefixList) {
     std::cout << std::setfill(' ') << std::setw(8)  << std::left << prefix.first;
-    std::cout << std::setfill(' ') << std::setw(7)  << std::left << prefix.second.name;
+    std::cout << std::setfill(' ') << std::setw(8)  << std::left << prefix.second.name;
     std::cout << std::setfill(' ') << std::setw(11) << std::left;
 #if defined(MAGNITUDE_ERRORS) || defined(MAGNITUDE_ARRAYS)
     std::cout << prefix.second.magnitude.to_string();
@@ -41,11 +41,12 @@ void display_prefixes() {
 
 void display_base_units() {
   table_header("Base units:", {"Symbol","Name","Allowed prefixes"}, {8,19,22});
-  for (auto unit: puq::UnitSystem::Data->UnitList) {
-    if ((unit.second.utype & puq::Utype::BAS)!=puq::Utype::BAS) continue;
-    std::cout << std::setfill(' ') << std::setw(8)  << std::left << unit.first;
-    std::cout << std::setfill(' ') << std::setw(19) << std::left << unit.second.name;
-    std::cout << std::setfill(' ') << std::setw(22) << std::left << puq::nostd::to_string(unit.second.use_prefixes, unit.second.allowed_prefixes);
+  for (auto symbol: puq::SystemData::BaseUnitOrder) {
+    auto unit = puq::UnitSystem::Data->UnitList.at(symbol);
+    if ((unit.utype & puq::Utype::BAS)!=puq::Utype::BAS) continue;
+    std::cout << std::setfill(' ') << std::setw(8)  << std::left << symbol;
+    std::cout << std::setfill(' ') << std::setw(19) << std::left << unit.name;
+    std::cout << std::setfill(' ') << std::setw(22) << std::left << puq::nostd::to_string(unit.use_prefixes, unit.allowed_prefixes);
     std::cout << std::scientific << std::endl;
   }
   std::cout << std::endl;
@@ -53,7 +54,8 @@ void display_base_units() {
 
 void display_derived_units() {
   table_header("Derived units:", {"Symbol","Name","Magnitude","Dimension","Definition","Allowed prefixes"}, {9,22,13,30,25,22});
-  for (auto unit: puq::UnitSystem::Data->UnitList) {
+  std::map<std::string, puq::UnitStruct> ordered(puq::UnitSystem::Data->UnitList.begin(), puq::UnitSystem::Data->UnitList.end());
+  for (auto unit: ordered) {
     if ((unit.second.utype & puq::Utype::LIN)!=puq::Utype::LIN) continue;
     if ((unit.second.utype & puq::Utype::BAS)==puq::Utype::BAS) continue;
     if ((unit.second.utype & puq::Utype::CST)==puq::Utype::CST) continue;
@@ -72,7 +74,8 @@ void display_derived_units() {
 
 void display_constants() {
   table_header("Constants:", {"Symbol","Name","Magnitude","Dimension","Definition"}, {9,19,13,15,25});
-  for (auto unit: puq::UnitSystem::Data->UnitList) {
+  std::map<std::string, puq::UnitStruct> ordered(puq::UnitSystem::Data->UnitList.begin(), puq::UnitSystem::Data->UnitList.end());
+  for (auto unit: ordered) {
     if ((unit.second.utype & puq::Utype::CST)!=puq::Utype::CST) continue;
     puq::UnitValue uv(unit.first);
     puq::Dimensions dim = uv.baseunits.dimensions();
@@ -86,10 +89,28 @@ void display_constants() {
   std::cout << std::endl;
 }
 
+void display_quantities() {
+  table_header("Constants:", {"Symbol","Name","Magnitude","Dimension","Definition"}, {10,30,13,22,25});
+  std::map<std::string, puq::QuantityStruct> ordered(puq::UnitSystem::Data->QuantityList.begin(), puq::UnitSystem::Data->QuantityList.end());
+  for (auto quantity: ordered) {
+    std::string symbol = SYMBOL_QUANTITY_START+quantity.first+SYMBOL_QUANTITY_END;
+    puq::UnitValue uv(symbol);
+    puq::Dimensions dim = uv.baseunits.dimensions();
+    std::cout << std::setfill(' ') << std::setw(10)  << std::left << symbol;
+    std::cout << std::setfill(' ') << std::setw(30) << std::left << puq::QuantityNames.at(quantity.first);
+    std::cout << std::setfill(' ') << std::setw(13) << std::left << dim.to_string(puq::Dformat::NUM);
+    std::cout << std::setfill(' ') << std::setw(22) << std::left << dim.to_string(puq::Dformat::PHYS);
+    std::cout << std::setfill(' ') << std::setw(25) << std::left << quantity.second.definition;
+    std::cout << std::scientific << std::endl;
+  }
+  std::cout << std::endl;
+}
+
 #ifdef UNITS_TEMPERATURES
 void display_temperature_units() {
   table_header("Temperatures:", {"Symbol","Name","Allowed prefixes"}, {9,19,22});
-  for (auto unit: puq::UnitSystem::Data->UnitList) {
+  std::map<std::string, puq::UnitStruct> ordered(puq::UnitSystem::Data->UnitList.begin(), puq::UnitSystem::Data->UnitList.end());
+  for (auto unit: ordered) {
     if ((unit.second.utype & puq::Utype::TMP)!=puq::Utype::TMP) continue;
     std::cout << std::setfill(' ') << std::setw(9)  << std::left << unit.first;
     std::cout << std::setfill(' ') << std::setw(19) << std::left << unit.second.name;
@@ -103,7 +124,8 @@ void display_temperature_units() {
 #ifdef UNITS_LOGARITHMIC
 void display_logarithmic_units() {
   table_header("Logarithmic units:", {"Symbol","Name","Allowed prefixes"}, {9,19,22});
-  for (auto unit: puq::UnitSystem::Data->UnitList) {
+  std::map<std::string, puq::UnitStruct> ordered(puq::UnitSystem::Data->UnitList.begin(), puq::UnitSystem::Data->UnitList.end());
+  for (auto unit: ordered) {
     if ((unit.second.utype & puq::Utype::LOG)!=puq::Utype::LOG) continue;
     std::cout << std::setfill(' ') << std::setw(9)  << std::left << unit.first;
     std::cout << std::setfill(' ') << std::setw(19) << std::left << unit.second.name;

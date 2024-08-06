@@ -116,17 +116,17 @@ const QuantityNamesType QuantityNames = {
  
   {"Mag",    "magnetization"               },
   {"H",      "magnetic field strenght"     },
-  {"phi_m",  "magnetic flux"               },
+  {"Phi_M",  "magnetic flux"               },
   {"B",      "magnetic flux density"       },
   {"mm",     "magnetic dipole moment"      },
 
   {"mu",     "permeability"                },
   {"eps",    "permittivity"                },
   
-  {"Ca",     "capacitance"                 },
+  {"C",      "capacitance"                 },
   {"J_c",    "current density"             },
   {"Z",      "impedance"                   },
-  {"L_i",    "inductance"                  },
+  {"L",      "inductance"                  },
   {"Rel",    "reluctance"                  },
 
   // wave and optics
