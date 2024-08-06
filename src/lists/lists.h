@@ -63,19 +63,18 @@ namespace puq {
     std::string definition;
     std::string name;
   };
-  extern std::map<std::string, UnitPrefixStruct> UnitPrefixList;
+  extern std::unordered_map<std::string, UnitPrefixStruct> UnitPrefixList;
 
   typedef std::array<EXPONENT_TYPE, NUM_BASEDIM> BaseDimensions;
   typedef std::set<std::string> AllowedPrefixes;
   struct UnitStruct {
-    std::string symbol;
     Utype utype;
     std::string definition;
     std::string name;
     bool use_prefixes;
     AllowedPrefixes allowed_prefixes;
   };
-  typedef std::vector<UnitStruct> UnitListType;  
+  typedef std::unordered_map<std::string, UnitStruct> UnitListType;  
 
   /*
    *  Quantities
@@ -133,7 +132,7 @@ namespace puq {
     extern SystemDataType IU;
     extern SystemDataType US;
 #endif
-    extern std::map<std::string, SystemDataType*> SystemMap;
+    extern std::unordered_map<std::string, SystemDataType*> SystemMap;
   }
   
   class UnitSystem {

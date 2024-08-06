@@ -21,17 +21,17 @@ void test_unit_symbols() {
   std::set<std::string> units;
   for (auto unit: puq::UnitSystem::Data->UnitList) {
     // unique unit symbol without a prefix
-    check_symbol(units, unit.symbol);
-    if (unit.use_prefixes) {
-      if (unit.allowed_prefixes.size()>0) {
+    check_symbol(units, unit.first);
+    if (unit.second.use_prefixes) {
+      if (unit.second.allowed_prefixes.size()>0) {
 	// unique symbols with allowed prefixes
-	for (auto& prefix: unit.allowed_prefixes) {
-	  check_symbol(units, std::string(prefix+unit.symbol));
+	for (auto& prefix: unit.second.allowed_prefixes) {
+	  check_symbol(units, std::string(prefix+unit.first));
 	}	
       } else {
 	// unique symbols with all prefixes
 	for (auto prefix: prefixes) {
-	  check_symbol(units, std::string(prefix+unit.symbol));
+	  check_symbol(units, std::string(prefix+unit.first));
 	}
       }
     }
@@ -43,25 +43,25 @@ void test_unit_definitions() {
   
   for (auto unit: puq::UnitSystem::Data->UnitList) {
     
-    //std::cout << "hello " << unit.symbol << " " << std::bitset<8>((int)unit.utype) << std::endl;
-    //if ((unit.utype & Utype::LIN)!=Utype::LIN) // check only linear units
+    //std::cout << "hello " << unit.first << " " << std::bitset<8>((int)unit.second.utype) << std::endl;
+    //if ((unit.second.utype & Utype::LIN)!=Utype::LIN) // check only linear units
     //  continue;
-    if (unit.utype==puq::Utype::NUL) // ignore null units
+    if (unit.second.utype==puq::Utype::NUL) // ignore null units
       continue;
-    if ((unit.utype & puq::Utype::BAS)==puq::Utype::BAS) // ignore base units
+    if ((unit.second.utype & puq::Utype::BAS)==puq::Utype::BAS) // ignore base units
       continue;    
 
-    puq::DimensionStruct dmap = puq::UnitSystem::Data->DimensionMap.at(unit.symbol);
+    puq::DimensionStruct dmap = puq::UnitSystem::Data->DimensionMap.at(unit.first);
     puq::Dimensions dim1(dmap.magnitude, dmap.dimensions);
     std::string m1 = dim1.to_string();
 
-    puq::UnitValue uv2(unit.definition);
+    puq::UnitValue uv2(unit.second.definition);
     puq::Dimensions dim2 = uv2.baseunits.dimensions();
     dim2 = puq::Dimensions(uv2.magnitude*dim2.numerical, dim2.physical);
     std::string m2 = dim2.to_string();
 
 #ifdef UNITS_LOGARITHMIC
-    if (unit.utype == puq::Utype::LOG) {
+    if (unit.second.utype == puq::Utype::LOG) {
       // For logarithmic units compare only the physical dimensionality
       m1 = dim1.to_string(puq::Dformat::PHYS);
       m2 = dim2.to_string(puq::Dformat::PHYS);
@@ -70,12 +70,12 @@ void test_unit_definitions() {
 
     /*
     EXPECT_DOUBLE_EQ(unit.magnitude, dim2.numerical.value[0])
-      << "Magnitude of unit '" << unit.symbol
+      << "Magnitude of unit '" << unit.first
       << "' does not match with its definition: "
       << puq::nostd::to_string(unit.magnitude) << " != "
       << puq::nostd::to_string(dim2.numerical);
     */
-    EXPECT_EQ(m1, m2) << "Dimension of unit '" << unit.symbol
+    EXPECT_EQ(m1, m2) << "Dimension of unit '" << unit.first
 		      << "' do not match its definition: "
 		      << m1 << " != " << m2;
   }  

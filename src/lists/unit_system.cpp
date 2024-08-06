@@ -9,7 +9,7 @@
 namespace puq {
 
   namespace SystemData {
-    std::map<std::string, SystemDataType*> SystemMap = {
+    std::unordered_map<std::string, SystemDataType*> SystemMap = {
       {"SI",    &puq::SystemData::SI},
       {"ESU",   &puq::SystemData::ESU},
       {"GAUSS", &puq::SystemData::GAUSS},

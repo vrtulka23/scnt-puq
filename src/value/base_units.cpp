@@ -3,9 +3,9 @@
 #include <iostream>
 #include <fstream>
 
+#include "value.h"
 #include "../settings.h"
 #include "../nostd.h"
-#include "value.h"
 #include "../solver/solver.h"
 
 namespace puq {
@@ -126,7 +126,7 @@ namespace puq {
 	dim.numerical *= nostd::pow(prefix->second.magnitude, (EXPONENT_TYPE)bu.exponent);
       }
       // quantity
-      if (bu.unit.rfind(SYMBOL_QUANTITY_START, 0)==0) {
+      if (bu.unit.rfind(SYMBOL_QUANTITY_START, 0)==0 || bu.unit.rfind(SYMBOL_SIFACTOR_START, 0)==0) {
 	auto dmap = UnitSystem::Data->DimensionMap.find(bu.unit);
 	if (dmap!=UnitSystem::Data->DimensionMap.end()) {
 	  dim.utype = dim.utype | Utype::LIN;
@@ -141,31 +141,29 @@ namespace puq {
 	}
       }
       // dimensions
-      bool found = false;
-      for (auto &unit: UnitSystem::Data->UnitList) {
-	if (unit.symbol==bu.unit) {
-	  if ((unit.utype & Utype::LIN)==Utype::LIN)  // standard linear conversion
+      auto unit = UnitSystem::Data->UnitList.find(bu.unit);
+      if (unit!=UnitSystem::Data->UnitList.end()) {
+	if (unit->first==bu.unit) {
+	  if ((unit->second.utype & Utype::LIN)==Utype::LIN)  // standard linear conversion
 	    dim.utype = dim.utype | Utype::LIN;
-	  if (unit.utype==Utype::TMP)                 // unit requires conversion of temperatures
-	    dim.utype = dim.utype | unit.utype;
-	  if (unit.utype==Utype::LOG)                 // unit requires logarithmic conversions
-	    dim.utype = dim.utype | unit.utype;
-	  dim.symbols.push_back(unit.symbol);
-	  auto dmap = UnitSystem::Data->DimensionMap.find(unit.symbol);
+	  if (unit->second.utype==Utype::TMP)                 // unit requires conversion of temperatures
+	    dim.utype = dim.utype | unit->second.utype;
+	  if (unit->second.utype==Utype::LOG)                 // unit requires logarithmic conversions
+	    dim.utype = dim.utype | unit->second.utype;
+	  dim.symbols.push_back(unit->first);
+	  auto dmap = UnitSystem::Data->DimensionMap.find(unit->first);
 	  if (dmap!=UnitSystem::Data->DimensionMap.end()) {
 	    dim.numerical *= nostd::pow(dmap->second.magnitude, (EXPONENT_TYPE)bu.exponent);
 	    for (int i=0; i<NUM_BASEDIM; i++) {
 	      dim.physical[i] += dmap->second.dimensions[i] * bu.exponent;
 	    }
-	    found = true;
-	    break;
 	  } else {
 	    throw UnitValueExcept("Undefined unit symbol: "+bu.unit);
 	  }
 	}
-      }
-      if (!found)
+      } else {
 	throw UnitValueExcept("Undefined unit symbol: "+bu.unit);
+      }
     }
     return dim;
   }

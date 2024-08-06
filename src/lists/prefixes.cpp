@@ -2,7 +2,7 @@
 
 namespace puq {
   
-  std::map<std::string, UnitPrefixStruct> UnitPrefixList = {
+  std::unordered_map<std::string, UnitPrefixStruct> UnitPrefixList = {
     {"Y",  {1.0e24,  "1e24",  "yotta" }},
     {"Z",  {1.0e21,  "1e21",  "zetta" }},
     {"E",  {1.0e18,  "1e18",  "exa"   }}, 

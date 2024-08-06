@@ -202,20 +202,20 @@ TEST(Quantity, UnitSystemQuantityContext) {
 
   puq::Quantity q1, q2, q3;
   
-  q1 = puq::Quantity(34,"statA", puq::SystemData::ESU);  
+  q1 = puq::Quantity(20,"statA", puq::SystemData::ESU);  
   q2 = q1.convert("A", puq::SystemData::SI, "I");           // specify conversion context
-  EXPECT_EQ(q2.to_string(), "1.13412e-08*A");
+  EXPECT_EQ(q2.to_string(), "6.67128e-09*A");
 
-  q1 = puq::Quantity("1.13412e-08*A", puq::SystemData::SI);  
+  q1 = puq::Quantity("6.671282e-10*A", puq::SystemData::SI);  
   q2 = q1.convert("statA", puq::SystemData::ESU, "I");      // inverse conversion
-  EXPECT_EQ(q2.to_string(), "34.0001*statA");
-
+  EXPECT_EQ(q2.to_string(), "2*statA");
+  
   q1 = puq::Quantity("1.13412e-08*A", puq::SystemData::SI); // error without given context 
-  EXPECT_THROW(q1.convert("statA", puq::SystemData::ESU), puq::ConvDimExcept);  
-
-  q1 = puq::Quantity(34,"T", puq::SystemData::SI);  
-  q2 = q1.convert("statT", puq::SystemData::ESU, "B");           // specify conversion context
-  EXPECT_EQ(q2.to_string(), "0.00113412*statT");
+  EXPECT_THROW(q1.convert("statA", puq::SystemData::ESU), puq::ConvDimExcept);
+  
+  q1 = puq::Quantity(1,"statT", puq::SystemData::ESU);  
+  q2 = q1.convert("T", puq::SystemData::SI, "B");          // specify conversion context
+  EXPECT_EQ(q2.to_string(), "2.99792e+06*T"); 
   
 }
 

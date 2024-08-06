@@ -13,6 +13,8 @@
 #define SYMBOL_EXPONENT "e"
 #define SYMBOL_QUANTITY_START "<"
 #define SYMBOL_QUANTITY_END   ">"
+#define SYMBOL_SIFACTOR_START "|"
+#define SYMBOL_SIFACTOR_END   "|"
 
 /*
  *  Numerical precision

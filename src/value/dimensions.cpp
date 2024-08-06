@@ -59,7 +59,7 @@ namespace puq {
   inline std::string _physical_to_string(const BaseDimensions& physical, Dformat& format) {
     std::stringstream ss;
     for (int i=0; i<NUM_BASEDIM; i++) {
-      std::string symbol = (UnitSystem::Data->UnitList)[i].symbol;
+      std::string symbol = SystemData::BaseUnitOrder[i];
       if (i==1 && (format&Dformat::MKS)==Dformat::MKS) {
 	symbol = "kg";
       } else if (i==0 && (format&Dformat::CGS)==Dformat::CGS) {

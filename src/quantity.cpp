@@ -7,7 +7,7 @@ namespace puq {
 #ifdef PREPROCESS_EXPRESSIONS
   void Quantity::preprocess(std::string& s) {
     // replace non standard symbols
-    std::map<std::string, std::string> dict {
+    std::unordered_map<std::string, std::string> dict {
       {"\u00D710", SYMBOL_EXPONENT},  // ×10 -> e
       {"\u2212",   SYMBOL_MINUS},     // −   -> -
       {"\u22C5",   SYMBOL_MULTIPLY},  // ⋅   -> *
@@ -174,21 +174,23 @@ namespace puq {
       UnitSystem us(stype);
       Dimensions dim = value.baseunits.dimensions();
       us.change(&st);         // change the unit system
-      UnitValue uv(value.magnitude, dim);
-      return Quantity(uv.convert(s));
+      UnitValue uv2(value.magnitude, dim);
+      return Quantity(uv2.convert(s));
     } else { 
       UnitSystem us(stype);
       QuantityStruct qs = puq::UnitSystem::Data->QuantityList.at(q);
-      UnitValue uv = value.convert(qs.definition);
-      if (qs.conversion != "")
-	uv *= UnitValue(qs.conversion);
-      Dimensions dim = uv.baseunits.dimensions();
+      UnitValue uv2 = value.convert(SYMBOL_QUANTITY_START+q+SYMBOL_QUANTITY_END);
+      if (qs.sifactor != "") {
+	uv2 *= UnitValue(SYMBOL_SIFACTOR_START+q+SYMBOL_SIFACTOR_END);
+      }
+      Dimensions dim = uv2.baseunits.dimensions();
       us.change(&st);         // change the unit system
-      uv = UnitValue(uv.magnitude, dim);
+      uv2 = UnitValue(uv2.magnitude, dim);
       qs = puq::UnitSystem::Data->QuantityList.at(q);
-      if (qs.conversion != "")
-	uv /= UnitValue(qs.conversion);
-      return Quantity(uv.convert(s));
+      if (qs.sifactor != "") {
+	uv2 /= UnitValue(SYMBOL_SIFACTOR_START+q+SYMBOL_SIFACTOR_END);
+      }
+      return Quantity(uv2.convert(s));
     }
   }
   
@@ -210,15 +212,15 @@ namespace puq {
     } else {
       UnitSystem us(stype);
       QuantityStruct qs = puq::UnitSystem::Data->QuantityList.at(q);
-      UnitValue uv2 = value.convert(qs.definition);
-      if (qs.conversion != "")
-	uv2 *= UnitValue(qs.conversion);
+      UnitValue uv2 = value.convert(SYMBOL_QUANTITY_START+q+SYMBOL_QUANTITY_END);
+      if (qs.sifactor != "")
+	uv2 *= UnitValue(SYMBOL_SIFACTOR_START+q+SYMBOL_SIFACTOR_END);
       Dimensions dim = uv2.baseunits.dimensions();
       us.change(&st);        // change the unit system
       uv2 = UnitValue(value.magnitude, dim);
       qs = puq::UnitSystem::Data->QuantityList.at(q);
-      if (qs.conversion != "")
-	uv2 /= UnitValue(qs.conversion);
+      if (qs.sifactor != "")
+	uv2 /= UnitValue(SYMBOL_SIFACTOR_START+q+SYMBOL_SIFACTOR_END);
       return Quantity(uv2.convert(uv1));
     }
   }

@@ -25,7 +25,7 @@ namespace puq {
   UnitValue::UnitValue(const MAGNITUDE_TYPE& m, const Dimensions& dim) {
     magnitude = m * dim.numerical;
     for (int i=0; i<NUM_BASEDIM; i++) {
-      std::string symbol = (UnitSystem::Data->UnitList)[i].symbol;
+      std::string symbol = SystemData::BaseUnitOrder[i];
       baseunits.append("", symbol, dim.physical[i]);
     }
   }

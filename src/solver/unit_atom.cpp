@@ -49,26 +49,26 @@ namespace puq {
     BaseUnit bu;
     _parse_exponent(bu, expr, m);
     // determine unit
-    UnitStruct munit;  // current candidate unit
+    std::pair<std::string, UnitStruct> munit;  // current candidate unit
     for (auto unit: UnitSystem::Data->UnitList) {
-      if (unit.symbol.size()>expr.size())           // symbol is longer than the expression
+      if (unit.first.size()>expr.size())          // symbol is longer than the expression
 	continue;
-      if (unit.symbol.size()<=munit.symbol.size())  // symbol is smaller or equal to the current candidate symbol
+      if (unit.first.size()<=munit.first.size())  // symbol is smaller or equal to the current candidate symbol
 	continue;
-      if (expr.compare(expr.size() - unit.symbol.size(), unit.symbol.size(), unit.symbol)==0) {
+      if (expr.compare(expr.size() - unit.first.size(), unit.first.size(), unit.first)==0) {
 	munit = unit;
       }
     }
-    if (munit.symbol=="") {
+    if (munit.first=="") {
       throw AtomParsingExcept("Unknown unit base: "+expr_orig);
     } else {
-      bu.unit = munit.symbol;
+      bu.unit = munit.first;
     }
     expr = expr.substr(0,expr.size()-bu.unit.size());
     // determine prefix
     if (expr.size()>0) {
       // no prefixes are allowed
-      if (!munit.use_prefixes)
+      if (!munit.second.use_prefixes)
 	throw AtomParsingExcept("Prefixes are not allowed for this unit: "+expr_orig);
       // is symbol in the prefix list
       if (UnitPrefixList.find(expr) == UnitPrefixList.end())
@@ -76,12 +76,12 @@ namespace puq {
       else
 	bu.prefix = expr;
       // is prefix allowed
-      if (munit.allowed_prefixes.size()>0) {
-	if (std::find(munit.allowed_prefixes.begin(), munit.allowed_prefixes.end(), bu.prefix) == munit.allowed_prefixes.end()) {
+      if (munit.second.allowed_prefixes.size()>0) {
+	if (std::find(munit.second.allowed_prefixes.begin(), munit.second.allowed_prefixes.end(), bu.prefix) == munit.second.allowed_prefixes.end()) {
 	  std::stringstream ss;
 	  ss << "Given prefix is not allowed in unit: "+expr_orig << std::endl;
 	  ss << "Allowed prefixes are:";
-	  for (auto prefix: munit.allowed_prefixes) {
+	  for (auto prefix: munit.second.allowed_prefixes) {
 	    ss << " " << prefix;
 	  }
 	  throw AtomParsingExcept(ss.str());
@@ -100,9 +100,11 @@ UnitValue UnitAtom::from_string(std::string expr_orig) {
 #ifdef EXPONENT_FRACTIONS
   std::regex rx_unit("^(\\[?[a-zA-Z0_%']+\\]?)([+-]?[0-9]*)("+std::string(SYMBOL_FRACTION)+"([0-9]+)|)$");
   std::regex rx_quantity("^(\\<[a-zA-Z_]+\\>)([+-]?[0-9]*)("+std::string(SYMBOL_FRACTION)+"([0-9]+)|)$");
+  std::regex rx_sifactor("^(\\|[a-zA-Z_]+\\|)([+-]?[0-9]*)("+std::string(SYMBOL_FRACTION)+"([0-9]+)|)$");
 #else
   std::regex rx_unit("^(\\[?[a-zA-Z0_%']+\\]?)([+-]?[0-9]*)$");
   std::regex rx_quantity("^(\\<[a-zA-Z_]+\\>)([+-]?[0-9]*)$");
+  std::regex rx_sifactor("^(\\|[a-zA-Z_]+\\|)([+-]?[0-9]*)$");
 #endif
 #ifdef MAGNITUDE_ERRORS
   std::regex rx_number("^((\\+|-)?[0-9]+)(\\.(([0-9]+)?))?(\\(([0-9]+)\\))?((e|E)((\\+|-)?[0-9]+))?$");
@@ -115,7 +117,10 @@ UnitValue UnitAtom::from_string(std::string expr_orig) {
   else if (std::regex_match(expr, m, rx_quantity)) {
     _parse_quantity(expr, uv, m);
   }
-  else if (std::regex_match(expr, m, rx_unit)) { 
+  else if (std::regex_match(expr, m, rx_sifactor)) {
+    _parse_quantity(expr, uv, m);
+  }
+  else if (std::regex_match(expr, m, rx_unit)) {
     _parse_unit(expr, uv, m, expr_orig);
   } else {
     throw AtomParsingExcept("Invalid unit expression: "+expr_orig);

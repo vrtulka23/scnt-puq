@@ -3,18 +3,18 @@
 
 struct QuantityStruct {
   std::string definition;
-  std::string conversion;
+  std::string sifactor;
 };
-typedef std::map<std::string, QuantityStruct> QuantityListType;
+typedef std::unordered_map<std::string, QuantityStruct> QuantityListType;
 
 template<typename T>
-std::map<std::string, T> operator+(const std::map<std::string, T>& map1, const std::map<std::string, T>& map2) {
-  std::map<std::string, T> mapr(map1.begin(), map1.end());
+std::unordered_map<std::string, T> operator+(const std::unordered_map<std::string, T>& map1, const std::unordered_map<std::string, T>& map2) {
+  std::unordered_map<std::string, T> mapr(map1.begin(), map1.end());
   mapr.insert(map2.begin(), map2.end());
   return mapr;
 }
 
-typedef std::map<std::string, std::string> QuantityNamesType;
+typedef std::unordered_map<std::string, std::string> QuantityNamesType;
 const QuantityNamesType QuantityNames = {
   // base quantities
   {"l",      "length"                      },
@@ -57,7 +57,8 @@ const QuantityNamesType QuantityNames = {
   {"Abs",    "absement"                    },
   
   // material properties
-  {"nu",     "viscosity"                   },
+  {"mu_v",   "dynamic viscosity"           },
+  {"nu_v",   "kinematic viscosity"         },
   {"eps_s",  "strain"                      },
   {"sig_s",  "stress"                      },
   {"E_Y",    "Young's modulus"             },
@@ -108,6 +109,7 @@ const QuantityNamesType QuantityNames = {
   {"alp_hhe","2nd hyperpolarizability"     },
   {"G_e",    "electrical conductance"      },
   {"sig_e",  "electrical conductivity"     },
+  {"Phi_E",  "electric flux"               },
   {"phi_e",  "electric potential"          },
   {"R",      "electrical resistance"       },
   {"rho_e",  "electrical resistivity"      },
@@ -129,9 +131,9 @@ const QuantityNamesType QuantityNames = {
 
   // wave and optics
   {"P_o",    "optical power"               },
-  {"lam_w",  "wavelength"                  },
-  {"k_n",    "wavenumber"                  },
-  {"k_v",    "wavevector"                  },
+  {"lam_w",  "wave length"                  },
+  {"k_n",    "wave number"                  },
+  {"k_v",    "wave vector"                  },
 
   // radiation
   {"E_il",   "illuminance"                 },
