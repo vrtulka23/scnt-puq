@@ -1,5 +1,9 @@
 #include <map>
 #include <deque>
+#include <iostream>
+#include <stdexcept>
+#include <sstream>
+#include <limits>
 
 #include "main.h"
 
@@ -65,10 +69,9 @@ int main(int argc, char * argv[]) {
     std::cout << "Example of use:" << std::endl;
     std::cout << "puq -h                          dislay help" << std::endl;
     std::cout << "puq -v                          dislay current version" << std::endl;
-    std::cout << "puq -s                          list of supported unit systems" << std::endl;
     std::cout << "puq -i [s] <e>                  get information about an expression <e> in a unit system [s]" << std::endl;
     std::cout << "puq -c [s1] <e1> [s2] <e2> [q]  convert expression <e1> in a unit system [s1] into expression <e2> in a system [s2] as a quantity [q]" << std::endl;
-    std::cout << "puq -l [s] <l>                  display list <l>=prefix/base/deriv/log/temp/const/quant in a unit system [s]" << std::endl;
+    std::cout << "puq -l [s] <l>                  display list <l>=prefix/base/deriv/log/temp/const/quant in a unit system [s], or all available unit systems <l>=sys" << std::endl;
     std::cout << std::endl;
   }
   else if(input.cmdOptionExists("-v")) {
@@ -77,9 +80,6 @@ int main(int argc, char * argv[]) {
   try {
     std::deque<std::string> convert;
     puq::UnitSystem us(puq::SystemData::SI);
-    if (input.cmdOptionExists("-s")) {
-      display_unit_systems();
-    }
     convert = input.getCmdOption("-i",2);
     if (!convert.empty()) {
       change_system(us, convert);
@@ -126,6 +126,23 @@ int main(int argc, char * argv[]) {
 	display_constants();
       else if (convert[0]=="quant")
 	display_quantities();
+      else if (convert[0]=="sys")
+	display_unit_systems();
+      else {
+	std::stringstream ss;
+	ss << std::endl;
+	ss << "List '" << convert[0] << "' does not exist." << std::endl << std::endl;
+	ss << "Available lists:" << std::endl << std::endl;
+	ss << "prefix  unit prefixes"         << std::endl;
+	ss << "base    base units"            << std::endl;
+	ss << "deriv   derived units"         << std::endl;
+	ss << "log     logarithmic units"     << std::endl;
+	ss << "temp    temperature units"     << std::endl;
+	ss << "const   constants"             << std::endl;
+	ss << "quant   quantities"            << std::endl;
+	ss << "sys     unit systems"          << std::endl;
+	throw std::runtime_error(ss.str());
+      }
     }
   } catch (std::exception& e) {
     std::cout << e.what() << std::endl;

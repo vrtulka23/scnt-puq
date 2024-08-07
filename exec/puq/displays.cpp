@@ -25,15 +25,11 @@ void table_header(std::string title, std::vector<std::string> header, std::vecto
 
 void display_prefixes() {
   table_header("Prefixes:", {"Symbol","Name","Magnitude"}, {8,8,11});
-  for (auto prefix: puq::UnitPrefixList) {
-    std::cout << std::setfill(' ') << std::setw(8)  << std::left << prefix.first;
-    std::cout << std::setfill(' ') << std::setw(8)  << std::left << prefix.second.name;
-    std::cout << std::setfill(' ') << std::setw(11) << std::left;
-#if defined(MAGNITUDE_ERRORS) || defined(MAGNITUDE_ARRAYS)
-    std::cout << prefix.second.magnitude.to_string();
-#else
-    std::cout << prefix.second.magnitude;
-#endif
+  for (auto symbol: puq::UnitPrefixOrder) {
+    auto prefix = puq::UnitPrefixList.at(symbol);
+    std::cout << std::setfill(' ') << std::setw(8)  << std::left << symbol;
+    std::cout << std::setfill(' ') << std::setw(8)  << std::left << prefix.name;
+    std::cout << std::setfill(' ') << std::setw(11) << std::left << puq::nostd::to_string(prefix.magnitude);
     std::cout << std::scientific << std::endl;
   }
   std::cout << std::endl;

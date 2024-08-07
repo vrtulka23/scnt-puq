@@ -63,7 +63,8 @@ namespace puq {
     std::string definition;
     std::string name;
   };
-  extern std::unordered_map<std::string, UnitPrefixStruct> UnitPrefixList;
+  extern const std::unordered_map<std::string, UnitPrefixStruct> UnitPrefixList;
+  extern const std::vector<std::string> UnitPrefixOrder;
 
   typedef std::array<EXPONENT_TYPE, NUM_BASEDIM> BaseDimensions;
   typedef std::set<std::string> AllowedPrefixes;

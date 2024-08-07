@@ -1,8 +1,13 @@
 #import "lists.h"
 
 namespace puq {
+
+  const std::vector<std::string> UnitPrefixOrder = {
+    "Y","Z","E","P","T","G","M","k","h","da",
+    "d","c","m","u","n","p","f","a","z","y"
+  };
   
-  std::unordered_map<std::string, UnitPrefixStruct> UnitPrefixList = {
+  const std::unordered_map<std::string, UnitPrefixStruct> UnitPrefixList = {
     {"Y",  {1.0e24,  "1e24",  "yotta" }},
     {"Z",  {1.0e21,  "1e21",  "zetta" }},
     {"E",  {1.0e18,  "1e18",  "exa"   }}, 
