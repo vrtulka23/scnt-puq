@@ -1,6 +1,12 @@
 #ifndef PUQ_SETTINGS_H
 #define PUQ_SETTINGS_H
 
+#ifdef CONFIG_FILE
+#include CONFIG_FILE
+#else
+#include "config.h"
+#endif
+
 /*
  *  General settings
  */
@@ -15,26 +21,6 @@
 #define SYMBOL_QUANTITY_END   ">"
 #define SYMBOL_SIFACTOR_START "|"
 #define SYMBOL_SIFACTOR_END   "|"
-
-/*
- *  Numerical precision
- */
-#define MAGNITUDE_PRECISION     double
-#define EXPONENT_INT_PRECISION  int
-#define EXPONENT_REAL_PRECISION double
-
-/*
- *  Modules
- */
-#define MAGNITUDE_ERRORS
-#define MAGNITUDE_ARRAYS
-#define EXPONENT_FRACTIONS
-#define UNITS_TEMPERATURES
-#define UNITS_LOGARITHMIC
-#define UNIT_SYSTEM_CGS
-#define UNIT_SYSTEM_AU
-#define UNIT_SYSTEM_EUS
-#define PREPROCESS_EXPRESSIONS
 
 /*
  *  Module specific settings
@@ -68,6 +54,9 @@
 #ifdef EXPONENT_FRACTIONS
   #define EXPONENT_TYPE Exponent
 #else
+  #ifdef UNIT_SYSTEM_CGS
+    static_assert(false, "Unit system CGS cannot be used without fractional exponents! Please use EXPONENT_FRACTIONS flag.");
+  #endif
   #define EXPONENT_TYPE EXPONENT_INT_PRECISION
 #endif
 

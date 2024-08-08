@@ -33,9 +33,6 @@ TEST(Quantity, Initialization) {
 
   q = puq::Quantity("6.23537×1012 C4⋅m4⋅J−3");
   EXPECT_EQ(q.to_string(), "6.23537e+12*C4*m4*J-3");
-
-  q = puq::Quantity("8.8541878188(14)×10−12 F⋅m−1");
-  EXPECT_EQ(q.to_string(), "8.8541878188(14)e-12*F*m-1");
 #endif
   
 }
@@ -58,6 +55,9 @@ TEST(Quantity, InitializationErrors) {
 #ifdef PREPROCESS_EXPRESSIONS
   q = puq::Quantity("6.23537(39)×10−12 C4⋅m4⋅J−3");
   EXPECT_EQ(q.to_string(), "6.23537(39)e-12*C4*m4*J-3");
+
+  q = puq::Quantity("8.8541878188(14)×10−12 F⋅m−1");
+  EXPECT_EQ(q.to_string(), "8.8541878188(14)e-12*F*m-1");
 #endif
   
 }

@@ -11,12 +11,18 @@ namespace puq {
   namespace SystemData {
     std::unordered_map<std::string, SystemDataType*> SystemMap = {
       {"SI",    &puq::SystemData::SI},
+#ifdef UNIT_SYSTEM_CGS
       {"ESU",   &puq::SystemData::ESU},
       {"GAUSS", &puq::SystemData::GAUSS},
       {"EMU",   &puq::SystemData::EMU},
+#endif
+#ifdef UNIT_SYSTEM_EUS
       {"IU",    &puq::SystemData::IU},
       {"US",    &puq::SystemData::US},
+#endif
+#ifdef UNIT_SYSTEM_AU
       {"AU",    &puq::SystemData::AU},
+#endif
     };
   }
 

@@ -96,6 +96,13 @@ namespace puq {
       return message.c_str();
     }
   };
+
+  struct DimensionStruct {
+    MAGNITUDE_PRECISION magnitude;
+    MAGNITUDE_PRECISION errors;
+    BaseDimensions dimensions;
+  };
+  typedef std::unordered_map<std::string, DimensionStruct> DimensionMapType;
   
   /*
    *  System of units
@@ -104,12 +111,6 @@ namespace puq {
 #ifdef EXPONENT_FRACTIONS
   typedef EXPONENT_INT_PRECISION FRC[2];
 #endif
-
-  struct DimensionStruct {
-    MAGNITUDE_TYPE magnitude;
-    BaseDimensions dimensions;
-  };
-  typedef std::unordered_map<std::string, DimensionStruct> DimensionMapType;
 
   struct SystemDataType {
     std::string SystemAbbrev;

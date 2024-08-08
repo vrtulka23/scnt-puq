@@ -3,9 +3,9 @@
 
 #include "exponent.h"
 
-namespace puq {
-
 #ifdef EXPONENT_FRACTIONS
+
+namespace puq {
 
 void Exponent::operator+=(const Exponent& e) {
   if (denominator==e.denominator) {

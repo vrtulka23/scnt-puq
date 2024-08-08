@@ -48,7 +48,11 @@ namespace puq {
 	  {"S_a",     {"[hbar]"                 }},
 	}),
       DimensionMapType({
-#include "dmap_AU.h"
+#ifdef MAGNITUDE_ERRORS
+#include "dmaps/dmap_AU_err.h"
+#else
+#include "dmaps/dmap_AU.h"
+#endif
 	})
     };
     

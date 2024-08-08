@@ -2,6 +2,7 @@
 #define PUQ_NOSTD_H
 
 #include <iostream>
+#include <iomanip>
 #include <sstream>
 #include <stdexcept>
 
@@ -32,20 +33,33 @@ namespace nostd {
    *  to_string
    */
   
-  inline std::string to_string(const MAGNITUDE_PRECISION& value) {
+  inline std::string to_string(const MAGNITUDE_PRECISION& value, int precision=std::cout.precision()) {
     std::stringstream ss;
+    ss << std::setprecision(precision);
     ss << value << std::scientific;
     return ss.str();
   }
 
-  inline std::string to_string(const BaseUnits& value) {
+#ifdef MAGNITUDE_ARRAYS
+  inline std::string to_string(const Array& value, int precision=std::cout.precision()) {
+    return value.to_string(precision);
+  }
+#endif
+  
+#ifdef MAGNITUDE_ERRORS
+  inline std::string to_string(const Magnitude& value, int precision=std::cout.precision()) {
+    return value.to_string(precision);
+  }
+#endif
+  
+  inline std::string to_string(const BaseUnits& value, int precision=std::cout.precision()) {
     return value.to_string();
   }
   
-  inline std::string to_string(const Dimensions& value) {
-    return value.to_string();
+  inline std::string to_string(const Dimensions& value, Dformat format=Dformat::NUM|Dformat::PHYS, int precision=std::cout.precision()) {
+    return value.to_string(format, precision);
   }
-
+  
   inline std::string to_string(const bool& use_prefixes, const AllowedPrefixes& value) {
     std::stringstream ss;
     if (use_prefixes) {
@@ -62,18 +76,6 @@ namespace nostd {
     return ss.str();
   }
   
-#ifdef MAGNITUDE_ARRAYS
-  inline std::string to_string(const Array& value) {
-    return value.to_string();
-  }
-#endif
-  
-#ifdef MAGNITUDE_ERRORS
-  inline std::string to_string(const Magnitude& value) {
-    return value.to_string();
-  }
-#endif
-
   /*
    *  exp
    */

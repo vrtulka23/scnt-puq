@@ -183,7 +183,7 @@ void display_info(std::string expr) {
   if (bus.size() > 0) {
     table_header("Components:",
 		 {"Prefix","Symbol","Exponent","Name","Definition","Dimensions MGS","Allowed prefixes"},
-		 {8,8,10,19,21,22,22});
+		 {8,8,10,19,30,22,22});
     for (auto unit: puq::UnitSystem::Data->UnitList) {
       for (auto bu: bus) {
 	if (bu.unit!=unit.first)
@@ -191,9 +191,9 @@ void display_info(std::string expr) {
 	puq::BaseUnits bu_unit({bu});
 	std::cout << std::setfill(' ') << std::setw(8) << std::left << bu.prefix;
 	std::cout << std::setfill(' ') << std::setw(8) << std::left << bu.unit;
-	std::cout << std::setfill(' ') << std::setw(10) << std::left << ((bu.exponent.to_string()=="") ? "1" : bu.exponent.to_string());
+	std::cout << std::setfill(' ') << std::setw(10) << std::left << ((puq::nostd::to_string(bu.exponent)=="") ? "1" : puq::nostd::to_string(bu.exponent));
 	std::cout << std::setfill(' ') << std::setw(19) << std::left << unit.second.name;
-	std::cout << std::setfill(' ') << std::setw(21) << std::left << unit.second.definition;
+	std::cout << std::setfill(' ') << std::setw(30) << std::left << unit.second.definition;
 	std::cout << std::setfill(' ') << std::setw(22) << std::left << bu_unit.dimensions().to_string();
 	std::cout << std::setfill(' ') << std::setw(22) << std::left << puq::nostd::to_string(unit.second.use_prefixes, unit.second.allowed_prefixes);
 	std::cout << std::scientific << std::endl;

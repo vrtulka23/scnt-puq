@@ -119,7 +119,7 @@ namespace puq {
     UnitValue(const MAGNITUDE_PRECISION& m, const MAGNITUDE_PRECISION& e, const BaseUnits& bu): magnitude(m,e), baseunits(bu) {}
     UnitValue(const MAGNITUDE_PRECISION& m, const MAGNITUDE_PRECISION& e, const BaseUnitsList& bul): magnitude(m,e), baseunits(bul) {}
 #endif
-    std::string to_string() const;
+    std::string to_string(int precision=std::cout.precision()) const;
     friend UnitValue operator+(const UnitValue& v1, const UnitValue& v2);
     friend UnitValue operator-(const UnitValue& v1, const UnitValue& v2);
     friend UnitValue operator*(const UnitValue& v1, const UnitValue& v2);

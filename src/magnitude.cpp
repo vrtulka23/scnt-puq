@@ -8,10 +8,10 @@
 #include "magnitude.h"
 #include "nostd.h"
 
-namespace puq {
-  
 #ifdef MAGNITUDE_ERRORS
 
+namespace puq {
+  
 #ifdef MAGNITUDE_ARRAYS
 
   Magnitude::Magnitude(const Array& m): value(m) {
@@ -75,8 +75,8 @@ namespace puq {
   std::string Magnitude::to_string(int precision) const {
     std::stringstream ss;
 #ifdef MAGNITUDE_ARRAYS
-    if (std::all_of(value.begin(), value.end(), [](auto i){return i==0;})) {
-      ss << value.to_string();
+    if (std::all_of(error.begin(), error.end(), [](auto i){return i==0;})) {
+      ss << value.to_string(precision);
     }
 #else
     if (error==0) {

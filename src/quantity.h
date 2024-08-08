@@ -26,7 +26,7 @@ namespace puq {
     Quantity(const MAGNITUDE_PRECISION& m, const MAGNITUDE_PRECISION& e, const BaseUnitsList& bu, SystemDataType& st=*UnitSystem::Data);
     Quantity(const MAGNITUDE_PRECISION& m, const MAGNITUDE_PRECISION& e, std::string s, SystemDataType& st=*UnitSystem::Data);
 #endif
-    std::string to_string();
+    std::string to_string(int precision=std::cout.precision());
     friend Quantity operator+(Quantity& q1, Quantity& q2);
     friend Quantity operator-(Quantity& q1, Quantity& q2);
     friend Quantity operator*(Quantity& q1, Quantity& q2);
