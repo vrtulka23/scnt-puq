@@ -3,7 +3,7 @@
 #include <sys/stat.h>
 
 #include "lists.h"
-#include "../nostd.h"
+#include "../nostd/nostd.h"
 #include "../solver/solver.h"
 
 namespace puq {

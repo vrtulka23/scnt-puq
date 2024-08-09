@@ -69,7 +69,7 @@ void display_derived_units() {
 }
 
 void display_constants() {
-  table_header("Constants:", {"Symbol","Name","Magnitude","Dimension","Definition"}, {9,19,13,15,25});
+  table_header("Constants:", {"Symbol","Name","Magnitude","Dimension","Definition"}, {9,19,30,20,30});
   std::map<std::string, puq::UnitStruct> ordered(puq::UnitSystem::Data->UnitList.begin(), puq::UnitSystem::Data->UnitList.end());
   for (auto unit: ordered) {
     if ((unit.second.utype & puq::Utype::CST)!=puq::Utype::CST) continue;
@@ -77,9 +77,9 @@ void display_constants() {
     puq::Dimensions dim = uv.baseunits.dimensions();
     std::cout << std::setfill(' ') << std::setw(9)  << std::left << unit.first;
     std::cout << std::setfill(' ') << std::setw(19) << std::left << unit.second.name;
-    std::cout << std::setfill(' ') << std::setw(13) << std::left << dim.to_string(puq::Dformat::NUM);
-    std::cout << std::setfill(' ') << std::setw(15) << std::left << dim.to_string(puq::Dformat::PHYS);
-    std::cout << std::setfill(' ') << std::setw(25) << std::left << unit.second.definition;
+    std::cout << std::setfill(' ') << std::setw(30) << std::left << dim.to_string(puq::Dformat::NUM);
+    std::cout << std::setfill(' ') << std::setw(20) << std::left << dim.to_string(puq::Dformat::PHYS);
+    std::cout << std::setfill(' ') << std::setw(30) << std::left << unit.second.definition;
     std::cout << std::scientific << std::endl;
   }
   std::cout << std::endl;
@@ -201,4 +201,21 @@ void display_info(std::string expr) {
     }
   }
   std::cout << std::endl;
+}
+
+void display_lists(std::deque<std::string>& convert) {
+  std::stringstream ss;
+  ss << std::endl;
+  if (convert.size()>0) 
+    ss << "List '" << convert[0] << "' does not exist." << std::endl << std::endl;
+  ss << "Available lists:" << std::endl << std::endl;
+  ss << "prefix  unit prefixes"         << std::endl;
+  ss << "base    base units"            << std::endl;
+  ss << "deriv   derived units"         << std::endl;
+  ss << "log     logarithmic units"     << std::endl;
+  ss << "temp    temperature units"     << std::endl;
+  ss << "const   constants"             << std::endl;
+  ss << "quant   quantities"            << std::endl;
+  ss << "sys     unit systems"          << std::endl;
+  throw std::runtime_error(ss.str());
 }

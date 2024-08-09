@@ -1,7 +1,7 @@
 /*
  * Do not modify this file!
  * This file can be updated using 'dmap' executable.
- * Last update: Wed Aug  7 23:40:13 2024
+ * Last update: Fri Aug  9 16:56:53 2024
  * Code version: v1.0.1
  * Symbol legend:
  * ..   units

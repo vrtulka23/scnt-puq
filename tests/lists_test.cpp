@@ -52,7 +52,12 @@ void test_unit_definitions() {
       continue;    
 
     puq::DimensionStruct dmap = puq::UnitSystem::Data->DimensionMap.at(unit.first);
-    puq::Dimensions dim1(dmap.magnitude, dmap.dimensions);
+#ifdef MAGNITUDE_ERRORS
+    puq::MAGNITUDE_TYPE magnitude(dmap.magnitude, dmap.error);
+#else
+    puq::MAGNITUDE_TYPE magnitude(dmap.magnitude);
+#endif
+    puq::Dimensions dim1(magnitude, dmap.dimensions);
     std::string m1 = dim1.to_string();
 
     puq::UnitValue uv2(unit.second.definition);
@@ -191,3 +196,14 @@ TEST(List, DimensionMap) {
   EXPECT_TRUE(it!=puq::UnitSystem::Data->DimensionMap.end());
   
 }
+
+#ifdef MAGNITUDE_ERRORS
+TEST(List, DimensionMapErrors) {
+
+  auto it = puq::UnitSystem::Data->DimensionMap.find("[a_0]");
+  EXPECT_TRUE(it!=puq::UnitSystem::Data->DimensionMap.end());
+  EXPECT_FLOAT_EQ(it->second.magnitude, 5.2917721e-11);
+  EXPECT_FLOAT_EQ(it->second.error, 8.2e-21);
+  
+}
+#endif

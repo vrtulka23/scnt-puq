@@ -129,20 +129,12 @@ int main(int argc, char * argv[]) {
       else if (convert[0]=="sys")
 	display_unit_systems();
       else {
-	std::stringstream ss;
-	ss << std::endl;
-	ss << "List '" << convert[0] << "' does not exist." << std::endl << std::endl;
-	ss << "Available lists:" << std::endl << std::endl;
-	ss << "prefix  unit prefixes"         << std::endl;
-	ss << "base    base units"            << std::endl;
-	ss << "deriv   derived units"         << std::endl;
-	ss << "log     logarithmic units"     << std::endl;
-	ss << "temp    temperature units"     << std::endl;
-	ss << "const   constants"             << std::endl;
-	ss << "quant   quantities"            << std::endl;
-	ss << "sys     unit systems"          << std::endl;
-	throw std::runtime_error(ss.str());
+	display_lists(convert);
       }
+    }
+    else if (input.cmdOptionExists("-l")) {
+      std::deque<std::string> convert;
+      display_lists(convert);
     }
   } catch (std::exception& e) {
     std::cout << e.what() << std::endl;

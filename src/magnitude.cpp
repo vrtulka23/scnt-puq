@@ -6,7 +6,7 @@
 #include <algorithm>
 
 #include "magnitude.h"
-#include "nostd.h"
+#include "nostd/nostd.h"
 
 #ifdef MAGNITUDE_ERRORS
 

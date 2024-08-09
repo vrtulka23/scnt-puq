@@ -99,7 +99,9 @@ namespace puq {
 
   struct DimensionStruct {
     MAGNITUDE_PRECISION magnitude;
-    MAGNITUDE_PRECISION errors;
+#ifdef MAGNITUDE_ERRORS
+    MAGNITUDE_PRECISION error;
+#endif
     BaseDimensions dimensions;
   };
   typedef std::unordered_map<std::string, DimensionStruct> DimensionMapType;

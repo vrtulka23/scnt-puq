@@ -3,14 +3,12 @@
 namespace puq {
 
 bool OperatorParentheses::check(exs::Expression &expr) {
-#ifdef MAGNITUDE_ERRORS
   if (expr.left.size()>0) {
     char c = expr.left.back();
     if (std::isdigit(c) || c=='.') {
       return false;  // ignore parentheses if in the numerical value
     }
   }
-#endif
   return expr.right.rfind(symbol, 0) == 0;
 }
 

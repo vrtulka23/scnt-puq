@@ -6,7 +6,7 @@
 #include <exception>
 
 #include "../../src/quantity.h"
-#include "../../src/nostd.h"
+#include "../../src/nostd/nostd.h"
 #include "../../src/lists/lists.h"
 
 void display_unit_systems();
@@ -22,5 +22,6 @@ void display_temperature_units();
 void display_logarithmic_units();
 #endif
 void display_info(std::string expr);
+void display_lists(std::deque<std::string>& convert);
   
 #endif // MAIN_H

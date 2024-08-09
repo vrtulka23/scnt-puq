@@ -5,7 +5,7 @@
 
 #include "value.h"
 #include "../settings.h"
-#include "../nostd.h"
+#include "../nostd/nostd.h"
 #include "../solver/solver.h"
 
 namespace puq {
@@ -131,7 +131,12 @@ namespace puq {
 	if (dmap!=UnitSystem::Data->DimensionMap.end()) {
 	  dim.utype = dim.utype | Utype::LIN;
 	  dim.symbols.push_back(dmap->first);
-	  dim.numerical *= nostd::pow(dmap->second.magnitude, (EXPONENT_TYPE)bu.exponent);
+#ifdef MAGNITUDE_ERRORS
+	  MAGNITUDE_TYPE magnitude(dmap->second.magnitude, dmap->second.error);
+#else
+	  MAGNITUDE_TYPE magnitude(dmap->second.magnitude);
+#endif
+	  dim.numerical *= nostd::pow(magnitude, (EXPONENT_TYPE)bu.exponent);
 	  for (int i=0; i<NUM_BASEDIM; i++) {
 	    dim.physical[i] += dmap->second.dimensions[i] * bu.exponent;
 	  }
@@ -153,7 +158,12 @@ namespace puq {
 	  dim.symbols.push_back(unit->first);
 	  auto dmap = UnitSystem::Data->DimensionMap.find(unit->first);
 	  if (dmap!=UnitSystem::Data->DimensionMap.end()) {
-	    dim.numerical *= nostd::pow(dmap->second.magnitude, (EXPONENT_TYPE)bu.exponent);
+#ifdef MAGNITUDE_ERRORS
+	    MAGNITUDE_TYPE magnitude(dmap->second.magnitude, dmap->second.error);
+#else
+	    MAGNITUDE_TYPE magnitude(dmap->second.magnitude);
+#endif
+	    dim.numerical *= nostd::pow(magnitude, (EXPONENT_TYPE)bu.exponent);
 	    for (int i=0; i<NUM_BASEDIM; i++) {
 	      dim.physical[i] += dmap->second.dimensions[i] * bu.exponent;
 	    }

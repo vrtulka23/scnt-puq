@@ -1,31 +1,30 @@
 #include <regex>
 #include <algorithm>
 
-#include "../nostd.h"
+#include "../nostd/nostd.h"
 #include "solver.h"
 
 namespace puq {
 
   inline void _parse_number(std::string& expr, UnitValue& uv, const std::smatch& m) {
-#ifdef MAGNITUDE_ERRORS
-    // atom expression is a number with an uncertainty
-    //std::cout << m[0] << "|" << m[1] << "|" << m[2] << "|" << m[3] << "|" << m[4] << "|" << m[5] << std::endl;
-    //std::cout << m[6] << "|" << m[7] << "|" << m[8] << "|" << m[9] << "|" << m[10] << "|" << m[11] << std::endl;
-    //std::cout << m[12] << "|" << m[13] << "|" << m[14] << "|" << m[15] << "|" << m[16] << "|" << m[17] << std::endl;
     if (m[6]=="") {
+#ifdef MAGNITUDE_ERRORS
       uv.magnitude.value = nostd::to_number(expr);
+#else
+      uv.magnitude = nostd::to_number(expr);
+#endif
     } else {
       std::string decimals = m[3].str()=="" ? "." : m[3].str();
+#ifdef MAGNITUDE_ERRORS
       uv.magnitude.value = nostd::to_number(m[1].str()+decimals+m[8].str());
       if (m[10]=="")
 	uv.magnitude.error = nostd::to_number(m[7]) * std::pow(10, 1-(int)decimals.size()); 
       else
 	uv.magnitude.error = nostd::to_number(m[7]) * std::pow(10, 1-(int)decimals.size()+std::stoi(m[10]));
-    }
 #else
-    // atom expression is a simple number
-    uv.magnitude = nostd::to_number(expr);
+      uv.magnitude = nostd::to_number(m[1].str()+decimals+m[8].str());
 #endif
+    }
   }
 
   inline void _parse_exponent(BaseUnit& bu, std::string& expr, const std::smatch& m) {
@@ -106,11 +105,7 @@ UnitValue UnitAtom::from_string(std::string expr_orig) {
   std::regex rx_quantity("^(\\<[a-zA-Z_]+\\>)([+-]?[0-9]*)$");
   std::regex rx_sifactor("^(\\|[a-zA-Z_]+\\|)([+-]?[0-9]*)$");
 #endif
-#ifdef MAGNITUDE_ERRORS
   std::regex rx_number("^((\\+|-)?[0-9]+)(\\.(([0-9]+)?))?(\\(([0-9]+)\\))?((e|E)((\\+|-)?[0-9]+))?$");
-#else
-  std::regex rx_number("^((\\+|-)?[[:digit:]]+)(\\.(([[:digit:]]+)?))?((e|E)((\\+|-)?)[[:digit:]]+)?$");
-#endif
   if (std::regex_match(expr, m, rx_number)) {
     _parse_number(expr, uv, m);
   }
