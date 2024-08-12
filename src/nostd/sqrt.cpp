@@ -10,8 +10,9 @@ namespace puq {
 #ifdef MAGNITUDE_ARRAYS
     Array sqrt(const Array& a) {
       ArrayValue av;
+      av.resize(a.size());
       for (int i=0; i<a.size(); i++)
-	av.push_back(std::sqrt(a[i]));
+	av[i] = std::sqrt(a[i]);
       return Array(av);
     }
 #endif

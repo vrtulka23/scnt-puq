@@ -5,6 +5,7 @@
 #include <iomanip>
 #include <sstream>
 #include <stdexcept>
+//#include <omp.h>
 
 #include "../settings.h"
 #include "../magnitude.h"

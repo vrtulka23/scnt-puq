@@ -4,8 +4,18 @@
 
 namespace puq {
 
-#ifdef PREPROCESS_EXPRESSIONS
-  void Quantity::preprocess(std::string& s) {
+  void Quantity::preprocess(std::string& s, SystemDataType*& stt) const {
+#ifdef PREPROCESS_SYSTEM
+    for (auto system: SystemData::SystemMap) {
+      std::string symbol = system.first+SYMBOL_SYSTEM;
+      if (s.rfind(symbol, 0) == 0) {
+	s = s.substr(symbol.size(), s.size()-symbol.size());
+	stt = system.second;
+	break;
+      }
+    }
+#endif
+#ifdef PREPROCESS_SYMBOLS
     // replace non standard symbols
     std::unordered_map<std::string, std::string> dict {
       {"\u00D710", SYMBOL_EXPONENT},  // ×10 -> e
@@ -20,14 +30,14 @@ namespace puq {
 	pos = s.find(item.first, pos + item.first.size());
       }
     }
+#endif
   }
-#endif
   
-  Quantity::Quantity(std::string s, SystemDataType& st): stype(&st) {
+  Quantity::Quantity(std::string s, SystemDataType& st) {
+    SystemDataType* stt = &st;
+    preprocess(s, stt);
+    stype = stt;
     UnitSystem us(stype);
-#ifdef PREPROCESS_EXPRESSIONS
-    preprocess(s);
-#endif
     value = UnitValue(s);
   }
   
@@ -46,11 +56,11 @@ namespace puq {
     value = UnitValue(m, bu);
   }
   
-  Quantity::Quantity(const MAGNITUDE_TYPE &m, std::string s, SystemDataType& st): stype(&st) {
+  Quantity::Quantity(const MAGNITUDE_TYPE &m, std::string s, SystemDataType& st) {
+    SystemDataType* stt = &st;
+    preprocess(s, stt);
+    stype = stt;
     UnitSystem us(stype); 
-#ifdef PREPROCESS_EXPRESSIONS
-    preprocess(s);
-#endif
     value = UnitValue(m, s);
   }
   
@@ -66,12 +76,12 @@ namespace puq {
     value = UnitValue(m, bu);
   }
   
-  Quantity::Quantity(const MAGNITUDE_PRECISION& m, std::string s, SystemDataType& st): stype(&st) {
+  Quantity::Quantity(const MAGNITUDE_PRECISION& m, std::string s, SystemDataType& st) {
+    SystemDataType* stt = &st;
+    preprocess(s, stt);
+    stype = stt;
     UnitSystem us(stype);
     Magnitude mag(m);
-#ifdef PREPROCESS_EXPRESSIONS
-    preprocess(s);
-#endif
     value = UnitValue(mag, s);
   }
 
@@ -85,12 +95,12 @@ namespace puq {
     value = UnitValue(m, e, bu);
   }
  
-  Quantity::Quantity(const MAGNITUDE_PRECISION& m, const MAGNITUDE_PRECISION& e, std::string s, SystemDataType& st): stype(&st) {
+  Quantity::Quantity(const MAGNITUDE_PRECISION& m, const MAGNITUDE_PRECISION& e, std::string s, SystemDataType& st) {
+    SystemDataType* stt = &st;
+    preprocess(s, stt);
+    stype = stt;
     UnitSystem us(stype);
     Magnitude mag(m,e);
-#ifdef PREPROCESS_EXPRESSIONS
-    preprocess(s);
-#endif
     value = UnitValue(mag, s);
   }
   
@@ -160,75 +170,98 @@ namespace puq {
   Quantity Quantity::convert(const Quantity& q) const {
     return convert(q.value, *q.stype);
   }
-  
-  Quantity Quantity::convert(const std::string& s) const {
-    UnitSystem us(stype);
-    UnitValue uv = value.convert(s);
-    return Quantity(uv);
-  }
-  
-  Quantity Quantity::convert(const std::string& s, SystemDataType& st, const std::string& q) const {
-    if (stype == &st) {
-      return convert(s);
-    } else if (q == "") {
+
+  Quantity Quantity::convert(std::string s, const std::string& q) const {
+    SystemDataType* stt = NULL;
+    preprocess(s, stt);
+    if (stt!=NULL) {
+      return convert(s, *stt, q);
+    } else {
       UnitSystem us(stype);
-      Dimensions dim = value.baseunits.dimensions();
-      us.change(&st);         // change the unit system
-      UnitValue uv2(value.magnitude, dim);
-      return Quantity(uv2.convert(s));
-    } else { 
-      UnitSystem us(stype);
-      auto qs = puq::UnitSystem::Data->QuantityList.find(q);
-      if (qs==puq::UnitSystem::Data->QuantityList.end())
-	throw UnitSystemExcept("Quantity symbol not found: "+q);
-      UnitValue uv2 = value;
-      if (qs->second.sifactor != "")
-	uv2 *= UnitValue(SYMBOL_SIFACTOR_START+q+SYMBOL_SIFACTOR_END);
-      uv2 = uv2.convert(SYMBOL_QUANTITY_START+q+SYMBOL_QUANTITY_END);
-      us.change(&st);         // change the unit system
-      uv2 = UnitValue(uv2.magnitude, SYMBOL_QUANTITY_START+q+SYMBOL_QUANTITY_END);
-      qs = puq::UnitSystem::Data->QuantityList.find(q);
-      if (qs==puq::UnitSystem::Data->QuantityList.end())
-	throw UnitSystemExcept("Quantity symbol not found: "+q);
-      if (qs->second.sifactor != "") {
-	uv2 /= UnitValue(SYMBOL_SIFACTOR_START+q+SYMBOL_SIFACTOR_END);
-      }
-      return Quantity(uv2.convert(s));
+      UnitValue uv = value.convert(s);
+      return Quantity(uv);
     }
   }
-  
+
   Quantity Quantity::convert(const UnitValue& uv1) const {
     UnitSystem us(stype);
     UnitValue uv2 = value.convert(uv1);
     return Quantity(uv2);
   }
+
+  UnitValue Quantity::_convert_without_context(UnitSystem& us, SystemDataType* stt) const {
+    Dimensions dim = value.baseunits.dimensions();
+    us.change(stt);         // change the unit system
+    return UnitValue(value.magnitude, dim);
+  }
+
+  UnitValue Quantity::_convert_with_context(UnitSystem& us, SystemDataType* stt,
+					    QuantityListType::iterator& qs1, QuantityListType::iterator& qs2,
+					    const std::string& q) const {
+    UnitValue uv = value;
+    if (qs1->second.sifactor != "")
+      uv *= UnitValue(SYMBOL_SIFACTOR_START+q+SYMBOL_SIFACTOR_END);
+    uv = uv.convert(SYMBOL_QUANTITY_START+q+SYMBOL_QUANTITY_END);
+    us.change(stt);    
+    uv = UnitValue(uv.magnitude, SYMBOL_QUANTITY_START+q+SYMBOL_QUANTITY_END);
+    if (qs2->second.sifactor != "") {
+      uv /= UnitValue(SYMBOL_SIFACTOR_START+q+SYMBOL_SIFACTOR_END);
+    }
+    return uv;
+  }
+  
+  Quantity Quantity::convert(std::string s, SystemDataType& st, const std::string& q) const {
+    SystemDataType* stt = &st;
+    preprocess(s, stt);
+    UnitSystem us(stype);
+    if (stype == stt) {
+      return convert(s);
+    } else if (q == "") {
+      UnitValue uv = _convert_without_context(us, stt);
+      return Quantity(uv.convert(s), *stt);
+    } else {      
+      QuantityListType::iterator qs1 = puq::UnitSystem::Data->QuantityList.find(q);
+      if (qs1==puq::UnitSystem::Data->QuantityList.end())
+	throw UnitSystemExcept("Quantity symbol not found: "+q);
+      us.change(stt);  
+      QuantityListType::iterator qs2 = puq::UnitSystem::Data->QuantityList.find(q);
+      if (qs2==puq::UnitSystem::Data->QuantityList.end())
+	throw UnitSystemExcept("Quantity symbol not found: "+q);
+      us.change(stype);
+      if (qs1->second.sifactor == "" && qs2->second.sifactor == "") {
+	UnitValue uv = _convert_without_context(us, stt);
+	return Quantity(uv.convert(s), *stt);
+      } else {
+	UnitValue uv = _convert_with_context(us, stt, qs1, qs2, q);
+	return Quantity(uv.convert(s), *stt);
+      }
+    }
+  }
   
   Quantity Quantity::convert(const UnitValue& uv1, SystemDataType& st, const std::string& q) const {
-    if (stype == &st) {
+    SystemDataType* stt = &st;
+    UnitSystem us(stype);
+    if (stype == stt) {
       return convert(uv1);
     } else if (q == "") {
-      UnitSystem us(stype);
-      Dimensions dim = value.baseunits.dimensions();
-      us.change(&st);        // change the unit system
-      UnitValue uv2(value.magnitude, dim);
-      return Quantity(uv2.convert(uv1));
+      UnitValue uv2 = _convert_without_context(us, stt);
+      return Quantity(uv2.convert(uv1), *stt);
     } else {
-      UnitSystem us(stype);
-      auto qs = puq::UnitSystem::Data->QuantityList.find(q);
-      if (qs==puq::UnitSystem::Data->QuantityList.end())
+      QuantityListType::iterator qs1 = puq::UnitSystem::Data->QuantityList.find(q);
+      if (qs1==puq::UnitSystem::Data->QuantityList.end())
 	throw UnitSystemExcept("Quantity symbol not found: "+q);
-      UnitValue uv2 = value;
-      if (qs->second.sifactor != "")
-	uv2 *= UnitValue(SYMBOL_SIFACTOR_START+q+SYMBOL_SIFACTOR_END);
-      uv2 = uv2.convert(SYMBOL_QUANTITY_START+q+SYMBOL_QUANTITY_END);
-      us.change(&st);        // change the unit system
-      uv2 = UnitValue(value.magnitude, SYMBOL_SIFACTOR_START+q+SYMBOL_SIFACTOR_END);
-      qs = puq::UnitSystem::Data->QuantityList.find(q);
-      if (qs==puq::UnitSystem::Data->QuantityList.end())
+      us.change(stt);       
+      QuantityListType::iterator qs2 = puq::UnitSystem::Data->QuantityList.find(q);
+      if (qs2==puq::UnitSystem::Data->QuantityList.end())
 	throw UnitSystemExcept("Quantity symbol not found: "+q);
-      if (qs->second.sifactor != "")
-	uv2 /= UnitValue(SYMBOL_SIFACTOR_START+q+SYMBOL_SIFACTOR_END);
-      return Quantity(uv2.convert(uv1));
+      us.change(stype);
+      if (qs1->second.sifactor == "" && qs2->second.sifactor == "") {
+	UnitValue uv2 = _convert_without_context(us, stt);
+	return Quantity(uv2.convert(uv1), *stt);
+      } else {
+	UnitValue uv2 = _convert_with_context(us, stt, qs1, qs2, q);
+	return Quantity(uv2.convert(uv1), *stt);
+      }
     }
   }
   

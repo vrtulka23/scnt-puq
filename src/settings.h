@@ -34,6 +34,9 @@
 #ifdef EXPONENT_FRACTIONS
   #define SYMBOL_FRACTION        ":"
 #endif
+#ifdef PREPROCESS_SYSTEM
+  #define SYMBOL_SYSTEM          "_"
+#endif
 
 /*
  *  Type settings 

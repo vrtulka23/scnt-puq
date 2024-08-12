@@ -61,6 +61,31 @@ inline void change_system(puq::UnitSystem& us, std::deque<std::string>& convert)
     us.change(system);
 }
 
+inline void convert_units(std::deque<std::string>& convert) {
+  puq::SystemDataType* sys1 = get_system(convert);
+  std::string expr1 = get_expression(convert);
+  puq::SystemDataType* sys2 = get_system(convert);
+  std::string expr2 = get_expression(convert);
+  std::string quant = get_expression(convert);
+  puq::Quantity q;
+  if (sys1 == NULL)
+    q = puq::Quantity(expr1);
+  else
+    q = puq::Quantity(expr1, *sys1);
+  if (quant=="") {
+    if (sys2 == NULL)
+      q = q.convert(expr2);
+    else 
+      q = q.convert(expr2, *sys2);
+  } else {
+    if (sys2 == NULL)
+      q = q.convert(expr2, quant);
+    else
+      q = q.convert(expr2, *sys2, quant);
+  }
+  std::cout << q.to_string() << std::endl;
+}
+
 int main(int argc, char * argv[]) {
   InputParser input(argc, argv);
   if(input.cmdOptionExists("-h") || input.cmdEmpty()){
@@ -87,23 +112,7 @@ int main(int argc, char * argv[]) {
     }
     convert = input.getCmdOption("-c",5);
     if (!convert.empty()) {
-      puq::SystemDataType* sys1 = get_system(convert);
-      std::string expr1 = get_expression(convert);
-      puq::SystemDataType* sys2 = get_system(convert);
-      std::string expr2 = get_expression(convert);
-      std::string quant = get_expression(convert);
-      puq::Quantity q;
-      if (sys1 == NULL)
-	q = puq::Quantity(expr1);
-      else
-	q = puq::Quantity(expr1, *sys1);
-      if (sys2 == NULL)
-	q = q.convert(expr2);
-      else if (quant=="") {
-	q = q.convert(expr2, *sys2);
-      } else
-	q = q.convert(expr2, *sys2, quant);
-      std::cout << q.to_string() << std::endl;
+      convert_units(convert);
     }
     convert = input.getCmdOption("-l",2);
     if (!convert.empty()) {

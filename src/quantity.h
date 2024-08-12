@@ -8,7 +8,9 @@
 namespace puq {
   
   class Quantity {
-    void preprocess(std::string& s);
+    void preprocess(std::string& s, SystemDataType*& stt) const;
+    UnitValue _convert_without_context(UnitSystem& us, SystemDataType* stt) const;
+    UnitValue _convert_with_context(UnitSystem& us, SystemDataType* stt, QuantityListType::iterator& qs1, QuantityListType::iterator& qs2, const std::string& q) const;
   public:
     SystemDataType* stype;
     UnitValue value;
@@ -36,8 +38,8 @@ namespace puq {
     void operator*=(Quantity& q);
     void operator/=(Quantity& q);
     Quantity convert(const Quantity& q) const;
-    Quantity convert(const std::string& s) const;
-    Quantity convert(const std::string& s, SystemDataType& st, const std::string& q = "") const;
+    Quantity convert(std::string s, const std::string& q = "") const;
+    Quantity convert(std::string s, SystemDataType& st, const std::string& q = "") const;
     Quantity convert(const UnitValue& uv) const;
     Quantity convert(const UnitValue& uv, SystemDataType& st, const std::string& q = "") const;
   };

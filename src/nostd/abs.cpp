@@ -3,21 +3,21 @@
 namespace puq {
   namespace nostd {
   
-    extern MAGNITUDE_PRECISION abs(const MAGNITUDE_PRECISION& m) {
+    MAGNITUDE_PRECISION abs(const MAGNITUDE_PRECISION& m) {
       return std::abs(m);
     }
 
 #ifdef MAGNITUDE_ARRAYS
-    extern Array abs(const Array& a) {
-      ArrayValue av;
+    Array abs(const Array& a) {
+      ArrayValue av(a.size());
       for (int i=0; i<a.size(); i++)
-	av.push_back(std::abs(a[i]));
+	av[i] = std::abs(a[i]);
       return Array(av);
     }
 #endif
   
 #ifdef MAGNITUDE_ERRORS
-    extern Magnitude abs(const Magnitude& m) {
+    Magnitude abs(const Magnitude& m) {
       return Magnitude(abs(m.value));
     }
 #endif

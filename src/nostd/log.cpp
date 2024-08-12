@@ -9,9 +9,9 @@ namespace puq {
 
 #ifdef MAGNITUDE_ARRAYS
     Array log(const Array& a) {
-      ArrayValue av;
+      ArrayValue av(a.size());
       for (int i=0; i<a.size(); i++)
-	av.push_back(std::log(a[i]));
+	av[i] = std::log(a[i]);
       return Array(av);
     }
 #endif

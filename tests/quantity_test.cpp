@@ -26,8 +26,8 @@ TEST(Quantity, Initialization) {
 
   q = puq::Quantity(1.23,"2*km3");        // magnitude and a unit expression with a number
   EXPECT_EQ(q.to_string(), "2.46*km3");
-  
-#ifdef PREPROCESS_EXPRESSIONS
+
+#ifdef PREPROCESS_SYMBOLS
   q = puq::Quantity("6.23537×10−12 C4⋅m4⋅J−3");
   EXPECT_EQ(q.to_string(), "6.23537e-12*C4*m4*J-3");
 
@@ -52,7 +52,7 @@ TEST(Quantity, InitializationErrors) {
   q = puq::Quantity("3.40(10)*km3");      // unit expression
   EXPECT_EQ(q.to_string(), "3.40(10)*km3");
 
-#ifdef PREPROCESS_EXPRESSIONS
+#ifdef PREPROCESS_SYMBOLS
   q = puq::Quantity("6.23537(39)×10−12 C4⋅m4⋅J−3");
   EXPECT_EQ(q.to_string(), "6.23537(39)e-12*C4*m4*J-3");
 
@@ -72,7 +72,7 @@ TEST(Quantity, InitializationArrays) {
   q = puq::Quantity(puq::Array({2,3.4,5e6}),"km2");    // magnitudes and units
   EXPECT_EQ(q.to_string(), "{2, 3.4, ...}*km2");
 
-#ifdef PREPROCESS_EXPRESSIONS
+#ifdef PREPROCESS_SYMBOLS
   q = puq::Quantity("{2,3.4,5×106} C4⋅m4⋅J−3");
   EXPECT_EQ(q.to_string(), "{2, 3.4, ...}*C4*m4*J-3");
 #endif
@@ -161,6 +161,12 @@ TEST(Quantity, UnitSystemDirect) {
 
   q2 = puq::Quantity(2,"A");
   EXPECT_THROW(q1+q2,  puq::UnitSystemExcept);
+
+#ifdef PREPROCESS_SYSTEM
+  q1 = puq::Quantity(34,"ESU_statA");    // state the unit system in the unit expression
+  q2 = q1.convert("Fr/ms");
+  EXPECT_EQ(q2.to_string(), "0.034*Fr*ms-1");  
+#endif
   
 }
 
@@ -195,6 +201,12 @@ TEST(Quantity, UnitSystemConversion) {
   q2 = puq::Quantity("erg", puq::SystemData::ESU); 
   q3 = q1.convert(q2); 
   EXPECT_EQ(q3.to_string(), "3.4e+08*erg");
+
+#ifdef PREPROCESS_SYSTEM
+  q1 = puq::Quantity(34, "J");       
+  q2 = q1.convert("ESU_erg");                         // convert using prefix in the expression 
+  EXPECT_EQ(q2.to_string(), "3.4e+08*erg");
+#endif
   
 }
 
@@ -216,6 +228,18 @@ TEST(Quantity, UnitSystemQuantityContext) {
   q1 = puq::Quantity(1,"statT", puq::SystemData::ESU);  
   q2 = q1.convert("T", puq::SystemData::SI, "B");          // specify conversion context
   EXPECT_EQ(q2.to_string(), "2.99792e+06*T"); 
+
+  q1 = puq::Quantity(1,"erg", puq::SystemData::ESU);       // quantities that do not need a conversion context
+  q2 = q1.convert("J", puq::SystemData::SI, "E");          // with a context
+  EXPECT_EQ(q2.to_string(), "1e-07*J"); 
+  q2 = q1.convert("J", puq::SystemData::SI);               // without a context
+  EXPECT_EQ(q2.to_string(), "1e-07*J"); 
+  
+#ifdef PREPROCESS_SYSTEM
+  q1 = puq::Quantity("6.671282e-10*A");
+  q2 = q1.convert("ESU_statA", "I");                       // convert using prefix in the expression
+  EXPECT_EQ(q2.to_string(), "2*statA");
+#endif
   
 }
 
