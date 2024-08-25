@@ -119,6 +119,9 @@ namespace puq {
   /*
    * Subtract two magnitudes
    */
+  Magnitude operator-(const Magnitude& m1) {
+    return Magnitude(-m1.value, m1.error);
+  }
   Magnitude operator-(const Magnitude& m1, const Magnitude& m2) {
     return Magnitude(m1.value-m2.value, m1.error+m2.error);
   }

@@ -3,14 +3,29 @@
 #include "../src/nostd/nostd.h"
 #include "../src/magnitude.h"
 
+// test from https://www.quora.com/How-does-one-calculate-uncertainty-in-an-exponent
+// and checked using http://www.julianibus.de/ online calculator
+
+TEST(NoSTD, UnitValueMath) {
+
+  puq::UnitValue uv1, uv2, uv3;
+
+  puq::Magnitude m1(4.36, 0.16);
+  puq::Magnitude m2(2.35, 0.04);
+  uv1 = puq::UnitValue(m1, "m");
+  uv2 = puq::UnitValue(m2, "m");
+  
+  // exponential function
+  uv3 = puq::nostd::exp(uv2);
+  EXPECT_EQ(uv3.to_string(), "1.049(42)e+01*m");  // mag 10.485569724727576 err 0.41942280901707824
+  
+}
+
 #ifdef MAGNITUDE_ERRORS
 
-TEST(Magnitude, MathExp) {
+TEST(NoSTD, MagnitudeMath) {
 
   puq::Magnitude m1, m2, m3;
-
-  // test from https://www.quora.com/How-does-one-calculate-uncertainty-in-an-exponent
-  // and checked using http://www.julianibus.de/ online calculator
 
   m1 = puq::Magnitude(4.36, 0.16);
   m2 = puq::Magnitude(2.35, 0.04);
@@ -43,6 +58,14 @@ TEST(Magnitude, MathExp) {
   m3 = puq::nostd::cbrt(m1);
   EXPECT_EQ(m3.to_string(), "1.634(20)");      // mag 1.633661834060757 err 0.019983631105446875
 
+  // absolute value
+  m3 = puq::nostd::abs(-m1);
+  EXPECT_EQ(m3.to_string(), "4.36(16)");       
+
+  // maximum value
+  m3 = puq::nostd::max(m1, m2);
+  EXPECT_EQ(m3.to_string(), "4.36(16)");       
+  
 }
   
 #endif

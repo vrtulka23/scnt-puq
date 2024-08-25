@@ -112,6 +112,7 @@ namespace puq {
 	  {"S",        {Utype::LIN,      "Ohm-1",                     "Siemens",           true,  {}                        }},
 	  {"kat",      {Utype::LIN,      "mol/s",                     "katal",             true,  {}                        }},
 	  {"dpt",      {Utype::LIN,      "1/m",                       "dioptre",           true,  {}                        }},
+	  {"Mo",       {Utype::LIN,      "N*m",                       "seismic moment",    true,  {}                        }},
 	  							      
 	  // percentages	        			      
 	  {"%",        {Utype::LIN,      "1e-2",                      "percent",           false, {}                        }},
@@ -134,6 +135,7 @@ namespace puq {
 	  {"BSPL",     {Utype::LOG,      "Pa",                        "bel-SPL (Pa)",      true,  {"d"}                     }},
 	  {"BSIL",     {Utype::LOG,      "W/m2",                      "bel-SIL (W/m2)",    true,  {"d"}                     }}, 
 	  {"BSWL",     {Utype::LOG,      "W",                         "bel-SWL (W)",       true,  {"d"}                     }},
+	  {"Mw",       {Utype::LOG,      "Mo",                        "mom. magnitude",    false, {}                        }},
 #endif
 	    
 	}),

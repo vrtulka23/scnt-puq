@@ -32,6 +32,12 @@ inline MAGNITUDE_TYPE _convert_Ratio_Np(const MAGNITUDE_TYPE& value, const MAGNI
 inline MAGNITUDE_TYPE _convert_Np_Ratio(const MAGNITUDE_TYPE& value, const MAGNITUDE_TYPE& exp) {
   return nostd::exp(value / exp);
 }
+inline MAGNITUDE_TYPE _convert_Mw_Mo(const MAGNITUDE_TYPE& value) {
+  return nostd::pow((MAGNITUDE_TYPE)10, 1.5*(value + (MAGNITUDE_TYPE)10.7));
+}
+inline MAGNITUDE_TYPE _convert_Mo_Mw(const MAGNITUDE_TYPE& value) {
+  return 2./3.*nostd::log10(value) - (MAGNITUDE_TYPE)10.7;
+}
 MAGNITUDE_TYPE Converter::_convert_logarithmic(MAGNITUDE_TYPE m) {
   const std::string s1 = baseunits1[0].unit;
   const std::string s2 = baseunits2[0].unit;
@@ -45,6 +51,10 @@ MAGNITUDE_TYPE Converter::_convert_logarithmic(MAGNITUDE_TYPE m) {
     if (s1=="B")        return _convert_B_Np(m * n1) / n2;
     else if (s1=="AR")  return _convert_Ratio_Np(m * n1, 1) / n2;
     else if (s1=="PR")  return _convert_Ratio_Np(m * n1, 0.5) / n2;
+  } else if (s1=="Mw" && (s2=="Mo" || s2=="dyn")) {  // moment magnitude -> seismic moment
+    return _convert_Mw_Mo(m * n1) / (n2 * 1e4); // 1e4 to MGS
+  } else if ((s1=="Mo" || s1=="dyn") && s2=="Mw") {  // seismic moment -> moment magnitude
+    return _convert_Mo_Mw(m * n1 * 1e4) / n2;   // 1e4 to MGS
   } else {
     struct pair {
       std::string first;

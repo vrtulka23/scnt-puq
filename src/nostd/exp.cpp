@@ -22,6 +22,10 @@ namespace puq {
       return Magnitude(exp(e.value), exp(e.value)*e.error);
     }
 #endif
+
+    UnitValue exp(const UnitValue& uv) {
+      return UnitValue(exp(uv.magnitude), uv.baseunits);
+    }
     
   }
 }

@@ -18,9 +18,10 @@ namespace puq {
   
 #ifdef MAGNITUDE_ERRORS
     Magnitude abs(const Magnitude& m) {
-      return Magnitude(abs(m.value));
+      // abs(y ± Dy) = abs(y) ± Dy
+      return Magnitude(abs(m.value), m.error);
     }
 #endif
-
+    
   }
 }

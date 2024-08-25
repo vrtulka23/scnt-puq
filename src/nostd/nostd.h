@@ -56,6 +56,7 @@ namespace puq {
 #ifdef MAGNITUDE_ERRORS
     extern Magnitude exp(const Magnitude& e);
 #endif
+    extern UnitValue exp(const UnitValue& uv);
   
     /*
      * log

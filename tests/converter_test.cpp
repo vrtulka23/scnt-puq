@@ -110,6 +110,14 @@ TEST(Converter, LogarithmicConv) {
 
   // Conversions of a form: dBx/y -> x/y
   EXPECT_EQ(puq::nostd::to_string(puq::Converter("dBmW/Hz", "W/Hz").convert(10)), "0.01");
+
+  // Conversions of moment magnitude to seismic moment
+  EXPECT_EQ(puq::nostd::to_string(puq::Converter("Mw", "Mo").convert(0)), "1.12202e+09");
+  EXPECT_EQ(puq::nostd::to_string(puq::Converter("Mw", "Mo").convert(9)), "3.54813e+22");
+  EXPECT_EQ(puq::nostd::to_string(puq::Converter("Mo", "Mw").convert(1.12202e+12)), "2");
+  EXPECT_EQ(puq::nostd::to_string(puq::Converter("Mo", "Mw").convert(3.54813e+19)), "7");
+  EXPECT_EQ(puq::nostd::to_string(puq::Converter("Mw", "dyn*cm").convert(0)), "1.12202e+16");
+  EXPECT_EQ(puq::nostd::to_string(puq::Converter("dyn*cm", "Mw").convert(1.12202e+19)), "2");
   
 }
 

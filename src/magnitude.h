@@ -28,10 +28,11 @@ public:
   static Array rel_to_abs(const Array& v, const Array& r);
 #endif
   std::string to_string(int precision=std::cout.precision()) const;
-  friend Magnitude operator+(const Magnitude& m1, const Magnitude& m);
-  friend Magnitude operator-(const Magnitude& m1, const Magnitude& m);
-  friend Magnitude operator*(const Magnitude& m1, const Magnitude& m);
-  friend Magnitude operator/(const Magnitude& m1, const Magnitude& m);
+  friend Magnitude operator-(const Magnitude& m1);
+  friend Magnitude operator+(const Magnitude& m1, const Magnitude& m2);
+  friend Magnitude operator-(const Magnitude& m1, const Magnitude& m2);
+  friend Magnitude operator*(const Magnitude& m1, const Magnitude& m2);
+  friend Magnitude operator/(const Magnitude& m1, const Magnitude& m2);
   void operator+=(const Magnitude& m);
   void operator-=(const Magnitude& m);
   void operator*=(const Magnitude& m);

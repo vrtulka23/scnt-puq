@@ -82,6 +82,9 @@ TEST(Magnitude, ArithmeticsSubtract) {
   puq::Magnitude m1, m2, m3;
 
   m1 = puq::Magnitude(4, 0.01);
+  EXPECT_EQ((-m1).to_string(), "-4.000(10)");
+  
+  m1 = puq::Magnitude(4, 0.01);
   m2 = puq::Magnitude(1, 0.005);
   m3 = m1 - m2;
   EXPECT_EQ(m3.to_string(), "3.000(15)");

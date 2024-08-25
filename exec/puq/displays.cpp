@@ -183,7 +183,7 @@ void display_info(std::string expr) {
   if (bus.size() > 0) {
     table_header("Components:",
 		 {"Prefix","Symbol","Exponent","Name","Definition","Dimensions MGS","Allowed prefixes"},
-		 {8,8,10,19,30,22,22});
+		 {8,8,10,30,30,22,22});
     for (auto unit: puq::UnitSystem::Data->UnitList) {
       for (auto bu: bus) {
 	if (bu.unit!=unit.first)
@@ -192,10 +192,25 @@ void display_info(std::string expr) {
 	std::cout << std::setfill(' ') << std::setw(8) << std::left << bu.prefix;
 	std::cout << std::setfill(' ') << std::setw(8) << std::left << bu.unit;
 	std::cout << std::setfill(' ') << std::setw(10) << std::left << ((puq::nostd::to_string(bu.exponent)=="") ? "1" : puq::nostd::to_string(bu.exponent));
-	std::cout << std::setfill(' ') << std::setw(19) << std::left << unit.second.name;
+	std::cout << std::setfill(' ') << std::setw(30) << std::left << unit.second.name;
 	std::cout << std::setfill(' ') << std::setw(30) << std::left << unit.second.definition;
 	std::cout << std::setfill(' ') << std::setw(22) << std::left << bu_unit.dimensions().to_string();
 	std::cout << std::setfill(' ') << std::setw(22) << std::left << puq::nostd::to_string(unit.second.use_prefixes, unit.second.allowed_prefixes);
+	std::cout << std::scientific << std::endl;
+      }
+    }
+    for (auto quant: puq::UnitSystem::Data->QuantityList) {
+      for (auto bu: bus) {
+	if (bu.unit!=SYMBOL_QUANTITY_START+quant.first+SYMBOL_QUANTITY_END)
+	  continue;
+	puq::BaseUnits bu_unit({bu});
+	std::cout << std::setfill(' ') << std::setw(8) << std::left << bu.prefix;
+	std::cout << std::setfill(' ') << std::setw(8) << std::left << bu.unit;
+	std::cout << std::setfill(' ') << std::setw(10) << std::left << ((puq::nostd::to_string(bu.exponent)=="") ? "1" : puq::nostd::to_string(bu.exponent));
+	std::cout << std::setfill(' ') << std::setw(30) << std::left << puq::QuantityNames.at(quant.first);
+	std::cout << std::setfill(' ') << std::setw(30) << std::left << quant.second.definition;
+	std::cout << std::setfill(' ') << std::setw(22) << std::left << bu_unit.dimensions().to_string();
+	std::cout << std::setfill(' ') << std::setw(22) << std::left << "";
 	std::cout << std::scientific << std::endl;
       }
     }
