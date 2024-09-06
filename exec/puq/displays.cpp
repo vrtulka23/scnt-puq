@@ -139,7 +139,7 @@ void display_info(std::string expr) {
   puq::Dimensions dim_m = bus.dimensions();
   dim_m.numerical *= uv.magnitude;
   std::cout << std::endl << "Expression:  " << expr << std::endl << std::endl;
-  std::cout << "Unit system: " << puq::UnitSystem::Data->SystemName << std::endl;
+  std::cout << "Unit system: " << puq::UnitSystem::Data->SystemAbbrev << " (" << puq::UnitSystem::Data->SystemName << ")" << std::endl;
   std::cout << "Magnitude:   " << puq::nostd::to_string(uv.magnitude) << std::endl;
   std::cout << "Base units:  " << puq::nostd::to_string(uv.baseunits) << std::endl;
   std::stringstream ss; bool display = false;

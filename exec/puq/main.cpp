@@ -92,8 +92,8 @@ int main(int argc, char * argv[]) {
     std::cout << std::endl;
     std::cout << "Physical Units and Quantities (PUQ)" << std::endl << std::endl;
     std::cout << "Example of use:" << std::endl;
-    std::cout << "puq -h                          dislay help" << std::endl;
-    std::cout << "puq -v                          dislay current version" << std::endl;
+    std::cout << "puq -h                          display help" << std::endl;
+    std::cout << "puq -v                          display code version" << std::endl;
     std::cout << "puq -i [s] <e>                  get information about an expression <e> in a unit system [s]" << std::endl;
     std::cout << "puq -c [s1] <e1> [s2] <e2> [q]  convert expression <e1> in a unit system [s1] into expression <e2> in a system [s2] as a quantity [q]" << std::endl;
     std::cout << "puq -l [s] <l>                  display list <l>=prefix/base/deriv/log/temp/const/quant in a unit system [s], or all available unit systems <l>=sys" << std::endl;

@@ -7,6 +7,9 @@ project(PhysicalUnitsAndQuantities VERSION 1.0 LANGUAGES CXX)
 set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -Wno-deprecated -O3")
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
+
+find_package(pybind11 CONFIG REQUIRED)
+
 # compile example solvers
 ##########################
 
@@ -14,30 +17,44 @@ message(STATUS "Version: ${CODE_VERSION}")
 
 #find_package(OpenMP COMPONENTS CXX REQUIRED)
 
+# find all source files
 file(GLOB source_files "src/*.cpp" "src/**/*.cpp")
-add_library(puqcpp.eaf STATIC ${source_files})
-#target_link_libraries(puqcpp.eaf PUBLIC OpenMP::OpenMP_CXX)
 
+# create library with all modules
+add_library(puqcpp.aef STATIC ${source_files})
+
+# create libraries with selected modules
+file(GLOB configs LIST_DIRECTORIES true "exec/puq/config-*.h")
+foreach(config ${configs})
+  get_filename_component(config_name ${config} NAME)
+  string(REGEX MATCH "^config-([a-z]+).h" matches ${config_name})
+  set(lib_name "puqcpp.${CMAKE_MATCH_1}")
+  add_library(${lib_name} STATIC ${source_files})
+  target_compile_definitions(${lib_name} PRIVATE CONFIG_FILE="../exec/puq/${config_name}")
+endforeach()
+
+#target_link_libraries(puqcpp.aef PUBLIC OpenMP::OpenMP_CXX)
+
+# create all executables
 file(GLOB exec LIST_DIRECTORIES true "exec/*")
-foreach(dirpath ${exec})
-		
-get_filename_component(dirname ${dirpath} NAME)
-message("Compiling example: ${dirname}")
-file(GLOB example_files "exec/${dirname}/*.cpp" "exec/${dirname}/**/*.cpp")
-#  if(EXISTS "exec/${dirname}/config.h")
-#    add_executable(${dirname} ${example_files} ${source_files} )
-#    target_compile_definitions(${dirname} PRIVATE CODE_VERSION="${CODE_VERSION}")
-#    target_compile_definitions(${dirname} PRIVATE CONFIG_FILE="../exec/${dirname}/config.h")
-#  else()
-add_executable(${dirname} ${example_files} )
-#    if(OpenMP_CXX_FOUND)
-#	target_link_libraries(${dirname} PUBLIC puqcpp.eaf OpenMP::OpenMP_CXX)
-#    else()
-        target_link_libraries(${dirname} puqcpp.eaf)
-#    endif()	
-target_compile_definitions(${dirname} PRIVATE CODE_VERSION="${CODE_VERSION}")
-#endif()
-
+foreach(dirpath ${exec})		
+  get_filename_component(dirname ${dirpath} NAME)
+  message("Compiling example: ${dirname}")
+  file(GLOB example_files "exec/${dirname}/*.cpp" "exec/${dirname}/**/*.cpp")
+  #  if(EXISTS "exec/${dirname}/config.h")
+  #    add_executable(${dirname} ${example_files} ${source_files} )
+  #    target_compile_definitions(${dirname} PRIVATE CODE_VERSION="${CODE_VERSION}")
+  #    target_compile_definitions(${dirname} PRIVATE CONFIG_FILE="../exec/${dirname}/config.h")
+  #  else()
+  add_executable(${dirname} ${example_files} )
+  #    if(OpenMP_CXX_FOUND)
+  #	target_link_libraries(${dirname} PUBLIC puqcpp.aef OpenMP::OpenMP_CXX)
+  #    else()
+	  target_link_libraries(${dirname} puqcpp.aef)
+	  #target_link_libraries(${dirname} PUBLIC puqcpp.aef pybind11::module)
+  #    endif()	
+  target_compile_definitions(${dirname} PRIVATE CODE_VERSION="${CODE_VERSION}")
+  #endif()
 endforeach()
 
 #set(INSTALL_DIR ${CMAKE_CURRENT_BINARY_DIR})
@@ -45,7 +62,7 @@ endforeach()
 #file(MAKE_DIRECTORY ${INSTALL_DIR}/lib)
 #file(MAKE_DIRECTORY ${INSTALL_DIR}/bin)
 #file(COPY src/quantity.h DESTINATION ${INSTALL_DIR}/include)
-#install(TARGETS libpuqcpp.eaf.a DESTINATION ${INSTALL_DIR}/lib)
+#install(TARGETS libpuqcpp.aef.a DESTINATION ${INSTALL_DIR}/lib)
 install(TARGETS puq DESTINATION bin)
 
 # add Google tests
@@ -61,7 +78,7 @@ file(GLOB test_files "tests/*.cpp")
 
 enable_testing()
 add_executable(TestSolver ${test_files})
-target_link_libraries(TestSolver puqcpp.eaf)
+target_link_libraries(TestSolver puqcpp.aef)
 target_link_libraries(TestSolver GTest::gtest_main)
 
 include(GoogleTest)
@@ -73,4 +90,4 @@ gtest_discover_tests(TestSolver)
 find_package(benchmark REQUIRED)
 file(GLOB test_files "benchmark/*.cpp")
 add_executable(Benchmark ${test_files})
-target_link_libraries(Benchmark PRIVATE benchmark::benchmark puqcpp.eaf)
+target_link_libraries(Benchmark PRIVATE benchmark::benchmark puqcpp.aef)
