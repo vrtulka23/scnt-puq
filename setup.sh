@@ -46,6 +46,29 @@ function grep_code {
     fi
 }
 
+function create_assets {
+    if [[ ! -d $DIR_ASSETS ]]; then
+	mkdir $DIR_ASSETS
+    fi
+    DIR_ROOT=$(pwd)
+    # create a source code archive file with all submodules
+    ARCHIVE_NAME=puq-$CODE_VERSION
+    ARCHIVE_FILE=$DIR_ROOT/$DIR_ASSETS/$ARCHIVE_NAME.tar.gz
+    git archive -o $ARCHIVE_FILE --prefix=$ARCHIVE_NAME/ HEAD
+    tar -xzf $ARCHIVE_FILE -C $DIR_ROOT/$DIR_ASSETS
+    for SUBMODULE in $(git config --file .gitmodules --get-regexp path | awk '{ print $2 }')
+    do
+	cd $SUBMODULE
+	git archive -o $ARCHIVE_FILE --prefix=$ARCHIVE_NAME/$SUBMODULE/ HEAD
+	tar -xzf $ARCHIVE_FILE -C $DIR_ROOT/$DIR_ASSETS
+	cd $DIR_ROOT
+    done
+    cd $DIR_ROOT/$DIR_ASSETS
+    tar -czf $ARCHIVE_FILE $ARCHIVE_NAME
+    rm -r $ARCHIVE_NAME
+    cd $DIR_ROOT
+}
+
 function show_help {
     echo "Physical Units and Quantities"
     echo ""
@@ -56,6 +79,7 @@ function show_help {
     echo " -r|--run <example>  run an example code"
     echo " -t|--test [<test>]  run all/specific tests"
     echo " -g|--grep <expr>    find expression in a code"
+    echo " -a|--assets         create assets"
     echo " -h|--help           show this help"
     echo ""
     echo "Examples:"
@@ -82,6 +106,8 @@ while [[ $# -gt 0 ]]; do
 	    test_code $2; shift; shift;;
 	-g|--grep)
 	    grep_code $2; shift; shift;;
+	-a|--assets)
+	    create_assets; shift;;
 	-h|--help)
 	    show_help; shift;;
 	-*|--*)
