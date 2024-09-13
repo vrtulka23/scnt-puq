@@ -8,8 +8,6 @@ set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -Wno-deprecated -O3")
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-find_package(pybind11 CONFIG REQUIRED)
-
 # compile example solvers
 ##########################
 
@@ -51,7 +49,6 @@ foreach(dirpath ${exec})
   #	target_link_libraries(${dirname} PUBLIC puqcpp.aef OpenMP::OpenMP_CXX)
   #    else()
 	  target_link_libraries(${dirname} puqcpp.aef)
-	  #target_link_libraries(${dirname} PUBLIC puqcpp.aef pybind11::module)
   #    endif()	
   target_compile_definitions(${dirname} PRIVATE CODE_VERSION="${CODE_VERSION}")
   #endif()
