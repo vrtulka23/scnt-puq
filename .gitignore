@@ -31,5 +31,6 @@
 *.out
 *.app
 
+assets/*
 build/*
 dimension_map_*
