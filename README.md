@@ -23,3 +23,14 @@ puq -c "12*J" "erg"    # conversion of units
 puq -c US "yd" SI "au" # conversion between unit systems
 ...
 ```
+
+## Homebrew installation on Mac OS
+
+On Apple systems it is possible to install PUQ as a Homebrew package.
+So far, PUQ is not included in the homebrew/core repository.
+It will be moved there in the future, also with other scinumtools projects.
+
+``` bash
+brew tap vrtulka23/scinumtools
+brew install vrtulka23/scinumtools/puq
+```
