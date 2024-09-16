@@ -38,6 +38,7 @@ namespace puq {namespace SystemData {
     {"lb",       {Utype::LIN,     "453.59237*g",            "pund",              false, {}             }},
     {"cwt",      {Utype::LIN,     "50.80234544e3*g",        "long hundredweight",false, {}             }},
     {"ton",      {Utype::LIN,     "1.0160469088e6*g",       "long ton",          false, {}             }},  
+    {"slug",     {Utype::LIN,     "14.59390294e3*g",        "slug",              false, {}             }},
     
     // units of time	         
     {"min",      {Utype::LIN,     "60*s",                   "minute",            false, {}             }},
@@ -98,7 +99,6 @@ namespace puq {namespace SystemData {
 	// units of mass
 	{"st",       {Utype::LIN,     "6.35029318e3*g",         "stone",             false, {}             }},
 	{"qr",       {Utype::LIN,     "12.70058636e3*g",        "quarter",           false, {}             }},
-	{"slug",     {Utype::LIN,     "14.59390294e3*g",        "slug",              false, {}             }},
     
       }),
     _EUS_QUANTITIES + QuantityListType({

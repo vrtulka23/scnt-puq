@@ -6,6 +6,8 @@
 // test from https://www.quora.com/How-does-one-calculate-uncertainty-in-an-exponent
 // and checked using http://www.julianibus.de/ online calculator
 
+#ifdef MAGNITUDE_ERRORS
+
 TEST(NoSTD, UnitValueMath) {
 
   puq::UnitValue uv1, uv2, uv3;
@@ -20,8 +22,6 @@ TEST(NoSTD, UnitValueMath) {
   EXPECT_EQ(uv3.to_string(), "1.049(42)e+01*m");  // mag 10.485569724727576 err 0.41942280901707824
   
 }
-
-#ifdef MAGNITUDE_ERRORS
 
 TEST(NoSTD, MagnitudeMath) {
 

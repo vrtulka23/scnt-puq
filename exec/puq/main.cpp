@@ -61,6 +61,12 @@ inline void change_system(puq::UnitSystem& us, std::deque<std::string>& convert)
     us.change(system);
 }
 
+inline void solve_expression(std::deque<std::string>& convert) {
+  puq::Calculator calc;
+  puq::CalculatorAtom atom = calc.solve(convert.front());
+  std::cout << atom.value.to_string() << std::endl;
+}
+
 inline void convert_units(std::deque<std::string>& convert) {
   puq::SystemDataType* sys1 = get_system(convert);
   std::string expr1 = get_expression(convert);
@@ -95,6 +101,7 @@ int main(int argc, char * argv[]) {
     std::cout << "puq -h                          display help" << std::endl;
     std::cout << "puq -v                          display code version" << std::endl;
     std::cout << "puq -i [s] <e>                  get information about an expression <e> in a unit system [s]" << std::endl;
+    std::cout << "puq -s <e>                      solve an arithmetic unit expression <e>" << std::endl;
     std::cout << "puq -c [s1] <e1> [s2] <e2> [q]  convert expression <e1> in a unit system [s1] into expression <e2> in a system [s2] as a quantity [q]" << std::endl;
     std::cout << "puq -l [s] <l>                  display list <l>=prefix/base/deriv/log/temp/const/quant in a unit system [s], or all available unit systems <l>=sys" << std::endl;
     std::cout << std::endl;
@@ -113,6 +120,10 @@ int main(int argc, char * argv[]) {
     convert = input.getCmdOption("-c",5);
     if (!convert.empty()) {
       convert_units(convert);
+    }
+    convert = input.getCmdOption("-s",1);
+    if (!convert.empty()) {
+      solve_expression(convert);
     }
     convert = input.getCmdOption("-l",2);
     if (!convert.empty()) {

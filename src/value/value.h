@@ -93,11 +93,10 @@ namespace puq {
     friend BaseUnits operator-(const BaseUnits& bu1, const BaseUnits& bu2);
     void operator+=(const BaseUnits& bu);
     void operator-=(const BaseUnits& bu);
-  void operator*=(const EXPONENT_TYPE& e);
+    void operator*=(const EXPONENT_TYPE& e);
     BaseUnitsList::const_iterator begin() const;
     BaseUnitsList::const_iterator end() const;
     std::size_t size() const;
-    void rebase();
     Dimensions dimensions() const;
   };
   
@@ -124,6 +123,8 @@ namespace puq {
     friend UnitValue operator-(const UnitValue& v1, const UnitValue& v2);
     friend UnitValue operator*(const UnitValue& v1, const UnitValue& v2);
     friend UnitValue operator/(const UnitValue& v1, const UnitValue& v2);
+    friend UnitValue operator+(const UnitValue& v);
+    friend UnitValue operator-(const UnitValue& v);
     void operator+=(const UnitValue& v);
     void operator-=(const UnitValue& v);
     void operator*=(const UnitValue& v);
@@ -132,6 +133,7 @@ namespace puq {
     UnitValue convert(const std::string& s) const;
     UnitValue convert(const BaseUnits& bu) const;
     UnitValue convert(const UnitValue& v) const;
+    UnitValue rebase_prefixes();
   };
   
 }

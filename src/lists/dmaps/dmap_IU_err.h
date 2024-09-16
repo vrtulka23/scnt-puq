@@ -1,8 +1,8 @@
 /*
  * Do not modify this file!
  * This file can be updated using 'dmap' executable.
- * Last update: Wed Aug 14 11:29:24 2024
- * Code version: v1.0.1
+ * Last update: Mon Sep 16 19:06:53 2024
+ * Code version: v1.0.2
  * Symbol legend:
  * ..   units
  * [..] constants
@@ -44,8 +44,8 @@
 {"ac",          {4046.8564224,            0,                       { 2, 0, 0, 0, 0, 0, 0, 0} } },     // acre
 {"cwt",         {50802.34544,             0,                       { 0, 1, 0, 0, 0, 0, 0, 0} } },     // long hundredweight
 {"lb",          {453.59237,               0,                       { 0, 1, 0, 0, 0, 0, 0, 0} } },     // pund
-{"slug",        {14593.90294,             0,                       { 0, 1, 0, 0, 0, 0, 0, 0} } },     // slug
 {"oz",          {28.349523125,            0,                       { 0, 1, 0, 0, 0, 0, 0, 0} } },     // ounce
+{"slug",        {14593.90294,             0,                       { 0, 1, 0, 0, 0, 0, 0, 0} } },     // slug
 {"twip",        {1.76388888e-05,          0,                       { 1, 0, 0, 0, 0, 0, 0, 0} } },     // twip
 {"cb",          {219.456,                 0,                       { 1, 0, 0, 0, 0, 0, 0, 0} } },     // cable
 {"st",          {6350.29318,              0,                       { 0, 1, 0, 0, 0, 0, 0, 0} } },     // stone

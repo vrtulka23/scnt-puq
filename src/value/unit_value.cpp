@@ -66,6 +66,10 @@ namespace puq {
     return UnitValue(v1.magnitude + conv.convert(v2.magnitude), v1.baseunits);
   }
 
+  UnitValue operator+(const UnitValue& v) {
+    return v;
+  }
+  
   void UnitValue::operator+=(const UnitValue& v) {
     Converter conv(v.baseunits, baseunits);
   #ifdef UNITS_LOGARITHMIC
@@ -99,6 +103,10 @@ namespace puq {
     return UnitValue(v1.magnitude - conv.convert(v2.magnitude), v1.baseunits);
   }
 
+  UnitValue operator-(const UnitValue& v) {
+    return UnitValue(-v.magnitude, v.baseunits);
+  }
+  
   void UnitValue::operator-=(const UnitValue& v) {
     Converter conv(v.baseunits, baseunits);
   #ifdef UNITS_LOGARITHMIC
@@ -158,4 +166,27 @@ namespace puq {
     return UnitValue(conv.convert(magnitude, 1), bu);
   }
 
+  UnitValue UnitValue::rebase_prefixes() {
+    MAGNITUDE_TYPE mag = magnitude;
+    std::map<std::string, BaseUnit> bumap;
+    for (auto bu: baseunits) {
+      if (bumap.find(bu.unit) == bumap.end()) {
+	bumap.insert({bu.unit, {bu.prefix, bu.unit, bu.exponent}});
+      } else {
+	auto prefix1 = UnitPrefixList.find(bu.prefix);
+	auto prefix2 = UnitPrefixList.find(bumap[bu.unit].prefix);
+	if (prefix1!=UnitPrefixList.end())
+	  mag *= nostd::pow(prefix1->second.magnitude, bu.exponent);
+	if (prefix2!=UnitPrefixList.end())
+	  mag /= nostd::pow(prefix2->second.magnitude, bu.exponent);
+	bumap[bu.unit].exponent += bu.exponent;
+      }
+    }
+    BaseUnits bus;
+    for (auto bum: bumap) {
+      bus.append(bum.second);
+    }
+    return UnitValue(mag, bus);
+  }
+  
 }

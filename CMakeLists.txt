@@ -15,6 +15,8 @@ message(STATUS "Version: ${CODE_VERSION}")
 
 #find_package(OpenMP COMPONENTS CXX REQUIRED)
 
+#find_package(ScntExs COMPONENTS CXX REQUIRED)
+
 # find all source files
 file(GLOB source_files "src/*.cpp" "src/**/*.cpp")
 

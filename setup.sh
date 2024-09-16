@@ -11,14 +11,13 @@ function clean_code {
     fi
 }
 
-function build_code {
-    
+function build_code {    
     if [[ ! -d $DIR_BUILD ]]; then
 	    mkdir $DIR_BUILD
     fi
-    cmake -DCODE_VERSION="${CODE_VERSION}" -B $DIR_BUILD 
+    cmake -DCODE_VERSION="${CODE_VERSION}" -B $DIR_BUILD
     cd $DIR_BUILD
-    make
+    make -j 10
     cd $DIR_ROOT
 }
 

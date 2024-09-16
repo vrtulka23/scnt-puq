@@ -18,6 +18,7 @@ namespace puq {
 	  {"amu",      {Utype::LIN,      "u",                         "atomic mass unit",  false, {}                        }},
 	  {"Da",       {Utype::LIN,      "u",                         "Dalton",            false, {}                        }},
 	  {"t",        {Utype::LIN,      "1e3*kg",                    "tonne",             true,  {"k","m","G"}             }},
+	  {"ct",       {Utype::LIN,      "200*mg",                    "carat",             false, {}                        }},
 	  							      
 	  // units of time	        			      
 	  {"min",      {Utype::LIN,      "60*s",                      "minute",            false, {}                        }},
@@ -42,7 +43,8 @@ namespace puq {
 	  							      
 	  // units of surface	        			      
 	  {"ar",       {Utype::LIN,      "100*m2",                    "are",               true,  {"c","d","da","h"}        }},
-	  							      
+          {"b",        {Utype::LIN,      "1e-28*m2",                  "barn",              true,  {"M","k","m","u","n","p","f","a","z","y"} }},
+	    
 	  // units of volume	        			      
 	  {"l",        {Utype::LIN,      "dm3",                       "liter",             true,  {}                        }},
 	  {"L",        {Utype::LIN,      "l",                         "liter",             true,  {}                        }},

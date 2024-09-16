@@ -32,5 +32,5 @@ It will be moved there in the future, also with other scinumtools projects.
 
 ``` bash
 brew tap vrtulka23/scinumtools
-brew install vrtulka23/scinumtools/puq
+brew install vrtulka23/scinumtools/scnt-puq
 ```

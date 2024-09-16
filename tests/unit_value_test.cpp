@@ -26,6 +26,52 @@ TEST(UnitValue, Initialization) {
  
 }
 
+TEST(UnitValue, RebasePrefixes) {
+
+  puq::UnitValue value;
+
+  value = puq::UnitValue("m*m");     // no prefixes
+  value = value.rebase_prefixes();
+  EXPECT_EQ(value.to_string(), "m2");
+
+  value = puq::UnitValue("cm*cm");   // same prefixes
+  value = value.rebase_prefixes();
+  EXPECT_EQ(value.to_string(), "cm2");
+
+  value = puq::UnitValue("cm*m");    // different prefixes
+  value = value.rebase_prefixes();
+  EXPECT_EQ(value.to_string(), "100*cm2");
+  
+  value = puq::UnitValue("m*cm");
+  value = value.rebase_prefixes();
+  EXPECT_EQ(value.to_string(), "0.01*m2");
+  
+  value = puq::UnitValue("mm*km");    
+  value = value.rebase_prefixes();
+  EXPECT_EQ(value.to_string(), "1e+06*mm2");
+  
+  value = puq::UnitValue("km*mm");    
+  value = value.rebase_prefixes();
+  EXPECT_EQ(value.to_string(), "1e-06*km2");
+
+  value = puq::UnitValue("cm2*m3");    // exponents
+  value = value.rebase_prefixes();
+  EXPECT_EQ(value.to_string(), "1e+06*cm5");
+  
+  value = puq::UnitValue("mm2*km3");    
+  value = value.rebase_prefixes();
+  EXPECT_EQ(value.to_string(), "1e+18*mm5");
+
+  value = puq::UnitValue("km*mm2*cm3"); // multiple units
+  value = value.rebase_prefixes();
+  EXPECT_EQ(value.to_string(), "1e-27*km6");
+
+  value = puq::UnitValue("km*mm2*mg/kg2");  // with other units
+  value = value.rebase_prefixes();
+  EXPECT_EQ(value.to_string(), "1e-24*mg-1*km3");
+  
+}
+
 #ifdef EXPONENT_FRACTIONS
 
 TEST(UnitValue, InitializationFractions) {
@@ -101,6 +147,9 @@ TEST(UnitValue, ArithmeticsAdd) {
   q3 = puq::UnitValue(3,"cm2");      // different units
   EXPECT_THROW(q1+q3,  puq::ConvDimExcept);
   
+  q1 = +puq::UnitValue(3,"cm2");     // uniary plus
+  EXPECT_EQ(q1.to_string(),    "3*cm2");
+  
 }
 
 TEST(UnitValue, ArithmeticsSubtract) {
@@ -123,6 +172,9 @@ TEST(UnitValue, ArithmeticsSubtract) {
   
   q3 = puq::UnitValue(3,"cm2");      // different units
   EXPECT_THROW(q1-q3,  puq::ConvDimExcept);
+
+  q1 = -puq::UnitValue(3,"cm2");     // unary minus
+  EXPECT_EQ(q1.to_string(),    "-3*cm2");
   
 }
 

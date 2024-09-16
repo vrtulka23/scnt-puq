@@ -1,8 +1,8 @@
 /*
  * Do not modify this file!
  * This file can be updated using 'dmap' executable.
- * Last update: Fri Aug  9 16:56:53 2024
- * Code version: v1.0.1
+ * Last update: Fri Sep 13 14:53:46 2024
+ * Code version: v1.0.2
  * Symbol legend:
  * ..   units
  * [..] constants
@@ -66,6 +66,7 @@
 {"bbll",        {0.115627123584,          { 3, 0, 0, 0, 0, 0, 0, 0} } },     // liquid barrel
 {"lb",          {453.59237,               { 0, 1, 0, 0, 0, 0, 0, 0} } },     // pund
 {"oz",          {28.349523125,            { 0, 1, 0, 0, 0, 0, 0, 0} } },     // ounce
+{"slug",        {14593.90294,             { 0, 1, 0, 0, 0, 0, 0, 0} } },     // slug
 {"twip",        {1.76388888e-05,          { 1, 0, 0, 0, 0, 0, 0, 0} } },     // twip
 {"lbt",         {373.241721,              { 0, 1, 0, 0, 0, 0, 0, 0} } },     // troy pound
 {"cb",          {219.456,                 { 1, 0, 0, 0, 0, 0, 0, 0} } },     // cable

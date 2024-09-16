@@ -114,9 +114,6 @@ namespace puq {
     return baseunits.size();
   }
 
-  void BaseUnits::rebase() {
-  }
-  
   Dimensions BaseUnits::dimensions() const {    
     Dimensions dim;
     for (auto &bu: baseunits) {
