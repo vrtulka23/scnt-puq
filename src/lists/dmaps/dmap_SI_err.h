@@ -1,8 +1,8 @@
 /*
  * Do not modify this file!
  * This file can be updated using 'dmap' executable.
- * Last update: Mon Sep 16 19:06:53 2024
- * Code version: v1.0.2
+ * Last update: Tue Sep 17 18:20:17 2024
+ * Code version: v1.0.4
  * Symbol legend:
  * ..   units
  * [..] constants

@@ -172,6 +172,9 @@ namespace puq {
 	throw UnitValueExcept("Undefined unit symbol: "+bu.unit);
       }
     }
+    if ((dim.utype & Utype::NUL)==Utype::NUL)  // add liear utype for dimensionless values
+      dim.utype = dim.utype | Utype::LIN;
+    //std::cout << "A " << std::bitset<8>((int)dim.utype) << std::endl;
     return dim;
   }
 

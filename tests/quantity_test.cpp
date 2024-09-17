@@ -105,6 +105,9 @@ TEST(Quantity, ArithmeticsAdd) {
 
   q3 = puq::Quantity(3,"cm2");  // different units
   EXPECT_THROW(q1+q3,  puq::ConvDimExcept);
+
+  q1 = +puq::Quantity(6,"cm");  // unary addition
+  EXPECT_EQ(q1.to_string(), "6*cm");
   
 }
 
@@ -121,6 +124,9 @@ TEST(Quantity, ArithmeticsSubtract) {
 
   q3 = puq::Quantity(3,"cm2");
   EXPECT_THROW(q1-q3,  puq::ConvDimExcept);
+
+  q1 = -puq::Quantity(6,"cm");  // unary subtraction
+  EXPECT_EQ(q1.to_string(), "-6*cm");
   
 }
 
@@ -158,9 +164,6 @@ TEST(Quantity, UnitSystemDirect) {
   q1 = puq::Quantity(34,"statA",puq::SystemData::ESU);  // explicitely state the unit system
   q2 = q1.convert("Fr/ms");
   EXPECT_EQ(q2.to_string(), "0.034*Fr*ms-1");
-
-  q2 = puq::Quantity(2,"A");
-  EXPECT_THROW(q1+q2,  puq::UnitSystemExcept);
 
 #ifdef PREPROCESS_SYSTEM
   q1 = puq::Quantity(34,"ESU_statA");    // state the unit system in the unit expression

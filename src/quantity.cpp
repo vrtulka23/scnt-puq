@@ -111,46 +111,66 @@ namespace puq {
     return value.to_string(precision);
   }
   
-  Quantity operator+(Quantity& q1, Quantity& q2) {
-    if (q1.stype!=q2.stype)
-      throw UnitSystemExcept(&q1, &q2);
+  Quantity operator+(const Quantity& q1, const Quantity& q2) {
     UnitSystem us(q1.stype);
-    return Quantity(q1.value+q2.value);
+    if (q1.stype==q2.stype) {
+      return Quantity(q1.value+q2.value);
+    } else {
+      Quantity q3 = q2.convert(q1.value.baseunits, *q1.stype);
+      return Quantity(q1.value+q3.value);
+    }
   }
   
-  Quantity operator-(Quantity& q1, Quantity& q2) {
-    if (q1.stype!=q2.stype)
-      throw UnitSystemExcept(&q1, &q2);
+  Quantity operator-(const Quantity& q1, const Quantity& q2) {
     UnitSystem us(q1.stype);
-    return Quantity(q1.value-q2.value);
+    if (q1.stype==q2.stype) {
+      return Quantity(q1.value-q2.value);
+    } else {
+      Quantity q3 = q2.convert(q1.value.baseunits, *q1.stype);
+      return Quantity(q1.value-q3.value);
+    }
   }
   
-  Quantity operator*(Quantity& q1, Quantity& q2) {
+  Quantity operator*(const Quantity& q1, const Quantity& q2) {
     if (q1.stype!=q2.stype)
       throw UnitSystemExcept(&q1, &q2);
     UnitSystem us(q1.stype);
     return Quantity(q1.value*q2.value);
   }
   
-  Quantity operator/(Quantity& q1, Quantity& q2) {
+  Quantity operator/(const Quantity& q1, const Quantity& q2) {
     if (q1.stype!=q2.stype)
       throw UnitSystemExcept(&q1, &q2);
     UnitSystem us(q1.stype);
     return Quantity(q1.value/q2.value);
   }
   
+  Quantity operator+(const Quantity& q) {
+    return Quantity(+q.value);
+  }
+  
+  Quantity operator-(const Quantity& q) {
+    return Quantity(-q.value);
+  }
+  
   void Quantity::operator+=(Quantity& q) {
-    if (stype!=q.stype)
-      throw UnitSystemExcept(this, &q);
     UnitSystem us(stype);
-    value += q.value;
+    if (stype==q.stype) {
+      value += q.value;
+    } else {
+      Quantity qc = q.convert(value.baseunits, *stype);
+      value += qc.value;
+    }
   }
   
   void Quantity::operator-=(Quantity& q) {
-    if (stype!=q.stype)
-      throw UnitSystemExcept(this, &q);
     UnitSystem us(stype);
-    value -= q.value;
+    if (stype==q.stype) {
+      value -= q.value;
+    } else {
+      Quantity qc = q.convert(value.baseunits, *stype);
+      value -= qc.value;
+    }
   }
   
   void Quantity::operator*=(Quantity& q) {
@@ -165,28 +185,6 @@ namespace puq {
       throw UnitSystemExcept(this, &q);
     UnitSystem us(stype);
     value /= q.value;
-  }
-
-  Quantity Quantity::convert(const Quantity& q) const {
-    return convert(q.value, *q.stype);
-  }
-
-  Quantity Quantity::convert(std::string s, const std::string& q) const {
-    SystemDataType* stt = NULL;
-    preprocess(s, stt);
-    if (stt!=NULL) {
-      return convert(s, *stt, q);
-    } else {
-      UnitSystem us(stype);
-      UnitValue uv = value.convert(s);
-      return Quantity(uv);
-    }
-  }
-
-  Quantity Quantity::convert(const UnitValue& uv1) const {
-    UnitSystem us(stype);
-    UnitValue uv2 = value.convert(uv1);
-    return Quantity(uv2);
   }
 
   UnitValue Quantity::_convert_without_context(UnitSystem& us, SystemDataType* stt) const {
@@ -208,8 +206,94 @@ namespace puq {
       uv /= UnitValue(SYMBOL_SIFACTOR_START+q+SYMBOL_SIFACTOR_END);
     }
     return uv;
+  }  
+
+  // convert using quantity
+  Quantity Quantity::convert(const Quantity& q) const {
+    return convert(q.value, *q.stype);
+  }
+
+  // convert using unit value
+  Quantity Quantity::convert(const UnitValue& uv1) const {
+    UnitSystem us(stype);
+    UnitValue uv2 = value.convert(uv1);
+    return Quantity(uv2);
+  }
+
+  Quantity Quantity::convert(const UnitValue& uv1, SystemDataType& st, const std::string& q) const {
+    SystemDataType* stt = &st;
+    UnitSystem us(stype);
+    if (stype == stt) {
+      return convert(uv1);
+    } else if (q == "") {
+      UnitValue uv2 = _convert_without_context(us, stt);
+      return Quantity(uv2.convert(uv1), *stt);
+    } else {
+      QuantityListType::iterator qs1 = puq::UnitSystem::Data->QuantityList.find(q);
+      if (qs1==puq::UnitSystem::Data->QuantityList.end())
+	throw UnitSystemExcept("Quantity symbol not found: "+q);
+      us.change(stt);       
+      QuantityListType::iterator qs2 = puq::UnitSystem::Data->QuantityList.find(q);
+      if (qs2==puq::UnitSystem::Data->QuantityList.end())
+	throw UnitSystemExcept("Quantity symbol not found: "+q);
+      us.change(stype);
+      if (qs1->second.sifactor == "" && qs2->second.sifactor == "") {
+	UnitValue uv2 = _convert_without_context(us, stt);
+	return Quantity(uv2.convert(uv1), *stt);
+      } else {
+	UnitValue uv2 = _convert_with_context(us, stt, qs1, qs2, q);
+	return Quantity(uv2.convert(uv1), *stt);
+      }
+    }
+  }
+
+  // convert using base units
+  Quantity Quantity::convert(const BaseUnits& bu) const {
+    UnitSystem us(stype);
+    UnitValue uv = value.convert(bu);
+    return Quantity(uv);
+  }
+
+  Quantity Quantity::convert(const BaseUnits& bu, SystemDataType& st, const std::string& q) const {
+    SystemDataType* stt = &st;
+    UnitSystem us(stype);
+    if (stype == stt) {
+      return convert(bu);
+    } else if (q == "") {
+      UnitValue uv = _convert_without_context(us, stt);
+      return Quantity(uv.convert(bu), *stt);
+    } else {
+      QuantityListType::iterator qs1 = puq::UnitSystem::Data->QuantityList.find(q);
+      if (qs1==puq::UnitSystem::Data->QuantityList.end())
+	throw UnitSystemExcept("Quantity symbol not found: "+q);
+      us.change(stt);       
+      QuantityListType::iterator qs2 = puq::UnitSystem::Data->QuantityList.find(q);
+      if (qs2==puq::UnitSystem::Data->QuantityList.end())
+	throw UnitSystemExcept("Quantity symbol not found: "+q);
+      us.change(stype);
+      if (qs1->second.sifactor == "" && qs2->second.sifactor == "") {
+	UnitValue uv = _convert_without_context(us, stt);
+	return Quantity(uv.convert(bu), *stt);
+      } else {
+	UnitValue uv = _convert_with_context(us, stt, qs1, qs2, q);
+	return Quantity(uv.convert(bu), *stt);
+      }
+    }
   }
   
+  // convert using string expression
+  Quantity Quantity::convert(std::string s, const std::string& q) const {
+    SystemDataType* stt = NULL;
+    preprocess(s, stt);
+    if (stt!=NULL) {
+      return convert(s, *stt, q);
+    } else {
+      UnitSystem us(stype);
+      UnitValue uv = value.convert(s);
+      return Quantity(uv);
+    }
+  }
+
   Quantity Quantity::convert(std::string s, SystemDataType& st, const std::string& q) const {
     SystemDataType* stt = &st;
     preprocess(s, stt);
@@ -237,32 +321,5 @@ namespace puq {
       }
     }
   }
-  
-  Quantity Quantity::convert(const UnitValue& uv1, SystemDataType& st, const std::string& q) const {
-    SystemDataType* stt = &st;
-    UnitSystem us(stype);
-    if (stype == stt) {
-      return convert(uv1);
-    } else if (q == "") {
-      UnitValue uv2 = _convert_without_context(us, stt);
-      return Quantity(uv2.convert(uv1), *stt);
-    } else {
-      QuantityListType::iterator qs1 = puq::UnitSystem::Data->QuantityList.find(q);
-      if (qs1==puq::UnitSystem::Data->QuantityList.end())
-	throw UnitSystemExcept("Quantity symbol not found: "+q);
-      us.change(stt);       
-      QuantityListType::iterator qs2 = puq::UnitSystem::Data->QuantityList.find(q);
-      if (qs2==puq::UnitSystem::Data->QuantityList.end())
-	throw UnitSystemExcept("Quantity symbol not found: "+q);
-      us.change(stype);
-      if (qs1->second.sifactor == "" && qs2->second.sifactor == "") {
-	UnitValue uv2 = _convert_without_context(us, stt);
-	return Quantity(uv2.convert(uv1), *stt);
-      } else {
-	UnitValue uv2 = _convert_with_context(us, stt, qs1, qs2, q);
-	return Quantity(uv2.convert(uv1), *stt);
-      }
-    }
-  }
-  
+    
 }

@@ -176,7 +176,7 @@ MAGNITUDE_TYPE Converter::convert(const MAGNITUDE_TYPE& m1, const MAGNITUDE_TYPE
 #endif
   if (utype==Utype::LIN)
     return _convert_linear(m1, m2);
-  else
+  else 
     throw NoConvExcept(baseunits1.to_string(), baseunits2.to_string());
 };
 

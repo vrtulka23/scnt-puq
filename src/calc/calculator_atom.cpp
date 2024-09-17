@@ -7,12 +7,12 @@
 
 namespace puq {
   
-UnitValue CalculatorAtom::from_string(std::string expr_orig) {
+Quantity CalculatorAtom::from_string(std::string expr_orig) {
   std::string expr = expr_orig;
   std::smatch m;
   std::regex rx_number("^([^\\s]+)$");
   if (std::regex_match(expr, m, rx_number)) {
-    return UnitValue(expr);
+    return Quantity(expr);
   } else {
     throw CalculatorExcept("Invalid unit expression: "+expr_orig);
   }

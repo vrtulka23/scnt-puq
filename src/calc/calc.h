@@ -7,7 +7,7 @@
 
 #include "../settings.h"
 #include "../../external/exs-cpp/src/exs.h"
-#include "../value/value.h"
+#include "../quantity.h"
 #include "../lists/lists.h"
 
 namespace puq {
@@ -22,11 +22,11 @@ public:
   }
 };
   
-class CalculatorAtom: public exs::AtomBase<UnitValue> {
+class CalculatorAtom: public exs::AtomBase<Quantity> {
  public:
   CalculatorAtom(CalculatorAtom &a): AtomBase(a) {};
-  CalculatorAtom(UnitValue v): AtomBase(v) {}; 
-  static UnitValue from_string(std::string s);
+  CalculatorAtom(Quantity v): AtomBase(v) {}; 
+  static Quantity from_string(std::string s);
   std::string to_string();
   void math_add(CalculatorAtom *other);
   void math_subtract(CalculatorAtom *other);

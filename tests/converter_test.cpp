@@ -22,6 +22,8 @@ TEST(Converter, LinearConv) {
   EXPECT_EQ(puq::nostd::to_string(puq::Converter("mg", "g").convert(1)), "0.001");      // different prefixes
   EXPECT_EQ(puq::nostd::to_string(puq::Converter("1/s", "kHz").convert(6,2)), "0.003"); // different prefixes
   
+  EXPECT_EQ(puq::nostd::to_string(puq::Converter("J/erg", "").convert(2)),  "2e+07");   // converting to no units
+  EXPECT_EQ(puq::nostd::to_string(puq::Converter("J/erg", "1").convert(2)), "2e+07");   // converting to number
 }
 
 #ifdef UNITS_LOGARITHMIC

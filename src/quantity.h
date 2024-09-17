@@ -29,19 +29,23 @@ namespace puq {
     Quantity(const MAGNITUDE_PRECISION& m, const MAGNITUDE_PRECISION& e, std::string s, SystemDataType& st=*UnitSystem::Data);
 #endif
     std::string to_string(int precision=std::cout.precision());
-    friend Quantity operator+(Quantity& q1, Quantity& q2);
-    friend Quantity operator-(Quantity& q1, Quantity& q2);
-    friend Quantity operator*(Quantity& q1, Quantity& q2);
-    friend Quantity operator/(Quantity& q1, Quantity& q2);
+    friend Quantity operator+(const Quantity& q1, const Quantity& q2);
+    friend Quantity operator-(const Quantity& q1, const Quantity& q2);
+    friend Quantity operator*(const Quantity& q1, const Quantity& q2);
+    friend Quantity operator/(const Quantity& q1, const Quantity& q2);
+    friend Quantity operator+(const Quantity& q);
+    friend Quantity operator-(const Quantity& q);
     void operator+=(Quantity& q);
     void operator-=(Quantity& q);
     void operator*=(Quantity& q);
     void operator/=(Quantity& q);
     Quantity convert(const Quantity& q) const;
-    Quantity convert(std::string s, const std::string& q = "") const;
-    Quantity convert(std::string s, SystemDataType& st, const std::string& q = "") const;
     Quantity convert(const UnitValue& uv) const;
     Quantity convert(const UnitValue& uv, SystemDataType& st, const std::string& q = "") const;
+    Quantity convert(const BaseUnits& bu) const;
+    Quantity convert(const BaseUnits& bu, SystemDataType& st, const std::string& q = "") const;
+    Quantity convert(std::string s, const std::string& q = "") const;
+    Quantity convert(std::string s, SystemDataType& st, const std::string& q = "") const;
   };
   
   class UnitSystemExcept: public std::exception {
@@ -52,9 +56,9 @@ namespace puq {
     UnitSystemExcept(const Quantity* q1, const Quantity* q2) {
       std::stringstream ss;
       ss << "Incompatible unit systems: ";
-      ss << q1->stype;
+      ss << q1->stype->SystemAbbrev;
       ss << " != ";
-      ss << q2->stype;
+      ss << q2->stype->SystemAbbrev;
       ss << std::endl;
       message = ss.str();
     }
