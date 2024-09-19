@@ -15,7 +15,7 @@ function build_code {
     if [[ ! -d $DIR_BUILD ]]; then
 	    mkdir $DIR_BUILD
     fi
-    cmake -DCODE_VERSION="${CODE_VERSION}" -B $DIR_BUILD
+    cmake -B $DIR_BUILD
     cd $DIR_BUILD
     make -j 10
     cd $DIR_ROOT

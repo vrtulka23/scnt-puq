@@ -4,9 +4,9 @@
 #include <set>
 #include <format>
 #include <cmath>
+#include <scnt-exs/exs.h>
 
 #include "../settings.h"
-#include "../../external/exs-cpp/src/exs.h"
 #include "../value/value.h"
 #include "../lists/lists.h"
 

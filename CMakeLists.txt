@@ -8,14 +8,29 @@ set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -Wno-deprecated -O3")
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+# getting curret code version
+#############################
+
+execute_process(
+    COMMAND bash -c "source settings.env && echo $CODE_VERSION"
+    OUTPUT_VARIABLE CODE_VERSION
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+message(STATUS "Version: ${CODE_VERSION}")
+
 # compile example solvers
 ##########################
 
-message(STATUS "Version: ${CODE_VERSION}")
+find_package(SCNT-EXS REQUIRED)
 
-#find_package(OpenMP COMPONENTS CXX REQUIRED)
-
-#find_package(ScntExs COMPONENTS CXX REQUIRED)
+#get_directory_property(dirs INCLUDE_DIRECTORIES)
+#message(STATUS "Global include directories: ${dirs}")
+#message(STATUS "SCNT-EXS_INCLUDE_DIR ${SCNT-EXS_INCLUDE_DIR}")
+#get_cmake_property(_variableNames VARIABLES)
+#list (SORT _variableNames)
+#foreach (_variableName ${_variableNames})
+#    message(STATUS "${_variableName}=${${_variableName}}")
+#endforeach()
 
 # find all source files
 file(GLOB source_files "src/*.cpp" "src/**/*.cpp")
@@ -31,9 +46,8 @@ foreach(config ${configs})
   set(lib_name "puqcpp.${CMAKE_MATCH_1}")
   add_library(${lib_name} STATIC ${source_files})
   target_compile_definitions(${lib_name} PRIVATE CONFIG_FILE="../exec/puq/${config_name}")
+  target_link_libraries(${lib_name} PRIVATE scnt-exs)
 endforeach()
-
-#target_link_libraries(puqcpp.aef PUBLIC OpenMP::OpenMP_CXX)
 
 # create all executables
 file(GLOB exec LIST_DIRECTORIES true "exec/*")
@@ -41,27 +55,11 @@ foreach(dirpath ${exec})
   get_filename_component(dirname ${dirpath} NAME)
   message("Compiling example: ${dirname}")
   file(GLOB example_files "exec/${dirname}/*.cpp" "exec/${dirname}/**/*.cpp")
-  #  if(EXISTS "exec/${dirname}/config.h")
-  #    add_executable(${dirname} ${example_files} ${source_files} )
-  #    target_compile_definitions(${dirname} PRIVATE CODE_VERSION="${CODE_VERSION}")
-  #    target_compile_definitions(${dirname} PRIVATE CONFIG_FILE="../exec/${dirname}/config.h")
-  #  else()
   add_executable(${dirname} ${example_files} )
-  #    if(OpenMP_CXX_FOUND)
-  #	target_link_libraries(${dirname} PUBLIC puqcpp.aef OpenMP::OpenMP_CXX)
-  #    else()
-	  target_link_libraries(${dirname} puqcpp.aef)
-  #    endif()	
   target_compile_definitions(${dirname} PRIVATE CODE_VERSION="${CODE_VERSION}")
-  #endif()
+  target_link_libraries(${dirname} PRIVATE puqcpp.aef)
 endforeach()
 
-#set(INSTALL_DIR ${CMAKE_CURRENT_BINARY_DIR})
-#file(MAKE_DIRECTORY ${INSTALL_DIR}/include)
-#file(MAKE_DIRECTORY ${INSTALL_DIR}/lib)
-#file(MAKE_DIRECTORY ${INSTALL_DIR}/bin)
-#file(COPY src/quantity.h DESTINATION ${INSTALL_DIR}/include)
-#install(TARGETS libpuqcpp.aef.a DESTINATION ${INSTALL_DIR}/lib)
 install(TARGETS puq DESTINATION bin)
 
 # add Google tests
@@ -73,7 +71,6 @@ include_directories(${GTEST_INCLUDE_DIRS})
 
 # compile GTest tests
 file(GLOB test_files "tests/*.cpp")
-#list(REMOVE_ITEM source_files "${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp")
 
 enable_testing()
 add_executable(TestSolver ${test_files})
