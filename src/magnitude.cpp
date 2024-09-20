@@ -108,6 +108,7 @@ namespace puq {
    * Add two magnitudes
    */
   Magnitude operator+(const Magnitude& m1, const Magnitude& m2) {
+    // z ± Dz = (x ± Dx) + (y ± Dy) -> Dz = Dx + Dy     (average errors)
     return Magnitude(m1.value+m2.value, m1.error+m2.error);
   }
 
@@ -123,6 +124,7 @@ namespace puq {
     return Magnitude(-m1.value, m1.error);
   }
   Magnitude operator-(const Magnitude& m1, const Magnitude& m2) {
+    // z ± Dz = (x ± Dx) - (y ± Dy) -> Dz = Dx + Dy     (average errors)
     return Magnitude(m1.value-m2.value, m1.error+m2.error);
   }
 

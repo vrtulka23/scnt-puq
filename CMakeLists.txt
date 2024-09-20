@@ -32,33 +32,38 @@ find_package(SCNT-EXS REQUIRED)
 #    message(STATUS "${_variableName}=${${_variableName}}")
 #endforeach()
 
-# find all source files
-file(GLOB source_files "src/*.cpp" "src/**/*.cpp")
-
-# create library with all modules
-add_library(puqcpp.aef STATIC ${source_files})
-
 # create libraries with selected modules
-file(GLOB configs LIST_DIRECTORIES true "exec/puq/config-*.h")
+
+file(GLOB source_files "src/*.cpp" "src/**/*.cpp")
+file(GLOB configs LIST_DIRECTORIES true "src/config-*.h")
 foreach(config ${configs})
   get_filename_component(config_name ${config} NAME)
+  message("Building library: ${config_name}")
   string(REGEX MATCH "^config-([a-z]+).h" matches ${config_name})
   set(lib_name "puqcpp.${CMAKE_MATCH_1}")
   add_library(${lib_name} STATIC ${source_files})
-  target_compile_definitions(${lib_name} PRIVATE CONFIG_FILE="../exec/puq/${config_name}")
-  target_link_libraries(${lib_name} PRIVATE scnt-exs)
+  target_compile_definitions(${lib_name} PRIVATE CONFIG_FILE="../src/${config_name}")
+  #target_link_libraries(${lib_name} PRIVATE scnt-exs)
 endforeach()
 
 # create all executables
-file(GLOB exec LIST_DIRECTORIES true "exec/*")
-foreach(dirpath ${exec})		
-  get_filename_component(dirname ${dirpath} NAME)
-  message("Compiling example: ${dirname}")
-  file(GLOB example_files "exec/${dirname}/*.cpp" "exec/${dirname}/**/*.cpp")
-  add_executable(${dirname} ${example_files} )
-  target_compile_definitions(${dirname} PRIVATE CODE_VERSION="${CODE_VERSION}")
-  target_link_libraries(${dirname} PRIVATE puqcpp.aef)
-endforeach()
+
+message("Compiling executable: puq")
+file(GLOB example_files "exec/puq/*.cpp" "exec/puq/**/*.cpp")
+add_executable(puq ${example_files} )
+target_compile_definitions(puq PRIVATE CODE_VERSION="${CODE_VERSION}")
+target_link_libraries(puq PRIVATE puqcpp.aef)
+
+message("Compiling executable: dmap")
+file(GLOB example_files "exec/dmap/*.cpp" "exec/dmap/**/*.cpp")
+add_executable(dmap-aef ${example_files} )
+target_compile_definitions(dmap-aef PRIVATE CODE_VERSION="${CODE_VERSION}")
+target_link_libraries(dmap-aef PRIVATE puqcpp.aef)
+add_executable(dmap-af ${example_files} )
+target_compile_definitions(dmap-af PRIVATE CODE_VERSION="${CODE_VERSION}" CONFIG_FILE="../src/config-af.h")
+target_link_libraries(dmap-af PRIVATE puqcpp.af)
+
+# install executables
 
 install(TARGETS puq DESTINATION bin)
 
@@ -74,8 +79,7 @@ file(GLOB test_files "tests/*.cpp")
 
 enable_testing()
 add_executable(TestSolver ${test_files})
-target_link_libraries(TestSolver puqcpp.aef)
-target_link_libraries(TestSolver GTest::gtest_main)
+target_link_libraries(TestSolver PRIVATE GTest::gtest_main puqcpp.aef)
 
 include(GoogleTest)
 gtest_discover_tests(TestSolver)

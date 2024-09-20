@@ -20,8 +20,9 @@ namespace puq {
       {"IU",    &puq::SystemData::IU},
       {"US",    &puq::SystemData::US},
 #endif
-#ifdef UNIT_SYSTEM_AU
+#ifdef UNIT_SYSTEM_NUS
       {"AU",    &puq::SystemData::AU},
+      {"PU",    &puq::SystemData::PU},
 #endif
     };
   }

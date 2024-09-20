@@ -129,8 +129,9 @@ namespace puq {
     extern SystemDataType EMU;
     extern SystemDataType GAUSS;
 #endif  
-#ifdef UNIT_SYSTEM_AU
+#ifdef UNIT_SYSTEM_NUS
     extern SystemDataType AU;
+    extern SystemDataType PU;
 #endif
 #ifdef UNIT_SYSTEM_EUS
     extern SystemDataType IU;

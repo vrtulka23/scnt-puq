@@ -1,6 +1,6 @@
 #import "lists.h"
 
-#ifdef UNIT_SYSTEM_AU
+#ifdef UNIT_SYSTEM_NUS
 
 namespace puq {
   namespace SystemData {
@@ -28,6 +28,7 @@ namespace puq {
 	  {"Iv",      {"cd"                     }},
 	  {"n",       {"mol"                    }},
 	  {"the",     {"rad"                    }},
+	  
 	  {"v",       {"[a_0]*E_h/[hbar]"       }},
  	  {"p_mom",   {"[hbar]/[a_0]"           }},
 	  {"rho_q",   {"[e]/[a_0]3"             }},
@@ -55,8 +56,39 @@ namespace puq {
 #endif
 	})
     };
+
+    SystemDataType PU = {
+      "PU", "Planck units", 
+      _BASE_UNITS + UnitListType({
+	  {"[c]",      {UT_LIN_CST,     "299792458*m/s",                   "speed of light",    false,  {}             }},
+          {"[G]",      {UT_LIN_CST,     "6.67430(15)e-11*m3/(kg*s2)",      "grav. const.",      false,  {}             }},
+	  {"[hbar]",   {UT_LIN_CST,     "1.054571817e-31*m2*g*s-1",        "reduced Pl. con.",  false,  {}             }},
+	  {"[k_B]",    {UT_LIN_CST,     "1.380649e-23*kg*m2/(K*s2)",       "Boltzmann const.",  false,  {}             }},
+	}),
+      QuantityListType({
+	  {"l",       {"([hbar]*[G]/[c]3)1:2"          }},
+	  {"m",       {"([hbar]*[c]/[G])1:2"           }},    
+	  {"t",       {"([hbar]*[G]/[c]5)1:2"          }},
+	  {"T",       {"([hbar]*[c]5*[k_B]-2/[G])1:2"  }},
+	  
+	  {"A",       {"[hbar]*[G]/[c]3"               }},
+	  {"V",       {"([hbar]*[G]*[c]-3)3:2"         }},
+	  {"p_mom",   {"([hbar]*[c]3/[G])1:2"          }},
+	  {"E",       {"([hbar]*[c]5/[G])1:2"          }},
+	  {"F",       {"[c]4/[G]"                      }},
+	  {"rho",     {"[c]5/[hbar]*[G]-2"             }},
+	  {"a",       {"([c]7/[hbar]/[G])1:2"          }},
+	}),
+      DimensionMapType({
+#ifdef MAGNITUDE_ERRORS
+#include "dmaps/dmap_PU_err.h"
+#else
+#include "dmaps/dmap_PU.h"
+#endif
+	})
+    };
     
   }
 }
 
-#endif // UNIT_SYSTEM_AU
+#endif // UNIT_SYSTEM_NUS

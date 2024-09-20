@@ -157,7 +157,7 @@ TEST(Lists, UnitDefinitionsEMU) {
 #endif
 
 
-#ifdef UNIT_SYSTEM_AU
+#ifdef UNIT_SYSTEM_NUS
 
 TEST(Lists, UnitDefinitionsAU) {
 
