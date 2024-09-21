@@ -25,10 +25,14 @@ namespace puq {
   }
   
   CalculatorAtom Calculator::solve(std::string expression) {
-    if (expression=="")
-      return solver->solve("1");
-    else
-      return solver->solve(expression);
+#ifdef DEBUG_CALCULATOR
+    std::clog << "CALC:  Solving: " << expression << std::endl;
+#endif
+    CalculatorAtom ca = solver->solve( (expression=="") ? "1" : expression );
+#ifdef DEBUG_CALCULATOR
+    std::clog << "CALC:  Result:  " << ca.value.to_string() << std::endl;
+#endif
+    return ca;
   }
 
 }

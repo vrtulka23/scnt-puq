@@ -8,6 +8,13 @@
 #endif
 
 /*
+ *  Debugging tools
+ */
+//#define DEBUG_UNIT_SOLVER
+//#define DEBUG_CALCULATOR 
+//#define DEBUG_CONVERTER
+
+/*
  *  General settings
  */
 #define NUM_BASEDIM     8

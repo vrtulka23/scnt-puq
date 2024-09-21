@@ -164,20 +164,34 @@ Converter::Converter(const BaseUnits& bu1, const BaseUnits& bu2): baseunits1(bu1
 };
 
 MAGNITUDE_TYPE Converter::convert(const MAGNITUDE_TYPE& m1, const MAGNITUDE_TYPE& m2) {
+#ifdef DEBUG_CONVERTER
+  std::clog << "CONV:  Solving: ";
+  std::clog << m1.to_string() << SYMBOL_MULTIPLY << baseunits1.to_string();
+  std::clog << " -> ";
+  std::clog << m2.to_string() << SYMBOL_MULTIPLY << baseunits2.to_string();
+  std::clog << std::endl;
+#endif
+  MAGNITUDE_TYPE mag;
 #ifdef UNITS_LOGARITHMIC
   if (utype==Utype::LOG && m2==(MAGNITUDE_TYPE)1)
-    return _convert_logarithmic(m1);
+    mag = _convert_logarithmic(m1);
   else
 #endif
 #ifdef UNITS_TEMPERATURES
   if (utype==Utype::TMP && m2==(MAGNITUDE_TYPE)1)
-    return _convert_temperature(m1);
+    mag = _convert_temperature(m1);
   else
 #endif
   if (utype==Utype::LIN)
-    return _convert_linear(m1, m2);
+    mag = _convert_linear(m1, m2);
   else 
     throw NoConvExcept(baseunits1.to_string(), baseunits2.to_string());
+#ifdef DEBUG_CONVERTER
+  std::clog << "CONV:  Result: ";
+  std::clog << mag.to_string() << SYMBOL_MULTIPLY << baseunits2.to_string();  
+  std::clog << std::endl;
+#endif
+  return mag;
 };
 
 }

@@ -19,23 +19,35 @@ void OperatorParentheses::parse(exs::Expression &expr) {
 #ifdef EXPONENT_FRACTIONS
     std::regex rx_exponent("^([+-]?[0-9]*)("+std::string(SYMBOL_FRACTION)+"([0-9]+)|)");
     if (std::regex_search(expr.right, m, rx_exponent)) { // store exponent
-      exponent = Exponent((m[1]==""?1:std::stoi(m[1])), (m[3]==""?1:std::stoi(m[3])));
+      exponent.push_back( Exponent((m[1]==""?1:std::stoi(m[1])), (m[3]==""?1:std::stoi(m[3]))) );
       expr.remove(m[0]); 
+    } else {
+      exponent.push_back( 1 );
     }
 #else
     std::regex rx_exponent("^([+-]?[0-9]*)");
     if (std::regex_search(expr.right, m, rx_exponent)) { // store exponent
-      if (m[1]!="") exponent   = std::stoi(m[1]);
+      if (m[1]!="") {
+	exponent.push_back( std::stoi(m[1]) );
+      } else {
+	exponent.push_back( 1 );
+      }
       expr.remove(m[0]); 
     }      
 #endif
+  } else {
+    exponent.push_back( 1 );
   }
 };
 
 void OperatorParentheses::operate_group(exs::TokenListBase<UnitAtom> *tokens) {
-  if (exponent!=1) {
+  if (exponent.size()==0)
+    throw AtomParsingExcept("Number of exponents does not match number of opened parentheses!");
+  Exponent exp = exponent.back();
+  exponent.pop_back();
+  if (exp!=1) {
     exs::Token<UnitAtom> group1 = tokens->get_left();
-    group1.atom->math_power(exponent);
+    group1.atom->math_power(exp);
     tokens->put_left(group1);
   }
 };

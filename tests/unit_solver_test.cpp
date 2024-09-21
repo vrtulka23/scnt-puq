@@ -30,6 +30,9 @@ TEST(UnitSolver, Solve) {
   atom = solver.solve("kg/(m*s)2*C");                // parentheses with eponents
   EXPECT_EQ(atom.value.to_string(), "kg*m-2*s-2*C");
 
+  atom = solver.solve("(kg*s/(m2*K))2");             // nested parentheses with an exponent
+  EXPECT_EQ(atom.value.to_string(), "kg2*s2*m-4*K-2");
+  
   atom = solver.solve("kg*<v>2");                    // quantities
   EXPECT_EQ(atom.value.to_string(), "kg*<v>2");    
   
@@ -43,11 +46,14 @@ TEST(UnitSolver, SolveFractions) {
   puq::UnitAtom atom = solver.solve("km-2:3"); // units with fractions
   EXPECT_EQ(atom.value.to_string(), "km-2:3");
 
-  atom = solver.solve("m1:2*m-3:5");      // reduction of fractions
+  atom = solver.solve("m1:2*m-3:5");           // reduction of fractions
   EXPECT_EQ(atom.value.to_string(), "m-1:10");
   
-  atom = solver.solve("kg/(m*s)-1:2*C");  // parentheses with fractions
+  atom = solver.solve("kg/(m*s)-1:2*C");       // parentheses with fractions
   EXPECT_EQ(atom.value.to_string(), "kg*m1:2*s1:2*C");
+  
+  atom = solver.solve("(kg3*s4/(m2*K))1:2");   // nested parentheses with an exponent
+  EXPECT_EQ(atom.value.to_string(), "kg3:2*s2*m-1*K-1:2");
   
 }
 

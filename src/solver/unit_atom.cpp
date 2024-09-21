@@ -128,15 +128,33 @@ std::string UnitAtom::to_string() {
 }
 
 void UnitAtom::math_power(EXPONENT_TYPE &e) {
+#ifdef DEBUG_UNIT_SOLVER
+  std::clog << "UNIT:    pow(" << value.to_string() << "," << e.to_string() << ") = ";
+#endif
   value.pow(e);
+#ifdef DEBUG_UNIT_SOLVER
+  std::clog << value.to_string() << std::endl;
+#endif
 }
 
 void UnitAtom::math_multiply(UnitAtom *other) {
+#ifdef DEBUG_UNIT_SOLVER
+  std::clog << "UNIT:    " << value.to_string() << " * " << other->value.to_string() << " = ";
+#endif
   value *= other->value;
+#ifdef DEBUG_UNIT_SOLVER
+  std::clog << value.to_string() << std::endl;
+#endif
 }
 
 void UnitAtom::math_divide(UnitAtom *other) {
+#ifdef DEBUG_UNIT_SOLVER
+  std::clog << "UNIT:    " << value.to_string() << " / " << other->value.to_string() << " = ";
+#endif
   value /= other->value;
+#ifdef DEBUG_UNIT_SOLVER
+  std::clog << value.to_string() << std::endl;
+#endif
 }
 
 }

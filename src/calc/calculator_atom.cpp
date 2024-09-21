@@ -1,5 +1,6 @@
 #include <regex>
 #include <algorithm>
+#include <sstream>
 
 #include "../nostd/nostd.h"
 #include "../value/value.h"
@@ -23,23 +24,55 @@ std::string CalculatorAtom::to_string() {
 }
 
 void CalculatorAtom::math_add(CalculatorAtom *other) {
+#ifdef DEBUG_CALCULATOR
+  std::stringstream ss;
+  ss << "CALC:    " << value.to_string() << " + " << other->value.to_string() << " = ";
+#endif
   value += other->value;
+#ifdef DEBUG_CALCULATOR
+  std::clog << ss.str() << value.to_string() << std::endl;;
+#endif
 }
 
 void CalculatorAtom::math_subtract(CalculatorAtom *other) {
+#ifdef DEBUG_CALCULATOR
+  std::stringstream ss;
+  ss << "CALC:    " << value.to_string() << " - " << other->value.to_string() << " = ";
+#endif
   value -= other->value;
+#ifdef DEBUG_CALCULATOR
+  std::clog << ss.str() << value.to_string() << std::endl;;
+#endif
 }
 
 void CalculatorAtom::math_negate() {
+#ifdef DEBUG_CALCULATOR
+  std::clog << "CALC:    - " << value.to_string() << " = ";
+#endif
   value = -value;
+#ifdef DEBUG_CALCULATOR
+  std::clog << value.to_string() << std::endl;
+#endif
 }
 
 void CalculatorAtom::math_multiply(CalculatorAtom *other) {
+#ifdef DEBUG_CALCULATOR
+  std::clog << "CALC:    " << value.to_string() << " * " << other->value.to_string() << " = ";
+#endif
   value *= other->value;
+#ifdef DEBUG_CALCULATOR
+  std::clog << value.to_string() << std::endl;
+#endif
 }
 
 void CalculatorAtom::math_divide(CalculatorAtom *other) {
+#ifdef DEBUG_CALCULATOR
+  std::clog << "CALC:    " << value.to_string() << " / " << other->value.to_string() << " = ";
+#endif
   value /= other->value;
+#ifdef DEBUG_CALCULATOR
+  std::clog << value.to_string() << std::endl;
+#endif
 }
 
 }

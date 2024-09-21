@@ -35,7 +35,7 @@ class UnitAtom: public exs::AtomBase<UnitValue> {
 
 class OperatorParentheses: public exs::OperatorGroup<UnitAtom, 1> {
 public:
-  EXPONENT_TYPE exponent = 1;
+  std::vector<EXPONENT_TYPE> exponent;
   OperatorParentheses(): OperatorGroup<UnitAtom, 1>("par","(",exs::PARENTHESES_OPERATOR) {}
   virtual bool check(exs::Expression &expr); 
   virtual void parse(exs::Expression &expr);

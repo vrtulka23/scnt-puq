@@ -28,10 +28,14 @@ namespace puq {
   }
   
   UnitAtom UnitSolver::solve(std::string expression) {
-    if (expression=="")
-      return solver->solve("1");
-    else
-      return solver->solve(expression);
+#ifdef DEBUG_UNIT_SOLVER
+    std::clog << "UNIT:  Solving: " << expression << std::endl;
+#endif
+    UnitAtom ua = solver->solve((expression=="") ? "1" : expression);
+#ifdef DEBUG_UNIT_SOLVER
+    std::clog << "UNIT:  Result:  " << ua.value.to_string() << std::endl;
+#endif
+    return ua;
   }
 
 }
