@@ -64,7 +64,6 @@ const UnitListType _BASE_CONSTANTS = {
   {"[N_A]",    {UT_LIN_CST,      "[N_0]/mol",                    "Avogadro's const.", false, {}                        }},
 };
     
-#ifdef MAGNITUDE_ERRORS
 const DimensionMapType _BASE_MAP = {
   {"m",   {1.0, 0.0, { 1, 0, 0, 0, 0, 0, 0, 0} } },
   {"g",   {1.0, 0.0, { 0, 1, 0, 0, 0, 0, 0, 0} } },
@@ -75,17 +74,5 @@ const DimensionMapType _BASE_MAP = {
   {"mol", {1.0, 0.0, { 0, 0, 0, 0, 0, 0, 1, 0} } },
   {"rad", {1.0, 0.0, { 0, 0, 0, 0, 0, 0, 0, 1} } },
 };
-#else
-const DimensionMapType _BASE_MAP = {
-  {"m",   {1.0, { 1, 0, 0, 0, 0, 0, 0, 0} } },
-  {"g",   {1.0, { 0, 1, 0, 0, 0, 0, 0, 0} } },
-  {"s",   {1.0, { 0, 0, 1, 0, 0, 0, 0, 0} } },
-  {"K",   {1.0, { 0, 0, 0, 1, 0, 0, 0, 0} } },
-  {"A",   {1.0, { 0, 0, 0, 0, 1, 0, 0, 0} } },
-  {"cd",  {1.0, { 0, 0, 0, 0, 0, 1, 0, 0} } },
-  {"mol", {1.0, { 0, 0, 0, 0, 0, 0, 1, 0} } },
-  {"rad", {1.0, { 0, 0, 0, 0, 0, 0, 0, 1} } },
-};
-#endif
 
 #endif // PUQ_SYSTEM_BASE_H

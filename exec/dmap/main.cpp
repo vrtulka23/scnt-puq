@@ -17,37 +17,20 @@ void add_line(std::stringstream& ss, const std::string& symbol, puq::Dimensions&
   ss << "\""+symbol+"\",";
   ss << "{";
   int precision = std::numeric_limits<MAGNITUDE_PRECISION>::digits10;
-#if defined(MAGNITUDE_ERRORS) && defined(MAGNITUDE_ARRAYS)
   ss << std::setfill(' ') << std::setw(25)  << std::left;
   ss << puq::nostd::to_string(dim.numerical.value[0], precision)+",";
   ss << std::setfill(' ') << std::setw(25)  << std::left;
   ss << puq::nostd::to_string(dim.numerical.error[0], precision)+",";
-#elif defined(MAGNITUDE_ERRORS)
-  ss << std::setfill(' ') << std::setw(25)  << std::left;
-  ss << puq::nostd::to_string(dim.numerical.value, precision)+",";
-  ss << std::setfill(' ') << std::setw(25)  << std::left;
-  ss << puq::nostd::to_string(dim.numerical.error, precision)+",";
-#elif defined(MAGNITUDE_ARRAYS)
-  ss << std::setfill(' ') << std::setw(25)  << std::left;
-  ss << puq::nostd::to_string(dim.numerical[0], precision)+",";
-#else
-  ss << std::setfill(' ') << std::setw(25)  << std::left;
-  ss << puq::nostd::to_string(dim.numerical, precision)+",";
-#endif
   ss << "{";
   for (int i=0; i<NUM_BASEDIM; i++) {
     if (i>0)
       ss << ",";
     ss << std::setfill(' ') << std::setw(2) << std::right;
-#ifdef EXPONENT_FRACTIONS
     if (dim.physical[i].denominator==1) {
       ss << dim.physical[i];
     } else {
       ss << "(FRC){" + std::to_string(dim.physical[i].numerator) + "," + std::to_string(dim.physical[i].denominator) + "}";
     }
-#else
-    ss << dim.physical[i];
-#endif
   }
   ss << "} } },     // "+name+"\n";
   //std::cout << ss.str() << std::endl;
@@ -56,26 +39,14 @@ void add_line(std::stringstream& ss, const std::string& symbol, puq::Dimensions&
 void solve_bu_prefix(puq::Dimensions& dim, puq::BaseUnit& bu) {
   auto prefix = puq::UnitPrefixList.find(bu.prefix);
   if (prefix!=puq::UnitPrefixList.end()) {
-    dim.numerical *= puq::nostd::pow(prefix->second.magnitude,
-#ifdef EXPONENT_FRACTIONS
-				     (puq::EXPONENT_TYPE)bu.exponent
-#else
-				     bu.exponent
-#endif
-				     );
+    dim.numerical *= puq::nostd::pow(prefix->second.magnitude, (puq::EXPONENT_TYPE)bu.exponent );
   }
 }
 
 bool solve_bu_unit(puq::DimensionMapType& dmap, puq::Dimensions& dim, puq::BaseUnit& bu) {
   auto it = dmap.find(bu.unit);
   if (it != dmap.end()) {
-    dim.numerical *= puq::nostd::pow(it->second.magnitude,
-#ifdef EXPONENT_FRACTIONS
-				     (puq::EXPONENT_TYPE)bu.exponent
-#else
-				     bu.exponent
-#endif
-				     );
+    dim.numerical *= puq::nostd::pow(it->second.magnitude, (puq::EXPONENT_TYPE)bu.exponent);
     for (int i=0; i<NUM_BASEDIM; i++) {
       dim.physical[i] += it->second.dimensions[i] * bu.exponent;
     }
@@ -104,20 +75,13 @@ inline void solve_units(std::stringstream& ss, puq::DimensionMapType& dmap, puq:
       dim.numerical = 1; // for logarithmic units this has to be 1
     if (missing=="") {
       add_line(ss, unit.first, dim, unit.second.name);
-#if defined(MAGNITUDE_ERRORS) && defined(MAGNITUDE_ARRAYS)
       dmap.insert({unit.first, {dim.numerical.value[0], dim.numerical.error[0], dim.physical}});
-#elif defined(MAGNITUDE_ERRORS)
-      dmap.insert({unit.first, {dim.numerical.value, dim.numerical.error, dim.physical}});
-#elif defined(MAGNITUDE_ARRAYS)
-      dmap.insert({unit.first, {dim.numerical[0], dim.physical}});
-#else
-      dmap.insert({unit.first, {dim.numerical, dim.physical}});
-#endif
     }
   }
 }
 
 inline void solve_quantities(std::stringstream& ss, puq::DimensionMapType& dmap, puq::UnitSolver& solver) {
+  std::cout << "Solving " << puq::UnitSystem::Data->SystemAbbrev << " system" << std::endl;
   for (auto quant: puq::UnitSystem::Data->QuantityList) {
     // solve a quantity definition
     puq::UnitAtom atom = solver.solve(quant.second.definition);
@@ -132,15 +96,8 @@ inline void solve_quantities(std::stringstream& ss, puq::DimensionMapType& dmap,
     }
     std::string symbol = SYMBOL_QUANTITY_START+quant.first+SYMBOL_QUANTITY_END;
     add_line(ss, symbol, dim, puq::QuantityNames.at(quant.first));
-#if defined(MAGNITUDE_ERRORS) && defined(MAGNITUDE_ARRAYS)
     dmap.insert({symbol, {dim.numerical.value[0], dim.numerical.error[0], dim.physical}});
-#elif defined(MAGNITUDE_ERRORS)
-    dmap.insert({symbol, {dim.numerical.value, dim.numerical.error, dim.physical}});
-#elif defined(MAGNITUDE_ARRAYS)
-    dmap.insert({symbol, {dim.numerical[0], dim.physical}});
-#else
-    dmap.insert({symbol, {dim.numerical, dim.physical}});
-#endif
+    
     // solve a quantity IS conversion factor, if exists
     if (quant.second.sifactor!="") {
       atom = solver.solve(quant.second.sifactor);
@@ -154,16 +111,8 @@ inline void solve_quantities(std::stringstream& ss, puq::DimensionMapType& dmap,
 	}
       }
       symbol = SYMBOL_SIFACTOR_START+quant.first+SYMBOL_SIFACTOR_END;
-      add_line(ss, symbol, dim, puq::QuantityNames.at(quant.first));
-#if defined(MAGNITUDE_ERRORS) && defined(MAGNITUDE_ARRAYS)
+      add_line(ss, symbol, dim, puq::QuantityNames.at(quant.first)+" SI factor");
       dmap.insert({symbol, {dim.numerical.value[0], dim.numerical.error[0], dim.physical}});
-#elif defined(MAGNITUDE_ERRORS)
-      dmap.insert({symbol, {dim.numerical.value, dim.numerical.error, dim.physical}});
-#elif defined(MAGNITUDE_ARRAYS)
-      dmap.insert({symbol, {dim.numerical[0], dim.physical}});
-#else
-      dmap.insert({symbol, {dim.numerical, dim.physical}});
-#endif
     }
   }
 }
@@ -202,13 +151,17 @@ void create_map(const std::string file_header) {
   fs << "/*" << std::endl;
   fs << " * Do not modify this file!" << std::endl;
   fs << " * This file can be updated using 'dmap' executable." << std::endl;
-  fs << " * Last update: " << std::ctime(&now_time);
+  fs << " * " << std::endl;
+  fs << " * Unit system:  " << puq::UnitSystem::Data->SystemName << " (" << puq::UnitSystem::Data->SystemAbbrev << ")" << std::endl;
+  fs << " * Last update:  " << std::ctime(&now_time);
   fs << " * Code version: " << CODE_VERSION << std::endl;
+  fs << " * " << std::endl;
   fs << " * Symbol legend:" << std::endl;
-  fs << " * ..   units" << std::endl;
-  fs << " * [..] constants" << std::endl;
-  fs << " * <..> quantities" << std::endl;
-  fs << " * |..| quantity SI conversion factors" << std::endl;
+  fs << " * ..    units" << std::endl;
+  fs << " * [..]  constants" << std::endl;
+  fs << " * [#..] collapsed constants" << std::endl;
+  fs << " * <..>  quantities" << std::endl;
+  fs << " * |..|  quantity SI conversion factors" << std::endl;
   fs << " */" << std::endl;
   fs << ss.str();
   fs.close();
@@ -218,14 +171,10 @@ int main(int argc, char * argv[]) {
 
   std::cout << "Generating dimension maps:" << std::endl;
   for (auto sys: puq::SystemData::SystemMap) {
-#ifdef MAGNITUDE_ERRORS    
-    std::string file_header = "src/lists/dmaps/dmap_"+sys.first+"_err.h";
-#else
     std::string file_header = "src/lists/dmaps/dmap_"+sys.first+".h";
-#endif
     puq::UnitSystem us(*sys.second);
     create_map(file_header);
-    std::cout << file_header << std::endl;
+    std::cout << "Generating dmap file: " << file_header << std::endl;
   }
   
 }

@@ -43,7 +43,7 @@ void OperatorParentheses::parse(exs::Expression &expr) {
 void OperatorParentheses::operate_group(exs::TokenListBase<UnitAtom> *tokens) {
   if (exponent.size()==0)
     throw AtomParsingExcept("Number of exponents does not match number of opened parentheses!");
-  Exponent exp = exponent.back();
+  EXPONENT_TYPE exp = exponent.back();
   exponent.pop_back();
   if (exp!=1) {
     exs::Token<UnitAtom> group1 = tokens->get_left();

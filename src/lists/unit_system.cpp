@@ -24,6 +24,7 @@ namespace puq {
       {"AU",    &puq::SystemData::AU},
       {"PU",    &puq::SystemData::PU},
       {"SRU",   &puq::SystemData::SRU},
+      {"GEO",   &puq::SystemData::GEO},
 #endif
     };
   }

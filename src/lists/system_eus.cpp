@@ -104,11 +104,7 @@ namespace puq {namespace SystemData {
     _EUS_QUANTITIES + QuantityListType({
       }),
     DimensionMapType({
-#ifdef MAGNITUDE_ERRORS
-#include "dmaps/dmap_IU_err.h"
-#else
 #include "dmaps/dmap_IU.h"
-#endif
       })
   };
   
@@ -166,11 +162,7 @@ namespace puq {namespace SystemData {
     _EUS_QUANTITIES + QuantityListType({
       }),
     DimensionMapType({
-#ifdef MAGNITUDE_ERRORS
-#include "dmaps/dmap_US_err.h"
-#else
 #include "dmaps/dmap_US.h"
-#endif
       })
   };
 

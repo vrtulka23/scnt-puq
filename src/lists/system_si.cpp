@@ -248,11 +248,7 @@ namespace puq {
 	  
 	}),
     DimensionMapType({
-#ifdef MAGNITUDE_ERRORS
-#include "dmaps/dmap_SI_err.h"
-#else
 #include "dmaps/dmap_SI.h"
-#endif
       })
       
     };

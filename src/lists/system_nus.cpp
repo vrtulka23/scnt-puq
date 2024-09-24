@@ -49,11 +49,7 @@ namespace puq {
 	  {"S_a",     {"[#hbar]"                 }},
 	}),
       DimensionMapType({
-#ifdef MAGNITUDE_ERRORS
-#include "dmaps/dmap_AU_err.h"
-#else
 #include "dmaps/dmap_AU.h"
-#endif
 	})
     };
 
@@ -80,11 +76,7 @@ namespace puq {
 	  {"a",       {"([#c]7/[#hbar]/[#G])1:2"          }},
 	}),
       DimensionMapType({
-#ifdef MAGNITUDE_ERRORS
-#include "dmaps/dmap_PU_err.h"
-#else
 #include "dmaps/dmap_PU.h"
-#endif
 	})
     };
 
@@ -108,11 +100,7 @@ namespace puq {
 	  {"rho_E",   {"kg/m3", "[#c]2*s/m"    }},
 	}),
       DimensionMapType({
-#ifdef MAGNITUDE_ERRORS
-#include "dmaps/dmap_SRU_err.h"
-#else
 #include "dmaps/dmap_SRU.h"
-#endif
 	})
     };
 
@@ -124,9 +112,10 @@ namespace puq {
         }),
       QuantityListType({
 	  {"l",       {"m"                     }},
-	  {"m",       {"m"      "[#c]2/[G]"    }},    
+	  {"m",       {"m",     "[#c]2/[#G]"   }},    
+	  /*
 	  {"t",       {"m",     "[#c]-1*s/m"   }},
-	  
+
 	  {"E",       {"kg",    "[#c]2*s/m"    }},
 	  {"p_mom",   {"kg",    "[#c]*s/m"     }},
 	  {"v",       {"1",     "[#c]*s/m"     }},
@@ -134,13 +123,10 @@ namespace puq {
 	  {"F",       {"kg/m",  "[#c]2*s/m"    }},
 	  {"a",       {"m-1",   "[#c]2*s/m"    }},
 	  {"rho_E",   {"kg/m3", "[#c]2*s/m"    }},
+	  */
 	}),
       DimensionMapType({
-#ifdef MAGNITUDE_ERRORS
-#include "dmaps/dmap_SRU_err.h"
-#else
-#include "dmaps/dmap_SRU.h"
-#endif
+#include "dmaps/dmap_GEO.h"
 	})
     };
 

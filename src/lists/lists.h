@@ -99,9 +99,7 @@ namespace puq {
 
   struct DimensionStruct {
     MAGNITUDE_PRECISION magnitude;
-#ifdef MAGNITUDE_ERRORS
     MAGNITUDE_PRECISION error;
-#endif
     BaseDimensions dimensions;
   };
   typedef std::unordered_map<std::string, DimensionStruct> DimensionMapType;
@@ -133,6 +131,7 @@ namespace puq {
     extern SystemDataType AU;
     extern SystemDataType PU;
     extern SystemDataType SRU;
+    extern SystemDataType GEO;
 #endif
 #ifdef UNIT_SYSTEM_EUS
     extern SystemDataType IU;

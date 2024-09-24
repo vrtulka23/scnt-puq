@@ -93,11 +93,7 @@ namespace puq {namespace SystemData {
 	{"mu",     {"s2/cm2",      "4*[pi]*[c_0]2*1e-7"   }},
       }),
     DimensionMapType({
-#ifdef MAGNITUDE_ERRORS
-#include "dmaps/dmap_ESU_err.h"
-#else
 #include "dmaps/dmap_ESU.h"
-#endif
       })
   };
   
@@ -123,11 +119,7 @@ namespace puq {namespace SystemData {
     _BASE_UNITS + _CGS_UNITS + _GU_ESU_UNITS + _GU_EMU_UNITS,
     _CGS_QUANTITIES + _GU_ESU_QUANTITIES + _GU_EMU_QUANTITIES,
     DimensionMapType({
-#ifdef MAGNITUDE_ERRORS
-#include "dmaps/dmap_GU_err.h"
-#else
 #include "dmaps/dmap_GU.h"
-#endif
       })
   };
   
@@ -160,11 +152,7 @@ namespace puq {namespace SystemData {
 	{"L",       {"abH",        "1e-9"             }},
       }),
     DimensionMapType({
-#ifdef MAGNITUDE_ERRORS
-#include "dmaps/dmap_EMU_err.h"
-#else
 #include "dmaps/dmap_EMU.h"
-#endif
       })
   };
   
