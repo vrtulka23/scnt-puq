@@ -197,8 +197,9 @@ namespace puq {
 					    QuantityListType::iterator& qs1, QuantityListType::iterator& qs2,
 					    const std::string& q) const {
     UnitValue uv = value;
-    if (qs1->second.sifactor != "")
+    if (qs1->second.sifactor != "") {
       uv *= UnitValue(SYMBOL_SIFACTOR_START+q+SYMBOL_SIFACTOR_END);
+    }
     uv = uv.convert(SYMBOL_QUANTITY_START+q+SYMBOL_QUANTITY_END);
     us.change(stt);    
     uv = UnitValue(uv.magnitude, SYMBOL_QUANTITY_START+q+SYMBOL_QUANTITY_END);

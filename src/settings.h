@@ -67,6 +67,9 @@
   #ifdef UNIT_SYSTEM_CGS
     static_assert(false, "Unit system CGS cannot be used without fractional exponents! Please use EXPONENT_FRACTIONS flag.");
   #endif
+  #ifdef UNIT_SYSTEM_NUS
+    static_assert(false, "Natural units cannot be used without fractional exponents! Please use EXPONENT_FRACTIONS flag.");
+  #endif
   #define EXPONENT_TYPE EXPONENT_INT_PRECISION
 #endif
 

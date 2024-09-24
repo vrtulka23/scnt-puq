@@ -166,6 +166,23 @@ namespace puq {
     return UnitValue(conv.convert(magnitude, 1), bu);
   }
 
+  UnitValue UnitValue::convert(const Dformat& format) const {
+    BaseUnits bu;
+    Dimensions dim = baseunits.dimensions();
+    for (int i=0; i<NUM_BASEDIM; i++) {
+      if (dim.physical[i]==0)
+	continue;
+      if (i==1 && (format&Dformat::MKS)==Dformat::MKS) {
+	bu.append({"k","g",dim.physical[i]});
+      } else if (i==0 && (format&Dformat::CGS)==Dformat::CGS) {
+	bu.append({"c","m",dim.physical[i]});	
+      } else {
+	bu.append({"",SystemData::BaseUnitOrder[i],dim.physical[i]});
+      }
+    }
+    return convert(bu);
+  }
+  
   UnitValue UnitValue::rebase_prefixes() {
     MAGNITUDE_TYPE mag = magnitude;
     std::map<std::string, BaseUnit> bumap;

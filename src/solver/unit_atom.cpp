@@ -97,11 +97,11 @@ UnitValue UnitAtom::from_string(std::string expr_orig) {
   struct UnitValue uv;
   std::smatch m;
 #ifdef EXPONENT_FRACTIONS
-  std::regex rx_unit("^(\\[?[a-zA-Z0_%']+\\]?)([+-]?[0-9]*)("+std::string(SYMBOL_FRACTION)+"([0-9]+)|)$");
+  std::regex rx_unit("^(\\[?[a-zA-Z0_%#']+\\]?)([+-]?[0-9]*)("+std::string(SYMBOL_FRACTION)+"([0-9]+)|)$");
   std::regex rx_quantity("^(\\<[a-zA-Z_]+\\>)([+-]?[0-9]*)("+std::string(SYMBOL_FRACTION)+"([0-9]+)|)$");
   std::regex rx_sifactor("^(\\|[a-zA-Z_]+\\|)([+-]?[0-9]*)("+std::string(SYMBOL_FRACTION)+"([0-9]+)|)$");
 #else
-  std::regex rx_unit("^(\\[?[a-zA-Z0_%']+\\]?)([+-]?[0-9]*)$");
+  std::regex rx_unit("^(\\[?[a-zA-Z0_%#']+\\]?)([+-]?[0-9]*)$");
   std::regex rx_quantity("^(\\<[a-zA-Z_]+\\>)([+-]?[0-9]*)$");
   std::regex rx_sifactor("^(\\|[a-zA-Z_]+\\|)([+-]?[0-9]*)$");
 #endif

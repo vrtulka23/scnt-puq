@@ -140,7 +140,7 @@ TEST(Lists, UnitDefinitionsESU) {
 
 TEST(Lists, UnitDefinitionsGauss) {
 
-  puq::UnitSystem us(puq::SystemData::GAUSS);
+  puq::UnitSystem us(puq::SystemData::GU);
   test_unit_symbols();
   //test_unit_definitions();
   

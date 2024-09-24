@@ -49,7 +49,7 @@ namespace puq {namespace SystemData {
     {"k_n",     {"Ka"       }},
   };
     
-  const UnitListType _GAUSS_ESU_UNITS = {
+  const UnitListType _GU_ESU_UNITS = {
     {"Fr",       {Utype::LIN,     "dyn1:2*cm",           "franklin",             false, {}             }},
     {"statC",    {Utype::LIN,     "Fr",                  "Statcoulomb",          false, {}             }},
     {"esu",      {Utype::LIN,     "Fr",                  "elstat. u.o. charge",  false, {}             }},
@@ -62,7 +62,7 @@ namespace puq {namespace SystemData {
     {"[e]",      {Utype::CST,     "4.80320471e-10*Fr",   "elementary charge",    false, {}             }},
   };
     
-  const QuantityListType _GAUSS_ESU_QUANTITIES = {
+  const QuantityListType _GU_ESU_QUANTITIES = {
     {"q",       {"statC",        "1e1/[c_0]"              }},
     {"I",       {"statA",        "1e1/[c_0]"              }},
     {"phi_e",   {"statV",        "1e-8*[c_0]"             }},
@@ -79,13 +79,13 @@ namespace puq {namespace SystemData {
 
   SystemDataType ESU = {
     "ESU", "Electrostatic CGS units", 
-    _BASE_UNITS + _CGS_UNITS + _GAUSS_ESU_UNITS + UnitListType({
+    _BASE_UNITS + _CGS_UNITS + _GU_ESU_UNITS + UnitListType({
 	{"statT",    {Utype::LIN,     "cm-3:2*g1:2",                 "Stattesla",     false, {}             }},
 	{"statWb",   {Utype::LIN,     "cm2*g",                       "Statweber",     false, {}             }},
 	// constants     											    
 	{"[mu_B]",   {Utype::CST,     "2.780278273e-10*statA*cm2 ",  "Bohr magneton", false, {}             }},
       }),
-    _CGS_QUANTITIES + _GAUSS_ESU_QUANTITIES + QuantityListType({
+    _CGS_QUANTITIES + _GU_ESU_QUANTITIES + QuantityListType({
 	{"B",      {"statT",       "1e-4*[c_0]"           }},
 	{"H",      {"statA/cm",    "1e3/(4*[pi]*[c_0])"   }},
 	{"mm",     {"statA*cm2",   "1e-3/[c_0]"           }},
@@ -101,7 +101,7 @@ namespace puq {namespace SystemData {
       })
   };
   
-  const UnitListType _GAUSS_EMU_UNITS = {
+  const UnitListType _GU_EMU_UNITS = {
     {"G",        {Utype::LIN,    "cm-1:2*g1:2*s-1",        "Gauss",             false, {}             }},
     {"Oe",       {Utype::LIN,    "g1:2/(cm1:2*s)",         "Oersted",           false, {}             }},
     {"Gb",       {Utype::LIN,    "Oe*cm",                  "Gilbert",           false, {}             }},
@@ -110,7 +110,7 @@ namespace puq {namespace SystemData {
     {"[mu_B]",   {Utype::CST,    "9.274010066e-21*erg/G",  "Bohr magneton",     false, {}             }},
   };
 
-  const QuantityListType _GAUSS_EMU_QUANTITIES = {
+  const QuantityListType _GU_EMU_QUANTITIES = {
     {"B",      {"G",           "1e-4"           }},
     {"H",      {"Oe",          "1e3/(4*[pi])"   }},
     {"mm",     {"erg/G",       "1e-3"           }},
@@ -118,22 +118,22 @@ namespace puq {namespace SystemData {
     {"mu",     {"1",           "4*[pi]*1e-7"    }},
   };
     
-  SystemDataType GAUSS = {
-    "GAUSS", "Gaussian CGS units", 
-    _BASE_UNITS + _CGS_UNITS + _GAUSS_ESU_UNITS + _GAUSS_EMU_UNITS,
-    _CGS_QUANTITIES + _GAUSS_ESU_QUANTITIES + _GAUSS_EMU_QUANTITIES,
+  SystemDataType GU = {
+    "GU", "Gaussian CGS units", 
+    _BASE_UNITS + _CGS_UNITS + _GU_ESU_UNITS + _GU_EMU_UNITS,
+    _CGS_QUANTITIES + _GU_ESU_QUANTITIES + _GU_EMU_QUANTITIES,
     DimensionMapType({
 #ifdef MAGNITUDE_ERRORS
-#include "dmaps/dmap_GAUSS_err.h"
+#include "dmaps/dmap_GU_err.h"
 #else
-#include "dmaps/dmap_GAUSS.h"
+#include "dmaps/dmap_GU.h"
 #endif
       })
   };
   
   SystemDataType EMU = {
     "EMU", "Electromagnetic CGS units",
-    _BASE_UNITS + _CGS_UNITS + _GAUSS_EMU_UNITS + UnitListType({
+    _BASE_UNITS + _CGS_UNITS + _GU_EMU_UNITS + UnitListType({
         {"Bi",       {Utype::LIN,     "dyn1:2",              "biot",                 false, {}             }},
         {"abA",      {Utype::LIN,     "Bi",                  "Abampere",             false, {}             }},
         {"abC",      {Utype::LIN,     "Bi*s",                "Abcoulomb",            false, {}             }},
@@ -145,7 +145,7 @@ namespace puq {namespace SystemData {
         // constants	   											 
         {"[e]",      {Utype::CST,     "1.602176634e-20*abC", "elementary charge",    false, {}             }},
       }),
-    _CGS_QUANTITIES + _GAUSS_EMU_QUANTITIES + QuantityListType({
+    _CGS_QUANTITIES + _GU_EMU_QUANTITIES + QuantityListType({
 	{"q",       {"abC",        "1e1"              }},
 	{"I",       {"abA",        "1e1"              }},
 	{"phi_e",   {"abV",        "1e-8"             }},

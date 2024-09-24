@@ -13,7 +13,7 @@ namespace puq {
       {"SI",    &puq::SystemData::SI},
 #ifdef UNIT_SYSTEM_CGS
       {"ESU",   &puq::SystemData::ESU},
-      {"GAUSS", &puq::SystemData::GAUSS},
+      {"GU",    &puq::SystemData::GU},
       {"EMU",   &puq::SystemData::EMU},
 #endif
 #ifdef UNIT_SYSTEM_EUS
@@ -23,6 +23,7 @@ namespace puq {
 #ifdef UNIT_SYSTEM_NUS
       {"AU",    &puq::SystemData::AU},
       {"PU",    &puq::SystemData::PU},
+      {"SRU",   &puq::SystemData::SRU},
 #endif
     };
   }

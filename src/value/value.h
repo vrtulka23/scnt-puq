@@ -9,10 +9,11 @@
 namespace puq {
 
   enum class Dformat : std::uint8_t {
-    MKS  = 0b00000001,  // m/kg/s
-    CGS  = 0b00000010,  // cm/g/s;
-    NUM  = 0b00000100,  // numerical value
-    PHYS = 0b00001000,  // physical value
+    MGS  = 0b00000001,  // m/g/s
+    MKS  = 0b00000010,  // m/kg/s
+    CGS  = 0b00000100,  // cm/g/s
+    NUM  = 0b00001000,  // numerical value
+    PHYS = 0b00010000,  // physical value
   };
   
   inline Dformat operator|(Dformat lhs, Dformat rhs) {
@@ -130,6 +131,7 @@ namespace puq {
     void operator*=(const UnitValue& v);
     void operator/=(const UnitValue& v);
     void pow(const EXPONENT_TYPE& e);
+    UnitValue convert(const Dformat& format) const;
     UnitValue convert(const std::string& s) const;
     UnitValue convert(const BaseUnits& bu) const;
     UnitValue convert(const UnitValue& v) const;

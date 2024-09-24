@@ -124,6 +124,14 @@ TEST(UnitValue, UnitConversion) {
   v2 = v1.convert("2*m2");      // conversion using an expression
   EXPECT_EQ(v2.to_string(), "0.0002*m2");  
 
+  v1 = puq::UnitValue("2*J");   // conversion to system base units
+  v2 = v1.convert(puq::Dformat::MGS);
+  EXPECT_EQ(v2.to_string(), "2000*m2*g*s-2");   // code base units
+  v2 = v1.convert(puq::Dformat::MKS);
+  EXPECT_EQ(v2.to_string(), "2*m2*kg*s-2");     // SI
+  v2 = v1.convert(puq::Dformat::CGS);
+  EXPECT_EQ(v2.to_string(), "2e+07*cm2*g*s-2"); // CGS
+  
 }
 
 TEST(UnitValue, ArithmeticsAdd) {

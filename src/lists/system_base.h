@@ -21,6 +21,16 @@ const UnitListType _BASE_UNITS = {
   {"rad",      {UT_LIN_BAS,      "rad",                          "radian",            true,  {"m"}                     }},
 };
 
+const UnitListType _COLLAPSED_CONSTANTS = {
+  {"[#c]",     {UT_LIN_CST,      "299792458*m/s",                "speed of light",    false, {}                        }},
+  {"[#G]",     {UT_LIN_CST,      "6.67430(15)e-11*m3/(kg*s2)",   "grav. const.",      false, {}                        }},
+  {"[#hbar]",  {UT_LIN_CST,      "1.054571817e-31*m2*g*s-1",     "reduced Pl. con.",  false, {}                        }},
+  {"[#k_B]",   {UT_LIN_CST,      "1.380649e-23*kg*m2/(K*s2)",    "Boltzmann const.",  false, {}                        }},
+  {"[#e]",     {UT_LIN_CST,      "1.602176634e-19*A*s",          "elem. charge",      false, {}                        }},
+  {"[#m_e]",   {UT_LIN_CST,      "9.1093837139(28)e-31*kg",      "electron mass",     false, {}                        }},
+  {"[#kap_0]", {UT_LIN_CST,      "1.11265005620e-13*m-3*g-1*s4*A2", "permittivity",   false, {}                        }},
+};
+
 const UnitListType _BASE_CONSTANTS = {
   // dimensionless constants    			      						         
   {"[alpha]",  {UT_LIN_CST,      "7.29735256e-3",                "fine str. const.",  false, {}                        }},
