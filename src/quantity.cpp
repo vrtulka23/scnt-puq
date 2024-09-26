@@ -201,7 +201,7 @@ namespace puq {
       uv *= UnitValue(SYMBOL_SIFACTOR_START+q+SYMBOL_SIFACTOR_END);
     }
     uv = uv.convert(SYMBOL_QUANTITY_START+q+SYMBOL_QUANTITY_END);
-    us.change(stt);    
+    us.change(stt);
     uv = UnitValue(uv.magnitude, SYMBOL_QUANTITY_START+q+SYMBOL_QUANTITY_END);
     if (qs2->second.sifactor != "") {
       uv /= UnitValue(SYMBOL_SIFACTOR_START+q+SYMBOL_SIFACTOR_END);
@@ -209,6 +209,12 @@ namespace puq {
     return uv;
   }  
 
+  // convert using Dformat
+  Quantity Quantity::convert(const Dformat& format) const {
+    UnitSystem us(stype);
+    return Quantity(value.convert(format));
+  }
+  
   // convert using quantity
   Quantity Quantity::convert(const Quantity& q) const {
     return convert(q.value, *q.stype);

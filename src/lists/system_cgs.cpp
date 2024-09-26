@@ -26,7 +26,6 @@ namespace puq {namespace SystemData {
     {"[h]",      {Utype::CST,     "6.62607015e-27*erg*s",   "Planck const.",     false, {}             }},    
     {"[hbar]",   {Utype::CST,     "1.054571817e-27*erg*s",  "reduced Pl. con.",  false, {}             }},    
     {"[c]",      {Utype::CST,     "2.99792458e10*cm/s",     "speed of light",    false, {}             }},    
-    {"[c_0]",    {Utype::CST,     "2.99792458e10",          "num. speed of li.", false, {}             }},    
     {"[pi]",     {UT_LIN_CST,     "3.1415926",              "pi num.",           false, {}             }},
   };
 
@@ -63,18 +62,18 @@ namespace puq {namespace SystemData {
   };
     
   const QuantityListType _GU_ESU_QUANTITIES = {
-    {"q",       {"statC",        "1e1/[c_0]"              }},
-    {"I",       {"statA",        "1e1/[c_0]"              }},
-    {"phi_e",   {"statV",        "1e-8*[c_0]"             }},
-    {"E_e",     {"statV/cm",     "1e-6*[c_0]"             }},
-    {"D_e",     {"statC/cm2",    "1e5/(4*[pi]*[c_0])"     }},
-    {"p_e",     {"statC*cm",     "1e-1/[c_0]"             }},
-    {"Phi_E",   {"statC",        "1e1/(4*[pi]*[c_0])"     }},
-    {"eps",     {"1",            "1e11/(4*[pi]*[c_0]2)"   }},
-    {"R",       {"statOhm",      "[c_0]2/1e9"             }},
-    {"rho_e",   {"statOhm*cm",   "[c_0]2/1e11"            }},
-    {"C",       {"statF",        "1e9/[c_0]2"             }},
-    {"L",       {"statH",        "[c_0]2/1e9"             }},
+    {"q",       {"statC",        "1e1/([c]*100)"              }},   // we need [c]*100 because we convert to MKS during conversions
+    {"I",       {"statA",        "1e1/([c]*100)"              }},
+    {"phi_e",   {"statV",        "1e-8*([c]*100)"             }},
+    {"E_e",     {"statV/cm",     "1e-6*([c]*100)"             }},
+    {"D_e",     {"statC/cm2",    "1e5/(4*[pi]*([c]*100))"     }},
+    {"p_e",     {"statC*cm",     "1e-1/([c]*100)"             }},
+    {"Phi_E",   {"statC",        "1e1/(4*[pi]*([c]*100))"     }},
+    {"eps",     {"1",            "1e11/(4*[pi]*([c]*100)2)"   }},
+    {"R",       {"statOhm",      "([c]*100)2/1e9"             }},
+    {"rho_e",   {"statOhm*cm",   "([c]*100)2/1e11"            }},
+    {"C",       {"statF",        "1e9/([c]*100)2"             }},
+    {"L",       {"statH",        "([c]*100)2/1e9"             }},
   };
 
   SystemDataType ESU = {
@@ -86,11 +85,11 @@ namespace puq {namespace SystemData {
 	{"[mu_B]",   {Utype::CST,     "2.780278273e-10*statA*cm2 ",  "Bohr magneton", false, {}             }},
       }),
     _CGS_QUANTITIES + _GU_ESU_QUANTITIES + QuantityListType({
-	{"B",      {"statT",       "1e-4*[c_0]"           }},
-	{"H",      {"statA/cm",    "1e3/(4*[pi]*[c_0])"   }},
-	{"mm",     {"statA*cm2",   "1e-3/[c_0]"           }},
-	{"Phi_M",  {"statWb",      "[c_0]*1e-8"           }},
-	{"mu",     {"s2/cm2",      "4*[pi]*[c_0]2*1e-7"   }},
+	{"B",      {"statT",       "1e-4*([c]*100)"           }},  // we need [c]*100 because we convert to MKS during conversions
+	{"H",      {"statA/cm",    "1e3/(4*[pi]*([c]*100))"   }},
+	{"mm",     {"statA*cm2",   "1e-3/([c]*100)"           }},
+	{"Phi_M",  {"statWb",      "([c]*100)*1e-8"           }},
+	{"mu",     {"s2/cm2",      "4*[pi]*([c]*100)2*1e-7"   }},
       }),
     DimensionMapType({
 #include "dmaps/dmap_ESU.h"

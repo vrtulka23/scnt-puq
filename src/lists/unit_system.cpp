@@ -21,10 +21,11 @@ namespace puq {
       {"US",    &puq::SystemData::US},
 #endif
 #ifdef UNIT_SYSTEM_NUS
-      {"AU",    &puq::SystemData::AU},
-      {"PU",    &puq::SystemData::PU},
-      {"SRU",   &puq::SystemData::SRU},
-      {"GEO",   &puq::SystemData::GEO},
+      {"AU",    &puq::SystemData::AU},   // Atomic units
+      {"PU",    &puq::SystemData::PU},   // Planck units
+      {"SRU",   &puq::SystemData::SRU},  // Units for special relativity
+      {"GRU",   &puq::SystemData::GRU},  // Units for general relativity
+      {"GEO",   &puq::SystemData::GEO},  // Geometrized units
 #endif
     };
   }

@@ -39,6 +39,7 @@ namespace puq {
     void operator-=(Quantity& q);
     void operator*=(Quantity& q);
     void operator/=(Quantity& q);
+    Quantity convert(const Dformat& format) const;
     Quantity convert(const Quantity& q) const;
     Quantity convert(const UnitValue& uv) const;
     Quantity convert(const UnitValue& uv, SystemDataType& st, const std::string& q = "") const;

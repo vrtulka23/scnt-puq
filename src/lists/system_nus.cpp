@@ -87,20 +87,52 @@ namespace puq {
 	  {"[c]",     {UT_LIN_CST,     "1",                     "speed of light",    false, {}             }},    
         }),
       QuantityListType({
-	  {"l",       {"m"                     }},
-	  {"m",       {"kg"                    }},    
-	  {"t",       {"m",     "[#c]-1*s/m"   }},
+	  {"l",       {"m"                 }},
+	  {"m",       {"kg"                }},    
+	  {"t",       {"m",     "[#c]-1"   }},
 	  
-	  {"E",       {"kg",    "[#c]2*s/m"    }},
-	  {"p_mom",   {"kg",    "[#c]*s/m"     }},
-	  {"v",       {"1",     "[#c]*s/m"     }},
-	  {"L_ome",   {"kg*m",  "[#c]*s/m"     }},
-	  {"F",       {"kg/m",  "[#c]2*s/m"    }},
-	  {"a",       {"m-1",   "[#c]2*s/m"    }},
-	  {"rho_E",   {"kg/m3", "[#c]2*s/m"    }},
+	  {"E",       {"kg",    "[#c]2"    }},
+	  {"p_mom",   {"kg",    "[#c]"     }},
+	  {"v",       {"1",     "[#c]"     }},
+	  {"L_ome",   {"kg*m",  "[#c]"     }},
+	  {"F",       {"kg/m",  "[#c]2"    }},
+	  {"a",       {"m-1",   "[#c]2"    }},
+	  {"rho_E",   {"kg/m3", "[#c]2"    }},
 	}),
       DimensionMapType({
 #include "dmaps/dmap_SRU.h"
+	})
+    };
+    
+    SystemDataType GRU = {
+      "GRU", "Units for general relativity",
+      _BASE_UNITS + _COLLAPSED_CONSTANTS + UnitListType({
+	  {"[c]",      {UT_LIN_CST,     "1",                             "speed of light",    false, {}                 }},    
+	  {"[hbar]",   {UT_LIN_CST,     "1",                             "reduced Pl. con.",  false, {}                 }},
+	  {"[eps_0]",  {UT_LIN_CST,     "1",                             "permit. of vac.",   false, {}                 }},
+	  {"[k_B]",    {UT_LIN_CST,     "1",                             "Boltzmann const.",  false, {}                 }},
+	    							         
+	  {"eV",       {Utype::LIN,     "1.602176634e-19*m2*kg*s-2",     "electronvolt",      true,  {"k","M","G","T"}  }},
+	  {"[pi]",     {UT_LIN_CST,     "3.1415926",                     "pi num.",           false, {}                 }},
+	  {"[alpha]",  {UT_LIN_CST,     "[#e]2/(4*[pi]*[#eps_0]*[#hbar]*[#c])", "fine-str. const.",  false, {}          }},
+	  {"[e]",      {UT_LIN_CST,     "(4*[pi]*[alpha])1:2",           "elem. charge",      false, {}                 }},
+        }),
+      QuantityListType({
+	  {"l",       {"GeV-1",      "[#hbar]*[#c]"     }},
+	  {"m",       {"GeV",        "[#c]-2"           }},    
+	  {"t",       {"GeV-1",      "[#hbar]"          }},
+				     		        
+	  {"E",       {"GeV"                            }},
+	  {"p_mom",   {"GeV",        "[#c]-1"           }},
+	  {"v",       {"1",          "[#c]"             }},
+	  {"L_ome",   {"1",          "[#hbar]"          }},
+	  {"A",       {"GeV-2",      "([#hbar]*[#c])2"  }},
+	  {"F",       {"GeV2",       "([#hbar]*[#c])-1" }},
+	  {"rho_E",   {"GeV4",       "([#hbar]*[#c])-3" }},
+	  {"q",       {""            "[#e]/[e]"         }},
+	}),
+      DimensionMapType({
+#include "dmaps/dmap_GRU.h"
 	})
     };
 
@@ -113,23 +145,20 @@ namespace puq {
       QuantityListType({
 	  {"l",       {"m"                     }},
 	  {"m",       {"m",     "[#c]2/[#G]"   }},    
-	  /*
-	  {"t",       {"m",     "[#c]-1*s/m"   }},
+	  {"t",       {"m",     "[#c]-1"       }},
 
-	  {"E",       {"kg",    "[#c]2*s/m"    }},
-	  {"p_mom",   {"kg",    "[#c]*s/m"     }},
-	  {"v",       {"1",     "[#c]*s/m"     }},
-	  {"L_ome",   {"kg*m",  "[#c]*s/m"     }},
-	  {"F",       {"kg/m",  "[#c]2*s/m"    }},
-	  {"a",       {"m-1",   "[#c]2*s/m"    }},
-	  {"rho_E",   {"kg/m3", "[#c]2*s/m"    }},
-	  */
+	  {"E",       {"m",     "[#c]4/[#G]"   }},
+	  {"p_mom",   {"m",     "[#c]3/[#G]"   }},
+	  {"v",       {"1",     "[#c]"         }},
+	  {"L_ome",   {"m2",    "[#c]3/[#G]"   }},
+	  {"F",       {"1",     "[#c]4/[#G]"   }},
+	  {"a",       {"m-1",   "[#c]2"        }},
+	  {"rho_E",   {"m-2",   "[#c]4/[#G]"   }},
 	}),
       DimensionMapType({
 #include "dmaps/dmap_GEO.h"
 	})
     };
-
     
   }
 }

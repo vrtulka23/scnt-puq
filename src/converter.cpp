@@ -6,7 +6,7 @@
 namespace puq {
   
 MAGNITUDE_TYPE Converter::_convert_linear(const MAGNITUDE_TYPE& m1, const MAGNITUDE_TYPE& m2) {
-  return (m1*dimensions1.numerical)/(m2*dimensions2.numerical);    
+  return (m1*dimensions1.numerical)/(m2*dimensions2.numerical); 
 }
 
 #ifdef UNITS_LOGARITHMIC

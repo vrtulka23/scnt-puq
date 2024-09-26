@@ -158,7 +158,8 @@ namespace puq {
 
   UnitValue UnitValue::convert(const UnitValue& v) const {
     Converter conv(baseunits, v.baseunits);
-    return UnitValue(conv.convert(magnitude, v.magnitude), v.baseunits);
+    MAGNITUDE_TYPE m = conv.convert(magnitude, v.magnitude);
+    return UnitValue(m, v.baseunits);
   }
 
   UnitValue UnitValue::convert(const BaseUnits& bu) const {

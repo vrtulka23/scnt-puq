@@ -22,7 +22,8 @@ namespace puq {
     LOG = 0b00000100,  // logarithmic unit
     TMP = 0b00001000,  // temperature unit
     CST = 0b00010000,  // constant
-    QUA = 0b00100000,  // quantity
+    CSC = 0b00100000,  // collapsed constant
+    QUA = 0b01000000,  // quantity
   };
 
   inline Utype operator|(Utype lhs, Utype rhs) {
@@ -51,6 +52,7 @@ namespace puq {
   const Utype UT_LIN_BAS_TMP = Utype::LIN|Utype::BAS|Utype::TMP;
   const Utype UT_LIN_TMP     = Utype::LIN|Utype::TMP;
   const Utype UT_LIN_CST     = Utype::LIN|Utype::CST;
+  const Utype UT_LIN_CSC     = Utype::LIN|Utype::CSC;
   const Utype UT_LIN_LOG     = Utype::LIN|Utype::LOG;
   const Utype UT_LIN_QUA     = Utype::LIN|Utype::QUA;
 
@@ -127,15 +129,16 @@ namespace puq {
     extern SystemDataType EMU;
     extern SystemDataType GU;
 #endif  
+#ifdef UNIT_SYSTEM_EUS
+    extern SystemDataType IU;
+    extern SystemDataType US;
+#endif
 #ifdef UNIT_SYSTEM_NUS
     extern SystemDataType AU;
     extern SystemDataType PU;
     extern SystemDataType SRU;
+    extern SystemDataType GRU;
     extern SystemDataType GEO;
-#endif
-#ifdef UNIT_SYSTEM_EUS
-    extern SystemDataType IU;
-    extern SystemDataType US;
 #endif
     extern std::unordered_map<std::string, SystemDataType*> SystemMap;
   }

@@ -26,7 +26,7 @@ namespace puq {
 #ifdef MAGNITUDE_ERRORS
     Magnitude pow(const Magnitude& m, const EXPONENT_REAL_PRECISION& e) {
       // z ± Dz = pow(x ± Dx, y) -> Dz = y * pow(x, y-1) * Dx 
-      return Magnitude(pow(m.value, e), e*pow(m.value, e-1)*m.error);  
+      return Magnitude(pow(m.value, e), abs(e*pow(m.value, e-1))*m.error);  
     }
     Magnitude pow(const Magnitude& m, const Magnitude& e) {
       MAGNITUDE_VALUE Dzx = e.value*pow(m.value, e.value-1)*m.error;     // Dzx = y * pow(x, y-1) * Dx 

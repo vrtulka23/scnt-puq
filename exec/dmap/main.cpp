@@ -101,15 +101,9 @@ inline void solve_quantities(std::stringstream& ss, puq::DimensionMapType& dmap,
     // solve a quantity IS conversion factor, if exists
     if (quant.second.sifactor!="") {
       atom = solver.solve(quant.second.sifactor);
-      dim = puq::Dimensions(atom.value.magnitude);
-      for (auto bu: atom.value.baseunits) {
-	solve_bu_prefix(dim, bu);
-	if (!solve_bu_unit(dmap, dim, bu)) {
-	  throw puq::DimensionMapExcept(puq::UnitSystem::Data->SystemAbbrev+" quantity factor '"+quant.first+
-					"' could not be constructued from a definition '"+
-					quant.second.sifactor+"'. Missing unit: "+bu.unit);
-	}
-      }
+      puq::UnitValue value = atom.value.convert(puq::Dformat::MKS);
+      // here we are interested onlin in a dimensionless conversion factor into SI
+      dim = puq::Dimensions(value.magnitude);
       symbol = SYMBOL_SIFACTOR_START+quant.first+SYMBOL_SIFACTOR_END;
       add_line(ss, symbol, dim, puq::QuantityNames.at(quant.first)+" SI factor");
       dmap.insert({symbol, {dim.numerical.value[0], dim.numerical.error[0], dim.physical}});
