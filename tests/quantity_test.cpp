@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+#include <sstream>
 
 #include "../src/quantity.h"
 #include "../src/converter.h"
@@ -34,6 +35,11 @@ TEST(Quantity, Initialization) {
   q = puq::Quantity("6.23537×1012 C4⋅m4⋅J−3");
   EXPECT_EQ(q.to_string(), "6.23537e+12*C4*m4*J-3");
 #endif
+
+  q = puq::Quantity("34*J");    
+  std::stringstream ss;
+  ss << q;                      // cast quantity as a string into a stream
+  EXPECT_EQ(ss.str(), "34*J");
   
 }
   

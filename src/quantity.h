@@ -28,13 +28,14 @@ namespace puq {
     Quantity(const MAGNITUDE_PRECISION& m, const MAGNITUDE_PRECISION& e, const BaseUnitsList& bu, SystemDataType& st=*UnitSystem::Data);
     Quantity(const MAGNITUDE_PRECISION& m, const MAGNITUDE_PRECISION& e, std::string s, SystemDataType& st=*UnitSystem::Data);
 #endif
-    std::string to_string(int precision=std::cout.precision());
+    std::string to_string(int precision=std::cout.precision()) const;
     friend Quantity operator+(const Quantity& q1, const Quantity& q2);
     friend Quantity operator-(const Quantity& q1, const Quantity& q2);
     friend Quantity operator*(const Quantity& q1, const Quantity& q2);
     friend Quantity operator/(const Quantity& q1, const Quantity& q2);
     friend Quantity operator+(const Quantity& q);
     friend Quantity operator-(const Quantity& q);
+    friend std::ostream& operator<<(std::ostream& os, const Quantity& q);
     void operator+=(Quantity& q);
     void operator-=(Quantity& q);
     void operator*=(Quantity& q);

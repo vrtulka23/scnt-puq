@@ -54,6 +54,7 @@ namespace puq {
     Dimensions(const MAGNITUDE_PRECISION& m, const MAGNITUDE_PRECISION& e, const BaseDimensions& p): utype(Utype::NUL), numerical(m,e), physical(p) {};
 #endif
     std::string to_string(Dformat format=Dformat::NUM|Dformat::PHYS, int precision=std::cout.precision()) const;
+    friend std::ostream& operator<<(std::ostream& os, const Dimensions& d);
     bool operator==(const Dimensions& d) const;
     bool operator!=(const Dimensions& d) const;
   };
@@ -92,6 +93,7 @@ namespace puq {
     const BaseUnit& operator[] (int index) const;
     friend BaseUnits operator+(const BaseUnits& bu1, const BaseUnits& bu2);
     friend BaseUnits operator-(const BaseUnits& bu1, const BaseUnits& bu2);
+    friend std::ostream& operator<<(std::ostream& os, const BaseUnits& bu);
     void operator+=(const BaseUnits& bu);
     void operator-=(const BaseUnits& bu);
     void operator*=(const EXPONENT_TYPE& e);
@@ -126,6 +128,7 @@ namespace puq {
     friend UnitValue operator/(const UnitValue& v1, const UnitValue& v2);
     friend UnitValue operator+(const UnitValue& v);
     friend UnitValue operator-(const UnitValue& v);
+    friend std::ostream& operator<<(std::ostream& os, const UnitValue& v);
     void operator+=(const UnitValue& v);
     void operator-=(const UnitValue& v);
     void operator*=(const UnitValue& v);

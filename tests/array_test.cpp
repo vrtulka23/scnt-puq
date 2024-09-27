@@ -23,6 +23,11 @@ TEST(Array, Initialization) {
 
   a = puq::Array({3e12,4.34,5.23e2});
   EXPECT_EQ(a.to_string(), "{3e+12, 4.34, ...}");
+
+  a = puq::Array({3,4,5});    
+  std::stringstream ss;
+  ss << a;                      // cast array as a string into a stream
+  EXPECT_EQ(ss.str(), "{3, 4, ...}");
   
 }
 

@@ -24,6 +24,11 @@ TEST(UnitValue, Initialization) {
   value = puq::UnitValue(2, dim);
   EXPECT_EQ(value.to_string(), "46*m*g2*s3*K4");
  
+  value = puq::UnitValue("3*km/s");    
+  std::stringstream ss;
+  ss << value;                      // cast unit value as a string into a stream
+  EXPECT_EQ(ss.str(), "3*km*s-1");
+  
 }
 
 TEST(UnitValue, RebasePrefixes) {

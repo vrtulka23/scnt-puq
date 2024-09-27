@@ -102,6 +102,11 @@ namespace puq {
     }
   }
 
+  std::ostream& operator<<(std::ostream& os, const BaseUnits& bu) {
+    os << bu.to_string();
+    return os;
+  }
+  
   BaseUnitsList::const_iterator BaseUnits::begin() const {
     return baseunits.begin();
   }

@@ -32,6 +32,11 @@ TEST(Magnitude, Initialization) {
 
   m = puq::Magnitude(2.34e-7, 2.3e-9);
   EXPECT_EQ(m.to_string(), "2.340(23)e-07");
+
+  m = puq::Magnitude(3.234, 0.002);    
+  std::stringstream ss;
+  ss << m;                      // cast magnitude as a string into a stream
+  EXPECT_EQ(ss.str(), "3.2340(20)");
   
 }
 

@@ -13,6 +13,11 @@ TEST(Dimensions, Initialization) {
   d = puq::Dimensions(2.34,{0,1,2,3,4,5,6,7});
   EXPECT_EQ(d.to_string(), "2.34*g*s2*K3*A4*cd5*mol6*rad7");
   
+  d = puq::Dimensions(2,{0,1,2,0,0,0,0,0});    
+  std::stringstream ss;
+  ss << d;                      // cast diemensions as a string into a stream
+  EXPECT_EQ(ss.str(), "2*g*s2");
+  
 }
 
 #ifdef MAGNITUDE_ERRORS

@@ -33,6 +33,7 @@ public:
   friend Magnitude operator-(const Magnitude& m1, const Magnitude& m2);
   friend Magnitude operator*(const Magnitude& m1, const Magnitude& m2);
   friend Magnitude operator/(const Magnitude& m1, const Magnitude& m2);
+  friend std::ostream& operator<<(std::ostream& os, const Magnitude& m);
   void operator+=(const Magnitude& m);
   void operator-=(const Magnitude& m);
   void operator*=(const Magnitude& m);

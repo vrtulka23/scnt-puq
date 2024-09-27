@@ -181,6 +181,11 @@ bool Array::operator!=(const Array& a) const {
   return false;
 }
 
+std::ostream& operator<<(std::ostream& os, const Array& a) {
+  os << a.to_string();
+  return os;
+}
+  
 void Array::pow(const EXPONENT_TYPE& e) {
   for (int i=0; i<value.size(); i++)
     value[i] = std::pow(value[i], (EXPONENT_REAL_PRECISION)e);

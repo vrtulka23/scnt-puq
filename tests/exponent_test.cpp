@@ -18,6 +18,11 @@ TEST(Exponent, Initialization) {
   e = puq::Exponent(2);
   EXPECT_EQ(e.to_string(), "2");    // non-zero exponent
   
+  e = puq::Exponent(3,2);    
+  std::stringstream ss;
+  ss << e;                      // cast exponent as a string into a stream
+  EXPECT_EQ(ss.str(), "3:2");
+  
 }
 
 TEST(Exponent, InitializationFractions) {

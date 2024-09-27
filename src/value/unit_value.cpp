@@ -142,6 +142,11 @@ namespace puq {
     baseunits -= v.baseunits;
   } 
 
+  std::ostream& operator<<(std::ostream& os, const UnitValue& v) {
+    os << v.to_string();
+    return os;
+  }
+  
   void UnitValue::pow(const EXPONENT_TYPE& e) {
   #if defined(MAGNITUDE_ERRORS) || defined(MAGNITUDE_ARRAYS)
     magnitude.pow(e);

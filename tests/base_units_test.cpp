@@ -24,6 +24,11 @@ TEST(BaseUnits, Initialization) {
   bus = puq::BaseUnits("kg*m2/s2");
   EXPECT_EQ(bus.to_string(), "kg*m2*s-2");
   
+  bus = puq::BaseUnits("km/s");    
+  std::stringstream ss;
+  ss << bus;                      // cast base units as a string into a stream
+  EXPECT_EQ(ss.str(), "km*s-1");
+  
 }
 
 #ifdef EXPONENT_FRACTIONS

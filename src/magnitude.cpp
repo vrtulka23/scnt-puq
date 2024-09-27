@@ -128,6 +128,11 @@ namespace puq {
     return Magnitude(m1.value-m2.value, m1.error+m2.error);
   }
 
+  std::ostream& operator<<(std::ostream& os, const Magnitude& m) {
+    os << m.to_string();
+    return os;
+  }
+  
   void Magnitude::operator-=(const Magnitude& m) {
     value -= m.value;
     error += m.error;

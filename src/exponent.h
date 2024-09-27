@@ -16,6 +16,7 @@ public:
   Exponent(const EXPONENT_INT_PRECISION& n): numerator(n), denominator(1) {};
   Exponent(const EXPONENT_INT_PRECISION& n, const EXPONENT_INT_PRECISION& d): numerator(n), denominator(d) {};
   friend Exponent operator*(const Exponent& e1, const Exponent& e2);
+  friend std::ostream& operator<<(std::ostream& os, const Exponent& e);
   Exponent operator-() const;
   void operator+=(const Exponent& e);
   void operator-=(const Exponent& e);

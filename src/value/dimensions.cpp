@@ -90,6 +90,11 @@ namespace puq {
     return (s=="") ? "1" : s.substr(0,s.size()-1);
   }
 
+  std::ostream& operator<<(std::ostream& os, const Dimensions& d) {
+    os << d.to_string();
+    return os;
+  }
+  
   bool Dimensions::operator==(const Dimensions& d) const {
     for (int i=0; i<NUM_BASEDIM; i++) {
       if (physical[i]!=d.physical[i])

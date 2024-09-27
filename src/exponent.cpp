@@ -68,6 +68,11 @@ bool Exponent::operator!=(const EXPONENT_REAL_PRECISION& e) const {
   return to_real() != e;
 }
 
+std::ostream& operator<<(std::ostream& os, const Exponent& e) {
+  os << e.to_string();
+  return os;
+}
+  
 /*
  *  Convert rational exponents to real numbers
  */

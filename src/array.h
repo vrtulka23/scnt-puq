@@ -33,6 +33,7 @@ public:
   friend Array operator-(const Array& a1, const Array& a2);
   friend Array operator*(const Array& a1, const Array& a2);
   friend Array operator/(const Array& a1, const Array& a2);
+  friend std::ostream& operator<<(std::ostream& os, const Array& a);
   void operator+=(const Array& a);
   void operator-=(const Array& a);
   void operator*=(const Array& a);

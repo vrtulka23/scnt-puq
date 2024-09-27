@@ -106,7 +106,7 @@ namespace puq {
   
 #endif
   
-  std::string Quantity::to_string(int precision) {
+  std::string Quantity::to_string(int precision) const {
     UnitSystem us(stype);
     return value.to_string(precision);
   }
@@ -153,6 +153,11 @@ namespace puq {
     return Quantity(-q.value);
   }
   
+  std::ostream& operator<<(std::ostream& os, const Quantity& q) {
+    os << q.to_string();
+    return os;
+  }
+
   void Quantity::operator+=(Quantity& q) {
     UnitSystem us(stype);
     if (stype==q.stype) {
@@ -186,7 +191,7 @@ namespace puq {
     UnitSystem us(stype);
     value /= q.value;
   }
-
+  
   UnitValue Quantity::_convert_without_context(UnitSystem& us, SystemDataType* stt) const {
     Dimensions dim = value.baseunits.dimensions();
     us.change(stt);         // change the unit system
