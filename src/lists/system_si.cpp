@@ -140,6 +140,35 @@ namespace puq {
 	  {"Mw",       {Utype::LOG,      "Mo",                        "mom. magnitude",    false, {}                        }},
 #endif
 	    
+          // dimensionless constants     
+          {"[alpha]",  {UT_LIN_CST,      "[#alpha]",                  "fine str. const.",  false, {}                        }},
+          {"[euler]",  {UT_LIN_CST,      "[#euler]",                  "Euler's num.",      false, {}                        }},
+          {"[N_0]",    {UT_LIN_CST,      "[#N_0]",                    "Avogadro's num.",   false, {}                        }},
+          {"[pi]",     {UT_LIN_CST,      "[#pi]",                     "pi num.",           false, {}                        }},
+              				   		           		     
+          // natural constants              		           	         						            
+          {"[a_0]",    {UT_LIN_CST,      "[#a_0]",                    "Bohr radius",       false, {}                        }},
+          {"[c]",      {UT_LIN_CST,      "[#c]",                      "speed of light",    false, {}                        }},
+          {"[e]",      {UT_LIN_CST,      "[#e]",                      "elem. charge",      false, {}                        }},
+          {"[eps_0]",  {UT_LIN_CST,      "[#eps_0]",                  "permit. of vac.",   false, {}                        }},
+          {"[G]",      {UT_LIN_CST,      "[#G]",                      "grav. const.",      false, {}                        }},
+          {"[g]",      {UT_LIN_CST,      "[#g]",                      "grav. accel.",      false, {}                        }},
+          {"[h]",      {UT_LIN_CST,      "[#h]",                      "Planck const.",     false, {}                        }},
+          {"[hbar]",   {UT_LIN_CST,      "[#hbar]",                   "Reduced Pl. con.",  false, {}                        }},
+          {"[H_0]",    {UT_LIN_CST,      "[#H_0]",                    "Hubble const.",     false, {}                        }},
+          {"[k_B]",    {UT_LIN_CST,      "[#k_B]",                    "Boltzmann const.",  false, {}                        }},
+          {"[k_e]",    {UT_LIN_CST,      "[#k_e]",                    "Coulomb const.",    false, {}                        }},
+          {"[L_sol]",  {UT_LIN_CST,      "[#L_sol]",                  "Solar luminosity",  false, {}                        }},
+          {"[M_sol]",  {UT_LIN_CST,      "[#M_sol]",                  "Solar mass",        false, {}                        }},
+          {"[mu_0]",   {UT_LIN_CST,      "[#mu_0]",                   "permeab. of vac.",  false, {}                        }},
+          {"[mu_B]",   {UT_LIN_CST,      "[#mu_B]",                   "Bohr magneton",     false, {}                        }},
+          {"[m_e]",    {UT_LIN_CST,      "[#m_e]",                    "electron mass",     false, {}                        }},
+          {"[m_p]",    {UT_LIN_CST,      "[#m_p]",                    "proton mass",       false, {}                        }},
+          {"[m_n]",    {UT_LIN_CST,      "[#m_n]",                    "neutron mass",      false, {}                        }},
+          {"[R_inf]",  {UT_LIN_CST,      "[#R_inf]",                  "Rydberg constant",  false, {}                        }},
+          {"[R_sol]",  {UT_LIN_CST,      "[#R_sol]",                  "Solar radius",      false, {}                        }},
+          {"[sigma]",  {UT_LIN_CST,      "[#sigma]",                  "Stef.Bolt. const.", false, {}                        }},
+          {"[N_A]",    {UT_LIN_CST,      "[#N_A]",                    "Avogadro's const.", false, {}                        }},
 	}),
       QuantityListType({
 	  {"l",       {"m"           }},

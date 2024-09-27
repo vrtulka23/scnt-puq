@@ -7,7 +7,7 @@ namespace puq {
     
     SystemDataType AU = {
       "AU", "Atomic units", 
-      _BASE_UNITS + _COLLAPSED_CONSTANTS + UnitListType({
+      _BASE_UNITS + _BASE_CONSTANTS + UnitListType({
 	  {"[hbar]",   {UT_LIN_CST,     "1",                                "reduced Pl. con.",  false,  {}             }},
 	  {"[e]",      {UT_LIN_CST,     "1",                                "elementary charge", false,  {}             }},
 	  {"[m_e]",    {UT_LIN_CST,     "1",                                "electr. rest mass", false,  {}             }},
@@ -55,7 +55,7 @@ namespace puq {
 
     SystemDataType PU = {
       "PU", "Planck units", 
-      _BASE_UNITS + _COLLAPSED_CONSTANTS + UnitListType({
+      _BASE_UNITS + _BASE_CONSTANTS + UnitListType({
 	  {"[c]",      {UT_LIN_CST,    "1",                               "speed of light",    false,  {}             }},
           {"[G]",      {UT_LIN_CST,    "1",                               "grav. const.",      false,  {}             }},
 	  {"[hbar]",   {UT_LIN_CST,    "1",                               "reduced Pl. con.",  false,  {}             }},
@@ -83,7 +83,7 @@ namespace puq {
     //https://www.seas.upenn.edu/~amyers/NaturalUnits.pdf
     SystemDataType SRU = {
       "SRU", "Units for special relativity", 
-      _BASE_UNITS + _COLLAPSED_CONSTANTS + UnitListType({
+      _BASE_UNITS + _BASE_CONSTANTS + UnitListType({
 	  {"[c]",     {UT_LIN_CST,     "1",                     "speed of light",    false, {}             }},    
         }),
       QuantityListType({
@@ -106,14 +106,14 @@ namespace puq {
     
     SystemDataType GRU = {
       "GRU", "Units for general relativity",
-      _BASE_UNITS + _COLLAPSED_CONSTANTS + UnitListType({
+      _BASE_UNITS + _BASE_CONSTANTS + UnitListType({
 	  {"[c]",      {UT_LIN_CST,     "1",                             "speed of light",    false, {}                 }},    
 	  {"[hbar]",   {UT_LIN_CST,     "1",                             "reduced Pl. con.",  false, {}                 }},
 	  {"[eps_0]",  {UT_LIN_CST,     "1",                             "permit. of vac.",   false, {}                 }},
 	  {"[k_B]",    {UT_LIN_CST,     "1",                             "Boltzmann const.",  false, {}                 }},
 	    							         
 	  {"eV",       {Utype::LIN,     "1.602176634e-19*m2*kg*s-2",     "electronvolt",      true,  {"k","M","G","T"}  }},
-	  {"[pi]",     {UT_LIN_CST,     "3.1415926",                     "pi num.",           false, {}                 }},
+	  {"[pi]",     {UT_LIN_CST,     "[#pi]",                         "pi num.",           false, {}                 }},
 	  {"[alpha]",  {UT_LIN_CST,     "[#e]2/(4*[pi]*[#eps_0]*[#hbar]*[#c])", "fine-str. const.",  false, {}          }},
 	  {"[e]",      {UT_LIN_CST,     "(4*[pi]*[alpha])1:2",           "elem. charge",      false, {}                 }},
         }),
@@ -138,7 +138,7 @@ namespace puq {
 
     SystemDataType GEO = {
       "GEO", "Geometrized units", 
-      _BASE_UNITS + _COLLAPSED_CONSTANTS + UnitListType({
+      _BASE_UNITS + _BASE_CONSTANTS + UnitListType({
 	  {"[c]",     {UT_LIN_CST,     "1",                     "speed of light",    false, {}             }},    
 	  {"[G]",     {UT_LIN_CST,     "1",                     "grav. const.",      false, {}             }},
         }),

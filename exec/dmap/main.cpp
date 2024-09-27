@@ -46,7 +46,12 @@ void solve_bu_prefix(puq::Dimensions& dim, puq::BaseUnit& bu) {
 bool solve_bu_unit(puq::DimensionMapType& dmap, puq::Dimensions& dim, puq::BaseUnit& bu) {
   auto it = dmap.find(bu.unit);
   if (it != dmap.end()) {
-    dim.numerical *= puq::nostd::pow(it->second.magnitude, (puq::EXPONENT_TYPE)bu.exponent);
+#ifdef MAGNITUDE_ERRORS
+    puq::MAGNITUDE_TYPE m(it->second.magnitude, it->second.error);
+#else
+    puq::MAGNITUDE_TYPE m(it->second.magnitude);
+#endif
+    dim.numerical *= puq::nostd::pow(m, (puq::EXPONENT_TYPE)bu.exponent);
     for (int i=0; i<NUM_BASEDIM; i++) {
       dim.physical[i] += it->second.dimensions[i] * bu.exponent;
     }

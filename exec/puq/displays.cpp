@@ -55,6 +55,7 @@ void display_derived_units() {
     if ((unit.second.utype & puq::Utype::LIN)!=puq::Utype::LIN) continue;
     if ((unit.second.utype & puq::Utype::BAS)==puq::Utype::BAS) continue;
     if ((unit.second.utype & puq::Utype::CST)==puq::Utype::CST) continue;
+    if ((unit.second.utype & puq::Utype::CSC)==puq::Utype::CSC) continue;
     puq::UnitValue uv(unit.first);
     puq::Dimensions dim = uv.baseunits.dimensions();
     std::cout << std::setfill(' ') << std::setw(9)  << std::left << unit.first;
