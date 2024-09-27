@@ -87,7 +87,7 @@ void display_constants() {
 }
 
 void display_quantities() {
-  table_header("Constants:", {"Symbol","Name","Magnitude","Dimension","Definition"}, {10,30,13,22,25});
+  table_header("Constants:", {"Symbol","Name","Magnitude","Dimension","Definition","SI factor"}, {10,30,30,22,25,11});
   std::map<std::string, puq::QuantityStruct> ordered(puq::UnitSystem::Data->QuantityList.begin(), puq::UnitSystem::Data->QuantityList.end());
   for (auto quantity: ordered) {
     std::string symbol = SYMBOL_QUANTITY_START+quantity.first+SYMBOL_QUANTITY_END;
@@ -95,9 +95,10 @@ void display_quantities() {
     puq::Dimensions dim = uv.baseunits.dimensions();
     std::cout << std::setfill(' ') << std::setw(10)  << std::left << symbol;
     std::cout << std::setfill(' ') << std::setw(30) << std::left << puq::QuantityNames.at(quantity.first);
-    std::cout << std::setfill(' ') << std::setw(13) << std::left << dim.to_string(puq::Dformat::NUM);
+    std::cout << std::setfill(' ') << std::setw(30) << std::left << dim.to_string(puq::Dformat::NUM);
     std::cout << std::setfill(' ') << std::setw(22) << std::left << dim.to_string(puq::Dformat::PHYS);
     std::cout << std::setfill(' ') << std::setw(25) << std::left << quantity.second.definition;
+    std::cout << std::setfill(' ') << std::setw(11) << std::left << ((quantity.second.sifactor=="") ? "no" : "yes");
     std::cout << std::scientific << std::endl;
   }
   std::cout << std::endl;
