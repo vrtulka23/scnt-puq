@@ -88,3 +88,13 @@ find_package(benchmark REQUIRED)
 file(GLOB test_files "benchmark/*.cpp")
 add_executable(Benchmark ${test_files})
 target_link_libraries(Benchmark PRIVATE benchmark::benchmark puqcpp-aef)
+
+# pybind11
+###########
+
+find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
+include_directories(${Python3_INCLUDE_DIRS})
+find_package(pybind11 CONFIG)
+
+pybind11_add_module(pypuq exec/pypuq/pypuq.cpp)
+target_link_libraries(pypuq PRIVATE puqcpp-aef)

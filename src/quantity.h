@@ -16,6 +16,7 @@ namespace puq {
     UnitValue value;
     Quantity(SystemDataType& st=*UnitSystem::Data): stype(&st) {};
     Quantity(std::string s, SystemDataType& st=*UnitSystem::Data);
+    Quantity(std::string s, const std::string& system);
     Quantity(const UnitValue& v, SystemDataType& st=*UnitSystem::Data);
     Quantity(const MAGNITUDE_TYPE& m, SystemDataType& st=*UnitSystem::Data);
     Quantity(const MAGNITUDE_TYPE& m, const BaseUnitsList& bu, SystemDataType& st=*UnitSystem::Data);

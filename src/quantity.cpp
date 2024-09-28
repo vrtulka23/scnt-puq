@@ -32,7 +32,25 @@ namespace puq {
     }
 #endif
   }
-  
+
+  inline SystemDataType* select_unit_system(const std::string& system) {
+    if (system == "") {
+      return UnitSystem::Data;
+    } else {
+      auto it = SystemData::SystemMap.find(system);
+      if (it == SystemData::SystemMap.end())
+	throw UnitSystemExcept("Unknown system of units: "+system);
+      return it->second;
+    }    
+  }
+
+  Quantity::Quantity(std::string s, const std::string& system) {
+    SystemDataType* stype = select_unit_system(system);
+    preprocess(s, stype);
+    UnitSystem us(stype);
+    value = UnitValue(s);
+  }
+
   Quantity::Quantity(std::string s, SystemDataType& st) {
     SystemDataType* stt = &st;
     preprocess(s, stt);

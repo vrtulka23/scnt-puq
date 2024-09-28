@@ -21,7 +21,7 @@ function build_code {
     fi
     cmake -B $DIR_BUILD
     cd $DIR_BUILD
-    make -j 10
+    make #-j 10
     cd $DIR_ROOT
 }
 

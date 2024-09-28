@@ -8,6 +8,9 @@
 TEST(UnitSystem, DirectSetting) {
 
   puq::Quantity q1, q2;
+
+  q1 = puq::Quantity("34*statA","ESU");   // set unit system using an abbreviation
+  EXPECT_EQ(q1.to_string(), "34*statA");
   
   q1 = puq::Quantity(34,"statA",puq::SystemData::ESU);  // explicitely state the unit system
   q2 = q1.convert("Fr/ms");
