@@ -47,8 +47,7 @@ namespace puq {
     Quantity convert(const UnitValue& uv, SystemDataType& st, const std::string& q = "") const;
     Quantity convert(const BaseUnits& bu) const;
     Quantity convert(const BaseUnits& bu, SystemDataType& st, const std::string& q = "") const;
-    Quantity convert(std::string s, const std::string& q = "") const;
-    Quantity convert(std::string s, SystemDataType& st, const std::string& q = "") const;
+    Quantity convert(std::string s, SystemDataType& st = *UnitSystem::Data, const std::string& q = "") const;
   };
   
   class UnitSystemExcept: public std::exception {

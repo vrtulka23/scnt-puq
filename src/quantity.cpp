@@ -312,24 +312,18 @@ namespace puq {
   }
   
   // convert using string expression
-  Quantity Quantity::convert(std::string s, const std::string& q) const {
+  Quantity Quantity::convert(std::string s, SystemDataType& st, const std::string& q) const {
     SystemDataType* stt = NULL;
     preprocess(s, stt);
-    if (stt!=NULL) {
-      return convert(s, *stt, q);
-    } else {
-      UnitSystem us(stype);
-      UnitValue uv = value.convert(s);
-      return Quantity(uv);
+    if (stt == NULL)
+      stt = &st;
+    else if (stt != &st) {
+      throw UnitSystemExcept("Ambigous unit system: "+st.SystemAbbrev+", "+stt->SystemAbbrev);
     }
-  }
-
-  Quantity Quantity::convert(std::string s, SystemDataType& st, const std::string& q) const {
-    SystemDataType* stt = &st;
-    preprocess(s, stt);
     UnitSystem us(stype);
     if (stype == stt) {
-      return convert(s);
+      UnitValue uv = value.convert(s);
+      return Quantity(uv);
     } else if (q == "") {
       UnitValue uv = _convert_without_context(us, stt);
       return Quantity(uv.convert(s), *stt);

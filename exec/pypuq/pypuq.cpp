@@ -15,8 +15,8 @@ PYBIND11_MODULE(pypuq, m) {
     
     m.def("convert", &convert, "Convert quantities");
 
-    py::class_<puq::Quantity>(m, "quantity")
-      .def("convert", py::overload_cast<std::string, const std::string&>(&puq::Quantity::convert, py::const_), py::arg("expression"), py::arg("quantity")="")
+    py::class_<puq::Quantity>(m, "Q")
+      .def("convert", py::overload_cast<std::string, puq::SystemDataType&, const std::string&>(&puq::Quantity::convert, py::const_), py::arg("expression"), py::arg("system")="", py::arg("quantity")="")
       .def("to_string", &puq::Quantity::to_string, py::arg("precision") = 6)
       .def("__repr__", &puq::Quantity::to_string, py::arg("precision") = 6)
       .def(py::self + py::self)

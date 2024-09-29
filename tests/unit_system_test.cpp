@@ -13,12 +13,12 @@ TEST(UnitSystem, DirectSetting) {
   EXPECT_EQ(q1.to_string(), "34*statA");
   
   q1 = puq::Quantity(34,"statA",puq::SystemData::ESU);  // explicitely state the unit system
-  q2 = q1.convert("Fr/ms");
+  q2 = q1.convert("Fr/ms",puq::SystemData::ESU);
   EXPECT_EQ(q2.to_string(), "0.034*Fr*ms-1");
 
 #ifdef PREPROCESS_SYSTEM
   q1 = puq::Quantity(34,"ESU_statA");    // state the unit system in the unit expression
-  q2 = q1.convert("Fr/ms");
+  q2 = q1.convert("Fr/ms",puq::SystemData::ESU);
   EXPECT_EQ(q2.to_string(), "0.034*Fr*ms-1");  
 #endif
   
@@ -58,8 +58,7 @@ TEST(UnitSystem, DirectConversionESU) {
 
 #ifdef PREPROCESS_SYSTEM
   q1 = puq::Quantity(34, "J");       
-  q2 = q1.convert("ESU_erg");                         // convert using prefix in the expression 
-  EXPECT_EQ(q2.to_string(), "3.4e+08*erg");
+  EXPECT_THROW(q1.convert("ESU_erg"), puq::UnitSystemExcept);  // abiguous systems ESU and SI (default)
 #endif
   
 }
@@ -90,9 +89,9 @@ TEST(UnitSystem, ContextConversionESU) {
   EXPECT_EQ(q2.to_string(), "1e-07*J"); 
   
 #ifdef PREPROCESS_SYSTEM
+  // throw an error if preprocessor system does not match selected system
   q1 = puq::Quantity("6.671282e-10*A");
-  q2 = q1.convert("ESU_statA", "I");                       // convert using prefix in the expression
-  EXPECT_EQ(q2.to_string(), "2*statA");
+  EXPECT_THROW(q1.convert("ESU_statA", puq::SystemData::SI, "I"), puq::UnitSystemExcept);
 #endif
   
 }

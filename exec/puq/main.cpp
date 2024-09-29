@@ -72,7 +72,7 @@ void convert_quantity(puq::Quantity& q, std::deque<std::string>& convert) {
       q = q.convert(expr2, *sys2);
   } else {
     if (sys2 == NULL)
-      q = q.convert(expr2, quant);
+      q = q.convert(expr2, *puq::UnitSystem::Data, quant);
     else {
       q = q.convert(expr2, *sys2, quant);
     }
