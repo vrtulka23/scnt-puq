@@ -42,7 +42,7 @@ TEST(Quantity, Initialization) {
   EXPECT_EQ(ss.str(), "34*J");
   
 }
-  
+
 #ifdef MAGNITUDE_ERRORS
 TEST(Quantity, InitializationErrors) {
 

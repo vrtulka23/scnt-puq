@@ -132,7 +132,7 @@ TEST(Lists, UnitDefinitionsSI) {
 
 TEST(Lists, UnitDefinitionsESU) {
 
-  puq::UnitSystem us(puq::SystemData::ESU);
+  puq::UnitSystem us(puq::SystemType::ESU);
   test_unit_symbols();
   //test_unit_definitions();
   
@@ -140,7 +140,7 @@ TEST(Lists, UnitDefinitionsESU) {
 
 TEST(Lists, UnitDefinitionsGauss) {
 
-  puq::UnitSystem us(puq::SystemData::GU);
+  puq::UnitSystem us(puq::SystemType::GU);
   test_unit_symbols();
   //test_unit_definitions();
   
@@ -148,7 +148,7 @@ TEST(Lists, UnitDefinitionsGauss) {
 
 TEST(Lists, UnitDefinitionsEMU) {
 
-  puq::UnitSystem us(puq::SystemData::EMU);
+  puq::UnitSystem us(puq::SystemType::EMU);
   test_unit_symbols();
   //test_unit_definitions();
     
@@ -161,7 +161,7 @@ TEST(Lists, UnitDefinitionsEMU) {
 
 TEST(Lists, UnitDefinitionsAU) {
 
-  puq::UnitSystem us(puq::SystemData::AU);
+  puq::UnitSystem us(puq::SystemType::AU);
   test_unit_symbols();
   //test_unit_definitions();
   test_quantities();
@@ -174,7 +174,7 @@ TEST(Lists, UnitDefinitionsAU) {
 
 TEST(Lists, UnitDefinitionsIU) {
 
-  puq::UnitSystem us(puq::SystemData::IU);
+  puq::UnitSystem us(puq::SystemType::IU);
   test_unit_symbols();
   //test_unit_definitions();
 
@@ -182,7 +182,7 @@ TEST(Lists, UnitDefinitionsIU) {
 
 TEST(Lists, UnitDefinitionsUS) {
 
-  puq::UnitSystem us(puq::SystemData::US);
+  puq::UnitSystem us(puq::SystemType::US);
   test_unit_symbols();
   //test_unit_definitions();
 

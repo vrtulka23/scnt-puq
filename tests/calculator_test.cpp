@@ -36,8 +36,7 @@ TEST(Calculator, Arithmetics) {
 
 TEST(Calculator, UnitSystems) {
 
-  puq::Calculator calc;
-  
+  puq::Calculator calc;  
   puq::CalculatorAtom atom = calc.solve("SI_12*cm + US_3*ft");  // addition
   EXPECT_EQ(atom.value.to_string(), "103.44*cm");
 

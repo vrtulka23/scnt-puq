@@ -45,36 +45,36 @@ std::string get_expression(std::deque<std::string>& convert) {
   }
 }
 
-puq::SystemDataType* get_system(std::deque<std::string>& convert) {
-  for (auto sys: puq::SystemData::SystemMap) {
-    if (sys.first==convert.front()) {
+puq::SystemType get_system(std::deque<std::string>& convert) {
+  for (auto sys: puq::SystemMap) {
+    if (sys.second->SystemAbbrev==convert.front()) {
       convert.pop_front();
-      return sys.second;
+      return sys.first;
     }
   }
-  return NULL;
+  return puq::SystemType::NONE;
 }
 
 void change_system(puq::UnitSystem& us, std::deque<std::string>& convert) {
-  puq::SystemDataType* system = get_system(convert);
-  if (system != NULL)
+  puq::SystemType system = get_system(convert);
+  if (system != puq::SystemType::NONE)
     us.change(system);
 }
 
 void convert_quantity(puq::Quantity& q, std::deque<std::string>& convert) {
-  puq::SystemDataType* sys2 = get_system(convert);
+  puq::SystemType sys2 = get_system(convert);
   std::string expr2 = get_expression(convert);
   std::string quant = get_expression(convert);
   if (quant=="") {
-    if (sys2 == NULL)
+    if (sys2 == puq::SystemType::NONE)
       q = q.convert(expr2);
     else 
-      q = q.convert(expr2, *sys2);
+      q = q.convert(expr2, sys2);
   } else {
-    if (sys2 == NULL)
-      q = q.convert(expr2, *puq::UnitSystem::Data, quant);
+    if (sys2 == puq::SystemType::NONE)
+      q = q.convert(expr2, puq::UnitSystem::DefaultSystem, quant);
     else {
-      q = q.convert(expr2, *sys2, quant);
+      q = q.convert(expr2, sys2, quant);
     }
   }
 }
@@ -89,13 +89,13 @@ void solve_expression(std::deque<std::string>& convert) {
 }
 
 void convert_units(std::deque<std::string>& convert) {
-  puq::SystemDataType* sys1 = get_system(convert);
+  puq::SystemType sys1 = get_system(convert);
   std::string expr1 = get_expression(convert);
   puq::Quantity q;
-  if (sys1 == NULL)
+  if (sys1 == puq::SystemType::NONE)
     q = puq::Quantity(expr1);
   else
-    q = puq::Quantity(expr1, *sys1);
+    q = puq::Quantity(expr1, sys1);
   convert_quantity(q, convert);
   std::cout << q.to_string() << std::endl;
 }
@@ -131,7 +131,7 @@ int main(int argc, char * argv[]) {
   }
   try {
     std::deque<std::string> convert;
-    puq::UnitSystem us(puq::SystemData::SI);
+    puq::UnitSystem us(puq::SystemType::SI);
     convert = input.getCmdOption("-i",2);
     if (!convert.empty()) {
       change_system(us, convert);

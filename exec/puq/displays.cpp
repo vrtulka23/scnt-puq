@@ -2,8 +2,8 @@
 
 void display_unit_systems() {
   std::cout << std::endl << "Unit systems:" << std::endl << std::endl;
-  for (auto sys: puq::SystemData::SystemMap) {
-    std::cout << std::setfill(' ') << std::setw(8)  << std::left << sys.first;
+  for (auto sys: puq::SystemMap) {
+    std::cout << std::setfill(' ') << std::setw(8)  << std::left << sys.second->SystemAbbrev;
     std::cout << std::setfill(' ') << std::setw(22)  << std::left << sys.second->SystemName;
     std::cout << std::endl;
   }

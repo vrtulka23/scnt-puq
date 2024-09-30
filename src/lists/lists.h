@@ -5,6 +5,7 @@
 #include <set>
 #include <map>
 #include <stack>
+#include <sstream>
 
 #include "../settings.h"
 #include "../magnitude.h"
@@ -140,19 +141,55 @@ namespace puq {
     extern SystemDataType GRU;
     extern SystemDataType GEO;
 #endif
-    extern std::unordered_map<std::string, SystemDataType*> SystemMap;
   }
+  enum class SystemType {
+    NONE, SI,
+#ifdef UNIT_SYSTEM_CGS
+    ESU, GU, EMU,
+#endif
+#ifdef UNIT_SYSTEM_EUS
+    IU, US,
+#endif
+#ifdef UNIT_SYSTEM_NUS
+    AU, PU, SRU, GRU, GEO,
+#endif
+  };
+  extern std::unordered_map<SystemType, SystemDataType*> SystemMap;
+
+  class UnitSystemExcept: public std::exception {
+  private:
+    std::string message;
+  public:
+    UnitSystemExcept(const std::string m) : message(m) {}
+    UnitSystemExcept(const SystemType st1, const SystemType st2) {
+      auto it1 = SystemMap.find(st1);
+      auto it2 = SystemMap.find(st2);
+      if (it1 == SystemMap.end() || it2 == SystemMap.end()) {
+	message = "Unknown system type";
+      } else {
+	std::stringstream ss;
+	ss << "Incompatible unit systems: ";
+	ss << it1->second->SystemAbbrev;
+	ss << " != ";
+	ss << it2->second->SystemAbbrev;
+	ss << std::endl;
+	message = ss.str();
+      }
+    }
+    const char * what () const noexcept override {
+      return message.c_str();
+    }
+  };
   
   class UnitSystem {
     bool closed;
     static std::stack<SystemDataType*> systemStack;
   public:
     static SystemDataType* Data;
-    UnitSystem(): UnitSystem(&SystemData::SI) {};
-    UnitSystem(SystemDataType& st): UnitSystem(&st) {};
-    UnitSystem(SystemDataType* st);
+    static SystemType DefaultSystem;
+    UnitSystem(const SystemType st=SystemType::NONE);
     ~UnitSystem();
-    void change(SystemDataType* st);
+    void change(const SystemType st);
     void close();
   };
   

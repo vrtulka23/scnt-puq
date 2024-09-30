@@ -169,9 +169,9 @@ void create_map(const std::string file_header) {
 int main(int argc, char * argv[]) {
 
   std::cout << "Generating dimension maps:" << std::endl;
-  for (auto sys: puq::SystemData::SystemMap) {
-    std::string file_header = "src/lists/dmaps/dmap_"+sys.first+".h";
-    puq::UnitSystem us(*sys.second);
+  for (auto sys: puq::SystemMap) {
+    std::string file_header = "src/lists/dmaps/dmap_"+sys.second->SystemAbbrev+".h";
+    puq::UnitSystem us(sys.first);
     create_map(file_header);
     std::cout << "Generating dmap file: " << file_header << std::endl;
   }

@@ -7,35 +7,42 @@
 #include "../solver/solver.h"
 
 namespace puq {
-
-  namespace SystemData {
-    std::unordered_map<std::string, SystemDataType*> SystemMap = {
-      {"SI",    &puq::SystemData::SI},
+  
+  std::unordered_map<puq::SystemType, SystemDataType*> SystemMap = {
+    {puq::SystemType::SI,    &puq::SystemData::SI},
 #ifdef UNIT_SYSTEM_CGS
-      {"ESU",   &puq::SystemData::ESU},
-      {"GU",    &puq::SystemData::GU},
-      {"EMU",   &puq::SystemData::EMU},
+    {puq::SystemType::ESU,   &puq::SystemData::ESU},
+    {puq::SystemType::GU,    &puq::SystemData::GU},
+    {puq::SystemType::EMU,   &puq::SystemData::EMU},
 #endif
 #ifdef UNIT_SYSTEM_EUS
-      {"IU",    &puq::SystemData::IU},
-      {"US",    &puq::SystemData::US},
+    {puq::SystemType::IU,    &puq::SystemData::IU},   
+    {puq::SystemType::US,    &puq::SystemData::US},   
 #endif
 #ifdef UNIT_SYSTEM_NUS
-      {"AU",    &puq::SystemData::AU},   // Atomic units
-      {"PU",    &puq::SystemData::PU},   // Planck units
-      {"SRU",   &puq::SystemData::SRU},  // Units for special relativity
-      {"GRU",   &puq::SystemData::GRU},  // Units for general relativity
-      {"GEO",   &puq::SystemData::GEO},  // Geometrized units
+    {puq::SystemType::AU,    &puq::SystemData::AU},   
+    {puq::SystemType::PU,    &puq::SystemData::PU},   
+    {puq::SystemType::SRU,   &puq::SystemData::SRU},  
+    {puq::SystemType::GRU,   &puq::SystemData::GRU},  
+    {puq::SystemType::GEO,   &puq::SystemData::GEO},  
 #endif
-    };
-  }
+  };
 
   SystemDataType* UnitSystem::Data = &SystemData::SI;
+  SystemType UnitSystem::DefaultSystem = SystemType::SI;
   std::stack<SystemDataType *> UnitSystem::systemStack;
  
-  UnitSystem::UnitSystem(SystemDataType* st): closed(false) {
+  inline SystemDataType* select_unit_system(const SystemType& system) {
+    auto it = SystemMap.find(system);
+    if (it == SystemMap.end())
+      throw UnitSystemExcept("Unknown system of units: "+std::to_string((int)system));
+    return it->second;
+  }
+  
+  UnitSystem::UnitSystem(const SystemType system): closed(false) {
     systemStack.push(Data);
-    Data = st;
+    Data = select_unit_system(system);
+    DefaultSystem = system;
   }
   
   UnitSystem::~UnitSystem() {
@@ -43,16 +50,23 @@ namespace puq {
       close();
   }
 
-  void UnitSystem::change(SystemDataType* st) {
-    Data = systemStack.top();
-    systemStack.pop();
-    systemStack.push(Data);
-    Data = st;
+  void UnitSystem::change(const SystemType system) {
+    Data = select_unit_system(system);
+    DefaultSystem = system;
   }
   
   void UnitSystem::close() {
     Data = systemStack.top();
     systemStack.pop();
+    bool found = false;
+    for (auto sys: SystemMap) {
+      if (sys.second == Data) {
+	DefaultSystem = sys.first;
+	found = true;
+      }
+    }
+    if (!found)
+      throw UnitSystemExcept("Could not find previous unit system");
     closed = true;
   }
 

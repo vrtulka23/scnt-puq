@@ -35,10 +35,10 @@ static void BM_ConvertSystem(benchmark::State& state) {
   bool way = true;
   for (auto _ : state) {
     if (way) {
-      q = q.convert("g*dm2/h2", puq::SystemData::SI);
+      q = q.convert("g*dm2/h2", puq::SystemType::SI);
       way = false;
     } else {
-      q = q.convert("kg*m2/s2", puq::SystemData::AU);
+      q = q.convert("kg*m2/s2", puq::SystemType::AU);
       way = true;
     }
   }

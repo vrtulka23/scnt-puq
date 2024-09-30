@@ -34,3 +34,4 @@
 assets/*
 build/*
 dimension_map_*
+**/__pycache__/*
