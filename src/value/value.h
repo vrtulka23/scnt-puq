@@ -115,11 +115,24 @@ namespace puq {
     UnitValue(const MAGNITUDE_TYPE& m, const BaseUnits& bu): magnitude(m), baseunits(bu) {}
     UnitValue(const MAGNITUDE_TYPE& m, const BaseUnitsList& bul): magnitude(m), baseunits(bul) {}
 #ifdef MAGNITUDE_ERRORS
+    UnitValue(const MAGNITUDE_PRECISION& m, const std::string& s);
+    UnitValue(const MAGNITUDE_PRECISION& m): magnitude(m) {};
     UnitValue(const MAGNITUDE_PRECISION& m, const BaseUnits& bu): magnitude(m), baseunits(bu) {}
     UnitValue(const MAGNITUDE_PRECISION& m, const BaseUnitsList& bul): magnitude(m), baseunits(bul) {}
+    UnitValue(const MAGNITUDE_PRECISION& m, const MAGNITUDE_PRECISION& e, const std::string& s);
     UnitValue(const MAGNITUDE_PRECISION& m, const MAGNITUDE_PRECISION& e): magnitude(m,e) {}
     UnitValue(const MAGNITUDE_PRECISION& m, const MAGNITUDE_PRECISION& e, const BaseUnits& bu): magnitude(m,e), baseunits(bu) {}
     UnitValue(const MAGNITUDE_PRECISION& m, const MAGNITUDE_PRECISION& e, const BaseUnitsList& bul): magnitude(m,e), baseunits(bul) {}
+#ifdef MAGNITUDE_ARRAYS
+    UnitValue(const Array& m, const std::string& s);
+    UnitValue(const Array& m): magnitude(m) {};
+    UnitValue(const Array& m, const BaseUnits& bu): magnitude(m), baseunits(bu) {}
+    UnitValue(const Array& m, const BaseUnitsList& bul): magnitude(m), baseunits(bul) {}
+    UnitValue(const Array& m, const Array& e, const std::string& s);
+    UnitValue(const Array& m, const Array& e): magnitude(m,e) {}
+    UnitValue(const Array& m, const Array& e, const BaseUnits& bu): magnitude(m,e), baseunits(bu) {}
+    UnitValue(const Array& m, const Array& e, const BaseUnitsList& bul): magnitude(m,e), baseunits(bul) {}    
+#endif
 #endif
     std::string to_string(int precision=std::cout.precision()) const;
     friend UnitValue operator+(const UnitValue& v1, const UnitValue& v2);

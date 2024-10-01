@@ -29,7 +29,7 @@ namespace puq {
   };
 
   SystemDataType* UnitSystem::Data = &SystemData::SI;
-  SystemType UnitSystem::DefaultSystem = SystemType::SI;
+  SystemType UnitSystem::System = SystemType::SI;
   std::stack<SystemDataType *> UnitSystem::systemStack;
  
   inline SystemDataType* select_unit_system(const SystemType& system) {
@@ -42,7 +42,7 @@ namespace puq {
   UnitSystem::UnitSystem(const SystemType system): closed(false) {
     systemStack.push(Data);
     Data = select_unit_system(system);
-    DefaultSystem = system;
+    System = system;
   }
   
   UnitSystem::~UnitSystem() {
@@ -52,7 +52,7 @@ namespace puq {
 
   void UnitSystem::change(const SystemType system) {
     Data = select_unit_system(system);
-    DefaultSystem = system;
+    System = system;
   }
   
   void UnitSystem::close() {
@@ -61,7 +61,7 @@ namespace puq {
     bool found = false;
     for (auto sys: SystemMap) {
       if (sys.second == Data) {
-	DefaultSystem = sys.first;
+	System = sys.first;
 	found = true;
       }
     }

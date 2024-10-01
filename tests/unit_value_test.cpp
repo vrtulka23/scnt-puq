@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 
+#include "../src/array.h"
 #include "../src/value/value.h"
 #include "../src/converter.h"
 
@@ -7,7 +8,7 @@ TEST(UnitValue, Initialization) {
 
   puq::UnitValue value;
   
-  value = {3.34e3,{{"k","m",-1}}};           // list initialization
+  value = {3.34e3,{{"k","m",-1}}};                // list initialization
   EXPECT_EQ(value.to_string(), "3340*km-1");
 
   value = puq::UnitValue(3.34e3,"km-1");          // assigning UnitValue
@@ -20,10 +21,24 @@ TEST(UnitValue, Initialization) {
   value = puq::UnitValue("3*km/s");               // from a string
   EXPECT_EQ(value.to_string(), "3*km*s-1");
 
-  puq::Dimensions dim(23,{1,2,3,4,0,0,0,0});
+  puq::Dimensions dim(23,{1,2,3,4,0,0,0,0});      // from Dimensions
   value = puq::UnitValue(2, dim);
   EXPECT_EQ(value.to_string(), "46*m*g2*s3*K4");
- 
+
+#ifdef MAGNITUDE_ARRAYS
+  puq::ArrayValue a({2,3,4,5});                   // from Array
+  value = puq::UnitValue(a, "km");
+  EXPECT_EQ(value.to_string(), "{2, 3, ...}*km");
+  
+  puq::ArrayValue av = {2,3,4,5};                 // from ArrayValue
+  value = puq::UnitValue(av, "km");
+  EXPECT_EQ(value.to_string(), "{2, 3, ...}*km");
+  
+  std::vector<double> v = {2,3,4,5};              // from a vector
+  value = puq::UnitValue(v, "km");
+  EXPECT_EQ(value.to_string(), "{2, 3, ...}*km");
+#endif
+  
   value = puq::UnitValue("3*km/s");    
   std::stringstream ss;
   ss << value;                      // cast unit value as a string into a stream
@@ -99,14 +114,32 @@ TEST(UnitValue, InitializationFractions) {
 
 TEST(UnitValue, InitializationErrors) {
 
-  puq::UnitValue v = puq::UnitValue({1.23,0.01},"km3");  // magnitude, errors and dimensions
+  puq::UnitValue v = puq::UnitValue(1.23,0.01,"km3");  // magnitude, errors and dimensions
   EXPECT_EQ(v.to_string(), "1.230(10)*km3");
 
-  v = puq::UnitValue({1.23,0.01},"2*km3");          // magnitude, errors and dimensions with a number
+  v = puq::UnitValue(1.23,0.01,"2*km3");               // magnitude, errors and dimensions with a number
   EXPECT_EQ(v.to_string(), "2.460(20)*km3");
 
-  v = puq::UnitValue("3.40(10)*km3");               // unit expression
-  EXPECT_EQ(v.to_string(), "3.40(10)*km3");
+  v = puq::UnitValue("3.40(10)*km3");                  // unit expression
+  EXPECT_EQ(v.to_string(), "3.40(10)*km3");	      
+
+#ifdef MAGNITUDE_ARRAYS
+  puq::Array am({2,3,4,5});                           // from Array
+  puq::Array ae({0.2,0.3,0.4,0.5});        
+  v = puq::UnitValue(am, ae, "km");		      
+  EXPECT_EQ(v.to_string(), "{2.00(20), 3.00(30), ...}*km");     
+  						      
+  puq::ArrayValue avm = {2,3,4,5};                      // from ArrayValue
+  puq::ArrayValue ave = {0.2,0.3,0.4,0.5};        
+  v = puq::UnitValue(avm, ave, "km");		      
+  EXPECT_EQ(v.to_string(), "{2.00(20), 3.00(30), ...}*km");     
+  						      
+  std::vector<double> vm = {2,3,4,5};                  // from a vector
+  std::vector<double> ve = {0.2,0.3,0.4,0.5};
+  v = puq::UnitValue(vm, ve, "km");
+  EXPECT_EQ(v.to_string(), "{2.00(20), 3.00(30), ...}*km");
+#endif
+  
 }
 
 #endif

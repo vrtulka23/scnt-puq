@@ -4,16 +4,23 @@
 
 namespace puq {
 
-  void Quantity::preprocess(std::string& expression, SystemType& stt) const {
+  void Quantity::preprocess(std::string& expression, SystemType& system) const {
 #ifdef PREPROCESS_SYSTEM
-    for (auto system: SystemMap) {
-      std::string symbol = system.second->SystemAbbrev+SYMBOL_SYSTEM;
+    for (auto sys: SystemMap) {
+      std::string symbol = sys.second->SystemAbbrev+SYMBOL_SYSTEM;
       if (expression.rfind(symbol, 0) == 0) {
 	expression = expression.substr(symbol.size(), expression.size()-symbol.size());
-	stt = system.first;
+	if (system==SystemType::NONE)
+	  system = sys.first;
+	else if (system!=sys.first) {
+	  auto it = SystemMap.find(system);
+	  throw UnitSystemExcept("Selected unit systems are ambiguous: "+it->second->SystemAbbrev+" "+sys.second->SystemAbbrev);
+	}
 	break;
       }
     }
+    if (system==SystemType::NONE)
+      system = UnitSystem::System;
 #endif
 #ifdef PREPROCESS_SYMBOLS
     // replace non standard symbols
@@ -31,10 +38,6 @@ namespace puq {
       }
     }
 #endif
-  }
-
-  Quantity::Quantity() {
-    stype = UnitSystem::DefaultSystem;
   }
   
   Quantity::Quantity(std::string s, const SystemType system): stype(system) {
@@ -100,12 +103,50 @@ namespace puq {
     value = UnitValue(mag, s);
   }
   
+#ifdef MAGNITUDE_ARRAYS
+
+  Quantity::Quantity(const Array& m, const SystemType system): stype(system) {
+    UnitSystem us(stype);
+    value = UnitValue(m);
+  }
+  
+  Quantity::Quantity(const Array& m, const BaseUnitsList& bu, const SystemType system): stype(system) {
+    UnitSystem us(stype);
+    value = UnitValue(m, bu);
+  }
+  
+  Quantity::Quantity(const Array& m, std::string s, const SystemType system): stype(system) {
+    preprocess(s, stype);
+    UnitSystem us(stype);
+    Magnitude mag(m);
+    value = UnitValue(mag, s);
+  }
+
+  Quantity::Quantity(const Array& m, const Array& e, const SystemType system): stype(system) {
+    UnitSystem us(stype);
+    value = UnitValue(m, e);
+  }
+  
+  Quantity::Quantity(const Array& m, const Array& e, const BaseUnitsList& bu, const SystemType system): stype(system) {
+    UnitSystem us(stype);
+    value = UnitValue(m, e, bu);
+  }
+ 
+  Quantity::Quantity(const Array& m, const Array& e, std::string s, const SystemType system): stype(system) {
+    preprocess(s, stype);
+    UnitSystem us(stype);
+    Magnitude mag(m,e);
+    value = UnitValue(mag, s);
+  }
+  
+#endif
+  
 #endif
 
   std::string Quantity::unit_system() const {
     auto it = SystemMap.find(stype);
     if (it == SystemMap.end()) {
-      it = SystemMap.find(UnitSystem::DefaultSystem);
+      it = SystemMap.find(UnitSystem::System);
     }
     return it->second->SystemName+" ("+it->second->SystemAbbrev+")";
   }
@@ -296,39 +337,30 @@ namespace puq {
   }
   
   // convert using string expression
-  Quantity Quantity::convert(std::string s, const SystemType system, const std::string& q) const {
-    SystemType stt = SystemType::NONE;
-    preprocess(s, stt);
-    if (system!=SystemType::NONE) {
-      if (stt==SystemType::NONE)
-	stt = system;
-      else if (system!=stt)
-	throw UnitSystemExcept(stt, system);
-    } else {
-      stt = stype;
-    }
+  Quantity Quantity::convert(std::string s, SystemType system, const std::string& q) const {
+    preprocess(s, system);
     UnitSystem us(stype);
-    if (stype == stt) {
+    if (stype == system) {
       UnitValue uv = value.convert(s);
       return Quantity(uv);
     } else if (q == "") {
-      UnitValue uv = _convert_without_context(us, stt);
-      return Quantity(uv.convert(s), stt);
+      UnitValue uv = _convert_without_context(us, system);
+      return Quantity(uv.convert(s), system);
     } else {      
       QuantityListType::iterator qs1 = puq::UnitSystem::Data->QuantityList.find(q);
       if (qs1==puq::UnitSystem::Data->QuantityList.end())
 	throw UnitSystemExcept("Quantity symbol not found: "+q);
-      us.change(stt);  
+      us.change(system);  
       QuantityListType::iterator qs2 = puq::UnitSystem::Data->QuantityList.find(q);
       if (qs2==puq::UnitSystem::Data->QuantityList.end())
 	throw UnitSystemExcept("Quantity symbol not found: "+q);
       us.change(stype);
       if (qs1->second.sifactor == "" && qs2->second.sifactor == "") {
-	UnitValue uv = _convert_without_context(us, stt);
-	return Quantity(uv.convert(s), stt);
+	UnitValue uv = _convert_without_context(us, system);
+	return Quantity(uv.convert(s), system);
       } else {
-	UnitValue uv = _convert_with_context(us, stt, qs1, qs2, q);
-	return Quantity(uv.convert(s), stt);
+	UnitValue uv = _convert_with_context(us, system, qs1, qs2, q);
+	return Quantity(uv.convert(s), system);
       }
     }
   }

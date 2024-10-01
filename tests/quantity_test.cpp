@@ -36,6 +36,20 @@ TEST(Quantity, Initialization) {
   EXPECT_EQ(q.to_string(), "6.23537e+12*C4*m4*J-3");
 #endif
 
+#ifdef MAGNITUDE_ARRAYS
+  puq::Array a({2,3,4});
+  q = puq::Quantity(a,"km");              // magnitude as an array
+  EXPECT_EQ(q.to_string(), "{2, 3, ...}*km");
+  
+  puq::ArrayValue av = {2,3,4};
+  q = puq::Quantity(av,"km");             // magnitude as an array value
+  EXPECT_EQ(q.to_string(), "{2, 3, ...}*km");  
+
+  std::vector<double> v = {2,3,4,5};      // magnitude as a vector
+  q = puq::Quantity(v,"km"); 
+  EXPECT_EQ(q.to_string(), "{2, 3, ...}*km");  
+#endif
+  
   q = puq::Quantity("34*J");    
   std::stringstream ss;
   ss << q;                      // cast quantity as a string into a stream
@@ -64,6 +78,23 @@ TEST(Quantity, InitializationErrors) {
 
   q = puq::Quantity("8.8541878188(14)×10−12 F⋅m−1");
   EXPECT_EQ(q.to_string(), "8.8541878188(14)e-12*F*m-1");
+#endif
+
+#ifdef MAGNITUDE_ARRAYS
+  puq::Array am({2,3,4,5});                            // from Array
+  puq::Array ae({0.2,0.3,0.4,0.5});        
+  q = puq::Quantity(am, ae, "km");		      
+  EXPECT_EQ(q.to_string(), "{2.00(20), 3.00(30), ...}*km");     
+  
+  puq::ArrayValue avm = {2,3,4,5};                     // from ArrayValue
+  puq::ArrayValue ave = {0.2,0.3,0.4,0.5};        
+  q = puq::Quantity(avm, ave, "km");		      
+  EXPECT_EQ(q.to_string(), "{2.00(20), 3.00(30), ...}*km");     
+  
+  std::vector<double> vm = {2,3,4,5};                  // from a vector
+  std::vector<double> ve = {0.2,0.3,0.4,0.5};
+  q = puq::Quantity(vm, ve, "km");
+  EXPECT_EQ(q.to_string(), "{2.00(20), 3.00(30), ...}*km");
 #endif
   
 }

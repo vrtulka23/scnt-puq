@@ -30,6 +30,35 @@ namespace puq {
     }
   }
 
+#ifdef MAGNITUDE_ERRORS
+  UnitValue::UnitValue(const MAGNITUDE_PRECISION& m, const std::string& s) {
+    UnitSolver solver;  
+    UnitAtom atom = solver.solve(s);
+    magnitude = Magnitude(m) * atom.value.magnitude;
+    baseunits = atom.value.baseunits;
+  }
+  UnitValue::UnitValue(const MAGNITUDE_PRECISION& m, const MAGNITUDE_PRECISION& e, const std::string& s) {
+    UnitSolver solver;  
+    UnitAtom atom = solver.solve(s);
+    magnitude = Magnitude(m,e) * atom.value.magnitude;
+    baseunits = atom.value.baseunits;
+  }
+#ifdef MAGNITUDE_ARRAYS
+  UnitValue::UnitValue(const Array& m, const std::string& s) {
+    UnitSolver solver;  
+    UnitAtom atom = solver.solve(s);
+    magnitude = Magnitude(m) * atom.value.magnitude;
+    baseunits = atom.value.baseunits;
+  }
+  UnitValue::UnitValue(const Array& m, const Array& e, const std::string& s) {
+    UnitSolver solver;  
+    UnitAtom atom = solver.solve(s);
+    magnitude = Magnitude(m,e) * atom.value.magnitude;
+    baseunits = atom.value.baseunits;
+  }
+#endif
+#endif
+  
   std::string UnitValue::to_string(int precision) const {
     std::stringstream ss;
   #if defined(MAGNITUDE_ERRORS)

@@ -98,3 +98,5 @@ find_package(pybind11 CONFIG)
 
 pybind11_add_module(pypuq exec/pypuq/pypuq.cpp)
 target_link_libraries(pypuq PRIVATE puqcpp-aef)
+
+install(TARGETS pypuq LIBRARY DESTINATION ${Python3_SITEARCH})

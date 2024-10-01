@@ -186,7 +186,7 @@ namespace puq {
     static std::stack<SystemDataType*> systemStack;
   public:
     static SystemDataType* Data;
-    static SystemType DefaultSystem;
+    static SystemType System;
     UnitSystem(const SystemType st=SystemType::NONE);
     ~UnitSystem();
     void change(const SystemType st);
