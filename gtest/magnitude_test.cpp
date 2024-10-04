@@ -48,6 +48,13 @@ TEST(Magnitude, ErrorConversion) {
  
 }
 
+TEST(Magnitude, Size) {
+  
+  puq::Magnitude m(puq::Array({2,3,4,5}));
+  EXPECT_EQ(m.size(), 4);
+  
+}
+
 #ifdef MAGNITUDE_ARRAYS
 
 TEST(Magnitude, ErrorConversionArrays) {

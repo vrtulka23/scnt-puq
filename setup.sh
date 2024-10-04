@@ -45,7 +45,7 @@ function run_code {
 
 function grep_code {
     if [[ "${1}" != "" ]]; then
-	    grep -Inr $1 ./src ./tests ./exec
+	    grep -Inr $1 ./src ./gtest ./pytest ./exec
     fi
 }
 

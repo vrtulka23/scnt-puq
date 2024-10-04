@@ -14,9 +14,8 @@ namespace puq {
 
 typedef std::vector<MAGNITUDE_PRECISION> ArrayValue;
 class Array {
-private:
-  ArrayValue value;
 public:
+  ArrayValue value;
   Array(): value() {};
   Array(const MAGNITUDE_PRECISION& v): value({v}) {value.shrink_to_fit();};
   Array(const ArrayValue& v): value(v) {value.shrink_to_fit();};
@@ -29,10 +28,10 @@ public:
   void append(const MAGNITUDE_PRECISION& v);
   void append(const ArrayValue& v);
   friend Array operator+(const Array& a1, const Array& a2);
-  friend Array operator-(const Array& a);
   friend Array operator-(const Array& a1, const Array& a2);
   friend Array operator*(const Array& a1, const Array& a2);
   friend Array operator/(const Array& a1, const Array& a2);
+  friend Array operator-(const Array& a);
   friend std::ostream& operator<<(std::ostream& os, const Array& a);
   void operator+=(const Array& a);
   void operator-=(const Array& a);

@@ -134,6 +134,7 @@ namespace puq {
     UnitValue(const Array& m, const Array& e, const BaseUnitsList& bul): magnitude(m,e), baseunits(bul) {}    
 #endif
 #endif
+    std::size_t size() const;
     std::string to_string(int precision=std::cout.precision()) const;
     friend UnitValue operator+(const UnitValue& v1, const UnitValue& v2);
     friend UnitValue operator-(const UnitValue& v1, const UnitValue& v2);

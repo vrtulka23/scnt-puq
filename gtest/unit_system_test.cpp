@@ -8,14 +8,14 @@
 TEST(Quantity, PrintUnitSystem) {
 
   puq::Quantity q("23*cm");
-  EXPECT_EQ(q.unit_system(), "International System of Units (SI)");
+  EXPECT_EQ(q.unit_system(), "SI");
 
   q = puq::Quantity("23*cm", puq::SystemType::ESU);
-  EXPECT_EQ(q.unit_system(), "Electrostatic CGS units (ESU)");
+  EXPECT_EQ(q.unit_system(), "ESU");
 
   puq::UnitSystem us(puq::SystemType::AU);
   q = puq::Quantity("3*E_h");
-  EXPECT_EQ(q.unit_system(), "Atomic units (AU)");
+  EXPECT_EQ(q.unit_system(), "AU");
   
 }
 

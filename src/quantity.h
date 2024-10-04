@@ -37,11 +37,33 @@ namespace puq {
 #endif
 #endif
     std::string unit_system() const;
+    std::size_t size() const;
     std::string to_string(int precision=std::cout.precision()) const;
+    // quantity operations
     friend Quantity operator+(const Quantity& q1, const Quantity& q2);
     friend Quantity operator-(const Quantity& q1, const Quantity& q2);
     friend Quantity operator*(const Quantity& q1, const Quantity& q2);
     friend Quantity operator/(const Quantity& q1, const Quantity& q2);
+    // scalar operations
+    friend Quantity operator+(const MAGNITUDE_PRECISION& m, const Quantity& q);
+    friend Quantity operator-(const MAGNITUDE_PRECISION& m, const Quantity& q);
+    friend Quantity operator*(const MAGNITUDE_PRECISION& m, const Quantity& q);
+    friend Quantity operator/(const MAGNITUDE_PRECISION& m, const Quantity& q);
+    friend Quantity operator+(const Quantity& q, const MAGNITUDE_PRECISION& m);
+    friend Quantity operator-(const Quantity& q, const MAGNITUDE_PRECISION& m);
+    friend Quantity operator*(const Quantity& q, const MAGNITUDE_PRECISION& m);
+    friend Quantity operator/(const Quantity& q, const MAGNITUDE_PRECISION& m);
+#ifdef MAGNITUDE_ARRAYS
+    // array operations
+    friend Quantity operator+(const Array& a, const Quantity& q);
+    friend Quantity operator-(const Array& a, const Quantity& q);
+    friend Quantity operator*(const Array& a, const Quantity& q);
+    friend Quantity operator/(const Array& a, const Quantity& q);
+    friend Quantity operator+(const Quantity& q, const Array& a);
+    friend Quantity operator-(const Quantity& q, const Array& a);
+    friend Quantity operator*(const Quantity& q, const Array& a);
+    friend Quantity operator/(const Quantity& q, const Array& a);
+#endif
     friend Quantity operator+(const Quantity& q);
     friend Quantity operator-(const Quantity& q);
     friend std::ostream& operator<<(std::ostream& os, const Quantity& q);
@@ -56,6 +78,7 @@ namespace puq {
     Quantity convert(const BaseUnits& bu) const;
     Quantity convert(const BaseUnits& bu, const SystemType system, const std::string& q = "") const;
     Quantity convert(std::string s, SystemType system = SystemType::NONE, const std::string& q = "") const;
+    Quantity rebase_prefixes();
   };  
   
 }

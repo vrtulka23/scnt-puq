@@ -29,17 +29,18 @@ Array Array::const_operation(const Array& a1, const Array& a2,
 			     MAGNITUDE_PRECISION (*func)(const MAGNITUDE_PRECISION& v1,
 							 const MAGNITUDE_PRECISION& v2)) {
   Array a;
-  if (a1.size()==a2.size())    // arrays have same sizes
+  if (a1.size()==a2.size()) {  // arrays have same sizes
     for (int i=0; i<a1.size(); i++)
       a.append(func(a1[i],a2[i]));
-  else if (a1.size()==1)       // first value is a scalar
+  } else if (a1.size()==1) {   // first value is a scalar
     for (int i=0; i<a2.size(); i++)
       a.append(func(a1[0],a2[i]));
-  else if (a2.size()==1)       // second value is a scalar
+  } else if (a2.size()==1) {   // second value is a scalar
     for (int i=0; i<a1.size(); i++)
       a.append(func(a1[i],a2[0]));
-  else                         // arrays have different sizes
+  } else {                     // arrays have different sizes
     throw ArraySizeException(a1, a2);
+  }
   return a;
 }
 
@@ -86,32 +87,11 @@ MAGNITUDE_PRECISION Array::operator[](const size_t i) const {
   return value[i];
 }
 
-void Array::operator+=(const Array& a) {
-  auto fn = [](MAGNITUDE_PRECISION& v1, const MAGNITUDE_PRECISION& v2) {
-    v1 += v2;
-  };
-  mutating_operation(value, a.value, fn);
-}
-
 Array operator+(const Array& a1, const Array& a2) {
   auto fn = [](const MAGNITUDE_PRECISION& v1, const MAGNITUDE_PRECISION& v2) {
     return v1 + v2;
   };
   return Array::const_operation(a1.value, a2.value, fn);
-}
-
-void Array::operator-=(const Array& a) {
-  auto fn = [](MAGNITUDE_PRECISION& v1, const MAGNITUDE_PRECISION& v2) {
-    v1 -= v2;
-  };
-  mutating_operation(value, a.value, fn);
-}
-
-Array operator-(const Array& a) {
-  ArrayValue av;
-  for (int i=0; i<a.value.size(); i++)
-    av.push_back(-a.value[i]);
-  return Array(av);
 }
 
 Array operator-(const Array& a1, const Array& a2) {
@@ -121,13 +101,6 @@ Array operator-(const Array& a1, const Array& a2) {
   return Array::const_operation(a1.value, a2.value, fn);
 }
 
-void Array::operator*=(const Array& a) {
-  auto fn = [](MAGNITUDE_PRECISION& v1, const MAGNITUDE_PRECISION& v2) {
-    v1 *= v2;
-  };
-  mutating_operation(value, a.value, fn);
-}
-
 Array operator*(const Array& a1, const Array& a2) {
   auto fn = [](const MAGNITUDE_PRECISION& v1, const MAGNITUDE_PRECISION& v2) {
     return v1 * v2;
@@ -135,18 +108,46 @@ Array operator*(const Array& a1, const Array& a2) {
   return Array::const_operation(a1.value, a2.value, fn);
 }
 
-void Array::operator/=(const Array& a) {
-  auto fn = [](MAGNITUDE_PRECISION& v1, const MAGNITUDE_PRECISION& v2) {
-    v1 /= v2;
-  };
-  mutating_operation(value, a.value, fn);
-}
-
 Array operator/(const Array& a1, const Array& a2) {
   auto fn = [](const MAGNITUDE_PRECISION& v1, const MAGNITUDE_PRECISION& v2) {
     return v1 / v2;
   };
   return Array::const_operation(a1.value, a2.value, fn);
+}
+
+Array operator-(const Array& a) {
+  ArrayValue av;
+  for (int i=0; i<a.value.size(); i++)
+    av.push_back(-a.value[i]);
+  return Array(av);
+}
+
+void Array::operator+=(const Array& a) {
+  auto fn = [](MAGNITUDE_PRECISION& v1, const MAGNITUDE_PRECISION& v2) {
+    v1 += v2;
+  };
+  mutating_operation(value, a.value, fn);
+}
+
+void Array::operator-=(const Array& a) {
+  auto fn = [](MAGNITUDE_PRECISION& v1, const MAGNITUDE_PRECISION& v2) {
+    v1 -= v2;
+  };
+  mutating_operation(value, a.value, fn);
+}
+
+void Array::operator*=(const Array& a) {
+  auto fn = [](MAGNITUDE_PRECISION& v1, const MAGNITUDE_PRECISION& v2) {
+    v1 *= v2;
+  };
+  mutating_operation(value, a.value, fn);
+}
+
+void Array::operator/=(const Array& a) {
+  auto fn = [](MAGNITUDE_PRECISION& v1, const MAGNITUDE_PRECISION& v2) {
+    v1 /= v2;
+  };
+  mutating_operation(value, a.value, fn);
 }
 
 bool Array::operator==(const Array& a) const {

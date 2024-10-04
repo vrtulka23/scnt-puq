@@ -28,7 +28,6 @@ namespace puq {
       {"\u00D710", SYMBOL_EXPONENT},  // ×10 -> e
       {"\u2212",   SYMBOL_MINUS},     // −   -> -
       {"\u22C5",   SYMBOL_MULTIPLY},  // ⋅   -> *
-      {" ",        SYMBOL_MULTIPLY},  //     -> *
     };
     for (auto item: dict) {
       size_t pos = expression.find(item.first);
@@ -148,14 +147,24 @@ namespace puq {
     if (it == SystemMap.end()) {
       it = SystemMap.find(UnitSystem::System);
     }
-    return it->second->SystemName+" ("+it->second->SystemAbbrev+")";
+    return it->second->SystemAbbrev;
   }
 
+  std::size_t Quantity::size() const {
+    return value.size();
+  }
+  
+  // strings and streams
   std::string Quantity::to_string(int precision) const {
     UnitSystem us(stype);
     return value.to_string(precision);
   }
-  
+  std::ostream& operator<<(std::ostream& os, const Quantity& q) {
+    os << q.to_string();
+    return os;
+  }
+
+  // overloading quantity/quantity binary operations
   Quantity operator+(const Quantity& q1, const Quantity& q2) {
     UnitSystem us(q1.stype);
     if (q1.stype==q2.stype) {
@@ -165,7 +174,6 @@ namespace puq {
       return Quantity(q1.value+q3.value);
     }
   }
-  
   Quantity operator-(const Quantity& q1, const Quantity& q2) {
     UnitSystem us(q1.stype);
     if (q1.stype==q2.stype) {
@@ -175,34 +183,101 @@ namespace puq {
       return Quantity(q1.value-q3.value);
     }
   }
-  
   Quantity operator*(const Quantity& q1, const Quantity& q2) {
     if (q1.stype!=q2.stype)
       throw UnitSystemExcept(q1.stype, q2.stype);
     UnitSystem us(q1.stype);
     return Quantity(q1.value*q2.value);
   }
-  
   Quantity operator/(const Quantity& q1, const Quantity& q2) {
     if (q1.stype!=q2.stype)
       throw UnitSystemExcept(q1.stype, q2.stype);
     UnitSystem us(q1.stype);
     return Quantity(q1.value/q2.value);
   }
+
+  // overloading scalar/quantity
+  Quantity operator+(const MAGNITUDE_PRECISION& m, const Quantity& q) {
+    UnitSystem us(q.stype);
+    return Quantity(UnitValue(m)+q.value);
+  }  
+  Quantity operator-(const MAGNITUDE_PRECISION& m, const Quantity& q) {
+    UnitSystem us(q.stype);
+    return Quantity(UnitValue(m)-q.value);
+  }
+  Quantity operator*(const MAGNITUDE_PRECISION& m, const Quantity& q) {
+    UnitSystem us(q.stype);
+    return Quantity(UnitValue(m)*q.value);
+  }
+  Quantity operator/(const MAGNITUDE_PRECISION& m, const Quantity& q) {
+    UnitSystem us(q.stype);
+    return Quantity(UnitValue(m)/q.value);
+  }
+
+  // overloading quantity/scalar
+  Quantity operator+(const Quantity& q, const MAGNITUDE_PRECISION& m) {
+    UnitSystem us(q.stype);
+    return Quantity(q.value+UnitValue(m));
+  }  
+  Quantity operator-(const Quantity& q, const MAGNITUDE_PRECISION& m) {
+    UnitSystem us(q.stype);
+    return Quantity(q.value-UnitValue(m));
+  }
+  Quantity operator*(const Quantity& q, const MAGNITUDE_PRECISION& m) {
+    UnitSystem us(q.stype);
+    return Quantity(q.value*UnitValue(m));
+  }
+  Quantity operator/(const Quantity& q, const MAGNITUDE_PRECISION& m) {
+    UnitSystem us(q.stype);
+    return Quantity(q.value/UnitValue(m));
+  }
+
+  // overloading array/quantity
+  Quantity operator+(const Array& a, const Quantity& q) {
+    UnitSystem us(q.stype);
+    return Quantity(UnitValue(a)+q.value);
+  }  
+  Quantity operator-(const Array& a, const Quantity& q) {
+    UnitSystem us(q.stype);
+    return Quantity(UnitValue(a)-q.value);
+  }
+  Quantity operator*(const Array& a, const Quantity& q) {
+    UnitSystem us(q.stype);
+    return Quantity(UnitValue(a)*q.value);
+  }
+  Quantity operator/(const Array& a, const Quantity& q) {
+    UnitSystem us(q.stype);
+    return Quantity(UnitValue(a)/q.value);
+  }
+
+  // overloading quantity/array
+  Quantity operator+(const Quantity& q, const Array& a) {
+    UnitSystem us(q.stype);
+    q.value+UnitValue(a);
+    return Quantity(q.value+UnitValue(a));
+  }  
+  Quantity operator-(const Quantity& q, const Array& a) {
+    UnitSystem us(q.stype);
+    return Quantity(q.value-UnitValue(a));
+  }
+  Quantity operator*(const Quantity& q, const Array& a) {
+    UnitSystem us(q.stype);
+    return Quantity(q.value*UnitValue(a));
+  }
+  Quantity operator/(const Quantity& q, const Array& a) {
+    UnitSystem us(q.stype);
+    return Quantity(q.value/UnitValue(a));
+  }
   
+  // overloading unary operations
   Quantity operator+(const Quantity& q) {
     return Quantity(+q.value);
   }
-  
   Quantity operator-(const Quantity& q) {
     return Quantity(-q.value);
   }
-  
-  std::ostream& operator<<(std::ostream& os, const Quantity& q) {
-    os << q.to_string();
-    return os;
-  }
 
+  // overloading self assignment operations
   void Quantity::operator+=(Quantity& q) {
     UnitSystem us(stype);
     if (stype==q.stype) {
@@ -212,7 +287,6 @@ namespace puq {
       value += qc.value;
     }
   }
-  
   void Quantity::operator-=(Quantity& q) {
     UnitSystem us(stype);
     if (stype==q.stype) {
@@ -222,21 +296,20 @@ namespace puq {
       value -= qc.value;
     }
   }
-  
   void Quantity::operator*=(Quantity& q) {
     if (stype!=q.stype)
       throw UnitSystemExcept(stype, q.stype);
     UnitSystem us(stype);
     value *= q.value;
   }
-  
   void Quantity::operator/=(Quantity& q) {
     if (stype!=q.stype)
       throw UnitSystemExcept(stype, q.stype);
     UnitSystem us(stype);
     value /= q.value;
   }
-  
+
+  // conversion of units
   UnitValue Quantity::_convert_without_context(UnitSystem& us, const SystemType stt) const {
     Dimensions dim = value.baseunits.dimensions();
     us.change(stt);         // change the unit system
@@ -363,6 +436,12 @@ namespace puq {
 	return Quantity(uv.convert(s), system);
       }
     }
+  }
+  
+  Quantity Quantity::rebase_prefixes() {
+    UnitSystem us(stype);
+    UnitValue uv = value.rebase_prefixes();
+    return Quantity(uv);
   }
     
 }

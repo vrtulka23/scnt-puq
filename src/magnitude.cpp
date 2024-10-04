@@ -104,6 +104,10 @@ namespace puq {
     return ss.str();
   }
 
+  std::size_t Magnitude::size() const {
+    return value.size();
+  }  
+  
   /*
    * Add two magnitudes
    */
@@ -144,7 +148,7 @@ namespace puq {
   const Magnitude multiply(const Magnitude* m, const Magnitude* n) {
     Magnitude nm(m->value * n->value);
     if (m->error==0 && n->error==0) {
-      nm.error = 0;
+      nm.error = (m->error.size()>n->error.size()) ? m->error : n->error;
     } else if (m->error==0 && n->error!=0) {
       nm.error = n->error * m->value;
     } else if (m->error!=0 && n->error==0) {
@@ -173,7 +177,7 @@ namespace puq {
   const Magnitude divide(const Magnitude* m, const Magnitude* n) {
     Magnitude nm(m->value / n->value);
     if (m->error==0 && n->error==0) {
-      nm.error = 0;
+      nm.error = (m->error.size()>n->error.size()) ? m->error : n->error;
     } else if (m->error==0 && n->error!=0) {
       MAGNITUDE_VALUE maxerror = nostd::abs(m->value/(n->value+n->error) - nm.value);
       MAGNITUDE_VALUE minerror = nostd::abs(m->value/(n->value-n->error) - nm.value);

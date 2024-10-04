@@ -72,7 +72,7 @@ find_package(GTest REQUIRED)
 include_directories(${GTEST_INCLUDE_DIRS})
 
 # compile GTest tests
-file(GLOB test_files "tests/*.cpp")
+file(GLOB test_files "gtest/*.cpp")
 
 enable_testing()
 add_executable(TestSolver ${test_files})
@@ -98,5 +98,8 @@ find_package(pybind11 CONFIG)
 
 pybind11_add_module(pypuq exec/pypuq/pypuq.cpp)
 target_link_libraries(pypuq PRIVATE puqcpp-aef)
+target_compile_definitions(pypuq PRIVATE CODE_VERSION="${CODE_VERSION}")
 
-install(TARGETS pypuq LIBRARY DESTINATION ${Python3_SITEARCH})
+message("${Python3_SITESEARCH}")
+
+# install(TARGETS pypuq LIBRARY DESTINATION ${Python3_SITEARCH})

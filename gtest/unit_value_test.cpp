@@ -46,6 +46,13 @@ TEST(UnitValue, Initialization) {
   
 }
 
+TEST(UnitValue, Size) {
+  
+  puq::UnitValue uv(puq::Array({2,3,4,5}));
+  EXPECT_EQ(uv.size(), 4);
+  
+}
+
 TEST(UnitValue, RebasePrefixes) {
 
   puq::UnitValue value;

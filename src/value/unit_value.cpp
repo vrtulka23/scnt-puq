@@ -59,6 +59,10 @@ namespace puq {
 #endif
 #endif
   
+  std::size_t UnitValue::size() const {
+    return magnitude.size();
+  }
+  
   std::string UnitValue::to_string(int precision) const {
     std::stringstream ss;
   #if defined(MAGNITUDE_ERRORS)

@@ -27,6 +27,7 @@ public:
   static Array abs_to_rel(const Array& v, const Array& a);
   static Array rel_to_abs(const Array& v, const Array& r);
 #endif
+  std::size_t size() const;
   std::string to_string(int precision=std::cout.precision()) const;
   friend Magnitude operator-(const Magnitude& m1);
   friend Magnitude operator+(const Magnitude& m1, const Magnitude& m2);
