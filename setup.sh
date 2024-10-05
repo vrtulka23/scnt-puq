@@ -61,6 +61,9 @@ function show_help {
     echo " -t|--test [<test>]  run all/specific tests"
     echo " -g|--grep <expr>    find expression in a code"
     echo " -h|--help           show this help"
+    echo " -B|--build-pypi     build PyPi distribution"
+    echo " -U|--upload-pypi    upload distribution to Pypi"
+    echo " -T|--pytest         run pytest"
     echo ""
     echo "Examples:"
     echo "./setup.sh -c -b               clean and build the code"
@@ -90,6 +93,18 @@ while [[ $# -gt 0 ]]; do
 	    grep_code $2; shift; shift;;
 	-h|--help)
 	    show_help; shift;;
+	-B|--build-pypi)
+	    python setup.py sdist
+	    shift;;
+	-I|--test-pypi)
+	    pip install dist/pypuq-1.1.4.tar.gz
+	    shift;;
+	-U|--upload-pypi)
+	    twine upload dist/*
+	    shift;;
+	-T|--pytest)
+	    pytest
+	    shift;;
 	-*|--*)
 	    show_help; exit 1;;
 	*)

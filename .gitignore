@@ -35,3 +35,7 @@ assets/*
 build/*
 dimension_map_*
 **/__pycache__/*
+
+# PyPi stuff
+dist/*
+pypuq.egg-info/*

@@ -48,11 +48,6 @@ def test_init_arrays():
     q = Q('{2,3,4}*ft', US)
     assert q.to_string() == "{2, 3, ...}*ft"
     
-def test_string():
-
-    q = Q("23*cm")
-    assert str(q) == "23*cm"
-    
 def test_init_arrays_errors():
     
     # initialize with an list/string pair
@@ -67,6 +62,11 @@ def test_init_errors():
     assert q.to_string() == "2.334(20)e+01*km"
     q = Q(23.34, 0.2, 'ft', US)
     assert q.to_string() == "2.334(20)e+01*ft"
+    
+def test_string():
+
+    q = Q("23*cm")
+    assert str(q) == "23*cm"
     
 def test_unit_system():
 
