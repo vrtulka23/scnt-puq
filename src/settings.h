@@ -4,7 +4,7 @@
 #ifdef CONFIG_FILE
 #include CONFIG_FILE
 #else
-#include "config-aef.h"
+#include "config.h"
 #endif
 
 /*

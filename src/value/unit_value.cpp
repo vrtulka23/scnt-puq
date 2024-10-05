@@ -213,9 +213,19 @@ namespace puq {
 	continue;
       if (i==1 && (format&Dformat::MKS)==Dformat::MKS) {
 	bu.append({"k","g",dim.physical[i]});
-      } else if (i==0 && (format&Dformat::CGS)==Dformat::CGS) {
+      }
+      else if (i==0 && (format&Dformat::CGS)==Dformat::CGS) {
 	bu.append({"c","m",dim.physical[i]});	
-      } else {
+      }
+#ifdef UNIT_SYSTEM_EUS
+      else if (i==0 && (format&Dformat::FPS)==Dformat::FPS) {
+	bu.append({"","ft",dim.physical[i]});	
+      }
+      else if (i==1 && (format&Dformat::FPS)==Dformat::FPS) {
+	bu.append({"","lb",dim.physical[i]});	
+      }
+#endif
+      else {
 	bu.append({"",SystemData::BaseUnitOrder[i],dim.physical[i]});
       }
     }

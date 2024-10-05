@@ -19,9 +19,9 @@ function build_code {
     if [[ ! -d $DIR_BUILD ]]; then
 	    mkdir $DIR_BUILD
     fi
-    cmake -B $DIR_BUILD
+    cmake -B $DIR_BUILD -DCODE_VERSION="${CODE_VERSION}"
     cd $DIR_BUILD
-    make #-j 10
+    make -j 10
     cd $DIR_ROOT
 }
 
@@ -47,6 +47,13 @@ function grep_code {
     if [[ "${1}" != "" ]]; then
 	    grep -Inr $1 ./src ./gtest ./pytest ./exec
     fi
+}
+
+function build_pypi {
+    if [[ -d dist ]]; then
+	rm -r dist
+    fi
+    python setup.py sdist
 }
 
 function show_help {
@@ -94,10 +101,9 @@ while [[ $# -gt 0 ]]; do
 	-h|--help)
 	    show_help; shift;;
 	-B|--build-pypi)
-	    python setup.py sdist
-	    shift;;
+	    build_pypi; shift;;
 	-I|--test-pypi)
-	    pip install dist/pypuq-1.1.4.tar.gz
+	    pip install "dist/pypuq-${CODE_VERSION}.tar.gz"
 	    shift;;
 	-U|--upload-pypi)
 	    twine upload dist/*

@@ -176,6 +176,14 @@ TEST(UnitValue, UnitConversion) {
   EXPECT_EQ(v2.to_string(), "2*m2*kg*s-2");     // SI
   v2 = v1.convert(puq::Dformat::CGS);
   EXPECT_EQ(v2.to_string(), "2e+07*cm2*g*s-2"); // CGS
+
+#ifdef UNIT_SYSTEM_EUS  // conversion to foot/pound/second 
+  puq::UnitSystem us(puq::SystemType::US);
+  v1 = puq::UnitValue("yd2*s/oz");
+  v2 = v1.convert(puq::Dformat::FPS);
+  EXPECT_EQ(v2.to_string(), "144*ft2*lb-1*s");
+  us.close();
+#endif
   
 }
 

@@ -6,6 +6,18 @@ from setuptools import setup, Extension
 from setuptools.command.build_ext import build_ext
 from pathlib import Path
 
+def load_env_file(file_path):
+    with open(file_path) as file:
+        for line in file:
+            if line.strip() and not line.startswith('#'):
+                line = line.replace("export","")
+                key, value = line.split('=', 1)
+                value = value.replace("\"", "")
+                os.environ[key.strip()] = value.strip()
+                print(key,value)
+
+load_env_file("settings.env")
+
 class CMakeBuild(build_ext):
     def run(self):
         # Ensure CMake is installed
@@ -23,8 +35,9 @@ class CMakeBuild(build_ext):
         cmake_args = [
             f"-DCMAKE_LIBRARY_OUTPUT_DIRECTORY={extdir}",
             f"-DPYTHON_EXECUTABLE={sys.executable}",
+            f"-DCODE_VERSION={os.environ['CODE_VERSION']}",
         ]
-
+        
         if not os.path.exists(self.build_temp):
             os.makedirs(self.build_temp)
         subprocess.check_call(['cmake', ext.sourcedir] + cmake_args, cwd=self.build_temp)
@@ -37,9 +50,9 @@ class CMakeExtension(Extension):
 
 setup(
     name='pypuq',
-    version='1.1.4',
-    author='Ondrej Pego Jaura',
-    description='Physical Units and Quantities',
+    version=os.environ['CODE_VERSION'],
+    author=os.environ['CODE_AUTHOR'],
+    description=os.environ['CODE_DESCRIPTION'],
     long_description='C++ implementation of physical units and quantities and their conversions.',
     ext_modules=[CMakeExtension('pypuq')],
     cmdclass=dict(build_ext=CMakeBuild),

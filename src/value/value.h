@@ -9,11 +9,14 @@
 namespace puq {
 
   enum class Dformat : std::uint8_t {
-    MGS  = 0b00000001,  // m/g/s
-    MKS  = 0b00000010,  // m/kg/s
-    CGS  = 0b00000100,  // cm/g/s
-    NUM  = 0b00001000,  // numerical value
-    PHYS = 0b00010000,  // physical value
+    NUM  = 0b00000001,  // numerical value
+    PHYS = 0b00000010,  // physical value
+    MGS  = 0b00000100,  // m/g/s
+    MKS  = 0b00001000,  // m/kg/s
+    CGS  = 0b00010000,  // cm/g/s
+#ifdef UNIT_SYSTEM_EUS
+    FPS  = 0b00100000,  // ft/lb/s
+#endif
   };
   
   inline Dformat operator|(Dformat lhs, Dformat rhs) {

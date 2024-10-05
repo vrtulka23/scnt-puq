@@ -12,6 +12,7 @@ sys.modules["pypuq"] = pp
 
 from pypuq import Q, UnitSystem
 from pypuq.systems import US, ESU, EMU
+from pypuq.formats import MKS, MGS, CGS, FPS
 
 def test_init_scalars():
 
@@ -115,7 +116,15 @@ def test_conversion():
     q = q.convert('<B>', EMU, 'B')
     assert q.unit_system() == "EMU"
     assert q.to_string() == "230000*<B>"
-    
+
+    # conversion to dimension formats
+    q = Q(23, 'J')
+    assert q.convert(MKS).to_string() == "23*m2*kg*s-2"
+    assert q.convert(MGS).to_string() == "23000*m2*g*s-2"
+    assert q.convert(CGS).to_string() == "2.3e+08*cm2*g*s-2"
+    q = Q(23, 'yd2*s/oz', US)
+    assert q.convert(FPS).to_string() == "3312*ft2*lb-1*s"
+
 def test_arithmetics():
 
     n = Q(12)

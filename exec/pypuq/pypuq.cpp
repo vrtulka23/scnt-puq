@@ -57,6 +57,15 @@ PYBIND11_MODULE(pypuq, m) {
     }
     e.export_values();
 
+    // Exposing dimension formats
+    auto df = m.def_submodule("formats", "Dimension formats");
+    auto d = py::enum_<puq::Dformat>(df, "Dformat");
+    d.value("MKS", puq::Dformat::MKS);
+    d.value("MGS", puq::Dformat::MGS);
+    d.value("CGS", puq::Dformat::CGS);
+    d.value("FPS", puq::Dformat::FPS);
+    d.export_values();
+    
     // Expose UnitSystem
     py::class_<puq::UnitSystem>(m, "UnitSystemBase")
       .def(py::init<const puq::SystemType>())
@@ -90,6 +99,7 @@ PYBIND11_MODULE(pypuq, m) {
       .def(py::init<puq::ArrayValue, puq::ArrayValue, std::string, puq::SystemType>())
       .def("convert", py::overload_cast<std::string, const puq::SystemType, const std::string&>(&puq::Quantity::convert, py::const_),
 	   py::arg("expression"), py::arg("system")=puq::SystemType::NONE, py::arg("quantity")="")
+      .def("convert", py::overload_cast<const puq::Dformat&>(&puq::Quantity::convert, py::const_))
       .def("unit_system", &puq::Quantity::unit_system)
       .def("rebase_prefixes", &puq::Quantity::rebase_prefixes)
       .def("to_string", &puq::Quantity::to_string, py::arg("precision") = 6)
