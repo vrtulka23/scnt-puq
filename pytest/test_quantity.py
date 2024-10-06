@@ -167,6 +167,10 @@ def test_rebase_units():
     q = q.rebase_prefixes()
     assert q.to_string() == "0.23*kg2*cm3"
 
+    q = Q("23*km*au2*s2/h")
+    q = q.rebase_dimensions()
+    assert q.to_string() == "1.4298e+14*km3*s"
+
 def test_magnitude_output():
 
     # return scalar value

@@ -23,7 +23,7 @@ namespace puq {
     LOG = 0b00000100,  // logarithmic unit
     TMP = 0b00001000,  // temperature unit
     CST = 0b00010000,  // constant
-    CSC = 0b00100000,  // collapsed constant
+    CSB = 0b00100000,  // base constant
     QUA = 0b01000000,  // quantity
   };
 
@@ -53,7 +53,7 @@ namespace puq {
   const Utype UT_LIN_BAS_TMP = Utype::LIN|Utype::BAS|Utype::TMP;
   const Utype UT_LIN_TMP     = Utype::LIN|Utype::TMP;
   const Utype UT_LIN_CST     = Utype::LIN|Utype::CST;
-  const Utype UT_LIN_CSC     = Utype::LIN|Utype::CSC;
+  const Utype UT_LIN_CSB     = Utype::LIN|Utype::CSB;
   const Utype UT_LIN_LOG     = Utype::LIN|Utype::LOG;
   const Utype UT_LIN_QUA     = Utype::LIN|Utype::QUA;
 

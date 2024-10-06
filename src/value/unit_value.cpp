@@ -254,5 +254,26 @@ namespace puq {
     }
     return UnitValue(mag, bus);
   }
+
+  UnitValue UnitValue::rebase_dimensions() {
+    MAGNITUDE_TYPE mag = magnitude;
+    std::map<std::string, BaseUnit> bumap;
+    for (auto bu: baseunits) {
+      Dimensions dim = BaseUnits(bu.prefix+bu.unit).dimensions();
+      std::string key = dim.to_string(Dformat::PHYS);
+      if (bumap.find(key) == bumap.end()) {
+	bumap.insert({key, {bu.prefix, bu.unit, bu.exponent}});
+      } else {
+	Dimensions dim0 = BaseUnits(bumap[key].prefix+bumap[key].unit).dimensions();
+	mag *= nostd::pow(dim.numerical/dim0.numerical, bu.exponent);
+	bumap[key].exponent += bu.exponent;
+      }
+    }
+    BaseUnits bus;
+    for (auto bum: bumap) {
+      bus.append(bum.second);
+    }
+  return UnitValue(mag, bus);
+  }
   
 }

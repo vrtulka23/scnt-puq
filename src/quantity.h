@@ -79,6 +79,7 @@ namespace puq {
     Quantity convert(const BaseUnits& bu, const SystemType system, const std::string& q = "") const;
     Quantity convert(std::string s, SystemType system = SystemType::NONE, const std::string& q = "") const;
     Quantity rebase_prefixes();
+    Quantity rebase_dimensions();
   };  
   
 }

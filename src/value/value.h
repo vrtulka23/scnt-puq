@@ -156,6 +156,7 @@ namespace puq {
     UnitValue convert(const BaseUnits& bu) const;
     UnitValue convert(const UnitValue& v) const;
     UnitValue rebase_prefixes();
+    UnitValue rebase_dimensions();
   };
   
 }

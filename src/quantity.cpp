@@ -444,4 +444,10 @@ namespace puq {
     return Quantity(uv);
   }
     
+  Quantity Quantity::rebase_dimensions() {
+    UnitSystem us(stype);
+    UnitValue uv = value.rebase_dimensions();
+    return Quantity(uv);
+  }
+    
 }

@@ -102,6 +102,7 @@ PYBIND11_MODULE(pypuq, m) {
       .def("convert", py::overload_cast<const puq::Dformat&>(&puq::Quantity::convert, py::const_))
       .def("unit_system", &puq::Quantity::unit_system)
       .def("rebase_prefixes", &puq::Quantity::rebase_prefixes)
+      .def("rebase_dimensions", &puq::Quantity::rebase_dimensions)
       .def("to_string", &puq::Quantity::to_string, py::arg("precision") = 6)
       .def("size", &puq::Quantity::size)
       .def("value", &quantity_value, py::arg("numpy")=false)

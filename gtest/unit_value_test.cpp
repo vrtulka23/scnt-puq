@@ -99,6 +99,17 @@ TEST(UnitValue, RebasePrefixes) {
   
 }
 
+TEST(UnitValue, RebaseDimensions) {
+
+  puq::UnitValue value;
+  
+  value = puq::UnitValue("km*au2*pc");   // two different units of length
+  value = value.rebase_dimensions();
+  EXPECT_EQ(value.to_string(), "6.90565e+29*km4");
+
+  
+}
+
 #ifdef EXPONENT_FRACTIONS
 
 TEST(UnitValue, InitializationFractions) {
