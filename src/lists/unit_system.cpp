@@ -56,6 +56,8 @@ namespace puq {
   }
   
   void UnitSystem::close() {
+    if (closed)
+      throw UnitSystemExcept("Instance of a unit system environment cannot be closed twice!");
     Data = systemStack.top();
     systemStack.pop();
     bool found = false;

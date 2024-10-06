@@ -49,6 +49,7 @@ TEST(UnitSystem, EnvironmentSetting) {
   EXPECT_EQ(q2.to_string(), "0.034*Fr*ms-1");  
 
   us.close();                                         // switch to previous system
+  EXPECT_THROW(us.close(), puq::UnitSystemExcept);
 
   EXPECT_THROW(puq::Quantity(2,"statA"), puq::AtomParsingExcept);  // ESU is no more available
   

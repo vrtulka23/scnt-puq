@@ -59,7 +59,7 @@ namespace puq {
       }
     }
     if (munit.first=="") {
-      throw AtomParsingExcept("Unknown unit base: "+expr_orig);
+      throw AtomParsingExcept("Unknown unit base \""+expr_orig+"\" in "+UnitSystem::Data->SystemAbbrev+" system!");
     } else {
       bu.unit = munit.first;
     }
