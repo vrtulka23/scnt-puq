@@ -8,6 +8,12 @@ set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -Wno-deprecated -O3")
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+set(MODULE_NAME scnt-puq)
+set(CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}/install")
+set(CMAKE_INSTALL_BINDIR bin)
+set(CMAKE_INSTALL_LIBDIR lib)
+set(CMAKE_INSTALL_INCLUDEDIR include)
+
 # compile libraries and executables
 ###################################
 
@@ -31,8 +37,6 @@ file(GLOB example_files "exec/dmap/*.cpp" "exec/dmap/**/*.cpp")
 add_executable(dmap ${example_files} )
 target_compile_definitions(dmap PRIVATE CODE_VERSION="${CODE_VERSION}")
 target_link_libraries(dmap PRIVATE puq-cpp)
-
-install(TARGETS puq DESTINATION bin)
 
 # add Google tests
 ###################
@@ -67,3 +71,49 @@ find_package(pybind11 CONFIG)
 pybind11_add_module(pypuq exec/pypuq/pypuq.cpp)
 target_link_libraries(pypuq PRIVATE puq-cpp)
 target_compile_definitions(pypuq PRIVATE CODE_VERSION="${CODE_VERSION}")
+
+# create cmake export files
+###########################
+
+include(CMakePackageConfigHelpers)
+
+configure_package_config_file(
+	${CMAKE_CURRENT_SOURCE_DIR}/cmake/${MODULE_NAME}-config.cmake.in
+  	"${CMAKE_CURRENT_BINARY_DIR}/${MODULE_NAME}-config.cmake"
+  	INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${MODULE_NAME}
+	PATH_VARS CMAKE_INSTALL_INCLUDEDIR
+)
+
+write_basic_package_version_file(
+	"${CMAKE_CURRENT_BINARY_DIR}/${MODULE_NAME}-config-version.cmake"
+    	VERSION ${CODE_VERSION}
+    	COMPATIBILITY AnyNewerVersion
+)
+
+# install files
+###############
+
+install(TARGETS puq EXPORT PuqTargets
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}/${MODULE_NAME})
+
+install(TARGETS puq-cpp EXPORT PuqTargets
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}/${MODULE_NAME})
+
+install(TARGETS pypuq EXPORT PuqTargets
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}/${MODULE_NAME})
+	
+install(DIRECTORY src/
+	INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${MODULE_NAME}
+	FILES_MATCHING PATTERN "*.h")
+	
+install(FILES
+	"${CMAKE_CURRENT_BINARY_DIR}/${MODULE_NAME}-config.cmake"
+	"${CMAKE_CURRENT_BINARY_DIR}/${MODULE_NAME}-config-version.cmake"
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${MODULE_NAME}
+)
+
+install(EXPORT PuqTargets
+        FILE ${MODULE_NAME}-targets.cmake
+        DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/${MODULE_NAME}"
+)
+
