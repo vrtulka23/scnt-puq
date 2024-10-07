@@ -4,6 +4,7 @@
 #include <algorithm>
 
 #include "../settings.h"
+#include "../nostd/nostd.h"
 #include "value.h"
 
 namespace puq {
@@ -65,15 +66,10 @@ namespace puq {
       } else if (i==0 && (format&Dformat::CGS)==Dformat::CGS) {
 	symbol = "cm";
       }
-#ifdef EXPONENT_FRACTIONS
-      if (physical[i]!=0)
-	ss << symbol << physical[i].to_string() << SYMBOL_MULTIPLY;
-#else
       if (physical[i]==1)
 	ss << symbol << SYMBOL_MULTIPLY;
       else if (physical[i]!=0)
-	ss << symbol << physical[i] << SYMBOL_MULTIPLY;
-#endif
+	ss << symbol << nostd::to_string(physical[i]) << SYMBOL_MULTIPLY;
     }
     return ss.str();
   }

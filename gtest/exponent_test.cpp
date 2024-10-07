@@ -7,10 +7,10 @@
 TEST(Exponent, Initialization) {
   
   puq::Exponent e = puq::Exponent();
-  EXPECT_EQ(e.to_string(), "");     // default unit exponent
+  EXPECT_EQ(e.to_string(), "1");    // default unit exponent
 
   e = puq::Exponent(1);
-  EXPECT_EQ(e.to_string(), "");     // unit exponent
+  EXPECT_EQ(e.to_string(), "1");    // unit exponent
   
   e = puq::Exponent(0);
   EXPECT_EQ(e.to_string(), "0");    // zero exponent
@@ -20,7 +20,7 @@ TEST(Exponent, Initialization) {
   
   e = puq::Exponent(3,2);    
   std::stringstream ss;
-  ss << e;                      // cast exponent as a string into a stream
+  ss << e;                          // cast exponent as a string into a stream
   EXPECT_EQ(ss.str(), "3:2");
   
 }

@@ -260,6 +260,10 @@ namespace puq {
     std::map<std::string, BaseUnit> bumap;
     for (auto bu: baseunits) {
       Dimensions dim = BaseUnits(bu.prefix+bu.unit).dimensions();
+      if ((dim.utype & Utype::LOG) == Utype::LOG)
+	throw UnitValueExcept("Dimensions of logarithmic units cannot be rebased: "+baseunits.to_string());
+      if ((dim.utype & Utype::TMP) == Utype::TMP)
+	throw UnitValueExcept("Dimensions of temperature units cannot be rebased: "+baseunits.to_string());
       std::string key = dim.to_string(Dformat::PHYS);
       if (bumap.find(key) == bumap.end()) {
 	bumap.insert({key, {bu.prefix, bu.unit, bu.exponent}});

@@ -3,8 +3,8 @@
  * This file can be updated using 'dmap' executable.
  * 
  * Unit system:  Electromagnetic CGS units (EMU)
- * Last update:  Fri Sep 27 11:35:02 2024
- * Code version: v1.1.2
+ * Last update:  Mon Oct  7 14:17:44 2024
+ * Code version: 1.2.8
  * 
  * Symbol legend:
  * ..    units

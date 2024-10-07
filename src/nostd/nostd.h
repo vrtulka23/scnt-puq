@@ -35,6 +35,9 @@ namespace puq {
      */
   
     extern std::string to_string(const MAGNITUDE_PRECISION& value, int precision=std::cout.precision());
+#ifdef EXPONENT_FRACTIONS
+    extern std::string to_string(const Exponent& value);
+#endif
 #ifdef MAGNITUDE_ARRAYS
     extern std::string to_string(const Array& value, int precision=std::cout.precision());
 #endif

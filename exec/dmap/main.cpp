@@ -9,7 +9,7 @@
 #include "../../src/quantity.h"
 #include "../../src/nostd/nostd.h"
 #include "../../src/solver/solver.h"
-#include "../../src/lists/lists.h"
+#include "../../src/systems/systems.h"
 
 void add_line(std::stringstream& ss, const std::string& symbol, puq::Dimensions& dim, const std::string& name) {
   ss << "{";
@@ -87,7 +87,7 @@ inline void solve_units(std::stringstream& ss, puq::DimensionMapType& dmap, puq:
 
 inline void solve_quantities(std::stringstream& ss, puq::DimensionMapType& dmap, puq::UnitSolver& solver) {
   std::cout << "Solving " << puq::UnitSystem::Data->SystemAbbrev << " system" << std::endl;
-  for (auto quant: puq::UnitSystem::Data->QuantityList) {
+  for (auto quant: puq::UnitSystem::Data->QuantityList) {    
     // solve a quantity definition
     puq::UnitAtom atom = solver.solve(quant.second.definition);
     puq::Dimensions dim(atom.value.magnitude);
@@ -106,9 +106,21 @@ inline void solve_quantities(std::stringstream& ss, puq::DimensionMapType& dmap,
     // solve a quantity IS conversion factor, if exists
     if (quant.second.sifactor!="") {
       atom = solver.solve(quant.second.sifactor);
-      puq::UnitValue value = atom.value.convert(puq::Dformat::MKS);
-      // here we are interested onlin in a dimensionless conversion factor into SI
-      dim = puq::Dimensions(value.magnitude);
+      dim = puq::Dimensions(atom.value.magnitude);
+      for (auto bu: atom.value.baseunits) {
+	solve_bu_prefix(dim, bu);
+	if (!solve_bu_unit(dmap, dim, bu)) {
+	  throw puq::DimensionMapExcept(puq::UnitSystem::Data->SystemAbbrev+" quantity '"+quant.first+
+					"' could not be constructued from a definition '"+
+					quant.second.definition+"'. Missing unit: "+bu.unit);
+	}
+      }
+      // account for the conversion from MGS to MKS dimensions
+      if (dim.physical[1]!=0) 
+	dim.numerical *= puq::nostd::pow(1e-3,dim.physical[1]);
+      // clear physical dimensions to make conversion factors dimensionless
+      std::fill(std::begin(dim.physical), std::end(dim.physical), 0);
+      // register the conversion factor
       symbol = SYMBOL_SIFACTOR_START+quant.first+SYMBOL_SIFACTOR_END;
       add_line(ss, symbol, dim, puq::QuantityNames.at(quant.first)+" SI factor");
       dmap.insert({symbol, {dim.numerical.value[0], dim.numerical.error[0], dim.physical}});
@@ -166,14 +178,52 @@ void create_map(const std::string file_header) {
   fs.close();
 }
 
+class InputParser{
+public:
+  InputParser (int &argc, char **argv){
+    for (int i=1; i < argc; ++i)
+      this->tokens.push_back(std::string(argv[i]));
+  }
+  const std::deque<std::string> getCmdOption(const std::string &option, const int nstr=1) const {
+    std::vector<std::string>::const_iterator itr;
+    std::deque<std::string> strs;
+    itr =  std::find(this->tokens.begin(), this->tokens.end(), option);
+    for (int i=0;i<nstr;i++) {
+      if (itr != this->tokens.end() && ++itr != this->tokens.end()){
+	strs.push_back(*itr);
+      }
+    }
+    return strs;
+  }
+  bool cmdOptionExists(const std::string &option) const {
+    return std::find(this->tokens.begin(), this->tokens.end(), option)
+      != this->tokens.end();
+  }
+  bool cmdEmpty() const {
+    return this->tokens.size()==0;
+  }
+private:
+  std::vector <std::string> tokens;
+};
+
 int main(int argc, char * argv[]) {
 
+  InputParser input(argc, argv);
+  
   std::cout << "Generating dimension maps:" << std::endl;
   for (auto sys: puq::SystemMap) {
-    std::string file_header = "src/lists/dmaps/dmap_"+sys.second->SystemAbbrev+".h";
-    puq::UnitSystem us(sys.first);
-    create_map(file_header);
-    std::cout << "Generating dmap file: " << file_header << std::endl;
+    std::string file_header = "src/systems/dmaps/dmap_"+sys.second->SystemAbbrev+".h";
+    if(input.cmdOptionExists("-e")) {
+      std::ofstream fs;
+      fs.open(file_header, std::ios::out|std::ios::trunc);
+      fs << "// Empty file";
+      fs.close();
+      std::cout << "Generating empty dmap file: " << file_header << std::endl;
+    } else {
+      puq::UnitSystem us(sys.first);
+      create_map(file_header);
+      std::cout << "Generating dmap file: " << file_header << std::endl;
+    }
   }
   
 }

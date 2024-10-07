@@ -96,7 +96,7 @@ std::string Exponent::to_string() const {
   std::stringstream ss;
   if (e.denominator!=1)
     ss << std::to_string(e.numerator) << SYMBOL_FRACTION << std::to_string(e.denominator);
-  else if (e.numerator!=1)
+  else
     ss << std::to_string(e.numerator);
   return ss.str();
 }

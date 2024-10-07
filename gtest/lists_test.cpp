@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <set>
 
-#include "../src/lists/lists.h"
+#include "../src/systems/systems.h"
 #include "../src/value/value.h"
 #include "../src/solver/solver.h"
 
@@ -111,7 +111,7 @@ void test_quantities() {
   }  
 }
 
-TEST(Lists, QuantitySymbols) {
+TEST(Dmaps, QuantitySymbols) {
 
   std::set<std::string> quantities;
   for (auto quantity: puq::QuantityNames) {
@@ -120,7 +120,7 @@ TEST(Lists, QuantitySymbols) {
   
 }
 
-TEST(Lists, UnitDefinitionsSI) {
+TEST(Dmaps, UnitDefinitionsSI) {
 
   test_unit_symbols();
   //test_unit_definitions();
@@ -130,7 +130,7 @@ TEST(Lists, UnitDefinitionsSI) {
 
 #ifdef UNIT_SYSTEM_CGS
 
-TEST(Lists, UnitDefinitionsESU) {
+TEST(Dmaps, UnitDefinitionsESU) {
 
   puq::UnitSystem us(puq::SystemType::ESU);
   test_unit_symbols();
@@ -138,7 +138,7 @@ TEST(Lists, UnitDefinitionsESU) {
   
 }
 
-TEST(Lists, UnitDefinitionsGauss) {
+TEST(Dmaps, UnitDefinitionsGauss) {
 
   puq::UnitSystem us(puq::SystemType::GU);
   test_unit_symbols();
@@ -146,7 +146,7 @@ TEST(Lists, UnitDefinitionsGauss) {
   
 }
 
-TEST(Lists, UnitDefinitionsEMU) {
+TEST(Dmaps, UnitDefinitionsEMU) {
 
   puq::UnitSystem us(puq::SystemType::EMU);
   test_unit_symbols();
@@ -159,7 +159,7 @@ TEST(Lists, UnitDefinitionsEMU) {
 
 #ifdef UNIT_SYSTEM_NUS
 
-TEST(Lists, UnitDefinitionsAU) {
+TEST(Dmaps, UnitDefinitionsAU) {
 
   puq::UnitSystem us(puq::SystemType::AU);
   test_unit_symbols();
@@ -172,7 +172,7 @@ TEST(Lists, UnitDefinitionsAU) {
 
 #ifdef UNIT_SYSTEM_EUS
 
-TEST(Lists, UnitDefinitionsIU) {
+TEST(Dmaps, UnitDefinitionsIU) {
 
   puq::UnitSystem us(puq::SystemType::IU);
   test_unit_symbols();
@@ -180,7 +180,7 @@ TEST(Lists, UnitDefinitionsIU) {
 
 }
 
-TEST(Lists, UnitDefinitionsUS) {
+TEST(Dmaps, UnitDefinitionsUS) {
 
   puq::UnitSystem us(puq::SystemType::US);
   test_unit_symbols();
@@ -190,7 +190,7 @@ TEST(Lists, UnitDefinitionsUS) {
 
 #endif
 
-TEST(List, DimensionMap) {
+TEST(Dmaps, DimensionMap) {
 
   auto it = puq::UnitSystem::Data->DimensionMap.find("<B>");
   EXPECT_TRUE(it!=puq::UnitSystem::Data->DimensionMap.end());
@@ -198,7 +198,7 @@ TEST(List, DimensionMap) {
 }
 
 #ifdef MAGNITUDE_ERRORS
-TEST(List, DimensionMapErrors) {
+TEST(Dmaps, DimensionMapErrors) {
 
   auto it = puq::UnitSystem::Data->DimensionMap.find("[a_0]");
   EXPECT_TRUE(it!=puq::UnitSystem::Data->DimensionMap.end());

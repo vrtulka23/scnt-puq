@@ -113,12 +113,15 @@ namespace puq {
    */
   Magnitude operator+(const Magnitude& m1, const Magnitude& m2) {
     // z ± Dz = (x ± Dx) + (y ± Dy) -> Dz = Dx + Dy     (average errors)
-    return Magnitude(m1.value+m2.value, m1.error+m2.error);
+    Array Dz = m1.error+m2.error;
+    //Array Dz = nostd::sqrt(nostd::pow(m1.error,2)+nostd::pow(m2.error,2)); // Gaussian error propagation
+    return Magnitude(m1.value+m2.value, Dz);
   }
 
   void Magnitude::operator+=(const Magnitude& m) {
     value += m.value;
     error += m.error;
+    //error = nostd::sqrt(nostd::pow(error,2)+nostd::pow(m.error,2));
   }
 
   /*

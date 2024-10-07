@@ -247,10 +247,14 @@ TEST(Quantity, ArithmeticsDivide) {
 
 }
 
-TEST(Quantity, RebasePrefixes) {
+TEST(Quantity, RebaseUnits) {
 
   puq::Quantity q("23*cm*m2*kg*mg");
   q = q.rebase_prefixes();
   EXPECT_EQ(q.to_string(), "0.23*kg2*cm3");
+
+  q = puq::Quantity("kph2*s3/(h*[c]3)");
+  q = q.rebase_dimensions();
+  EXPECT_EQ(q.to_string(), "2.20967e-31*kph-1*s2");
   
 }

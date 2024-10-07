@@ -19,11 +19,8 @@ namespace puq {
   std::string BaseUnit::to_string() {
     std::stringstream ss;
     ss << prefix << unit;
-  #ifdef EXPONENT_FRACTIONS
-    ss << exponent.to_string();
-  #else
-    if (exponent!=1) ss << std::to_string(exponent);
-  #endif
+    if (exponent!=1)
+      ss << nostd::to_string(exponent);
     return ss.str();
   }
 

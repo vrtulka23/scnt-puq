@@ -107,7 +107,16 @@ TEST(UnitValue, RebaseDimensions) {
   value = value.rebase_dimensions();
   EXPECT_EQ(value.to_string(), "6.90565e+29*km4");
 
-  
+  value = puq::UnitValue("kph2*s3/(h*[c]3)");    // multiple dimensions
+  value = value.rebase_dimensions();
+  EXPECT_EQ(value.to_string(), "2.20967e-31*kph-1*s2");
+
+  value = puq::UnitValue("km*au*K/Cel");   // rebasing temperature units
+  EXPECT_THROW(value.rebase_dimensions(), puq::UnitValueExcept);
+
+  value = puq::UnitValue("km*au*dB/B");    // rebasing logarithmic units
+  EXPECT_THROW(value.rebase_dimensions(), puq::UnitValueExcept);
+
 }
 
 #ifdef EXPONENT_FRACTIONS
