@@ -94,7 +94,7 @@ write_basic_package_version_file(
 ###############
 
 install(TARGETS puq EXPORT PuqTargets
-        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}/${MODULE_NAME})
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
 install(TARGETS puq-cpp EXPORT PuqTargets
         ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}/${MODULE_NAME})
