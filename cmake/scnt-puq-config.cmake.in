@@ -2,9 +2,9 @@
 
 include(CMakeFindDependencyMacro)
 
-include("${CMAKE_CURRENT_LIST_DIR}/scnt-exs-targets.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/scnt-puq-targets.cmake")
 
-include("${CMAKE_CURRENT_LIST_DIR}/scnt-exs-config-version.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/scnt-puq-config-version.cmake")
 
 include_directories("@PACKAGE_CMAKE_INSTALL_INCLUDEDIR@")
 

@@ -6,6 +6,7 @@
 #include <limits>
 
 #include "main.h"
+#include "../../src/systems/lists.h"
 
 class InputParser{
 public:
@@ -150,25 +151,25 @@ int main(int argc, char * argv[]) {
     if (!convert.empty()) {
       change_system(us, convert);
       if (convert[0]=="prefix")
-	display_prefixes();
+	std::cout << puq::lists::prefixes();
       else if (convert[0]=="base")
-	display_base_units();
+	std::cout << puq::lists::base_units();
       else if (convert[0]=="deriv")
-	display_derived_units();
+	std::cout << puq::lists::derived_units();
 #ifdef UNITS_LOGARITHMIC
       else if (convert[0]=="log")
-	display_logarithmic_units();
+	std::cout << puq::lists::logarithmic_units();
 #endif
 #ifdef UNITS_TEMPERATURES
       else if (convert[0]=="temp")
-	display_temperature_units();
+	std::cout << puq::lists::temperature_units();
 #endif
       else if (convert[0]=="const")
-	display_constants();
+	std::cout << puq::lists::constants();
       else if (convert[0]=="quant")
-	display_quantities();
+	std::cout << puq::lists::quantities();
       else if (convert[0]=="sys")
-	display_unit_systems();
+	std::cout << puq::lists::unit_systems();
       else {
 	display_lists(convert);
       }

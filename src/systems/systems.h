@@ -1,5 +1,5 @@
-#ifndef PUQ_LISTS_H
-#define PUQ_LISTS_H
+#ifndef PUQ_SYSTEMS_H
+#define PUQ_SYSTEMS_H
 
 #include <string>
 #include <set>
@@ -195,4 +195,4 @@ namespace puq {
   
 }
   
-#endif // PUQ_LISTS_H
+#endif // PUQ_SYSTEMS_H
