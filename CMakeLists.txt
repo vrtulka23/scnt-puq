@@ -61,17 +61,6 @@ file(GLOB test_files "benchmark/*.cpp")
 add_executable(Benchmark ${test_files})
 target_link_libraries(Benchmark PRIVATE benchmark::benchmark puq-cpp)
 
-# create pydipl module for Python
-#################################
-
-find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
-include_directories(${Python3_INCLUDE_DIRS})
-find_package(pybind11 CONFIG)
-
-pybind11_add_module(pypuq exec/pypuq/pypuq.cpp)
-target_link_libraries(pypuq PRIVATE puq-cpp)
-target_compile_definitions(pypuq PRIVATE CODE_VERSION="${CODE_VERSION}")
-
 # create cmake export files
 ###########################
 
@@ -98,9 +87,6 @@ install(TARGETS puq EXPORT PuqTargets
 
 install(TARGETS puq-cpp EXPORT PuqTargets
         ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}/${MODULE_NAME})
-
-install(TARGETS pypuq EXPORT PuqTargets
-        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}/${MODULE_NAME})
 	
 install(DIRECTORY src/
 	INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${MODULE_NAME}

@@ -45,15 +45,8 @@ function run_code {
 
 function grep_code {
     if [[ "${1}" != "" ]]; then
-	    grep -Inr $1 ./src ./gtest ./pytest ./exec
+	    grep -Inr $1 ./src ./gtest ./exec
     fi
-}
-
-function build_pypi {
-    if [[ -d dist ]]; then
-	rm -r dist
-    fi
-    python setup.py sdist
 }
 
 function show_help {
@@ -68,9 +61,6 @@ function show_help {
     echo " -t|--test [<test>]  run all/specific tests"
     echo " -g|--grep <expr>    find expression in a code"
     echo " -h|--help           show this help"
-    echo " -B|--build-pypi     build PyPi distribution"
-    echo " -U|--upload-pypi    upload distribution to Pypi"
-    echo " -T|--pytest         run pytest"
     echo ""
     echo "Examples:"
     echo "./setup.sh -c -b               clean and build the code"
@@ -100,17 +90,6 @@ while [[ $# -gt 0 ]]; do
 	    grep_code $2; shift; shift;;
 	-h|--help)
 	    show_help; shift;;
-	-B|--build-pypi)
-	    build_pypi; shift;;
-	-I|--test-pypi)
-	    pip install "dist/pypuq-${CODE_VERSION}.tar.gz"
-	    shift;;
-	-U|--upload-pypi)
-	    twine upload dist/*
-	    shift;;
-	-T|--pytest)
-	    pytest
-	    shift;;
 	-*|--*)
 	    show_help; exit 1;;
 	*)
