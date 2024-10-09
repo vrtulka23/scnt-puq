@@ -202,7 +202,7 @@ TEST(UnitValue, UnitConversion) {
   v1 = puq::UnitValue("yd2*s/oz");
   v2 = v1.convert(puq::Dformat::FPS);
   EXPECT_EQ(v2.to_string(), "144*ft2*lb-1*s");
-  us.close();
+  us.close();  
 #endif
   
 }

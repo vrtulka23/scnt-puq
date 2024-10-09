@@ -58,6 +58,33 @@ TEST(UnitSystem, EnvironmentSetting) {
   
 }
 
+TEST(UnitSystem, FormatConversion) {
+
+  puq::Quantity q("J"), r;
+
+  r = q.convert(puq::Dformat::MKS);
+  EXPECT_EQ(r.to_string(), "m2*kg*s-2");
+
+  r = q.convert(puq::Dformat::MGS);
+  EXPECT_EQ(r.to_string(), "1000*m2*g*s-2");
+  
+  r = q.convert(puq::Dformat::CGS);
+  EXPECT_EQ(r.to_string(), "1e+07*cm2*g*s-2");
+
+#ifdef UNIT_SYSTEM_EUS
+  // q is implicitely converted into MGS format,
+  // because unit J does not exist in US unit system
+  r = q.convert(puq::Dformat::FPS, puq::SystemType::US);  
+  EXPECT_EQ(r.to_string(), "23.7304*ft2*lb*s-2");
+
+  // explicitely what happens above
+  r = q.convert(puq::Dformat::MGS);
+  r = r.convert(puq::Dformat::FPS, puq::SystemType::US);
+  EXPECT_EQ(r.to_string(), "23.7304*ft2*lb*s-2");
+#endif
+  
+}
+
 TEST(UnitSystem, DirectConversionESU) {
 
   puq::Quantity q1, q2, q3;

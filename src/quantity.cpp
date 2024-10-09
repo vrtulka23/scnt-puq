@@ -333,9 +333,14 @@ namespace puq {
   }  
 
   // convert using Dformat
-  Quantity Quantity::convert(const Dformat& format) const {
-    UnitSystem us(stype);
-    return Quantity(value.convert(format));
+  Quantity Quantity::convert(const Dformat& format, SystemType system) const {
+    UnitValue uv = value;
+    if (system==SystemType::NONE)
+      system = stype;
+    else if (system != stype)
+      uv = value.convert(Dformat::MGS);
+    UnitSystem us(system);
+    return Quantity(uv.convert(format));
   }
   
   // convert using quantity
