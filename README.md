@@ -24,11 +24,18 @@ puq -c US "yd" SI "au" # conversion between unit systems
 ...
 ```
 
+Lists of all units, quantities and unit sytems are accessible using `-l` flag:
+
+``` bash
+puq -l base
+puq -l US deriv
+puq -l AU quant
+```
+
 ## Homebrew installation on Mac OS
 
-On Apple systems it is possible to install PUQ as a Homebrew package.
-So far, PUQ is not included in the homebrew/core repository.
-It will be moved there in the future, also with other scinumtools projects.
+On Mac OS it is possible to install PUQ using Homebrew package manager.
+For now, you have to tap the scinumtools brew repository and install the code as follows:
 
 ``` bash
 brew tap vrtulka23/scinumtools

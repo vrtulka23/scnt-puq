@@ -14,11 +14,11 @@ namespace puq {
   
 #ifdef MAGNITUDE_ARRAYS
 
-  Magnitude::Magnitude(const Array& m): value(m) {
+  Magnitude::Magnitude(const Array& m): value(m), error(0) {
     ArrayValue av;
     for (int i=0; i<m.size(); i++)
       av.push_back(0);
-    error = Array(av);
+    error = Array(av,m.shape());
   }
 
   Magnitude::Magnitude(const Array& m, const Array& e): value(m), error(e) {
@@ -74,16 +74,14 @@ namespace puq {
   }
   std::string Magnitude::to_string(int precision) const {
     std::stringstream ss;
-#ifdef MAGNITUDE_ARRAYS
-    if (std::all_of(error.begin(), error.end(), [](auto i){return i==0;})) {
-      ss << value.to_string(precision);
-    }
-#else
     if (error==0) {
+#ifdef MAGNITUDE_ARRAYS
+      ss << value.to_string(precision);
+#else
       ss << std::setprecision(precision);
       ss << value << std::scientific;
-    }
 #endif
+    }
     else {
 #ifdef MAGNITUDE_ARRAYS
       if (value.size()==1)

@@ -12,7 +12,7 @@ namespace puq {
       ArrayValue av(e.size());
       for (int i=0; i<e.size(); i++)
 	av[i] = std::exp(e[i]);
-      return Array(av);
+      return Array(av,e.shape());
     }
 #endif
   

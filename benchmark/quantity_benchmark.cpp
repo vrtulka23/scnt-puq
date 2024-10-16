@@ -3,9 +3,9 @@
 #include "../src/quantity.h"
 
 static void BM_ConvertArray(benchmark::State& state) {
-  puq::Array a;
+  puq::Array a({},{(size_t)state.range(0)});
   for (int i=0; i<state.range(0); i++)
-    a.append(i);
+    a.value[i] = i;
   for (auto _ : state) {
     puq::Quantity q(a, "kg*m2/s2");
     q.convert("erg");

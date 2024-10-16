@@ -12,7 +12,7 @@ namespace puq {
       ArrayValue av(a.size());
       for (int i=0; i<a.size(); i++)
 	av[i] = std::cbrt(a[i]);
-      return Array(av);
+      return Array(av,a.shape());
     }
 #endif
   

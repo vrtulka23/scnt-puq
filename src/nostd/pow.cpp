@@ -13,7 +13,7 @@ namespace puq {
       for (int i=0; i<a.size(); i++) {
 	av[i] = std::pow(a[i], e);
       }
-      return Array(av);
+      return Array(av,a.shape());
     }
     Array pow(const Array &a, const Array& e) {
       auto fn = [](const MAGNITUDE_PRECISION& v1, const MAGNITUDE_PRECISION& v2) {

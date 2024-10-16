@@ -1,15 +1,13 @@
 #include <gtest/gtest.h>
 
 #include "../src/array.h"
+#include "../src/nostd/nostd.h"
 
 #ifdef MAGNITUDE_ARRAYS
 
 TEST(Array, Initialization) {
 
-  puq::Array a;
-  EXPECT_EQ(a.to_string(), "");
-  a.append(3);              // appending a single value
-  a.append({3.14, 3.14e5}); // appending a vector
+  puq::Array a({3,3.14,3.14e5});
   EXPECT_EQ(a.to_string(), "{3, 3.14, ...}");
 
   a = puq::Array(3);
@@ -33,11 +31,9 @@ TEST(Array, Initialization) {
 
 TEST(Array, Arithmetics) {
 
-  puq::Array a, b, c;
-  
-  a = puq::Array({3.1,4.2,5.3});
-  b = puq::Array({0.1,1.2,2.3});
-  c = a + b;
+  puq::Array a({3.1,4.2,5.3});
+  puq::Array b({0.1,1.2,2.3});
+  puq::Array c = a + b;
   EXPECT_EQ(c.to_string(), "{3.2, 5.4, ...}");
   a += b;
   EXPECT_EQ(a.to_string(), "{3.2, 5.4, ...}");  
@@ -67,10 +63,8 @@ TEST(Array, Arithmetics) {
 
 TEST(Array, Comparison) {
 
-  puq::Array a, b;
-
-  a = puq::Array({3.1,4.2,5.3});
-  b = puq::Array({0.1,1.2,2.3});
+  puq::Array a({3.1,4.2,5.3});
+  puq::Array b({0.1,1.2,2.3});
 
   EXPECT_EQ(a==a, true);
   EXPECT_EQ(a!=a, false);

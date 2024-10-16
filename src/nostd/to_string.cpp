@@ -49,6 +49,17 @@ namespace puq {
       }
       return ss.str();
     }
+
+    std::string to_string(const ArrayShape& shape) {
+      std::stringstream ss;
+      ss << "[";
+      for (int i=0; i<shape.size(); i++) {
+	if (i>0) ss << ",";
+	ss << std::to_string(shape[i]);
+      }
+      ss << "]";
+      return ss.str();
+    }
         
   }
 }

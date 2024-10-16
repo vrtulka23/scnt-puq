@@ -47,6 +47,7 @@ namespace puq {
     extern std::string to_string(const BaseUnits& value, int precision=std::cout.precision());
     extern std::string to_string(const Dimensions& value, Dformat format=Dformat::NUM|Dformat::PHYS, int precision=std::cout.precision());
     extern std::string to_string(const bool& use_prefixes, const AllowedPrefixes& value);
+    extern std::string to_string(const ArrayShape& shape);
   
     /*
      *  exp
