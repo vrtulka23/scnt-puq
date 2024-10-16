@@ -25,43 +25,43 @@ namespace puq {
     value.shrink_to_fit();
   }
   
-  inline void mutating_operation(ArrayValue& v1, const size_t s1, const ArrayValue& v2, const size_t s2,
+  inline void mutating_operation(Array& a1, const Array& a2,
 				 void (*func)(MAGNITUDE_PRECISION& v1,
 					      const MAGNITUDE_PRECISION& v2)) {
-    if (s1==s2)           // arrays have same sizes
-      for (int i=0; i<s1; i++)
-	func(v1[i],v2[i]);       
-    else if (s1==1)       // first value is a scalar
-      for (int i=0; i<s2; i++)
-	func(v1[0],v2[i]);
-    else if (s2==1)       // second value is a scalar
-      for (int i=0; i<s1; i++)
-	func(v1[i],v2[0]);       
-    else                  // arrays have different sizes
-      throw ArraySizeException(s1, s2);
+    if (a1.a_shape==a2.a_shape)  // arrays have the same shape
+      for (int i=0; i<a1.size(); i++)
+	func(a1.value[i],a2.value[i]);       
+    else if (a1.size()==1)       // first value is a scalar
+      for (int i=0; i<a2.size(); i++)
+	func(a1.value[0],a2.value[i]);
+    else if (a2.size()==1)       // second value is a scalar
+      for (int i=0; i<a1.size(); i++)
+	func(a1.value[i],a2.value[0]);       
+    else                         // arrays have different shapes
+      throw ArraySizeException(a1.shape(), a2.shape());
   }
 
   // static method
   Array Array::const_operation(const Array& a1, const Array& a2,
 			       MAGNITUDE_PRECISION (*func)(const MAGNITUDE_PRECISION& v1,
 							   const MAGNITUDE_PRECISION& v2)) {
-    if (a1.size()==a2.size()) {  // arrays have same sizes
+    if (a1.a_shape==a2.a_shape) {  // arrays have the same shape
       Array a({},a1.shape());
       for (int i=0; i<a1.size(); i++) 
 	a.value[i] = func(a1[i],a2[i]);
       return a;
-    } else if (a1.size()==1) {   // first value is a scalar
-      Array a({},a2.shape());    
+    } else if (a1.size()==1) {     // first value is a scalar
+      Array a({},a2.shape());     
       for (int i=0; i<a2.size(); i++)
 	a.value[i] = func(a1[0],a2[i]);
       return a;
-    } else if (a2.size()==1) {   // second value is a scalar
+    } else if (a2.size()==1) {     // second value is a scalar
       Array a({},a1.shape());    
       for (int i=0; i<a1.size(); i++)
 	a.value[i] = func(a1[i],a2[0]);
       return a;
-    } else {                     // arrays have different sizes
-      throw ArraySizeException(a1.size(), a2.size());
+    } else {                       // arrays have different sizes
+      throw ArraySizeException(a1.shape(), a2.shape());
     }
   }
 
@@ -135,39 +135,39 @@ namespace puq {
     ArrayValue av;
     for (int i=0; i<a.size(); i++)
       av.push_back(-a.value[i]);
-    return Array(av, {a.size()});
+    return Array(av, a.shape());
   }
 
   void Array::operator+=(const Array& a) {
     auto fn = [](MAGNITUDE_PRECISION& v1, const MAGNITUDE_PRECISION& v2) {
       v1 += v2;
     };
-    mutating_operation(value, size(), a.value, a.size(), fn);
+    mutating_operation(*this, a, fn);
   }
 
   void Array::operator-=(const Array& a) {
     auto fn = [](MAGNITUDE_PRECISION& v1, const MAGNITUDE_PRECISION& v2) {
       v1 -= v2;
     };
-    mutating_operation(value, size(), a.value, a.size(), fn);
+    mutating_operation(*this, a, fn);
   }
 
   void Array::operator*=(const Array& a) {
     auto fn = [](MAGNITUDE_PRECISION& v1, const MAGNITUDE_PRECISION& v2) {
       v1 *= v2;
     };
-    mutating_operation(value, size(), a.value, a.size(), fn);
+    mutating_operation(*this, a, fn);
   }
 
   void Array::operator/=(const Array& a) {
     auto fn = [](MAGNITUDE_PRECISION& v1, const MAGNITUDE_PRECISION& v2) {
       v1 /= v2;
     };
-    mutating_operation(value, size(), a.value, a.size(), fn);
+    mutating_operation(*this, a, fn);
   }
 
   bool Array::operator==(const Array& a) const {
-    if (size()==a.size()) {    // arrays have same sizes
+    if (shape()==a.shape()) {        // arrays have the same shape
       for (int i=0; i<size(); i++)
 	if (value[i] != a.value[i]) return false;       
     } else if (size()==1) {          // first value is a scalar
@@ -176,14 +176,14 @@ namespace puq {
     } else if (a.size()==1) {        // second value is a scalar
       for (int i=0; i<size(); i++)
 	if (value[i] != a.value[0]) return false;       
-    } else {                               // arrays have different sizes
-      throw ArraySizeException(size(), a.size());
+    } else {                         // arrays have different shapes
+      throw ArraySizeException(shape(), a.shape());
     }
     return true;
   }
 
   bool Array::operator!=(const Array& a) const {
-    if (size()==a.size()) {    // arrays have same sizes
+    if (shape()==a.shape()) {        // arrays have the same shape
       for (int i=0; i<size(); i++)
 	if (value[i] != a.value[i]) return true;       
     } else if (size()==1) {          // first value is a scalar
@@ -192,8 +192,8 @@ namespace puq {
     } else if (a.size()==1) {        // second value is a scalar
       for (int i=0; i<size(); i++)
 	if (value[i] != a.value[0]) return true;       
-    } else {                               // arrays have different sizes
-      throw ArraySizeException(size(), a.size());
+    } else {                         // arrays have different shapes
+      throw ArraySizeException(shape(), a.shape());
     }
     return false;
   }

@@ -53,7 +53,22 @@ namespace puq {
     std::string message;  
   public:
     ArraySizeException(std::string m) : message(m) {}
-    ArraySizeException(const size_t s1, const size_t s2) : message("Arrays have different sizes: "+std::to_string(s1)+" != "+std::to_string(s2)) {}
+    ArraySizeException(const ArrayShape s1, const ArrayShape s2) {
+      std::stringstream ss;
+      ss << "Arrays have different shapes: ";
+      ss << "[";
+      for (int i=0; i<s1.size(); i++) {
+	if (i>0) ss << ",";
+	ss << std::to_string(s1[i]);
+      }
+      ss << "] != [";
+      for (int i=0; i<s2.size(); i++) {
+	if (i>0) ss << ",";
+	ss << std::to_string(s2[i]);
+      }
+      ss << "]";
+      message = ss.str();
+    }
     const char * what () const noexcept override {
       return message.c_str();
     }
