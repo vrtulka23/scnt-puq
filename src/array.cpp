@@ -14,7 +14,7 @@ namespace puq {
     // calculate array size
     a_size = 0;
     for (size_t sh: a_shape)
-      a_size += sh;
+      a_size *= sh;
     // set array value
     if (v.size()==0)
       value = ArrayValue(a_size,0);
