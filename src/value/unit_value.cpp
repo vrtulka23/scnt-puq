@@ -63,6 +63,12 @@ namespace puq {
     return magnitude.size();
   }
   
+#ifdef MAGNITUDE_ARRAYS
+  ArrayShape UnitValue::shape() const {
+    return magnitude.shape();
+  }
+#endif
+  
   std::string UnitValue::to_string(int precision) const {
     std::stringstream ss;
   #if defined(MAGNITUDE_ERRORS)

@@ -105,6 +105,12 @@ namespace puq {
   std::size_t Magnitude::size() const {
     return value.size();
   }  
+
+#ifdef MAGNITUDE_ARRAYS
+  ArrayShape Magnitude::shape() const {
+    return value.shape();
+  }
+#endif
   
   /*
    * Add two magnitudes

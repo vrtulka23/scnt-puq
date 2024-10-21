@@ -153,6 +153,12 @@ namespace puq {
   std::size_t Quantity::size() const {
     return value.size();
   }
+
+#ifdef MAGNITUDE_ARRAYS
+  ArrayShape Quantity::shape() const {
+    return value.shape();
+  }
+#endif
   
   // strings and streams
   std::string Quantity::to_string(int precision) const {

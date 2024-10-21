@@ -127,6 +127,17 @@ TEST(Quantity, Size) {
   
 }
 
+#ifdef MAGNITUDE_ARRAYS
+TEST(Quantity, Shape) {
+
+  puq::ArrayValue v = {2,3,4,5,6,7};
+  puq::ArrayShape s = {2,3};
+  puq::Quantity q(puq::Array(v,s));
+  EXPECT_EQ(q.shape(), s);
+  
+}
+#endif
+
 TEST(Quantity, UnitConversion) {
 
   puq::Quantity q;

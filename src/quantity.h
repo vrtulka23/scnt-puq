@@ -38,6 +38,9 @@ namespace puq {
 #endif
     std::string unit_system() const;
     std::size_t size() const;
+#ifdef MAGNITUDE_ARRAYS
+    ArrayShape shape() const;
+#endif
     std::string to_string(int precision=std::cout.precision()) const;
     // quantity operations
     friend Quantity operator+(const Quantity& q1, const Quantity& q2);

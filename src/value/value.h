@@ -138,6 +138,9 @@ namespace puq {
 #endif
 #endif
     std::size_t size() const;
+#ifdef MAGNITUDE_ARRAYS
+    ArrayShape shape() const;
+#endif
     std::string to_string(int precision=std::cout.precision()) const;
     friend UnitValue operator+(const UnitValue& v1, const UnitValue& v2);
     friend UnitValue operator-(const UnitValue& v1, const UnitValue& v2);
