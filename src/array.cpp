@@ -19,7 +19,7 @@ namespace puq {
     if (v.size()==0)
       value = ArrayValue(a_size,0);
     else if (v.size()!=a_size)
-      throw ArraySizeException("Number of items in the array does not correspond with the given shape: "+std::to_string(v.size())+" "+nostd::to_string(s));      
+      throw ArraySizeException("Number of items in the array does not correspond with the given shape: "+std::to_string(v.size())+" != "+nostd::to_string(s));      
     else
       value = v;
     value.shrink_to_fit();

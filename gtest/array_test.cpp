@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+#include <vector>
 
 #include "../src/array.h"
 #include "../src/nostd/nostd.h"
@@ -26,7 +27,13 @@ TEST(Array, Initialization) {
   std::stringstream ss;
   ss << a;                      // cast array as a string into a stream
   EXPECT_EQ(ss.str(), "{3, 4, ...}");
-  
+
+  puq::ArrayShape s = {2,2};
+  a = puq::Array({2,3,4,5}, s);
+  EXPECT_EQ(a.shape(), s);              // correct shape size
+  EXPECT_THROW(puq::Array({2,3,4}, s),
+	       puq::ArraySizeException); // wrong shape size
+
 }
 
 TEST(Array, Arithmetics) {
@@ -37,7 +44,7 @@ TEST(Array, Arithmetics) {
   EXPECT_EQ(c.to_string(), "{3.2, 5.4, ...}");
   a += b;
   EXPECT_EQ(a.to_string(), "{3.2, 5.4, ...}");  
-
+  
   a = puq::Array({3.1,4.2,5.3});
   b = puq::Array({0.1,1.2,2.3});
   c = a - b;
@@ -58,6 +65,15 @@ TEST(Array, Arithmetics) {
   EXPECT_EQ(c.to_string(), "{31, 3.5, ...}");
   a /= b;
   EXPECT_EQ(a.to_string(), "{31, 3.5, ...}");  
+  
+}
+
+TEST(Array, ArithmeticsShape) {
+
+  puq::Array a({3.1,4.2,5.3,5.4});
+  puq::Array b({0.1,1.2,2.3,3.4}, puq::ArrayShape({2,2}));
+  EXPECT_THROW(a + b,  puq::ArraySizeException);
+  EXPECT_THROW(a += b, puq::ArraySizeException);
   
 }
 

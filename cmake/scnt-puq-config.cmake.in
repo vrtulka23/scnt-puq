@@ -9,3 +9,5 @@ include("${CMAKE_CURRENT_LIST_DIR}/scnt-puq-config-version.cmake")
 include_directories("@PACKAGE_CMAKE_INSTALL_INCLUDEDIR@")
 
 set(SCNT-PUQ_INCLUDE_DIR "@PACKAGE_CMAKE_INSTALL_INCLUDEDIR@")
+
+message("-- Found scnt-puq: ${SCNT-PUQ_INCLUDE_DIR} ${SCNT-PUQ_VERSION}")
