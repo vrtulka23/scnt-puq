@@ -28,8 +28,8 @@ TEST(Array, Initialization) {
   ss << a;                      // cast array as a string into a stream
   EXPECT_EQ(ss.str(), "{3, 4, ...}");
 
-  puq::ArrayShape s = {2,2};
-  a = puq::Array({2,3,4,5}, s);
+  puq::ArrayShape s = {2,3};
+  a = puq::Array({2,3,4,5,6,7}, s);
   EXPECT_EQ(a.shape(), s);              // correct shape size
   EXPECT_THROW(puq::Array({2,3,4}, s),
 	       puq::ArraySizeException); // wrong shape size

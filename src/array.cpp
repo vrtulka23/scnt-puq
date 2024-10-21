@@ -12,7 +12,7 @@ namespace puq {
 
   Array::Array(const ArrayValue& v, const  ArrayShape s): a_shape(s) {
     // calculate array size
-    a_size = 0;
+    a_size = 1;
     for (size_t sh: a_shape)
       a_size *= sh;
     // set array value
