@@ -1,5 +1,6 @@
 #include <iostream>
 
+#include "converter.h"
 #include "quantity.h"
 
 namespace puq {
@@ -367,7 +368,11 @@ namespace puq {
       return convert(uv1);
     } else if (q == "") {
       UnitValue uv2 = _convert_without_context(us, system);
-      return Quantity(uv2.convert(uv1), system);
+      try {
+	return Quantity(uv2.convert(uv1), system);
+      } catch ( const ConvDimExcept& e ) {
+	throw ConvDimExcept(value.baseunits, stype, uv1.baseunits, system);
+      }
     } else {
       QuantityListType::iterator qs1 = puq::UnitSystem::Data->QuantityList.find(q);
       if (qs1==puq::UnitSystem::Data->QuantityList.end())
@@ -400,7 +405,11 @@ namespace puq {
       return convert(bu);
     } else if (q == "") {
       UnitValue uv = _convert_without_context(us, system);
-      return Quantity(uv.convert(bu), system);
+      try {
+	return Quantity(uv.convert(bu), system);
+      } catch ( const ConvDimExcept& e ) {
+	throw ConvDimExcept(value.baseunits, stype, UnitValue(1,bu).baseunits, system);
+      }
     } else {
       QuantityListType::iterator qs1 = puq::UnitSystem::Data->QuantityList.find(q);
       if (qs1==puq::UnitSystem::Data->QuantityList.end())
@@ -429,7 +438,11 @@ namespace puq {
       return Quantity(uv);
     } else if (q == "") {
       UnitValue uv = _convert_without_context(us, system);
-      return Quantity(uv.convert(s), system);
+      try {
+	return Quantity(uv.convert(s), system);
+      } catch ( const ConvDimExcept& e ) {
+	throw ConvDimExcept(value.baseunits, stype, UnitValue(s).baseunits, system);
+      }
     } else {      
       QuantityListType::iterator qs1 = puq::UnitSystem::Data->QuantityList.find(q);
       if (qs1==puq::UnitSystem::Data->QuantityList.end())

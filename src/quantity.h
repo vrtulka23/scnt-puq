@@ -1,6 +1,9 @@
 #ifndef PUQ_QUANTITY_H
 #define PUQ_QUANTITY_H
 
+#include <iomanip>
+#include <sstream>
+
 #include "settings.h"
 #include "value/value.h"
 #include "solver/solver.h"
