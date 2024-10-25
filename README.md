@@ -1,4 +1,4 @@
-# Physical Units and Quantities (PUQ)
+# SciNumTools v3: Physical Units and Quantities (PUQ)
 
 Implementation of physical unit calculations in C++.
 The original project written in Python is available in the [scinumtools](https://github.com/vrtulka23/scinumtools) package.
