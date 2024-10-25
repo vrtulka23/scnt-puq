@@ -3,6 +3,10 @@
 Implementation of physical unit calculations in C++.
 The original project written in Python is available in the [scinumtools](https://github.com/vrtulka23/scinumtools) package.
 
+## Documentation
+
+For more details please refer to `SciNumTool` [documentation](https://vrtulka23.github.io/scnt-docs/).
+
 ## Example of use
 
 In order to compile PUQ you can use the following setup script.
