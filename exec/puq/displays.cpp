@@ -1,5 +1,6 @@
 #include "main.h"
-#include "../../src/systems/lists.h"
+#include "../../src/lists.h"
+#include "../../src/data_table.h"
 
 void display_info(std::string expr) {
   puq::UnitValue uv = puq::Quantity(expr).value;
@@ -33,39 +34,39 @@ void display_info(std::string expr) {
   }
   std::cout << std::endl;
   std::cout << "Dimensions:" << std::endl << std::endl;
-  std::cout << "Base   Num*Mag                  Numerical                Physical" << std::endl;
-  std::cout << "MGS    ";
-  std::cout << std::setfill(' ') << std::setw(25) << std::left << dim_m.to_string(puq::Dformat::NUM);
-  std::cout << std::setfill(' ') << std::setw(25) << std::left << dim.to_string(puq::Dformat::NUM);
-  std::cout << std::setfill(' ') << std::setw(25) << std::left << dim.to_string(puq::Dformat::PHYS);
-  std::cout << std::endl;
-  std::cout << "MKS    ";
-  std::cout << std::setfill(' ') << std::setw(25) << std::left << dim_m.to_string(puq::Dformat::NUM|puq::Dformat::MKS);
-  std::cout << std::setfill(' ') << std::setw(25) << std::left << dim.to_string(puq::Dformat::NUM|puq::Dformat::MKS);
-  std::cout << std::setfill(' ') << std::setw(25) << std::left << dim.to_string(puq::Dformat::PHYS|puq::Dformat::MKS);
-  std::cout << std::endl;
-  std::cout << "CGS    ";
-  std::cout << std::setfill(' ') << std::setw(25) << std::left << dim_m.to_string(puq::Dformat::NUM|puq::Dformat::CGS);
-  std::cout << std::setfill(' ') << std::setw(25) << std::left << dim.to_string(puq::Dformat::NUM|puq::Dformat::CGS);
-  std::cout << std::setfill(' ') << std::setw(25) << std::left << dim.to_string(puq::Dformat::PHYS|puq::Dformat::CGS);
+  puq::DataTable tab({{"Base",6},{"Num*Mag",25},{"Numerical",25},{"Physical",25}});
+  tab.append({"MGS", dim_m.to_string(puq::Dformat::NUM), dim.to_string(puq::Dformat::NUM), dim.to_string(puq::Dformat::PHYS)});
+  tab.append({
+      "MKS",
+      dim_m.to_string(puq::Dformat::NUM|puq::Dformat::MKS),
+      dim.to_string(puq::Dformat::NUM|puq::Dformat::MKS),
+      dim.to_string(puq::Dformat::PHYS|puq::Dformat::MKS)
+    });
+  tab.append({
+      "CGS",
+      dim_m.to_string(puq::Dformat::NUM|puq::Dformat::CGS),
+      dim.to_string(puq::Dformat::NUM|puq::Dformat::CGS),
+      dim.to_string(puq::Dformat::PHYS|puq::Dformat::CGS)
+    });
+  std::cout << tab.to_string();
   std::cout << std::endl;
   if (bus.size() > 0) {
-    std::cout << puq::table_header("Components:",
-		 {"Prefix","Symbol","Exponent","Name","Definition","Dimensions MGS","Allowed prefixes"},
-		 {8,8,10,30,30,22,22});
+    std::cout << "Base units:" << std::endl << std::endl;
+    puq::DataTable tab({{"Prefix",8},{"Symbol",8},{"Exponent",10},{"Name",30},{"Definition",30},{"Dimensions MGS",22},{"Allowed prefixes",22}});
     for (auto unit: puq::UnitSystem::Data->UnitList) {
       for (auto bu: bus) {
 	if (bu.unit!=unit.first)
 	  continue;
 	puq::BaseUnits bu_unit({bu});
-	std::cout << std::setfill(' ') << std::setw(8) << std::left << bu.prefix;
-	std::cout << std::setfill(' ') << std::setw(8) << std::left << bu.unit;
-	std::cout << std::setfill(' ') << std::setw(10) << std::left << ((puq::nostd::to_string(bu.exponent)=="") ? "1" : puq::nostd::to_string(bu.exponent));
-	std::cout << std::setfill(' ') << std::setw(30) << std::left << unit.second.name;
-	std::cout << std::setfill(' ') << std::setw(30) << std::left << unit.second.definition;
-	std::cout << std::setfill(' ') << std::setw(22) << std::left << bu_unit.dimensions().to_string();
-	std::cout << std::setfill(' ') << std::setw(22) << std::left << puq::nostd::to_string(unit.second.use_prefixes, unit.second.allowed_prefixes);
-	std::cout << std::scientific << std::endl;
+	tab.append({
+	    bu.prefix,
+	    bu.unit,
+	    ((puq::nostd::to_string(bu.exponent)=="") ? "1" : puq::nostd::to_string(bu.exponent)),
+	    unit.second.name,
+	    unit.second.definition,
+	    bu_unit.dimensions().to_string(),
+	    puq::nostd::to_string(unit.second.use_prefixes, unit.second.allowed_prefixes)
+	  });
       }
     }
     for (auto quant: puq::UnitSystem::Data->QuantityList) {
@@ -73,16 +74,18 @@ void display_info(std::string expr) {
 	if (bu.unit!=SYMBOL_QUANTITY_START+quant.first+SYMBOL_QUANTITY_END)
 	  continue;
 	puq::BaseUnits bu_unit({bu});
-	std::cout << std::setfill(' ') << std::setw(8) << std::left << bu.prefix;
-	std::cout << std::setfill(' ') << std::setw(8) << std::left << bu.unit;
-	std::cout << std::setfill(' ') << std::setw(10) << std::left << ((puq::nostd::to_string(bu.exponent)=="") ? "1" : puq::nostd::to_string(bu.exponent));
-	std::cout << std::setfill(' ') << std::setw(30) << std::left << puq::QuantityNames.at(quant.first);
-	std::cout << std::setfill(' ') << std::setw(30) << std::left << quant.second.definition;
-	std::cout << std::setfill(' ') << std::setw(22) << std::left << bu_unit.dimensions().to_string();
-	std::cout << std::setfill(' ') << std::setw(22) << std::left << "";
-	std::cout << std::scientific << std::endl;
+	tab.append({
+	    bu.prefix,
+	    bu.unit,
+	    ((puq::nostd::to_string(bu.exponent)=="") ? "1" : puq::nostd::to_string(bu.exponent)),
+	    puq::QuantityNames.at(quant.first),
+	    quant.second.definition,
+	    bu_unit.dimensions().to_string(),
+	    ""
+	  });
       }
     }
+    std::cout << tab.to_string();
   }
   std::cout << std::endl;
 }

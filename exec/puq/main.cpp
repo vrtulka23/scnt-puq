@@ -6,7 +6,7 @@
 #include <limits>
 
 #include "main.h"
-#include "../../src/systems/lists.h"
+#include "../../src/lists.h"
 
 class InputParser{
 public:

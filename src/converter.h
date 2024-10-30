@@ -7,30 +7,9 @@
 
 #include "nostd/nostd.h"
 #include "value/value.h"
+#include "data_table.h"
 
 namespace puq {
-
-  class DataTable {
-    std::stringstream ss;
-    std::vector<std::string> titles;
-    std::vector<int> widths;
-  public:
-    DataTable(std::vector<std::string> t, std::vector<int> w): titles(t), widths(w) {
-      for (size_t i=0; i<titles.size(); i++) {
-	ss << std::setfill(' ') << std::setw(widths[i]) << std::left << titles[i];
-      }
-      ss << std::endl;
-    };
-    void append(std::vector<std::string> columns) {
-      for (size_t i=0; i<titles.size(); i++) {
-	ss << std::setfill(' ') << std::setw(widths[i]) << std::left << columns[i];
-      }
-      ss << std::endl;
-    };
-    std::string to_string() {
-      return ss.str();
-    }
-  };
   
   class ConvDimExcept: public std::exception {
   private:
@@ -45,7 +24,7 @@ namespace puq {
       Dimensions dim2 = bu2.dimensions();
       std::stringstream ss;
       ss << "Incompatible dimensions:" << std::endl << std::endl;
-      DataTable tab({"","System","Unit","Dimensions"}, {8,10,26,26});
+      DataTable tab({{"",8},{"System",10},{"Unit",26},{"Dimensions",26}});
       us.change(s1);
       tab.append({
 	  "From", SystemMap[s1]->SystemAbbrev, bu1.to_string(),
@@ -59,7 +38,7 @@ namespace puq {
       ss << tab.to_string() << std::endl;;
       us.change(s1);
       ss << "Possible conversions:" << std::endl << std::endl;
-      tab = DataTable({"System","Units","Name","Context"}, {10,26,26,10});
+      tab = DataTable({{"System",10},{"Units",26},{"Name",26},{"Context",10}});
       std::string mgs = dim1.to_string(Dformat::PHYS);
       std::string mks = dim1.to_string(Dformat::PHYS|Dformat::MKS);
       std::string cgs = dim1.to_string(Dformat::PHYS|Dformat::CGS);
