@@ -1,6 +1,6 @@
 #include "main.h"
 #include "../../src/lists.h"
-#include "../../src/data_table.h"
+#include "../../src/util/data_table.h"
 
 void display_info(std::string expr) {
   puq::UnitValue uv = puq::Quantity(expr).value;

@@ -25,6 +25,21 @@ TEST(Exponent, Initialization) {
   
 }
 
+TEST(Exponent, OutputFormat) {
+
+  puq::OutputFormat oformat(puq::MathFormat::PRETTY);
+  
+  puq::Exponent e = puq::Exponent(-2);
+  EXPECT_EQ(e.to_string(oformat), "⁻²");
+  
+  e = puq::Exponent(3,2);    
+  EXPECT_EQ(e.to_string(oformat), "³ᐟ²");
+  
+  e = puq::Exponent(-3,2);    
+  EXPECT_EQ(e.to_string(oformat), "⁻³ᐟ²");
+  
+}
+
 TEST(Exponent, InitializationFractions) {
   
   puq::Exponent e = {1,2};

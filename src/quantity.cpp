@@ -26,9 +26,9 @@ namespace puq {
 #ifdef PREPROCESS_SYMBOLS
     // replace non standard symbols
     std::unordered_map<std::string, std::string> dict {
-      {"\u00D710", SYMBOL_EXPONENT},  // ×10 -> e
-      {"\u2212",   SYMBOL_MINUS},     // −   -> -
-      {"\u22C5",   SYMBOL_MULTIPLY},  // ⋅   -> *
+      {SYMBOL_EXPONENT2,   SYMBOL_EXPONENT},  // ×10 -> e
+      {SYMBOL_MINUS2,      SYMBOL_MINUS},     // −   -> -
+      {SYMBOL_MULTIPLY2,   SYMBOL_MULTIPLY},  // ⋅   -> *
     };
     for (auto item: dict) {
       size_t pos = expression.find(item.first);

@@ -69,24 +69,25 @@ namespace puq {
   }
 #endif
   
-  std::string UnitValue::to_string(int precision) const {
+  std::string UnitValue::to_string(const OutputFormat& oformat) const {
+    std::string multiply = oformat.multiply_symbol();
     std::stringstream ss;
   #if defined(MAGNITUDE_ERRORS)
     if (magnitude.value!=1 || baseunits.size()==0)
-      ss << magnitude.to_string(precision) << SYMBOL_MULTIPLY;
+      ss << magnitude.to_string(oformat) << multiply;
   #elif defined(MAGNITUDE_ARRAYS)
     if (magnitude!=1 || baseunits.size()==0)
-      ss << magnitude.to_string(precision) << SYMBOL_MULTIPLY;
+      ss << magnitude.to_string(oformat) << multiply;
   #else
     if (magnitude!=1 || baseunits.size()==0) {
-      ss << std::setprecision(precision);
-      ss << magnitude << std::scientific << SYMBOL_MULTIPLY;
+      ss << std::setprecision(oformat.precision);
+      ss << magnitude << std::scientific << multiply;
     }
   #endif
     if (baseunits.size()>0)
-      ss << baseunits.to_string() << SYMBOL_MULTIPLY;
+      ss << baseunits.to_string(oformat) << multiply;
     std::string s = ss.str();
-    return s.substr(0,s.size()-1);
+    return s.substr(0,s.size()-multiply.size());
   }
 
   UnitValue operator+(const UnitValue& v1, const UnitValue& v2) {

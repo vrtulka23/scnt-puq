@@ -46,6 +46,29 @@ TEST(UnitValue, Initialization) {
   
 }
 
+TEST(UnitValue, OutputFormat) {
+
+  
+  puq::UnitValue value;
+  puq::OutputFormat oformat;
+  
+  oformat = puq::OutputFormat(puq::MathFormat::PRETTY);
+  value = puq::UnitValue("3*km-2:3*m/s2");
+  EXPECT_EQ(value.to_string(oformat), "3⋅km⁻²ᐟ³⋅m⋅s⁻²");
+
+  value = puq::UnitValue("3.234019394939e12*km-2:3");
+  EXPECT_EQ(value.to_string(oformat), "3.23402×10¹²⋅km⁻²ᐟ³");
+  
+  oformat = puq::OutputFormat(10);
+  value = puq::UnitValue("3.2340342349349823e3*m/s2");
+  EXPECT_EQ(value.to_string(oformat), "3234.034235*m*s-2");
+
+  oformat = puq::OutputFormat(puq::MathFormat::PRETTY, 10);
+  value = puq::UnitValue("3.2340342349349823e3*km-2:3");
+  EXPECT_EQ(value.to_string(oformat), "3234.034235⋅km⁻²ᐟ³");
+  
+}
+
 TEST(UnitValue, Size) {
   
   puq::UnitValue uv(puq::Array({2,3,4,5}));

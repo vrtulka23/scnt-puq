@@ -17,13 +17,16 @@
 /*
  *  General settings
  */
-#define NUM_BASEDIM     8
-#define SYMBOL_PLUS     "+"
-#define SYMBOL_MINUS    "-"
-#define SYMBOL_MULTIPLY "*"
-#define SYMBOL_DIVIDE   "/"
-#define SYMBOL_POWER    "^"
-#define SYMBOL_EXPONENT "e"
+#define NUM_BASEDIM      8
+#define SYMBOL_PLUS      "+"
+#define SYMBOL_MINUS     "-"
+#define SYMBOL_MINUS2    "\u2212"
+#define SYMBOL_MULTIPLY  "*"
+#define SYMBOL_MULTIPLY2 "\u22C5"
+#define SYMBOL_DIVIDE    "/"
+#define SYMBOL_POWER     "^"
+#define SYMBOL_EXPONENT  "e"
+#define SYMBOL_EXPONENT2 "\u00D710"
 #define SYMBOL_QUANTITY_START "<"
 #define SYMBOL_QUANTITY_END   ">"
 #define SYMBOL_SIFACTOR_START "|"
@@ -40,6 +43,7 @@
 #endif
 #ifdef EXPONENT_FRACTIONS
   #define SYMBOL_FRACTION        ":"
+  #define SYMBOL_FRACTION2       "\u141F"
 #endif
 #ifdef PREPROCESS_SYSTEM
   #define SYMBOL_SYSTEM          "_"

@@ -30,8 +30,8 @@ namespace puq {
       return value.to_string(format, precision);
     }
   
-    std::string to_string(const Exponent& value) {
-      return value.to_string();
+    std::string to_string(const Exponent& value, const OutputFormat& oformat) {
+      return value.to_string(oformat);
     }
   
     std::string to_string(const bool& use_prefixes, const AllowedPrefixes& value) {

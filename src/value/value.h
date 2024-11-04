@@ -76,7 +76,7 @@ namespace puq {
 #ifdef EXPONENT_FRACTIONS
     BaseUnit(const std::string& p, const std::string& u, const EXPONENT_INT_PRECISION& n, const EXPONENT_INT_PRECISION& d): prefix(p), unit(u), exponent(n,d) {};
 #endif
-    std::string to_string();
+    std::string to_string(const OutputFormat& oformat = OutputFormat());
   };
     
   typedef std::vector<BaseUnit> BaseUnitsList;
@@ -92,7 +92,7 @@ namespace puq {
 #ifdef EXPONENT_FRACTIONS
     void append(std::string p, std::string u, EXPONENT_INT_PRECISION n, EXPONENT_INT_PRECISION d);
 #endif
-    std::string to_string() const;
+    std::string to_string(const OutputFormat& oformat = OutputFormat()) const;
     const BaseUnit& operator[] (int index) const;
     friend BaseUnits operator+(const BaseUnits& bu1, const BaseUnits& bu2);
     friend BaseUnits operator-(const BaseUnits& bu1, const BaseUnits& bu2);
@@ -141,7 +141,7 @@ namespace puq {
 #ifdef MAGNITUDE_ARRAYS
     ArrayShape shape() const;
 #endif
-    std::string to_string(int precision=std::cout.precision()) const;
+    std::string to_string(const OutputFormat& oformat = OutputFormat()) const;
     friend UnitValue operator+(const UnitValue& v1, const UnitValue& v2);
     friend UnitValue operator-(const UnitValue& v1, const UnitValue& v2);
     friend UnitValue operator*(const UnitValue& v1, const UnitValue& v2);

@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <sstream>
 
-#include "../src/data_table.h"
+#include "../src/util/data_table.h"
 
 TEST(DataTable, TextOutput) {
 
