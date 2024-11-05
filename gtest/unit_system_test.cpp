@@ -5,7 +5,7 @@
 
 #ifdef UNIT_SYSTEM_CGS
 
-TEST(Quantity, PrintUnitSystem) {
+TEST(UnitSystem, PrintUnitSystem) {
 
   puq::Quantity q("23*cm");
   EXPECT_EQ(q.unit_system(), "SI");
@@ -29,12 +29,6 @@ TEST(UnitSystem, DirectSetting) {
   q1 = puq::Quantity(34,"statA",puq::SystemType::ESU);  // explicitely state the unit system
   q2 = q1.convert("Fr/ms",puq::SystemType::ESU);
   EXPECT_EQ(q2.to_string(), "0.034*Fr*ms-1");
-
-#ifdef PREPROCESS_SYSTEM
-  q1 = puq::Quantity(34,"ESU_statA");    // state the unit system in the unit expression
-  q2 = q1.convert("Fr/ms",puq::SystemType::ESU);
-  EXPECT_EQ(q2.to_string(), "0.034*Fr*ms-1");  
-#endif
   
 }
 

@@ -2,7 +2,7 @@
 #define PUQ_EXPONENT_H
 
 #import "settings.h"
-#include "output_format.h"
+#include "unit_format.h"
 
 namespace puq {
 
@@ -30,7 +30,7 @@ public:
   bool operator!=(const EXPONENT_REAL_PRECISION& e) const;
   EXPONENT_REAL_PRECISION to_real() const;
   operator EXPONENT_REAL_PRECISION() const;
-  std::string to_string(const OutputFormat& oformat = OutputFormat()) const;
+  std::string to_string(const UnitFormat& oformat = UnitFormat()) const;
   void reduce();
 };
 

@@ -2,15 +2,14 @@
 
 #include "converter.h"
 #include "quantity.h"
+#include "unit_format.h"
 
 namespace puq {
 
   void Quantity::preprocess(std::string& expression, SystemType& system) const {
 #ifdef PREPROCESS_SYSTEM
     for (auto sys: SystemMap) {
-      std::string symbol = sys.second->SystemAbbrev+SYMBOL_SYSTEM;
-      if (expression.rfind(symbol, 0) == 0) {
-	expression = expression.substr(symbol.size(), expression.size()-symbol.size());
+      if (UnitFormat::preprocess_system(expression, sys.second->SystemAbbrev)) {
 	if (system==SystemType::NONE)
 	  system = sys.first;
 	else if (system!=sys.first) {
@@ -24,19 +23,7 @@ namespace puq {
       system = UnitSystem::System;
 #endif
 #ifdef PREPROCESS_SYMBOLS
-    // replace non standard symbols
-    std::unordered_map<std::string, std::string> dict {
-      {SYMBOL_EXPONENT2,   SYMBOL_EXPONENT},  // ×10 -> e
-      {SYMBOL_MINUS2,      SYMBOL_MINUS},     // −   -> -
-      {SYMBOL_MULTIPLY2,   SYMBOL_MULTIPLY},  // ⋅   -> *
-    };
-    for (auto item: dict) {
-      size_t pos = expression.find(item.first);
-      while (pos != std::string::npos) {
-	expression.replace(pos, item.first.size(), item.second);
-	pos = expression.find(item.first, pos + item.first.size());
-      }
-    }
+    UnitFormat::preprocess_symbols(expression);
 #endif
   }
   
@@ -162,10 +149,12 @@ namespace puq {
 #endif
   
   // strings and streams
-  std::string Quantity::to_string(int precision) const {
+  std::string Quantity::to_string(const UnitFormat& oformat) const {
     UnitSystem us(stype);
-    return value.to_string(precision);
+    std::string qstr = value.to_string(oformat);
+    return oformat.format_system(qstr, unit_system());
   }
+  
   std::ostream& operator<<(std::ostream& os, const Quantity& q) {
     os << q.to_string();
     return os;

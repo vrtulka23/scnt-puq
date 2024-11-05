@@ -44,7 +44,7 @@ namespace puq {
 #ifdef MAGNITUDE_ARRAYS
     ArrayShape shape() const;
 #endif
-    std::string to_string(int precision=std::cout.precision()) const;
+    std::string to_string(const UnitFormat& oformat = UnitFormat()) const;
     // quantity operations
     friend Quantity operator+(const Quantity& q1, const Quantity& q2);
     friend Quantity operator-(const Quantity& q1, const Quantity& q2);

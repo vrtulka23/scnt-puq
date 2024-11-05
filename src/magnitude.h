@@ -31,7 +31,7 @@ public:
 #ifdef MAGNITUDE_ARRAYS
   ArrayShape shape() const;
 #endif
-  std::string to_string(const OutputFormat& oformat = OutputFormat()) const;
+  std::string to_string(const UnitFormat& oformat = UnitFormat()) const;
   friend Magnitude operator-(const Magnitude& m1);
   friend Magnitude operator+(const Magnitude& m1, const Magnitude& m2);
   friend Magnitude operator-(const Magnitude& m1, const Magnitude& m2);

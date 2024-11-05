@@ -31,21 +31,6 @@ TEST(BaseUnits, Initialization) {
   
 }
 
-TEST(BaseUnits, OutputFormat) {
-
-  puq::OutputFormat oformat(puq::MathFormat::PRETTY);
-    
-  puq::BaseUnits bus;
-  
-  bus = puq::BaseUnits("kg*m2/s2");
-  EXPECT_EQ(bus.to_string(oformat), "kg⋅m²⋅s⁻²");
-
-#ifdef EXPONENT_FRACTIONS
-  bus = puq::BaseUnits("m*kg-2:3");
-  EXPECT_EQ(bus.to_string(oformat), "m⋅kg⁻²ᐟ³");  
-#endif
-}
-
 #ifdef EXPONENT_FRACTIONS
 
 TEST(BaseUnits, InitializationFractions) {

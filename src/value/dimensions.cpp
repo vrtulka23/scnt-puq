@@ -32,7 +32,7 @@ namespace puq {
 #endif
 
   inline std::string _numerical_to_string(MAGNITUDE_TYPE numerical, const BaseDimensions& physical,
-					  Dformat& format, int precision) {
+					  Dformat& format, const UnitFormat& oformat) {
     std::stringstream ss;
     if ((format&Dformat::MKS)==Dformat::MKS) {
       numerical = numerical * (MAGNITUDE_TYPE)(std::pow(1e-3,(EXPONENT_REAL_PRECISION)physical[1]));
@@ -41,15 +41,15 @@ namespace puq {
     }
 #if defined(MAGNITUDE_ERRORS)
     if (numerical.value!=1 && (format&Dformat::NUM)==Dformat::NUM) {
-      ss << numerical.to_string(precision) << SYMBOL_MULTIPLY;
+      ss << numerical.to_string(oformat.precision) << SYMBOL_MULTIPLY;
     }
 #elif defined(MAGNITUDE_ARRAYS)
     if (numerical!=1 && (format&Dformat::NUM)==Dformat::NUM) {
-      ss << numerical.to_string(precision) << SYMBOL_MULTIPLY;
+      ss << numerical.to_string(oformat.precision) << SYMBOL_MULTIPLY;
     }
 #else
     if (numerical!=1 && (format&Dformat::NUM)==Dformat::NUM) {
-      ss << std::setprecision(precision);
+      ss << std::setprecision(oformat.precision);
       ss << numerical << std::scientific << SYMBOL_MULTIPLY;
     }
 #endif
@@ -74,10 +74,10 @@ namespace puq {
     return ss.str();
   }
 
-  std::string Dimensions::to_string(Dformat format, int precision) const {
+  std::string Dimensions::to_string(Dformat format, const UnitFormat& oformat) const {
     std::stringstream ss;
     if ((format & Dformat::NUM)==Dformat::NUM) {
-      ss << _numerical_to_string(numerical, physical, format, precision);
+      ss << _numerical_to_string(numerical, physical, format, oformat);
     }
     if ((format & Dformat::PHYS)==Dformat::PHYS) {
       ss << _physical_to_string(physical, format);

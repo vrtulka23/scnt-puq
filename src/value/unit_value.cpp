@@ -69,7 +69,7 @@ namespace puq {
   }
 #endif
   
-  std::string UnitValue::to_string(const OutputFormat& oformat) const {
+  std::string UnitValue::to_string(const UnitFormat& oformat) const {
     std::string multiply = oformat.multiply_symbol();
     std::stringstream ss;
   #if defined(MAGNITUDE_ERRORS)

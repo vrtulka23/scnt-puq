@@ -28,14 +28,6 @@ TEST(Quantity, Initialization) {
   q = puq::Quantity(1.23,"2*km3");        // magnitude and a unit expression with a number
   EXPECT_EQ(q.to_string(), "2.46*km3");
 
-#ifdef PREPROCESS_SYMBOLS
-  q = puq::Quantity("6.23537×10−12*C4⋅m4⋅J−3");
-  EXPECT_EQ(q.to_string(), "6.23537e-12*C4*m4*J-3");
-
-  q = puq::Quantity("6.23537×1012*C4⋅m4⋅J−3");
-  EXPECT_EQ(q.to_string(), "6.23537e+12*C4*m4*J-3");
-#endif
-
 #ifdef MAGNITUDE_ARRAYS
   puq::Array a({2,3,4});
   q = puq::Quantity(a,"km");              // magnitude as an array

@@ -54,7 +54,7 @@ namespace puq {
   /*
    * Return a string representation of a magnitude
    */
-  std::string _to_string(const MAGNITUDE_PRECISION& value, const MAGNITUDE_PRECISION& error, const OutputFormat& oformat) {
+  std::string _to_string(const MAGNITUDE_PRECISION& value, const MAGNITUDE_PRECISION& error, const UnitFormat& oformat) {
     std::stringstream ss;
     int exp_val  = std::floor(std::log10(value));
     if (error==0) {
@@ -72,7 +72,7 @@ namespace puq {
     }
     return ss.str();  
   }
-  std::string Magnitude::to_string(const OutputFormat& oformat) const {
+  std::string Magnitude::to_string(const UnitFormat& oformat) const {
     std::stringstream ss;
     if (error==0) {
 #ifdef MAGNITUDE_ARRAYS

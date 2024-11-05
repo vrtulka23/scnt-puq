@@ -71,7 +71,7 @@ namespace puq {
     return Array(av,{s});
   };
 
-  std::string Array::to_string(const OutputFormat& oformat) const {
+  std::string Array::to_string(const UnitFormat& oformat) const {
     std::stringstream ss;
     if (size()==1) {
       ss << std::setprecision(oformat.precision);
