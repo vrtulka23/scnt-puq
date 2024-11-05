@@ -271,7 +271,7 @@ namespace puq {
 	throw UnitValueExcept("Dimensions of logarithmic units cannot be rebased: "+baseunits.to_string());
       if ((dim.utype & Utype::TMP) == Utype::TMP)
 	throw UnitValueExcept("Dimensions of temperature units cannot be rebased: "+baseunits.to_string());
-      std::string key = dim.to_string(Dformat::PHYS);
+      std::string key = dim.to_string(Dformat::PHYS, {PartFormat::UNITS});
       if (bumap.find(key) == bumap.end()) {
 	bumap.insert({key, {bu.prefix, bu.unit, bu.exponent}});
       } else {

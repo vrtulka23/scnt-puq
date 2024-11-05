@@ -23,7 +23,7 @@ namespace puq {
   
   enum class SystemFormat {HIDE, SHOW};
   enum class MathFormat   {BASIC, ASCII, MATH, HTML};
-  enum class PartFormat   {BOTH, NUMBER, UNITS};
+  enum class PartFormat   {BOTH, MAGNITUDE, UNITS};
   enum class BaseFormat   {UNITS, MGS, MKS, CGS, FPS};
   
   class UnitFormat {
@@ -50,6 +50,8 @@ namespace puq {
     std::string format_exponents(std::string expression) const;
     std::string format_order(std::string expression) const;
     std::string format_system(std::string expression, const std::string& abbrev) const;
+    bool display_magnitude() const;
+    bool display_units() const;
     
   };
   

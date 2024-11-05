@@ -40,15 +40,15 @@ namespace puq {
       numerical = numerical * (MAGNITUDE_TYPE)(std::pow(1e2,(EXPONENT_REAL_PRECISION)physical[0]));
     }
 #if defined(MAGNITUDE_ERRORS)
-    if (numerical.value!=1 && (format&Dformat::NUM)==Dformat::NUM) {
+    if (numerical.value!=1 && oformat.display_magnitude()) {
       ss << numerical.to_string(oformat.precision) << SYMBOL_MULTIPLY;
     }
 #elif defined(MAGNITUDE_ARRAYS)
-    if (numerical!=1 && (format&Dformat::NUM)==Dformat::NUM) {
+    if (numerical!=1 && oformat.display_magnitude()) {
       ss << numerical.to_string(oformat.precision) << SYMBOL_MULTIPLY;
     }
 #else
-    if (numerical!=1 && (format&Dformat::NUM)==Dformat::NUM) {
+    if (numerical!=1 && oformat.display_magnitude()) {
       ss << std::setprecision(oformat.precision);
       ss << numerical << std::scientific << SYMBOL_MULTIPLY;
     }
@@ -76,10 +76,10 @@ namespace puq {
 
   std::string Dimensions::to_string(Dformat format, const UnitFormat& oformat) const {
     std::stringstream ss;
-    if ((format & Dformat::NUM)==Dformat::NUM) {
+    if (oformat.display_magnitude()) {
       ss << _numerical_to_string(numerical, physical, format, oformat);
     }
-    if ((format & Dformat::PHYS)==Dformat::PHYS) {
+    if (oformat.display_units()) {
       ss << _physical_to_string(physical, format);
     }
     std::string s = ss.str();

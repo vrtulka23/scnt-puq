@@ -25,10 +25,18 @@ TEST(UnitFormat, DimensionsFormat) {
   puq::UnitFormat oformat;
   puq::Dimensions d;
   
-  oformat = puq::UnitFormat(10);            // increased output precision
-  d = puq::Dimensions(2.340342349349823e3,{0,1,2,3,4,5,6,7});
-  EXPECT_EQ(d.to_string(puq::Dformat::NUM, oformat), "2340.342349");
+  oformat = puq::UnitFormat(10);                            // increased output precision
+  d = puq::Dimensions(2.340342349349823e3,{0,1,2,0,0,0,0,0});
+  EXPECT_EQ(d.to_string(puq::Dformat::NUM, oformat), "2340.342349*g*s2");
 
+  oformat = puq::UnitFormat(puq::PartFormat::MAGNITUDE);    // display only magnitudes
+  d = puq::Dimensions(2.340342349349823e3,{0,1,2,0,0,0,0,0});
+  EXPECT_EQ(d.to_string(puq::Dformat::NUM, oformat), "2340.34");
+  
+  oformat = puq::UnitFormat(puq::PartFormat::UNITS);        // display only units
+  d = puq::Dimensions(2.340342349349823e3,{0,1,2,0,0,0,0,0});
+  EXPECT_EQ(d.to_string(puq::Dformat::NUM, oformat), "g*s2");
+  
 }
 
 TEST(UnitFormat, BaseUnitsFormat) {

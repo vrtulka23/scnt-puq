@@ -92,5 +92,13 @@ namespace puq {
     }
     return expression;
   };
+
+  bool UnitFormat::display_magnitude() const {
+    return (part == PartFormat::BOTH) || (part == PartFormat::MAGNITUDE);
+  }
+  
+  bool UnitFormat::display_units() const {
+    return (part == PartFormat::BOTH) || (part == PartFormat::UNITS);
+  }
   
 }
