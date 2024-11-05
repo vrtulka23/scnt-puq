@@ -54,11 +54,11 @@ namespace puq {
   /*
    * Return a string representation of a magnitude
    */
-  std::string _to_string(const MAGNITUDE_PRECISION& value, const MAGNITUDE_PRECISION& error, const UnitFormat& oformat) {
+  std::string _to_string(const MAGNITUDE_PRECISION& value, const MAGNITUDE_PRECISION& error, const UnitFormat& format) {
     std::stringstream ss;
     int exp_val  = std::floor(std::log10(value));
     if (error==0) {
-      ss << std::setprecision(oformat.precision);
+      ss << std::setprecision(format.precision);
       ss << value << std::scientific;
     } else {
       int exp_err  = std::floor(std::log10(error));
@@ -72,34 +72,34 @@ namespace puq {
     }
     return ss.str();  
   }
-  std::string Magnitude::to_string(const UnitFormat& oformat) const {
+  std::string Magnitude::to_string(const UnitFormat& format) const {
     std::stringstream ss;
     if (error==0) {
 #ifdef MAGNITUDE_ARRAYS
-      ss << value.to_string(oformat);
+      ss << value.to_string(format);
 #else
-      ss << std::setprecision(oformat.precision);
+      ss << std::setprecision(format.precision);
       ss << value << std::scientific;
 #endif
     }
     else {
 #ifdef MAGNITUDE_ARRAYS
       if (value.size()==1)
-	ss << _to_string(value[0], error[0], oformat);
+	ss << _to_string(value[0], error[0], format);
       else if (value.size()==2) {
-	ss << SYMBOL_ARRAY_START << _to_string(value[0], error[0], oformat);
-	ss << SYMBOL_ARRAY_SEPARATOR << " " << _to_string(value[1], error[1], oformat);
+	ss << SYMBOL_ARRAY_START << _to_string(value[0], error[0], format);
+	ss << SYMBOL_ARRAY_SEPARATOR << " " << _to_string(value[1], error[1], format);
 	ss << SYMBOL_ARRAY_END;
       } else {
-	ss << SYMBOL_ARRAY_START << _to_string(value[0], error[0], oformat); 
-	ss << SYMBOL_ARRAY_SEPARATOR << " " << _to_string(value[1], error[1], oformat);
+	ss << SYMBOL_ARRAY_START << _to_string(value[0], error[0], format); 
+	ss << SYMBOL_ARRAY_SEPARATOR << " " << _to_string(value[1], error[1], format);
 	ss << SYMBOL_ARRAY_SEPARATOR << " " << SYMBOL_ARRAY_MORE << SYMBOL_ARRAY_END;
       }
 #else
-      ss << _to_string(value, error, oformat);
+      ss << _to_string(value, error, format);
 #endif
     }
-    return oformat.format_order(ss.str());
+    return format.format_order(ss.str());
   }
 
   std::size_t Magnitude::size() const {

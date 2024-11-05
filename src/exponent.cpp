@@ -90,7 +90,7 @@ Exponent::operator EXPONENT_REAL_PRECISION() const {
 /*
  *  Create a string representation of an exponent
  */
-std::string Exponent::to_string(const UnitFormat& oformat) const {
+std::string Exponent::to_string(const UnitFormat& format) const {
   Exponent e(numerator, denominator);
   e.reduce();
   std::stringstream ss;
@@ -98,7 +98,7 @@ std::string Exponent::to_string(const UnitFormat& oformat) const {
     ss << std::to_string(e.numerator) << SYMBOL_FRACTION << std::to_string(e.denominator);
   else
     ss << std::to_string(e.numerator);
-  return oformat.format_exponents(ss.str());
+  return format.format_exponents(ss.str());
 }
 
 /*

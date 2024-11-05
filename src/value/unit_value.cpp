@@ -69,30 +69,34 @@ namespace puq {
   }
 #endif
   
-  std::string UnitValue::to_string(const UnitFormat& oformat) const {
-    std::string multiply = oformat.multiply_symbol();
+  std::string UnitValue::to_string(const UnitFormat& format) const {
+    std::string multiply = format.multiply_symbol();
     std::stringstream ss;
-  #if defined(MAGNITUDE_ERRORS)
-    if (magnitude.value!=1 || baseunits.size()==0)
-      ss << magnitude.to_string(oformat) << multiply;
-  #elif defined(MAGNITUDE_ARRAYS)
-    if (magnitude!=1 || baseunits.size()==0)
-      ss << magnitude.to_string(oformat) << multiply;
-  #else
-    if (magnitude!=1 || baseunits.size()==0) {
-      ss << std::setprecision(oformat.precision);
-      ss << magnitude << std::scientific << multiply;
+    if (format.display_magnitude()) {
+#if defined(MAGNITUDE_ERRORS)
+      if (magnitude.value!=1 || baseunits.size()==0)
+	ss << magnitude.to_string(format) << multiply;
+#elif defined(MAGNITUDE_ARRAYS)
+      if (magnitude!=1 || baseunits.size()==0)
+	ss << magnitude.to_string(format) << multiply;
+#else
+      if (magnitude!=1 || baseunits.size()==0) {
+	ss << std::setprecision(format.precision);
+	ss << magnitude << std::scientific << multiply;
+      }
+#endif
     }
-  #endif
-    if (baseunits.size()>0)
-      ss << baseunits.to_string(oformat) << multiply;
+    if (format.display_units()) {
+      if (baseunits.size()>0)
+	ss << baseunits.to_string(format) << multiply;
+    }
     std::string s = ss.str();
     return s.substr(0,s.size()-multiply.size());
   }
 
   UnitValue operator+(const UnitValue& v1, const UnitValue& v2) {
     Converter conv(v2.baseunits, v1.baseunits);
-  #ifdef UNITS_LOGARITHMIC
+#ifdef UNITS_LOGARITHMIC
     if (conv.utype==Utype::LOG) {
       MAGNITUDE_TYPE m1 = v1.magnitude * conv.dimensions1.numerical;
       MAGNITUDE_TYPE m2 = conv.convert(v2.magnitude) * conv.dimensions2.numerical;
@@ -102,7 +106,7 @@ namespace puq {
 	m2 = nostd::pow(10, m2);
       return UnitValue(nostd::log10(m1 + m2) / conv.dimensions1.numerical, v1.baseunits);
     }
-  #endif
+#endif
     return UnitValue(v1.magnitude + conv.convert(v2.magnitude), v1.baseunits);
   }
 
@@ -112,7 +116,7 @@ namespace puq {
   
   void UnitValue::operator+=(const UnitValue& v) {
     Converter conv(v.baseunits, baseunits);
-  #ifdef UNITS_LOGARITHMIC
+#ifdef UNITS_LOGARITHMIC
     if (conv.utype==Utype::LOG) {
       MAGNITUDE_TYPE m1 = magnitude * conv.dimensions1.numerical;
       MAGNITUDE_TYPE m2 = conv.convert(v.magnitude) * conv.dimensions2.numerical;
@@ -123,13 +127,13 @@ namespace puq {
       magnitude = nostd::log10(m1 + m2) / conv.dimensions1.numerical;
       return;
     }
-  #endif
+#endif
     magnitude += conv.convert(v.magnitude);
   }
 
   UnitValue operator-(const UnitValue& v1, const UnitValue& v2) {
     Converter conv(v2.baseunits, v1.baseunits);
-  #ifdef UNITS_LOGARITHMIC
+#ifdef UNITS_LOGARITHMIC
     if (conv.utype==Utype::LOG) {
       MAGNITUDE_TYPE m1 = v1.magnitude * conv.dimensions1.numerical;
       MAGNITUDE_TYPE m2 = conv.convert(v2.magnitude) * conv.dimensions2.numerical;
@@ -139,7 +143,7 @@ namespace puq {
 	m2 = nostd::pow(10, m2);
       return UnitValue(nostd::log10(m1 - m2) / conv.dimensions1.numerical, v1.baseunits);
     }
-  #endif
+#endif
     return UnitValue(v1.magnitude - conv.convert(v2.magnitude), v1.baseunits);
   }
 
@@ -149,7 +153,7 @@ namespace puq {
   
   void UnitValue::operator-=(const UnitValue& v) {
     Converter conv(v.baseunits, baseunits);
-  #ifdef UNITS_LOGARITHMIC
+#ifdef UNITS_LOGARITHMIC
     if (conv.utype==Utype::LOG) {
       MAGNITUDE_TYPE m1 = magnitude * conv.dimensions1.numerical;
       MAGNITUDE_TYPE m2 = conv.convert(v.magnitude) * conv.dimensions2.numerical;
@@ -160,7 +164,7 @@ namespace puq {
       magnitude = nostd::log10(m1 - m2) / conv.dimensions1.numerical;
       return;
     }
-  #endif
+#endif
     magnitude -= conv.convert(v.magnitude);
   }
 
@@ -188,11 +192,11 @@ namespace puq {
   }
   
   void UnitValue::pow(const EXPONENT_TYPE& e) {
-  #if defined(MAGNITUDE_ERRORS) || defined(MAGNITUDE_ARRAYS)
+#if defined(MAGNITUDE_ERRORS) || defined(MAGNITUDE_ARRAYS)
     magnitude.pow(e);
-  #else
+#else
     magnitude = std::pow(magnitude, (EXPONENT_REAL_PRECISION)e);
-  #endif
+#endif
     baseunits *= e;
   }
 
@@ -212,23 +216,23 @@ namespace puq {
     return UnitValue(conv.convert(magnitude, 1), bu);
   }
 
-  UnitValue UnitValue::convert(const Dformat& format) const {
+  UnitValue UnitValue::convert(const BaseFormat& format) const {
     BaseUnits bu;
     Dimensions dim = baseunits.dimensions();
     for (int i=0; i<NUM_BASEDIM; i++) {
       if (dim.physical[i]==0)
 	continue;
-      if (i==1 && (format&Dformat::MKS)==Dformat::MKS) {
+      if (i==1 && format==BaseFormat::MKS) {
 	bu.append({"k","g",dim.physical[i]});
       }
-      else if (i==0 && (format&Dformat::CGS)==Dformat::CGS) {
+      else if (i==0 && format==BaseFormat::CGS) {
 	bu.append({"c","m",dim.physical[i]});	
       }
 #ifdef UNIT_SYSTEM_EUS
-      else if (i==0 && (format&Dformat::FPS)==Dformat::FPS) {
+      else if (i==0 && format==BaseFormat::FPS) {
 	bu.append({"","ft",dim.physical[i]});	
       }
-      else if (i==1 && (format&Dformat::FPS)==Dformat::FPS) {
+      else if (i==1 && format==BaseFormat::FPS) {
 	bu.append({"","lb",dim.physical[i]});	
       }
 #endif
@@ -271,7 +275,7 @@ namespace puq {
 	throw UnitValueExcept("Dimensions of logarithmic units cannot be rebased: "+baseunits.to_string());
       if ((dim.utype & Utype::TMP) == Utype::TMP)
 	throw UnitValueExcept("Dimensions of temperature units cannot be rebased: "+baseunits.to_string());
-      std::string key = dim.to_string(Dformat::PHYS, {PartFormat::UNITS});
+      std::string key = dim.to_string({DisplayFormat::UNITS});
       if (bumap.find(key) == bumap.end()) {
 	bumap.insert({key, {bu.prefix, bu.unit, bu.exponent}});
       } else {
@@ -284,7 +288,7 @@ namespace puq {
     for (auto bum: bumap) {
       bus.append(bum.second);
     }
-  return UnitValue(mag, bus);
+    return UnitValue(mag, bus);
   }
   
 }

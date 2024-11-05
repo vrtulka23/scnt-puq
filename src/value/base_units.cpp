@@ -16,11 +16,11 @@ namespace puq {
     baseunits = atom.value.baseunits.baseunits;
   }
 
-  std::string BaseUnit::to_string(const UnitFormat& oformat) {
+  std::string BaseUnit::to_string(const UnitFormat& format) {
     std::stringstream ss;
     ss << prefix << unit;
     if (exponent!=1)
-      ss << nostd::to_string(exponent, oformat);
+      ss << nostd::to_string(exponent, format);
     return ss.str();
   }
 
@@ -52,11 +52,11 @@ namespace puq {
   }
   #endif
 
-  std::string BaseUnits::to_string(const UnitFormat& oformat) const {
+  std::string BaseUnits::to_string(const UnitFormat& format) const {
     std::stringstream ss;
-    std::string multiply = oformat.multiply_symbol();
+    std::string multiply = format.multiply_symbol();
     for (auto unit: baseunits) {
-      ss << unit.to_string(oformat) << multiply;
+      ss << unit.to_string(format) << multiply;
     }
     std::string s = ss.str();
     return s.substr(0,s.size()-multiply.size());

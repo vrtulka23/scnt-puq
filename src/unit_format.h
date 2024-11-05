@@ -23,7 +23,7 @@ namespace puq {
   
   enum class SystemFormat {HIDE, SHOW};
   enum class MathFormat   {BASIC, ASCII, MATH, HTML};
-  enum class PartFormat   {BOTH, MAGNITUDE, UNITS};
+  enum class DisplayFormat   {BOTH, MAGNITUDE, UNITS};
   enum class BaseFormat   {UNITS, MGS, MKS, CGS, FPS};
   
   class UnitFormat {
@@ -33,14 +33,14 @@ namespace puq {
     SystemFormat system;
     int precision;
     MathFormat math;
-    PartFormat part;
+    DisplayFormat part;
     BaseFormat base;
     
     UnitFormat(const auto&... args) {
       math = get_option<MathFormat>(args...).value_or(MathFormat::BASIC);
       precision = get_option<int>(args...).value_or(std::cout.precision());
       system = get_option<SystemFormat>(args...).value_or(SystemFormat::HIDE);
-      part = get_option<PartFormat>(args...).value_or(PartFormat::BOTH);
+      part = get_option<DisplayFormat>(args...).value_or(DisplayFormat::BOTH);
       base = get_option<BaseFormat>(args...).value_or(BaseFormat::UNITS);
     };
 

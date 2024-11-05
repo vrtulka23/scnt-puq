@@ -94,11 +94,11 @@ namespace puq {
   };
 
   bool UnitFormat::display_magnitude() const {
-    return (part == PartFormat::BOTH) || (part == PartFormat::MAGNITUDE);
+    return (part == DisplayFormat::BOTH) || (part == DisplayFormat::MAGNITUDE);
   }
   
   bool UnitFormat::display_units() const {
-    return (part == PartFormat::BOTH) || (part == PartFormat::UNITS);
+    return (part == DisplayFormat::BOTH) || (part == DisplayFormat::UNITS);
   }
   
 }

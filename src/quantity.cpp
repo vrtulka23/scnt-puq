@@ -149,10 +149,10 @@ namespace puq {
 #endif
   
   // strings and streams
-  std::string Quantity::to_string(const UnitFormat& oformat) const {
+  std::string Quantity::to_string(const UnitFormat& format) const {
     UnitSystem us(stype);
-    std::string qstr = value.to_string(oformat);
-    return oformat.format_system(qstr, unit_system());
+    std::string qstr = value.to_string(format);
+    return format.format_system(qstr, unit_system());
   }
   
   std::ostream& operator<<(std::ostream& os, const Quantity& q) {
@@ -328,13 +328,13 @@ namespace puq {
     return uv;
   }  
 
-  // convert using Dformat
-  Quantity Quantity::convert(const Dformat& format, SystemType system) const {
+  // convert using BaseFormat
+  Quantity Quantity::convert(const BaseFormat& format, SystemType system) const {
     UnitValue uv = value;
     if (system==SystemType::NONE)
       system = stype;
     else if (system != stype)
-      uv = value.convert(Dformat::MGS);
+      uv = value.convert(BaseFormat::MGS);
     UnitSystem us(system);
     return Quantity(uv.convert(format));
   }

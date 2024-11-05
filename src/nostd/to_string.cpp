@@ -26,12 +26,12 @@ namespace puq {
       return value.to_string();
     }
   
-    std::string to_string(const Dimensions& value, Dformat format, int precision) {
-      return value.to_string(format, precision);
+    std::string to_string(const Dimensions& value, const UnitFormat& format) {
+      return value.to_string(format);
     }
   
-    std::string to_string(const Exponent& value, const UnitFormat& oformat) {
-      return value.to_string(oformat);
+    std::string to_string(const Exponent& value, const UnitFormat& format) {
+      return value.to_string(format);
     }
   
     std::string to_string(const bool& use_prefixes, const AllowedPrefixes& value) {

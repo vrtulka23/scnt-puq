@@ -7,31 +7,6 @@
 #include "../systems/systems.h"
 
 namespace puq {
-
-  enum class Dformat : std::uint8_t {
-    NUM  = 0b00000001,  // numerical value
-    PHYS = 0b00000010,  // physical value
-    MGS  = 0b00000100,  // m/g/s
-    MKS  = 0b00001000,  // m/kg/s
-    CGS  = 0b00010000,  // cm/g/s
-#ifdef UNIT_SYSTEM_EUS
-    FPS  = 0b00100000,  // ft/lb/s
-#endif
-  };
-  
-  inline Dformat operator|(Dformat lhs, Dformat rhs) {
-    return static_cast<Dformat>(
-				static_cast<std::underlying_type_t<Dformat>>(lhs) |
-				static_cast<std::underlying_type_t<Dformat>>(rhs)
-				);
-  }
-  
-  inline Dformat operator&(Dformat lhs, Dformat rhs) {
-    return static_cast<Dformat>(
-				static_cast<std::underlying_type_t<Dformat>>(lhs) &
-				static_cast<std::underlying_type_t<Dformat>>(rhs)
-				);
-  }
   
   class UnitValueExcept: public std::exception {
   private:
@@ -56,7 +31,7 @@ namespace puq {
     Dimensions(const MAGNITUDE_PRECISION& m, const MAGNITUDE_PRECISION& e);
     Dimensions(const MAGNITUDE_PRECISION& m, const MAGNITUDE_PRECISION& e, const BaseDimensions& p): utype(Utype::NUL), numerical(m,e), physical(p) {};
 #endif
-    std::string to_string(Dformat format=Dformat::NUM|Dformat::PHYS, const UnitFormat& oformat = UnitFormat()) const;
+    std::string to_string(const UnitFormat& format = UnitFormat()) const;
     friend std::ostream& operator<<(std::ostream& os, const Dimensions& d);
     bool operator==(const Dimensions& d) const;
     bool operator!=(const Dimensions& d) const;
@@ -76,7 +51,7 @@ namespace puq {
 #ifdef EXPONENT_FRACTIONS
     BaseUnit(const std::string& p, const std::string& u, const EXPONENT_INT_PRECISION& n, const EXPONENT_INT_PRECISION& d): prefix(p), unit(u), exponent(n,d) {};
 #endif
-    std::string to_string(const UnitFormat& oformat = UnitFormat());
+    std::string to_string(const UnitFormat& format = UnitFormat());
   };
     
   typedef std::vector<BaseUnit> BaseUnitsList;
@@ -92,7 +67,7 @@ namespace puq {
 #ifdef EXPONENT_FRACTIONS
     void append(std::string p, std::string u, EXPONENT_INT_PRECISION n, EXPONENT_INT_PRECISION d);
 #endif
-    std::string to_string(const UnitFormat& oformat = UnitFormat()) const;
+    std::string to_string(const UnitFormat& format = UnitFormat()) const;
     const BaseUnit& operator[] (int index) const;
     friend BaseUnits operator+(const BaseUnits& bu1, const BaseUnits& bu2);
     friend BaseUnits operator-(const BaseUnits& bu1, const BaseUnits& bu2);
@@ -141,7 +116,7 @@ namespace puq {
 #ifdef MAGNITUDE_ARRAYS
     ArrayShape shape() const;
 #endif
-    std::string to_string(const UnitFormat& oformat = UnitFormat()) const;
+    std::string to_string(const UnitFormat& format = UnitFormat()) const;
     friend UnitValue operator+(const UnitValue& v1, const UnitValue& v2);
     friend UnitValue operator-(const UnitValue& v1, const UnitValue& v2);
     friend UnitValue operator*(const UnitValue& v1, const UnitValue& v2);
@@ -154,7 +129,7 @@ namespace puq {
     void operator*=(const UnitValue& v);
     void operator/=(const UnitValue& v);
     void pow(const EXPONENT_TYPE& e);
-    UnitValue convert(const Dformat& format) const;
+    UnitValue convert(const BaseFormat& format) const;
     UnitValue convert(const std::string& s) const;
     UnitValue convert(const BaseUnits& bu) const;
     UnitValue convert(const UnitValue& v) const;

@@ -50,8 +50,8 @@ namespace puq {
 	tab.append({
 	    unit.first,
 	    unit.second.name,
-	    dim.to_string(Dformat::NUM),
-	    dim.to_string(Dformat::PHYS),
+	    dim.to_string({DisplayFormat::MAGNITUDE}),
+	    dim.to_string({DisplayFormat::UNITS}),
 	    unit.second.definition,
 	    nostd::to_string(unit.second.use_prefixes, unit.second.allowed_prefixes)
 	  });
@@ -69,8 +69,8 @@ namespace puq {
 	tab.append({
 	    unit.first,
 	    unit.second.name,
-	    dim.to_string(Dformat::NUM),
-	    dim.to_string(Dformat::PHYS),
+	    dim.to_string({DisplayFormat::MAGNITUDE}),
+	    dim.to_string({DisplayFormat::UNITS}),
 	    unit.second.definition
 	  });
       }
@@ -87,8 +87,8 @@ namespace puq {
 	tab.append({
 	    symbol,
 	    QuantityNames.at(quantity.first),
-	    dim.to_string(Dformat::NUM),
-	    dim.to_string(Dformat::PHYS),
+	    dim.to_string({DisplayFormat::MAGNITUDE}),
+	    dim.to_string({DisplayFormat::UNITS}),
 	    quantity.second.definition,
 	    ((quantity.second.sifactor=="") ? "no" : "yes")
 	  });

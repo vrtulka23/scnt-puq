@@ -26,7 +26,7 @@ namespace puq {
 				 MAGNITUDE_PRECISION (*func)(const MAGNITUDE_PRECISION& v1,
 							     const MAGNITUDE_PRECISION& v2));
     static Array filled(const MAGNITUDE_PRECISION& v, const size_t &s);
-    std::string to_string(const UnitFormat& oformat = UnitFormat()) const;
+    std::string to_string(const UnitFormat& format = UnitFormat()) const;
     size_t size() const;
     ArrayShape shape() const;
     friend Array operator+(const Array& a1, const Array& a2);

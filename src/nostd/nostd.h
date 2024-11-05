@@ -36,7 +36,7 @@ namespace puq {
   
     extern std::string to_string(const MAGNITUDE_PRECISION& value, int precision=std::cout.precision());
 #ifdef EXPONENT_FRACTIONS
-    extern std::string to_string(const Exponent& value, const UnitFormat& oformat = UnitFormat());
+    extern std::string to_string(const Exponent& value, const UnitFormat& format = UnitFormat());
 #endif
 #ifdef MAGNITUDE_ARRAYS
     extern std::string to_string(const Array& value, int precision=std::cout.precision());
@@ -45,7 +45,7 @@ namespace puq {
     extern std::string to_string(const Magnitude& value, int precision=std::cout.precision());
 #endif
     extern std::string to_string(const BaseUnits& value, int precision=std::cout.precision());
-    extern std::string to_string(const Dimensions& value, Dformat format=Dformat::NUM|Dformat::PHYS, int precision=std::cout.precision());
+    extern std::string to_string(const Dimensions& value, const UnitFormat& format = UnitFormat());
     extern std::string to_string(const bool& use_prefixes, const AllowedPrefixes& value);
     extern std::string to_string(const ArrayShape& shape);
   

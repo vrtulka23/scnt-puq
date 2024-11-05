@@ -30,7 +30,7 @@ public:
   bool operator!=(const EXPONENT_REAL_PRECISION& e) const;
   EXPONENT_REAL_PRECISION to_real() const;
   operator EXPONENT_REAL_PRECISION() const;
-  std::string to_string(const UnitFormat& oformat = UnitFormat()) const;
+  std::string to_string(const UnitFormat& format = UnitFormat()) const;
   void reduce();
 };
 

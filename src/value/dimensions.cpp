@@ -32,58 +32,62 @@ namespace puq {
 #endif
 
   inline std::string _numerical_to_string(MAGNITUDE_TYPE numerical, const BaseDimensions& physical,
-					  Dformat& format, const UnitFormat& oformat) {
+					  const UnitFormat& format) {
+    std::string multiply = format.multiply_symbol();
     std::stringstream ss;
-    if ((format&Dformat::MKS)==Dformat::MKS) {
+    if (format.base==BaseFormat::MKS) {
       numerical = numerical * (MAGNITUDE_TYPE)(std::pow(1e-3,(EXPONENT_REAL_PRECISION)physical[1]));
-    } else if ((format&Dformat::CGS)==Dformat::CGS) {
+    } else if (format.base==BaseFormat::CGS) {
       numerical = numerical * (MAGNITUDE_TYPE)(std::pow(1e2,(EXPONENT_REAL_PRECISION)physical[0]));
     }
 #if defined(MAGNITUDE_ERRORS)
-    if (numerical.value!=1 && oformat.display_magnitude()) {
-      ss << numerical.to_string(oformat.precision) << SYMBOL_MULTIPLY;
+    if (numerical.value!=1 && format.display_magnitude()) {
+      ss << numerical.to_string(format) << multiply;
     }
 #elif defined(MAGNITUDE_ARRAYS)
-    if (numerical!=1 && oformat.display_magnitude()) {
-      ss << numerical.to_string(oformat.precision) << SYMBOL_MULTIPLY;
+    if (numerical!=1 && format.display_magnitude()) {
+      ss << numerical.to_string(format) << multiply;
     }
 #else
-    if (numerical!=1 && oformat.display_magnitude()) {
-      ss << std::setprecision(oformat.precision);
-      ss << numerical << std::scientific << SYMBOL_MULTIPLY;
+    if (numerical!=1 && format.display_magnitude()) {
+      ss << std::setprecision(format.precision);
+      ss << numerical << std::scientific << multiply;
     }
 #endif
     return ss.str();
   }
 
 
-  inline std::string _physical_to_string(const BaseDimensions& physical, Dformat& format) {
+  inline std::string _physical_to_string(const BaseDimensions& physical, const UnitFormat& format) {
+    std::string multiply = format.multiply_symbol();
     std::stringstream ss;
     for (int i=0; i<NUM_BASEDIM; i++) {
       std::string symbol = SystemData::BaseUnitOrder[i];
-      if (i==1 && (format&Dformat::MKS)==Dformat::MKS) {
+      if (i==1 && format.base==BaseFormat::MKS) {
 	symbol = "kg";
-      } else if (i==0 && (format&Dformat::CGS)==Dformat::CGS) {
+      } else if (i==0 && format.base==BaseFormat::CGS) {
 	symbol = "cm";
       }
       if (physical[i]==1)
-	ss << symbol << SYMBOL_MULTIPLY;
+	ss << symbol << multiply;
       else if (physical[i]!=0)
-	ss << symbol << nostd::to_string(physical[i]) << SYMBOL_MULTIPLY;
+	ss << symbol << nostd::to_string(physical[i], format) << multiply;
     }
     return ss.str();
   }
 
-  std::string Dimensions::to_string(Dformat format, const UnitFormat& oformat) const {
+  std::string Dimensions::to_string(const UnitFormat& format) const {
+    std::string multiply = format.multiply_symbol();
     std::stringstream ss;
-    if (oformat.display_magnitude()) {
-      ss << _numerical_to_string(numerical, physical, format, oformat);
+    if (format.display_magnitude()) {
+      ss << _numerical_to_string(numerical, physical, format);
     }
-    if (oformat.display_units()) {
+    if (format.display_units()) {
       ss << _physical_to_string(physical, format);
     }
     std::string s = ss.str();
-    return (s=="") ? "1" : s.substr(0,s.size()-1);
+    s = s.substr(0,s.size()-multiply.size());
+    return (s=="") ? "1" : s;
   }
 
   std::ostream& operator<<(std::ostream& os, const Dimensions& d) {
