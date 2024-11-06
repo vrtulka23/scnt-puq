@@ -2,20 +2,9 @@
 #define PUQ_DATA_TABLE_H
 
 #include <iomanip>
+#include "display_length.h"
 
 namespace puq {
-
-  /*
-  class DataTableExcept: public std::exception {
-  private:
-    std::string message;
-  public:
-    DataTableExcept(std::string m) : message(m) {}
-    const char * what () const noexcept override {
-      return message.c_str();
-    }
-  };
-  */
 
   struct DataTableStruct {
     std::string title;
@@ -48,7 +37,8 @@ namespace puq {
       ss << std::endl;
       for (size_t row=0; row<data.size(); row++) {
 	for (size_t col=0; col<data[row].size(); col++) {
-	  ss << std::setfill(' ') << std::setw(settings[col].width) << std::left << data[row][col] << std::string(padding,' ');
+	  size_t dwidth = data[row][col].size()-display_length(data[row][col]);
+	  ss << std::setfill(' ') << std::setw(settings[col].width+dwidth) << std::left << data[row][col] << std::string(padding,' ');
 	}
 	ss << std::endl;
       }

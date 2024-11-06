@@ -13,11 +13,11 @@ namespace puq {
 
   namespace lists { 
     std::string unit_systems(const bool json=false);
-    std::string prefixes(const bool json=false);
-    std::string base_units(const bool json=false);
-    std::string derived_units(const bool json=false);
-    std::string constants(const bool json=false);
-    std::string quantities(const bool json=false);
+    std::string prefixes(const bool json=false, const UnitFormat& format=UnitFormat());
+    std::string base_units(const bool json=false, const UnitFormat& format=UnitFormat());
+    std::string derived_units(const bool json=false, const UnitFormat& format=UnitFormat());
+    std::string constants(const bool json=false, const UnitFormat& format=UnitFormat());
+    std::string quantities(const bool json=false, const UnitFormat& format=UnitFormat());
 #ifdef UNITS_TEMPERATURES
     std::string temperature_units(const bool json=false);
 #endif

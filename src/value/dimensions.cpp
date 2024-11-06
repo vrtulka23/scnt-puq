@@ -35,9 +35,9 @@ namespace puq {
 					  const UnitFormat& format) {
     std::string multiply = format.multiply_symbol();
     std::stringstream ss;
-    if (format.base==BaseFormat::MKS) {
+    if (format.base==Format::Base::MKS) {
       numerical = numerical * (MAGNITUDE_TYPE)(std::pow(1e-3,(EXPONENT_REAL_PRECISION)physical[1]));
-    } else if (format.base==BaseFormat::CGS) {
+    } else if (format.base==Format::Base::CGS) {
       numerical = numerical * (MAGNITUDE_TYPE)(std::pow(1e2,(EXPONENT_REAL_PRECISION)physical[0]));
     }
 #if defined(MAGNITUDE_ERRORS)
@@ -63,9 +63,9 @@ namespace puq {
     std::stringstream ss;
     for (int i=0; i<NUM_BASEDIM; i++) {
       std::string symbol = SystemData::BaseUnitOrder[i];
-      if (i==1 && format.base==BaseFormat::MKS) {
+      if (i==1 && format.base==Format::Base::MKS) {
 	symbol = "kg";
-      } else if (i==0 && format.base==BaseFormat::CGS) {
+      } else if (i==0 && format.base==Format::Base::CGS) {
 	symbol = "cm";
       }
       if (physical[i]==1)

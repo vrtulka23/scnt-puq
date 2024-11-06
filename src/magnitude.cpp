@@ -57,7 +57,7 @@ namespace puq {
   std::string _to_string(const MAGNITUDE_PRECISION& value, const MAGNITUDE_PRECISION& error, const UnitFormat& format) {
     std::stringstream ss;
     int exp_val  = std::floor(std::log10(value));
-    if (error==0) {
+    if (error==0 || !format.display_error()) {
       ss << std::setprecision(format.precision);
       ss << value << std::scientific;
     } else {
@@ -74,7 +74,7 @@ namespace puq {
   }
   std::string Magnitude::to_string(const UnitFormat& format) const {
     std::stringstream ss;
-    if (error==0) {
+    if (error==0 || !format.display_error()) {
 #ifdef MAGNITUDE_ARRAYS
       ss << value.to_string(format);
 #else

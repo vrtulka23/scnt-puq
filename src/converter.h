@@ -28,20 +28,20 @@ namespace puq {
       us.change(s1);
       tab.append({
 	  "From", SystemMap[s1]->SystemAbbrev, bu1.to_string(),
-	  ((dim1.to_string(DisplayFormat::UNITS)=="") ? "1" : dim1.to_string(DisplayFormat::UNITS))
+	  ((dim1.to_string(Format::Display::UNITS)=="") ? "1" : dim1.to_string(Format::Display::UNITS))
 	});
       us.change(s2);
       tab.append({
 	  "To", SystemMap[s2]->SystemAbbrev, bu2.to_string(),
-	  ((dim2.to_string(DisplayFormat::UNITS)=="") ? "1" : dim2.to_string(DisplayFormat::UNITS))
+	  ((dim2.to_string(Format::Display::UNITS)=="") ? "1" : dim2.to_string(Format::Display::UNITS))
 	});
       ss << tab.to_string() << std::endl;;
       us.change(s1);
       ss << "Possible conversions:" << std::endl << std::endl;
       tab = DataTable({{"System",10},{"Units",26},{"Name",26},{"Context",10}});
-	std::string mgs = dim1.to_string({DisplayFormat::UNITS});
-	std::string mks = dim1.to_string({DisplayFormat::UNITS,BaseFormat::MKS});
-	std::string cgs = dim1.to_string({DisplayFormat::UNITS,BaseFormat::CGS});
+	std::string mgs = dim1.to_string({Format::Display::UNITS});
+	std::string mks = dim1.to_string({Format::Display::UNITS,Format::Base::MKS});
+	std::string cgs = dim1.to_string({Format::Display::UNITS,Format::Base::CGS});
       if (mgs=="") {
 	ss << "1";
       } else {

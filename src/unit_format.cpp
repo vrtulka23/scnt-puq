@@ -55,25 +55,37 @@ namespace puq {
   }
 
   std::string UnitFormat::multiply_symbol() const {
-    if (math==MathFormat::ASCII) {
+    if (math==Format::Math::UNICODE || math==Format::Math::HTML) {
       return SYMBOL_MULTIPLY2;
     }
     return SYMBOL_MULTIPLY;
   }
 
   std::string UnitFormat::format_exponents(std::string expression) const {
-    if (math==MathFormat::ASCII) {
+    if (math!=Format::Math::ASCII) {
+      // removing leading zeros
+      if (expression[0]=='0') {
+	expression.erase(0,0);
+      } else if (expression[0]==SYMBOL_PLUS[0] || expression[0]==SYMBOL_MINUS[0]) {
+	if (expression[1]=='0')
+	  expression.erase(1,1);
+      }
+    }
+    if (math==Format::Math::UNICODE) {    
+      // translating speccial characters
       std::string superscript_str;
       for (char c : expression) {
 	superscript_str += UnitFormat::superscript_map.at(c);
       }
       return superscript_str;
+    } else if (math==Format::Math::HTML) {
+      return "<sup>"+expression+"</sup>";
     }
     return expression;
   }
 
   std::string UnitFormat::format_order(std::string expression) const {
-    if (math==MathFormat::ASCII) {
+    if (math==Format::Math::UNICODE || math==Format::Math::HTML) {
       size_t pos = expression.find(SYMBOL_EXPONENT);
       if (pos != std::string::npos) {
 	std::string exponent_str = expression.substr(pos+std::string(SYMBOL_EXPONENT).size(), expression.size());
@@ -84,8 +96,8 @@ namespace puq {
   }
 
   std::string UnitFormat::format_system(std::string expression, const std::string& abbrev) const {
-    if (system==SystemFormat::SHOW) {
-      if (math==MathFormat::ASCII)
+    if (system==Format::System::SHOW) {
+      if (math==Format::Math::UNICODE || math==Format::Math::HTML)
 	return abbrev + " " + expression;
       else
 	return abbrev + SYMBOL_SYSTEM + expression;
@@ -94,11 +106,15 @@ namespace puq {
   };
 
   bool UnitFormat::display_magnitude() const {
-    return (part == DisplayFormat::BOTH) || (part == DisplayFormat::MAGNITUDE);
+    return (part == Format::Display::BOTH) || (part == Format::Display::MAGNITUDE);
   }
   
   bool UnitFormat::display_units() const {
-    return (part == DisplayFormat::BOTH) || (part == DisplayFormat::UNITS);
+    return (part == Format::Display::BOTH) || (part == Format::Display::UNITS);
+  }
+  
+  bool UnitFormat::display_error() const {
+    return (error == Format::Error::SHOW);
   }
   
 }

@@ -35,18 +35,18 @@ void display_info(std::string expr) {
   std::cout << std::endl;
   std::cout << "Dimensions:" << std::endl << std::endl;
   puq::DataTable tab({{"Base",6},{"Num*Mag",25},{"Numerical",25},{"Physical",25}});
-  tab.append({"MGS", dim_m.to_string(puq::DisplayFormat::MAGNITUDE), dim.to_string(puq::DisplayFormat::MAGNITUDE), dim.to_string(puq::DisplayFormat::UNITS)});
+  tab.append({"MGS", dim_m.to_string(puq::Format::Display::MAGNITUDE), dim.to_string(puq::Format::Display::MAGNITUDE), dim.to_string(puq::Format::Display::UNITS)});
   tab.append({
       "MKS",
-      dim_m.to_string({puq::DisplayFormat::MAGNITUDE,puq::BaseFormat::MKS}),
-      dim.to_string({puq::DisplayFormat::MAGNITUDE,puq::BaseFormat::MKS}),
-      dim.to_string({puq::DisplayFormat::UNITS,puq::BaseFormat::MKS})
+      dim_m.to_string({puq::Format::Display::MAGNITUDE,puq::Format::Base::MKS}),
+      dim.to_string({puq::Format::Display::MAGNITUDE,puq::Format::Base::MKS}),
+      dim.to_string({puq::Format::Display::UNITS,puq::Format::Base::MKS})
     });
   tab.append({
       "CGS",
-      dim_m.to_string({puq::DisplayFormat::MAGNITUDE,puq::BaseFormat::CGS}),
-      dim.to_string({puq::DisplayFormat::MAGNITUDE,puq::BaseFormat::CGS}),
-      dim.to_string({puq::DisplayFormat::UNITS,puq::BaseFormat::CGS})
+      dim_m.to_string({puq::Format::Display::MAGNITUDE,puq::Format::Base::CGS}),
+      dim.to_string({puq::Format::Display::MAGNITUDE,puq::Format::Base::CGS}),
+      dim.to_string({puq::Format::Display::UNITS,puq::Format::Base::CGS})
     });
   std::cout << tab.to_string();
   std::cout << std::endl;

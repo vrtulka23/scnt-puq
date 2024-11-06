@@ -68,8 +68,8 @@ void test_unit_definitions() {
 #ifdef UNITS_LOGARITHMIC
     if (unit.second.utype == puq::Utype::LOG) {
       // For logarithmic units compare only the physical dimensionality
-      m1 = dim1.to_string({puq::DisplayFormat::UNITS});
-      m2 = dim2.to_string({puq::DisplayFormat::UNITS});
+      m1 = dim1.to_string({puq::Format::Display::UNITS});
+      m2 = dim2.to_string({puq::Format::Display::UNITS});
     }
 #endif
 

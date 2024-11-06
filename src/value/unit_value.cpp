@@ -216,23 +216,23 @@ namespace puq {
     return UnitValue(conv.convert(magnitude, 1), bu);
   }
 
-  UnitValue UnitValue::convert(const BaseFormat& format) const {
+  UnitValue UnitValue::convert(const Format::Base& format) const {
     BaseUnits bu;
     Dimensions dim = baseunits.dimensions();
     for (int i=0; i<NUM_BASEDIM; i++) {
       if (dim.physical[i]==0)
 	continue;
-      if (i==1 && format==BaseFormat::MKS) {
+      if (i==1 && format==Format::Base::MKS) {
 	bu.append({"k","g",dim.physical[i]});
       }
-      else if (i==0 && format==BaseFormat::CGS) {
+      else if (i==0 && format==Format::Base::CGS) {
 	bu.append({"c","m",dim.physical[i]});	
       }
 #ifdef UNIT_SYSTEM_EUS
-      else if (i==0 && format==BaseFormat::FPS) {
+      else if (i==0 && format==Format::Base::FPS) {
 	bu.append({"","ft",dim.physical[i]});	
       }
-      else if (i==1 && format==BaseFormat::FPS) {
+      else if (i==1 && format==Format::Base::FPS) {
 	bu.append({"","lb",dim.physical[i]});	
       }
 #endif
@@ -275,7 +275,7 @@ namespace puq {
 	throw UnitValueExcept("Dimensions of logarithmic units cannot be rebased: "+baseunits.to_string());
       if ((dim.utype & Utype::TMP) == Utype::TMP)
 	throw UnitValueExcept("Dimensions of temperature units cannot be rebased: "+baseunits.to_string());
-      std::string key = dim.to_string({DisplayFormat::UNITS});
+      std::string key = dim.to_string({Format::Display::UNITS});
       if (bumap.find(key) == bumap.end()) {
 	bumap.insert({key, {bu.prefix, bu.unit, bu.exponent}});
       } else {

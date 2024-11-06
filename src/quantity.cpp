@@ -328,13 +328,13 @@ namespace puq {
     return uv;
   }  
 
-  // convert using BaseFormat
-  Quantity Quantity::convert(const BaseFormat& format, SystemType system) const {
+  // convert using Format::Base
+  Quantity Quantity::convert(const Format::Base& format, SystemType system) const {
     UnitValue uv = value;
     if (system==SystemType::NONE)
       system = stype;
     else if (system != stype)
-      uv = value.convert(BaseFormat::MGS);
+      uv = value.convert(Format::Base::MGS);
     UnitSystem us(system);
     return Quantity(uv.convert(format));
   }

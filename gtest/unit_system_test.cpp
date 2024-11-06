@@ -56,24 +56,24 @@ TEST(UnitSystem, FormatConversion) {
 
   puq::Quantity q("J"), r;
 
-  r = q.convert(puq::BaseFormat::MKS);
+  r = q.convert(puq::Format::Base::MKS);
   EXPECT_EQ(r.to_string(), "m2*kg*s-2");
 
-  r = q.convert(puq::BaseFormat::MGS);
+  r = q.convert(puq::Format::Base::MGS);
   EXPECT_EQ(r.to_string(), "1000*m2*g*s-2");
   
-  r = q.convert(puq::BaseFormat::CGS);
+  r = q.convert(puq::Format::Base::CGS);
   EXPECT_EQ(r.to_string(), "1e+07*cm2*g*s-2");
 
 #ifdef UNIT_SYSTEM_EUS
   // q is implicitely converted into MGS format,
   // because unit J does not exist in US unit system
-  r = q.convert(puq::BaseFormat::FPS, puq::SystemType::US);  
+  r = q.convert(puq::Format::Base::FPS, puq::SystemType::US);  
   EXPECT_EQ(r.to_string(), "23.7304*ft2*lb*s-2");
 
   // explicitely what happens above
-  r = q.convert(puq::BaseFormat::MGS);
-  r = r.convert(puq::BaseFormat::FPS, puq::SystemType::US);
+  r = q.convert(puq::Format::Base::MGS);
+  r = r.convert(puq::Format::Base::FPS, puq::SystemType::US);
   EXPECT_EQ(r.to_string(), "23.7304*ft2*lb*s-2");
 #endif
   
@@ -171,7 +171,7 @@ TEST(UnitSystem, ContextConversionGEO) {
   puq::Quantity q1, q2, q3;
   
   q1 = puq::Quantity(1,"m*[#c]2/[#G]", puq::SystemType::GEO);
-  q1 = q1.convert(puq::BaseFormat::MKS);
+  q1 = q1.convert(puq::Format::Base::MKS);
   EXPECT_EQ(q1.to_string(), "1.346591(30)e+27*kg");
 
   q1 = puq::Quantity(1,"<E>", puq::SystemType::GEO);  

@@ -26,7 +26,7 @@
 #define SYMBOL_DIVIDE    "/"
 #define SYMBOL_POWER     "^"
 #define SYMBOL_EXPONENT  "e"
-#define SYMBOL_EXPONENT2 "\u00D710"
+#define SYMBOL_EXPONENT2 "\u00D710" // x10
 #define SYMBOL_QUANTITY_START "<"
 #define SYMBOL_QUANTITY_END   ">"
 #define SYMBOL_SIFACTOR_START "|"

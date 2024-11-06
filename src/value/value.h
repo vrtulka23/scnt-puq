@@ -129,7 +129,7 @@ namespace puq {
     void operator*=(const UnitValue& v);
     void operator/=(const UnitValue& v);
     void pow(const EXPONENT_TYPE& e);
-    UnitValue convert(const BaseFormat& format) const;
+    UnitValue convert(const Format::Base& format) const;
     UnitValue convert(const std::string& s) const;
     UnitValue convert(const BaseUnits& bu) const;
     UnitValue convert(const UnitValue& v) const;
