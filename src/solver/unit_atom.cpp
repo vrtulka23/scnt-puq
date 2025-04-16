@@ -92,69 +92,69 @@ namespace puq {
     uv.baseunits.append(bu);
   }
   
-UnitValue UnitAtom::from_string(std::string expr_orig) {
-  std::string expr = expr_orig;
-  struct UnitValue uv;
-  std::smatch m;
+  UnitValue UnitAtom::from_string(std::string expr_orig) {
+    std::string expr = expr_orig;
+    struct UnitValue uv;
+    std::smatch m;
 #ifdef EXPONENT_FRACTIONS
-  std::regex rx_unit("^(\\[?[a-zA-Z0_%#']+\\]?)([+-]?[0-9]*)("+std::string(SYMBOL_FRACTION)+"([0-9]+)|)$");
-  std::regex rx_quantity("^(\\<[a-zA-Z_]+\\>)([+-]?[0-9]*)("+std::string(SYMBOL_FRACTION)+"([0-9]+)|)$");
-  std::regex rx_sifactor("^(\\|[a-zA-Z_]+\\|)([+-]?[0-9]*)("+std::string(SYMBOL_FRACTION)+"([0-9]+)|)$");
+    std::regex rx_unit("^(\\[?[a-zA-Z0_%#']+\\]?)([+-]?[0-9]*)("+std::string(SYMBOL_FRACTION)+"([0-9]+)|)$");
+    std::regex rx_quantity("^(\\<[a-zA-Z_]+\\>)([+-]?[0-9]*)("+std::string(SYMBOL_FRACTION)+"([0-9]+)|)$");
+    std::regex rx_sifactor("^(\\|[a-zA-Z_]+\\|)([+-]?[0-9]*)("+std::string(SYMBOL_FRACTION)+"([0-9]+)|)$");
 #else
-  std::regex rx_unit("^(\\[?[a-zA-Z0_%#']+\\]?)([+-]?[0-9]*)$");
-  std::regex rx_quantity("^(\\<[a-zA-Z_]+\\>)([+-]?[0-9]*)$");
-  std::regex rx_sifactor("^(\\|[a-zA-Z_]+\\|)([+-]?[0-9]*)$");
+    std::regex rx_unit("^(\\[?[a-zA-Z0_%#']+\\]?)([+-]?[0-9]*)$");
+    std::regex rx_quantity("^(\\<[a-zA-Z_]+\\>)([+-]?[0-9]*)$");
+    std::regex rx_sifactor("^(\\|[a-zA-Z_]+\\|)([+-]?[0-9]*)$");
 #endif
-  std::regex rx_number("^((\\+|-)?[0-9]+)(\\.(([0-9]+)?))?(\\(([0-9]+)\\))?((e|E)((\\+|-)?[0-9]+))?$");
-  if (std::regex_match(expr, m, rx_number)) {
-    _parse_number(expr, uv, m);
+    std::regex rx_number("^((\\+|-)?[0-9]+)(\\.(([0-9]+)?))?(\\(([0-9]+)\\))?((e|E)((\\+|-)?[0-9]+))?$");
+    if (std::regex_match(expr, m, rx_number)) {
+      _parse_number(expr, uv, m);
+    }
+    else if (std::regex_match(expr, m, rx_quantity)) {
+      _parse_quantity(expr, uv, m);
+    }
+    else if (std::regex_match(expr, m, rx_sifactor)) {
+      _parse_quantity(expr, uv, m);
+    }
+    else if (std::regex_match(expr, m, rx_unit)) {
+      _parse_unit(expr, uv, m, expr_orig);
+    } else {
+      throw AtomParsingExcept("Invalid unit expression: "+expr_orig);
+    }
+    return uv;
   }
-  else if (std::regex_match(expr, m, rx_quantity)) {
-    _parse_quantity(expr, uv, m);
+
+  std::string UnitAtom::to_string() {
+    return value.to_string();
   }
-  else if (std::regex_match(expr, m, rx_sifactor)) {
-    _parse_quantity(expr, uv, m);
+
+  void UnitAtom::math_power(EXPONENT_TYPE &e) {
+#ifdef DEBUG_UNIT_SOLVER
+    std::clog << "UNIT:    pow(" << value.to_string() << "," << e.to_string() << ") = ";
+#endif
+    value.pow(e);
+#ifdef DEBUG_UNIT_SOLVER
+    std::clog << value.to_string() << std::endl;
+#endif
   }
-  else if (std::regex_match(expr, m, rx_unit)) {
-    _parse_unit(expr, uv, m, expr_orig);
-  } else {
-    throw AtomParsingExcept("Invalid unit expression: "+expr_orig);
+
+  void UnitAtom::math_multiply(UnitAtom *other) {
+#ifdef DEBUG_UNIT_SOLVER
+    std::clog << "UNIT:    " << value.to_string() << " * " << other->value.to_string() << " = ";
+#endif
+    value *= other->value;
+#ifdef DEBUG_UNIT_SOLVER
+    std::clog << value.to_string() << std::endl;
+#endif
   }
-  return uv;
-}
 
-std::string UnitAtom::to_string() {
-  return value.to_string();
-}
-
-void UnitAtom::math_power(EXPONENT_TYPE &e) {
+  void UnitAtom::math_divide(UnitAtom *other) {
 #ifdef DEBUG_UNIT_SOLVER
-  std::clog << "UNIT:    pow(" << value.to_string() << "," << e.to_string() << ") = ";
+    std::clog << "UNIT:    " << value.to_string() << " / " << other->value.to_string() << " = ";
 #endif
-  value.pow(e);
+    value /= other->value;
 #ifdef DEBUG_UNIT_SOLVER
-  std::clog << value.to_string() << std::endl;
+    std::clog << value.to_string() << std::endl;
 #endif
-}
-
-void UnitAtom::math_multiply(UnitAtom *other) {
-#ifdef DEBUG_UNIT_SOLVER
-  std::clog << "UNIT:    " << value.to_string() << " * " << other->value.to_string() << " = ";
-#endif
-  value *= other->value;
-#ifdef DEBUG_UNIT_SOLVER
-  std::clog << value.to_string() << std::endl;
-#endif
-}
-
-void UnitAtom::math_divide(UnitAtom *other) {
-#ifdef DEBUG_UNIT_SOLVER
-  std::clog << "UNIT:    " << value.to_string() << " / " << other->value.to_string() << " = ";
-#endif
-  value /= other->value;
-#ifdef DEBUG_UNIT_SOLVER
-  std::clog << value.to_string() << std::endl;
-#endif
-}
+  }
 
 }
