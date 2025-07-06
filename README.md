@@ -3,6 +3,8 @@
 Implementation of physical unit calculations in C++.
 The original project written in Python is available in the [scinumtools](https://github.com/vrtulka23/scinumtools) package.
 
+This project is currently archived and is further developed in a new joint [SciNumTools v3 repository](https://github.com/vrtulka23/scinumtools3)
+
 ## Documentation
 
 For more details please refer to `SciNumTool` [documentation](https://vrtulka23.github.io/scnt-docs/).
